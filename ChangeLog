@@ -1,0 +1,20 @@
+30 / August / 2013
+Mednaffe 0.4 is released with the following changes:
+  - Mednaffe has been rewritten from scratch in C language.
+
+24 / October / 2010
+Mednaffe 0.3 is released with the following changes:
+  - New: Qt version for Linux.
+  - Rewrite 'Scanlines' component for better understanding.
+  - Rewrite 'Resolution' and 'Scale' components for better
+      usability.
+  - Now Mednaffe remember his position on the screen
+
+22 / August / 2010
+Mednaffe 0.2 is released with the following changes:
+  - Fixed: Values by default are shown now.
+  - Fixed: Size of sound buffer in Linux.
+  - Minor cosmetics changes.
+
+12 / August / 2010
+Mednaffe 0.1 is released. It's an alpha version.
