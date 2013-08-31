@@ -1,8 +1,12 @@
 		   README for Mednaffe
 
 Mednaffe is a front-end (GUI) for mednafen emulator.
+For now Mednaffe only works with 0.9.28/29-WIP versions of mednafen emulator.
 
-To build mednaffe you needs the gtk2 (or gtk3) development libraries.
+
+		  BUILDING
+
+To build mednaffe you need gtk2 (or gtk3) development libraries.
 
 Run the ``configure'' script here, e.g.:
 	./configure 
@@ -15,3 +19,6 @@ Then build with:
 
 To install them then do:
 	make install
+
+(Note: You do not need install mednaffe, it can be run from /src folder.
+	   Mednafen emulator must be in PATH)
