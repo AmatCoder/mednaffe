@@ -1,8 +1,8 @@
 #summary Building.
 
-= BUILDING =
+=== BUILDING MEDNAFFE ===
 
-To build mednaffe you needs the gtk2 (or gtk3) development libraries.
+To build mednaffe you need gtk2 (or gtk3) development libraries.
 
 Run the ``configure'' script here, e.g.:
 	./configure 
@@ -16,4 +16,5 @@ Then build with:
 To install them then do:
 	make install
 
-(Note: You do not need install mednaffe, you can execute it from /src folder)
+(Note: You do not need to install mednaffe, it can be run from /src folder.
+Mednafen emulator must be in PATH)
