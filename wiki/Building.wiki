@@ -1,6 +1,6 @@
 #summary Building.
 
-=== BUILDING MEDNAFFE ===
+=== BUILDING MEDNAFFE ON LINUX ===
 
 To build mednaffe you need gtk2 (or gtk3) development libraries.
 
@@ -13,7 +13,7 @@ If you want to build gtk3 version:
 Then build with:
 	make
 
-To install them then do:
+To install it then do:
 	make install
 
 (Note: You do not need to install mednaffe, it can be run from /src folder.
