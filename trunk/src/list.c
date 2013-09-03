@@ -209,6 +209,55 @@ void open_folder(GtkWidget *sender, guidata *gui)
   gtk_widget_destroy(folder);
 }
 
+void scan_dir(gchar *romdir, guidata *gui)
+{
+  GtkTreeIter iter;
+  gboolean filterzip, filtercue;
+  GDir *dir = NULL;
+  
+  dir = g_dir_open(romdir, 0, NULL);
+
+  if (dir != NULL)
+  {
+    const gchar *file = NULL;
+        
+    while ((file=g_dir_read_name(dir)) != NULL)
+    {
+      gchar *testdir = NULL;
+          
+      testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, file, NULL);
+          
+      if (!g_file_test (testdir, G_FILE_TEST_IS_DIR))
+      {
+        filterzip = (g_str_has_suffix(file, ".zip") || 
+                     g_str_has_suffix(file, ".ZIP"));
+                         
+        filtercue = (g_str_has_suffix(file, ".cue") || 
+                     g_str_has_suffix(file, ".toc") || 
+                     g_str_has_suffix(file, ".m3u") ||
+                     g_str_has_suffix(file, ".CUE") || 
+                     g_str_has_suffix(file, ".TOC") || 
+                     g_str_has_suffix(file, ".M3U"));
+                         
+        gtk_list_store_append(gui->store, &iter);
+        gtk_list_store_set(gui->store, &iter, 
+                           0, file, 
+                           1, filterzip, 
+                           2, filtercue, 
+                           3, testdir, -1);
+                                        
+      }
+      else
+      {
+        if (gui->recursive) 
+          scan_dir(testdir,gui);
+      }
+      g_free(testdir);
+    }
+    g_dir_close(dir);
+  }
+}
+
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
@@ -216,7 +265,6 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
-  gboolean filterzip, filtercue;
 
   model=gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
   gtk_list_store_clear(gui->store);
@@ -237,40 +285,8 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
 
     if (gui->rompath!=NULL)
     {
-      GDir *dir = NULL;
-      dir = g_dir_open(gui->rompath, 0, NULL);
-
-      if (dir != NULL)
-      {
-        const gchar *file = NULL;
-        
-        while ((file=g_dir_read_name(dir)) != NULL)
-        {
-          gchar *testdir = NULL;
-          
-          testdir = g_strconcat(gui->rompath, G_DIR_SEPARATOR_S, file, NULL);
-          
-          if (!g_file_test (testdir, G_FILE_TEST_IS_DIR))
-          {
-            filterzip = (g_str_has_suffix(file, ".zip") || 
-                         g_str_has_suffix(file, ".ZIP"));
-                         
-            filtercue = (g_str_has_suffix(file, ".cue") || 
-                         g_str_has_suffix(file, ".toc") || 
-                         g_str_has_suffix(file, ".m3u") ||
-                         g_str_has_suffix(file, ".CUE") || 
-                         g_str_has_suffix(file, ".TOC") || 
-                         g_str_has_suffix(file, ".M3U"));
-                         
-            gtk_list_store_append(gui->store, &iter);
-            gtk_list_store_set(gui->store, &iter, 0, file, 
-                                        1, filterzip, 2, filtercue, -1);
-                                        
-          }
-          g_free(testdir);
-        }
-        g_dir_close(dir);
-      }
+      scan_dir(gui->rompath, gui);
+      
       gtk_tree_sortable_set_sort_column_id(
         GTK_TREE_SORTABLE(gui->modelsort), 0, GTK_SORT_ASCENDING);
         
@@ -290,4 +306,13 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
     }
     change_list(gui);
   }
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_recursivemenuitem_toggled(GtkCheckMenuItem *menuitem, guidata *gui)
+{
+  gui->recursive = gtk_check_menu_item_get_active(menuitem);
+  fill_list(NULL,gui);
 }

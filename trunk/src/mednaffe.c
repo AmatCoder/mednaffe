@@ -129,7 +129,8 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
     gchar *selected = NULL;
     
     g_free(gui->rom);
-    gtk_tree_model_get(model, &iter, 0, &gui->rom,  -1);
+    g_free(gui->fullpath);
+    gtk_tree_model_get(model, &iter, 0, &gui->rom, 3, &gui->fullpath, -1);
     gtk_statusbar_pop(GTK_STATUSBAR(gui->sbname), 1);
     selected = g_strconcat(" Game selected: ", gui->rom, NULL);
     gtk_statusbar_push(GTK_STATUSBAR(gui->sbname), 1, selected);
@@ -192,6 +193,7 @@ void quit(GObject *object, guidata *gui)
   g_key_file_set_boolean(key_file, "GUI", "Tooltips",
                          gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option)));
                          
+  g_key_file_set_boolean(key_file, "GUI", "Recursive", gui->recursive);                       
   g_key_file_set_integer(key_file, "GUI", "ActionLaunch", gui->state);
 
   list = g_hash_table_get_keys(gui->clist);
@@ -233,6 +235,7 @@ void quit(GObject *object, guidata *gui)
   g_hash_table_destroy(gui->clist);
   g_slist_free(gui->dinlist);
   g_free(gui->binpath);
+  g_free(gui->fullpath);
   g_free(gui->rompath);
   g_free(gui->rom);
   g_free(gui->system);
@@ -286,7 +289,7 @@ void load_conf(guidata *gui)
       }
     }
     option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
-                                                       "showtooltips"));
+                                               "showtooltips"));
     value = g_key_file_get_boolean(key_file, "GUI", "Tooltips", &err);
     
     if (err==NULL)
@@ -294,6 +297,15 @@ void load_conf(guidata *gui)
     else
       g_error_free (err);
 
+    option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                                               "recursivemenuitem"));
+    value = g_key_file_get_boolean(key_file, "GUI", "Recursive", &err);
+    
+    if (err==NULL)
+      gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(option),value);
+    else
+      g_error_free (err);
+      
     state=g_key_file_get_integer(key_file, "GUI", "ActionLaunch", NULL);
 
     switch (state)
@@ -498,7 +510,10 @@ int main(int argc, char **argv)
 
   /* Create store and models */
   gui.store = 
-    gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN);
+    gtk_list_store_new(4, G_TYPE_STRING, 
+                          G_TYPE_BOOLEAN, 
+                          G_TYPE_BOOLEAN, 
+                          G_TYPE_STRING);
 
   gui.modelsort = 
     GTK_TREE_MODEL_SORT
@@ -533,8 +548,10 @@ int main(int argc, char **argv)
 
   /* Set initial values */
   gui.filtermode = 0;
+  gui.recursive = FALSE;
   gui.state = 0;
   gui.executing = FALSE;
+  gui.fullpath = NULL;
   gui.rompath = NULL;
   gui.rom = NULL;
   gui.command = NULL;
