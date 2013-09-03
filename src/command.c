@@ -44,7 +44,7 @@ gchar **build_command(guidata *gui)
   }
   g_list_free(list);
 
-  command[num] = g_strconcat(gui->rompath, G_DIR_SEPARATOR_S, gui->rom, NULL);
+  command[num] = g_strdup(gui->fullpath);
 
   num++;
   command[num] = NULL;
@@ -96,8 +96,8 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   GPid pid;
   gboolean ret;
 
-  if ((gui->executing == TRUE) || (gui->rompath == NULL) ||
-       (gui->rom == NULL)) return;
+  if ((gui->executing == TRUE) || (gui->rompath == NULL)) 
+    return;
 
   gui->command = build_command(gui);
   printf ("[Mednaffe] Executing mednafen:\n\n");
@@ -146,23 +146,15 @@ void open_rom(GtkWidget *sender, guidata *gui)
     
     if (filename != NULL)
     { 
-      gchar *g_rompath;
-      gchar *g_rom;
+      gchar *g_fullpath;
 
-	  g_rompath = gui->rompath;
-	  g_rom = gui->rom;
+	  g_fullpath = gui->fullpath;
+	  gui->fullpath = filename;
 	  
-	  gui->rompath = g_path_get_dirname(filename);
-	  gui->rom = g_path_get_basename(filename);
-	  
-	  g_free(filename);
-
 	  row_exec(NULL, NULL, NULL, gui);
 	  
-	  g_free(gui->rompath);
-	  g_free(gui->rom);
-	  gui->rompath = g_rompath;
-	  gui->rom = g_rom;
+	  g_free(gui->fullpath);
+	  gui->fullpath = g_fullpath;
 	}
   }
   gtk_widget_destroy(folder);

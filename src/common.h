@@ -45,7 +45,9 @@ typedef struct
    GtkTreeViewColumn *column;
    GtkListStore *store;
    gint filtermode;
+   gboolean recursive;
    gchar *binpath;
+   gchar *fullpath;
    gchar *rompath;
    gchar *rom;
    GHashTable* hash;
