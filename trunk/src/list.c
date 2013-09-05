@@ -28,30 +28,8 @@ void change_list (guidata *gui)
   gchar *buff, *total;
   gint n_roms = 0;
 
-  gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
-  gtk_tree_view_column_set_sort_order(gui->column,GTK_SORT_ASCENDING);
-
-  if (gui->filtermode == 0)
-  {
-    n_roms = 
-      gtk_tree_model_iter_n_children(GTK_TREE_MODEL(gui->modelsort), NULL);
-      
-    gtk_tree_view_column_set_title(gui->column, "Games");
-  }
-  else if (gui->filtermode == 1)
-  {
-    n_roms = 
-      gtk_tree_model_iter_n_children(GTK_TREE_MODEL(gui->zipmodelsort), NULL);
-      
-    gtk_tree_view_column_set_title(gui->column, "Games (zip)");
-  }
-  else if (gui->filtermode == 2)
-  {
-    n_roms = 
-      gtk_tree_model_iter_n_children(GTK_TREE_MODEL(gui->cuemodelsort), NULL);
-      
-    gtk_tree_view_column_set_title(gui->column, "Games (cue/toc/m3u)");
-  }
+  n_roms = 
+    gtk_tree_model_iter_n_children(GTK_TREE_MODEL(gui->store), NULL);
 
   buff=g_strdup_printf("%i", n_roms);
   total = g_strconcat(" Games in list: ", buff, NULL);
@@ -59,6 +37,9 @@ void change_list (guidata *gui)
   gtk_statusbar_push(GTK_STATUSBAR(gui->sbnumber), 1, total);
   g_free(total);
   g_free(buff);
+
+  gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), 
+                          GTK_TREE_MODEL(gui->store));
 
   adjustament = 
     gtk_scrolled_window_get_vadjustment(
@@ -74,15 +55,7 @@ G_MODULE_EXPORT
 #endif
 void on_radiomenuall_activate(GtkMenuItem *menuitem, guidata *gui)
 {
-  if (gui->filtermode != 0)
-  {
-    gtk_tree_view_set_model(
-      GTK_TREE_VIEW(gui->gamelist), GTK_TREE_MODEL(gui->modelsort));
-      
-    gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
-    gui->filtermode = 0;
-    change_list(gui);
-  }
+
 }
 
 #ifdef G_OS_WIN32
@@ -90,15 +63,7 @@ G_MODULE_EXPORT
 #endif
 void on_radiomenuzip_activate(GtkMenuItem *menuitem, guidata *gui)
 {
-  if (gui->filtermode != 1)
-  {
-    gtk_tree_view_set_model(
-      GTK_TREE_VIEW(gui->gamelist),GTK_TREE_MODEL(gui->zipmodelsort));
-      
-    gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
-    gui->filtermode = 1;
-    change_list(gui);
-  }
+
 }
 
 #ifdef G_OS_WIN32
@@ -106,40 +71,7 @@ G_MODULE_EXPORT
 #endif
 void on_radiomenucue_activate(GtkMenuItem *menuitem, guidata *gui)
 {
-  if (gui->filtermode != 2)
-  {
-    gtk_tree_view_set_model(
-      GTK_TREE_VIEW(gui->gamelist), GTK_TREE_MODEL(gui->cuemodelsort));
-    
-    gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
-    gui->filtermode = 2;
-    change_list(gui);
-  }
-}
 
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void header_clicked(GtkTreeViewColumn *treeviewcolumn, guidata *gui)
-{
-  GtkTreeModel *sorteable;
-
-  sorteable = gtk_tree_view_get_model(GTK_TREE_VIEW(gui->gamelist));
-
-  if (gtk_tree_view_column_get_sort_order(gui->column) == GTK_SORT_ASCENDING)
-  {
-    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(sorteable), 
-                                                 0,GTK_SORT_DESCENDING);
-                                         
-    gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_DESCENDING);
-  }
-  else
-  {
-    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(sorteable), 
-                                                  0,GTK_SORT_ASCENDING);
-                                                  
-    gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_ASCENDING);
-  }
 }
 
 #ifdef G_OS_WIN32
@@ -239,13 +171,11 @@ void scan_dir(gchar *romdir, guidata *gui)
                      g_str_has_suffix(file, ".TOC") || 
                      g_str_has_suffix(file, ".M3U"));
                          
-        gtk_list_store_append(gui->store, &iter);
-        gtk_list_store_set(gui->store, &iter, 
+        gtk_list_store_insert_with_values(gui->store, &iter, -1,  
                            0, file, 
                            1, filterzip, 
                            2, filtercue, 
-                           3, testdir, -1);
-                                        
+                           3, testdir, -1);                               
       }
       else
       {
@@ -265,8 +195,15 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
+  clock_t       start, end;
 
+  start = clock();
+    
   model=gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
+  gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
+  gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(gui->store), 
+    GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID, GTK_SORT_ASCENDING);
+
   gtk_list_store_clear(gui->store);
   
   if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter))
@@ -274,38 +211,24 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
     g_free(gui->rompath);
     gtk_tree_model_get(model, &iter, 0 ,&gui->rompath, -1);
 
-    gtk_tree_sortable_set_sort_column_id(
-      GTK_TREE_SORTABLE(gui->modelsort), -1, GTK_SORT_ASCENDING);
-      
-    gtk_tree_sortable_set_sort_column_id(
-      GTK_TREE_SORTABLE(gui->zipmodelsort), -1, GTK_SORT_ASCENDING);
-      
-    gtk_tree_sortable_set_sort_column_id(
-      GTK_TREE_SORTABLE(gui->cuemodelsort), -1, GTK_SORT_ASCENDING);
 
     if (gui->rompath!=NULL)
-    {
       scan_dir(gui->rompath, gui);
       
-      gtk_tree_sortable_set_sort_column_id(
-        GTK_TREE_SORTABLE(gui->modelsort), 0, GTK_SORT_ASCENDING);
-        
-      gtk_tree_sortable_set_sort_column_id(
-        GTK_TREE_SORTABLE(gui->zipmodelsort), 0, GTK_SORT_ASCENDING);
-        
-      gtk_tree_sortable_set_sort_column_id(
-        GTK_TREE_SORTABLE(gui->cuemodelsort), 0, GTK_SORT_ASCENDING);
-        
-    }
-
+    gtk_tree_view_column_set_sort_column_id(gui->column, 0); 
+    change_list(gui);
+    
     if (gtk_tree_model_get_iter_first(gtk_tree_view_get_model(
                                   GTK_TREE_VIEW(gui->gamelist)), &iter))
     {  
       gtk_tree_selection_select_iter(gtk_tree_view_get_selection(
                                   GTK_TREE_VIEW(gui->gamelist)), &iter);
     }
-    change_list(gui);
   }
+  end = clock();
+
+  printf( "CPU time taken to populate list: %f\n", 
+          ( (gdouble)( end - start ) ) / CLOCKS_PER_SEC );
 }
 
 #ifdef G_OS_WIN32
