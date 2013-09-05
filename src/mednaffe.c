@@ -515,39 +515,12 @@ int main(int argc, char **argv)
                           G_TYPE_BOOLEAN, 
                           G_TYPE_STRING);
 
-  gui.modelsort = 
-    GTK_TREE_MODEL_SORT
-      (gtk_tree_model_sort_new_with_model(GTK_TREE_MODEL(gui.store)));
-      
-  gui.zipfilter = 
-    GTK_TREE_MODEL_FILTER
-      ((gtk_tree_model_filter_new(GTK_TREE_MODEL( gui.store ), NULL )));
-      
-  gui.zipmodelsort = 
-    GTK_TREE_MODEL_SORT
-      (gtk_tree_model_sort_new_with_model(GTK_TREE_MODEL(gui.zipfilter)));
-      
-  gtk_tree_model_filter_set_visible_column
-    (GTK_TREE_MODEL_FILTER(gui.zipfilter ), 1);
-    
-  gui.cuefilter = 
-    GTK_TREE_MODEL_FILTER
-      ((gtk_tree_model_filter_new(GTK_TREE_MODEL( gui.store ), NULL )));
-      
-  gui.cuemodelsort = 
-    GTK_TREE_MODEL_SORT
-      (gtk_tree_model_sort_new_with_model(GTK_TREE_MODEL(gui.cuefilter)));
-      
-  gtk_tree_model_filter_set_visible_column(
-    GTK_TREE_MODEL_FILTER(gui.cuefilter ), 2);
-
   gtk_tree_view_set_model(
-    GTK_TREE_VIEW(gui.gamelist), GTK_TREE_MODEL(gui.modelsort));
+    GTK_TREE_VIEW(gui.gamelist), GTK_TREE_MODEL(gui.store));
 
   gui.column = gtk_tree_view_get_column(GTK_TREE_VIEW(gui.gamelist), 0);
 
   /* Set initial values */
-  gui.filtermode = 0;
   gui.recursive = FALSE;
   gui.state = 0;
   gui.executing = FALSE;

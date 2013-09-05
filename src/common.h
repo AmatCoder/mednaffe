@@ -37,14 +37,8 @@ typedef struct
    GtkWidget *globalist;
    GtkBuilder *specific;
    GtkBuilder *builder;
-   GtkTreeModelSort *modelsort;
-   GtkTreeModelSort *zipmodelsort;
-   GtkTreeModelFilter *zipfilter;
-   GtkTreeModelSort *cuemodelsort;
-   GtkTreeModelFilter *cuefilter;
    GtkTreeViewColumn *column;
    GtkListStore *store;
-   gint filtermode;
    gboolean recursive;
    gchar *binpath;
    gchar *fullpath;
