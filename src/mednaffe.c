@@ -555,7 +555,7 @@ int main(int argc, char **argv)
   if (!read_cfg(cfg_path, &gui))
   {
     show_error(
-    "Mednafen version is not compatible.\nYou need 0.9.27/28/29-WIP version.\n");
+    "Mednafen version is not compatible.\nYou need 0.9.28/29/31-WIP version.\n");
     return 1; /* Items are not freed here */
   }
   g_free(cfg_path);
