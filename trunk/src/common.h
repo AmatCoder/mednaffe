@@ -40,6 +40,8 @@ typedef struct
    GtkTreeViewColumn *column;
    GtkListStore *store;
    gboolean recursive;
+   gchar **list;
+   gint n_items;
    gchar *binpath;
    gchar *fullpath;
    gchar *rompath;
