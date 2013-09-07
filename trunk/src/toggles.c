@@ -354,11 +354,10 @@ gboolean read_cfg(gchar *cfg_path, guidata *gui)
     version = g_strconcat(" Mednafen version ", aline[1], 
                                                 " detected...", NULL);
 
-    if ((achar[0][11]!='9') || (achar[0][13]!='2') || 
-        ((achar[0][14]!='7') && 
-         (achar[0][14]!='8') && 
-         (achar[0][14]!='9'))
-        )
+    if (((achar[0][11]!='9') || (achar[0][13]!='2') || 
+        ((achar[0][14]!='8') && 
+         (achar[0][14]!='9')))
+         &&((achar[0][13]!='3') || (achar[0][14]!='1')))
       return FALSE;
                                                 
     printf("[Mednaffe] %s\n",version);
