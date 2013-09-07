@@ -239,6 +239,7 @@ void quit(GObject *object, guidata *gui)
   g_free(gui->rompath);
   g_free(gui->rom);
   g_free(gui->system);
+  g_strfreev(gui->list);
 
   gtk_main_quit();
 }
@@ -519,9 +520,14 @@ int main(int argc, char **argv)
     GTK_TREE_VIEW(gui.gamelist), GTK_TREE_MODEL(gui.store));
 
   gui.column = gtk_tree_view_get_column(GTK_TREE_VIEW(gui.gamelist), 0);
+  gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(gui.store), 
+    GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID, GTK_SORT_ASCENDING);
+
 
   /* Set initial values */
   gui.recursive = FALSE;
+  gui.list = NULL;
+  gui.n_items = 0;
   gui.state = 0;
   gui.executing = FALSE;
   gui.fullpath = NULL;
