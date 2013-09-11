@@ -23,6 +23,10 @@
 #include "common.h"
 #include <stdlib.h>
 
+#ifdef G_OS_WIN32
+  #include <windows.h>
+#endif
+
 void change_list (guidata *gui)
 {
   GtkAdjustment *adjustament;
@@ -140,7 +144,7 @@ int descend_sort(const void * a, const void * b)
   const char *c = *(const char **) a;
   const char *d = *(const char **) b;
   
-  return g_strcmp0(d, c);
+  return strcmp(d, c);
 }
 
 int ascend_sort(const void * a, const void * b)
@@ -148,8 +152,78 @@ int ascend_sort(const void * a, const void * b)
   const char *c = *(const char **) a;
   const char *d = *(const char **) b;
   
-  return g_strcmp0(c, d);
+  return strcmp(c, d);
 }
+
+#ifdef G_OS_WIN32 /* g_file_test is too slow on Windows */
+gint count_items(gchar *romdir, gint n_items, gboolean recursive)
+{
+  WIN32_FIND_DATA FindFileData;
+
+  gchar *romdir2 = g_strconcat(romdir, G_DIR_SEPARATOR_S, "*", NULL);
+  HANDLE hFind = FindFirstFile(romdir2, &FindFileData);
+  
+  while (hFind != INVALID_HANDLE_VALUE)
+  {
+    if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+    {
+      if (recursive && (0 != strcmp (FindFileData.cFileName, ".") 
+        && 0 != strcmp (FindFileData.cFileName, "..")))
+      {
+          gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, FindFileData.cFileName, NULL);
+          n_items = count_items(testdir, n_items, TRUE);
+          g_free(testdir);
+      }
+	}
+    else n_items++;
+    
+    if (!FindNextFile(hFind, &FindFileData))
+    {
+      FindClose(hFind);
+      hFind = INVALID_HANDLE_VALUE;
+    }
+  }
+  g_free(romdir2);  
+  return n_items;
+}
+
+gint scan_files(gchar *romdir, gchar **list, gint i, gboolean recursive)
+{
+  WIN32_FIND_DATA FindFileData;
+
+  gchar *romdir2 = g_strconcat(romdir, G_DIR_SEPARATOR_S, "*", NULL);
+  HANDLE hFind = FindFirstFile(romdir2, &FindFileData);
+
+  while (hFind != INVALID_HANDLE_VALUE)
+  {
+    gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, FindFileData.cFileName, NULL);
+    if ((FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+    {
+      if (recursive && (0 != strcmp(FindFileData.cFileName, ".") 
+        && 0 != strcmp (FindFileData.cFileName, "..")))
+      {
+        i = scan_files(testdir, list, i, TRUE);
+      }
+    }
+    else
+    {
+      list[i] = g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, 
+                            testdir, NULL);    
+      i++;
+    }
+    g_free(testdir);
+    
+    if (!FindNextFile(hFind, &FindFileData))
+    {
+      FindClose(hFind);
+      hFind = INVALID_HANDLE_VALUE;
+    }
+  }
+  g_free(romdir2);
+  return i;
+}
+
+#else
 
 gint count_items(gchar *romdir, gint n_items, gboolean recursive)
 {
@@ -177,7 +251,6 @@ gint count_items(gchar *romdir, gint n_items, gboolean recursive)
     }
   g_dir_close(dir); 
   }
-  
   return n_items;
 }
 
@@ -213,6 +286,8 @@ gint scan_files(gchar *romdir, gchar **list, gint i, gboolean recursive)
   }
   return i;
 }
+
+#endif
 
 void populate_list(guidata *gui)
 {
