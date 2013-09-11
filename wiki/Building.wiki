@@ -1,4 +1,4 @@
-#summary Building.
+#summary Building on Linux.
 
 === BUILDING MEDNAFFE ON LINUX ===
 
