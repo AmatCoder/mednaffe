@@ -2,7 +2,8 @@
 
 === BUILDING MEDNAFFE ON LINUX ===
 
-To build mednaffe you need gtk2 (or gtk3) development libraries.
+To build mednaffe you need gtk2 (2.18 or higher) 
+or gtk3 (3.4 or higher) development libraries.
 
 Run the ``configure'' script here, e.g.:
 	./configure 
