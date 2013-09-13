@@ -357,7 +357,9 @@ gboolean read_cfg(gchar *cfg_path, guidata *gui)
     if (((achar[0][11]!='9') || (achar[0][13]!='2') || 
         ((achar[0][14]!='8') && 
          (achar[0][14]!='9')))
-         &&((achar[0][13]!='3') || (achar[0][14]!='1')))
+                             && ((achar[0][13]!='3') || 
+        ((achar[0][14]!='1') && 
+         (achar[0][14]!='2'))))
       return FALSE;
                                                 
     printf("[Mednaffe] %s\n",version);
