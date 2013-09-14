@@ -78,7 +78,7 @@ void on_entry_icon_release(GtkEntry *entry,
   gtk_entry_set_text(entry,"");
 }
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
 void on_button_entry_clicked(GtkButton *button, GtkEntry *entry)
