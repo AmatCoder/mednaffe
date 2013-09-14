@@ -83,7 +83,7 @@ void child_watch(GPid pid, gint status, guidata *gui)
 
   g_hash_table_insert(gui->clist, name, name);
 
-  if (gui->state==1) gtk_window_deiconify(GTK_WINDOW(gui->topwindow));
+  if (gui->state==1) gtk_window_present(GTK_WINDOW(gui->topwindow));
   if (gui->state==2) gtk_widget_show(gui->topwindow);
 }
 
