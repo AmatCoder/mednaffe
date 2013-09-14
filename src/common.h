@@ -39,9 +39,9 @@ typedef struct
    GtkBuilder *builder;
    GtkTreeViewColumn *column;
    GtkListStore *store;
-   gboolean recursive;
-   gchar **list;
-   gint n_items;
+   gint listmode;
+   gint filter;
+   GSList *itemlist;
    gchar *binpath;
    gchar *fullpath;
    gchar *rompath;
