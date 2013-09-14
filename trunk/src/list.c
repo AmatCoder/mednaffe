@@ -21,7 +21,6 @@
  */
 
 #include "common.h"
-#include <stdlib.h>
 #include <string.h>
 
 #ifdef G_OS_WIN32
@@ -33,7 +32,9 @@ void change_list (guidata *gui)
   GtkAdjustment *adjustament;
   gchar *buff, *total;
 
-  buff=g_strdup_printf("%i", gui->n_items);
+  buff=g_strdup_printf("%i", 
+    gtk_tree_model_iter_n_children(GTK_TREE_MODEL(gui->store), NULL));
+    
   total = g_strconcat(" Games in list: ", buff, NULL);
   gtk_statusbar_pop(GTK_STATUSBAR(gui->sbnumber), 1);
   gtk_statusbar_push(GTK_STATUSBAR(gui->sbnumber), 1, total);
@@ -46,30 +47,6 @@ void change_list (guidata *gui)
                                 
   gtk_adjustment_set_value (adjustament, 0);
   gtk_widget_grab_focus(gui->gamelist);
-
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_radiomenuall_activate(GtkMenuItem *menuitem, guidata *gui)
-{
-
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_radiomenuzip_activate(GtkMenuItem *menuitem, guidata *gui)
-{
-
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_radiomenucue_activate(GtkMenuItem *menuitem, guidata *gui)
-{
 
 }
 
@@ -142,53 +119,17 @@ void open_folder(GtkWidget *sender, guidata *gui)
 
 int descend_sort(const void * a, const void * b)
 { 
-  const char *c = *(const char **) a;
-  const char *d = *(const char **) b;
-  
-  return strcmp(d, c);
+  return strcmp(a, b);
 }
 
 int ascend_sort(const void * a, const void * b)
 { 
-  const char *c = *(const char **) a;
-  const char *d = *(const char **) b;
-  
-  return strcmp(c, d);
+  return strcmp(b, a);
 }
 
 #ifdef G_OS_WIN32 /* g_file_test is too slow on Windows */
-gint count_items(gchar *romdir, gint n_items, gboolean recursive)
-{
-  WIN32_FIND_DATA FindFileData;
 
-  gchar *romdir2 = g_strconcat(romdir, G_DIR_SEPARATOR_S, "*", NULL);
-  HANDLE hFind = FindFirstFile(romdir2, &FindFileData);
-  
-  while (hFind != INVALID_HANDLE_VALUE)
-  {
-    if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-    {
-      if (recursive && (0 != strcmp (FindFileData.cFileName, ".") 
-        && 0 != strcmp (FindFileData.cFileName, "..")))
-      {
-          gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, FindFileData.cFileName, NULL);
-          n_items = count_items(testdir, n_items, TRUE);
-          g_free(testdir);
-      }
-	}
-    else n_items++;
-    
-    if (!FindNextFile(hFind, &FindFileData))
-    {
-      FindClose(hFind);
-      hFind = INVALID_HANDLE_VALUE;
-    }
-  }
-  g_free(romdir2);  
-  return n_items;
-}
-
-gint scan_files(gchar *romdir, gchar **list, gint i, gboolean recursive)
+void scan_files(gchar *romdir, guidata *gui)
 {
   WIN32_FIND_DATA FindFileData;
 
@@ -200,17 +141,35 @@ gint scan_files(gchar *romdir, gchar **list, gint i, gboolean recursive)
     gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, FindFileData.cFileName, NULL);
     if ((FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
     {
-      if (recursive && (0 != strcmp(FindFileData.cFileName, ".") 
+      if (gui->listmode == 1 && (0 != strcmp(FindFileData.cFileName, ".") 
         && 0 != strcmp (FindFileData.cFileName, "..")))
       {
-        i = scan_files(testdir, list, i, TRUE);
+        scan_files(testdir, gui);
       }
     }
     else
     {
-      list[i] = g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, 
-                            testdir, NULL);    
-      i++;
+	  if (gui->filter == 0)
+	  {
+      gui->itemlist = g_slist_prepend(gui->itemlist, 
+        g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, testdir, NULL));
+	  }
+      else if ((gui->filter == 1) && (g_str_has_suffix(FindFileData.cFileName, ".zip") || 
+                               g_str_has_suffix(FindFileData.cFileName, ".ZIP")))
+      {
+        gui->itemlist = g_slist_prepend(gui->itemlist, 
+          g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, testdir, NULL));
+      }
+      else if ((gui->filter == 2) && (g_str_has_suffix(FindFileData.cFileName, ".cue") || 
+                     g_str_has_suffix(FindFileData.cFileName, ".toc") || 
+                     g_str_has_suffix(FindFileData.cFileName, ".m3u") ||
+                     g_str_has_suffix(FindFileData.cFileName, ".CUE") || 
+                     g_str_has_suffix(FindFileData.cFileName, ".TOC") || 
+                     g_str_has_suffix(FindFileData.cFileName, ".M3U")))
+      {
+        gui->itemlist = g_slist_prepend(gui->itemlist, 
+          g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, testdir, NULL));
+      }   
     }
     g_free(testdir);
     
@@ -221,44 +180,14 @@ gint scan_files(gchar *romdir, gchar **list, gint i, gboolean recursive)
     }
   }
   g_free(romdir2);
-  return i;
 }
 
 #else
 
-gint count_items(gchar *romdir, gint n_items, gboolean recursive)
+void scan_files(gchar *romdir, guidata *gui)
 {
   GDir *dir = NULL;
-
-  dir = g_dir_open(romdir, 0, NULL);
-
-  if (dir != NULL)
-  {
-    const gchar *file = NULL;
-        
-    while ((file=g_dir_read_name(dir)) != NULL)
-    {
-      gchar *testdir = NULL;
-
-      testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, file, NULL);
-          
-      if (!g_file_test (testdir, G_FILE_TEST_IS_DIR))
-        n_items++;
-      else 
-        if (recursive) 
-          n_items = count_items(testdir, n_items, TRUE);
-          
-      g_free(testdir);
-    }
-  g_dir_close(dir); 
-  }
-  return n_items;
-}
-
-gint scan_files(gchar *romdir, gchar **list, gint i, gboolean recursive)
-{
-  GDir *dir = NULL;
-  
+    
   dir = g_dir_open(romdir, 0, NULL);
 
   if (dir != NULL)
@@ -267,61 +196,67 @@ gint scan_files(gchar *romdir, gchar **list, gint i, gboolean recursive)
     
     while ((file=g_dir_read_name(dir)) != NULL)
     {
-      gchar *testdir = NULL;
-          
-      testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, file, NULL);
-          
+      gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, file, NULL);
+      
       if (!g_file_test (testdir, G_FILE_TEST_IS_DIR))
-      {          
-        list[i] = g_strconcat(file,G_DIR_SEPARATOR_S,testdir, NULL);
-        i++;                             
+      { 
+        if (gui->filter == 0)
+        {         
+          gui->itemlist = g_slist_prepend(gui->itemlist, 
+            g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));           
+        }
+        else if ((gui->filter == 1) && (g_str_has_suffix(file, ".zip") || 
+                               g_str_has_suffix(file, ".ZIP")))
+        {
+          gui->itemlist = g_slist_prepend(gui->itemlist, 
+            g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
+        }
+        else if ((gui->filter == 2) && (g_str_has_suffix(file, ".cue") || 
+                     g_str_has_suffix(file, ".toc") || 
+                     g_str_has_suffix(file, ".m3u") ||
+                     g_str_has_suffix(file, ".CUE") || 
+                     g_str_has_suffix(file, ".TOC") || 
+                     g_str_has_suffix(file, ".M3U")))
+        {
+          gui->itemlist = g_slist_prepend(gui->itemlist, 
+            g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
+        }                   
       }
       else
       {
-        if (recursive) 
-          i = scan_files(testdir, list, i, TRUE);
+        if (gui->listmode == 1) 
+          scan_files(testdir, gui);
       }
       g_free(testdir);
     }
     g_dir_close(dir);
   }
-  return i;
 }
 
 #endif
 
+void sort_items(guidata *gui)
+{
+  if (gtk_tree_view_column_get_sort_order(gui->column) == GTK_SORT_ASCENDING)
+    gui->itemlist = g_slist_sort(gui->itemlist, (GCompareFunc)descend_sort);
+  else
+    gui->itemlist = g_slist_sort(gui->itemlist, (GCompareFunc)ascend_sort);
+}
+
 void populate_list(guidata *gui)
 {
   GtkTreeIter iter;
-  gboolean filterzip, filtercue;
+  GSList *iterator = NULL;
   gint i = 0;
   
-  if (gtk_tree_view_column_get_sort_order(gui->column) == GTK_SORT_ASCENDING)
-    qsort (gui->list, gui->n_items, sizeof(char*), ascend_sort);
-  else
-    qsort (gui->list, gui->n_items, sizeof(char*), descend_sort);
-
-  while (gui->list[i])
+  for (iterator = gui->itemlist; iterator; iterator = iterator->next)
   {
     gchar **str;
 	  
-	str = g_strsplit (gui->list[i], G_DIR_SEPARATOR_S, 2);
-	
-        filterzip = (g_str_has_suffix(str[0], ".zip") || 
-                     g_str_has_suffix(str[0], ".ZIP"));
-      if (filterzip)
-        filtercue = FALSE;
-      else                 
-        filtercue = (g_str_has_suffix(str[0], ".cue") || 
-                     g_str_has_suffix(str[0], ".toc") || 
-                     g_str_has_suffix(str[0], ".m3u") ||
-                     g_str_has_suffix(str[0], ".CUE") || 
-                     g_str_has_suffix(str[0], ".TOC") || 
-                     g_str_has_suffix(str[0], ".M3U"));
+	str = g_strsplit (iterator->data, G_DIR_SEPARATOR_S, 2);
                       
     gtk_list_store_insert_with_values(gui->store, &iter, -1,  
-                           0, str[0], 1, filterzip, 
-                           2, filtercue, 3,str[1], -1);
+                           0, str[0], 1, str[1], -1);
     i++;
     g_strfreev(str);
   }
@@ -329,34 +264,11 @@ void populate_list(guidata *gui)
 
 void scan_dir(gchar *romdir, guidata *gui)
 {
-  gint i;
- 
-  gui->n_items = count_items(romdir, 0, gui->recursive);
-  if (gui->list != NULL) g_strfreev(gui->list);
-  gui->list = g_new(gchar*, gui->n_items+1);
-  i = scan_files(romdir, gui->list, 0, gui->recursive);
-  gui->list [i]= NULL;
+  g_slist_free_full(gui->itemlist, g_free);
+  gui->itemlist = NULL;
+  scan_files(romdir, gui);
+  sort_items(gui);
   populate_list(gui);
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void header_clicked(GtkTreeViewColumn *treeviewcolumn, guidata *gui)
-{
-  if (gtk_tree_view_column_get_sort_order(gui->column) == GTK_SORT_ASCENDING)                                  
-    gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_DESCENDING);
-  else               
-    gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_ASCENDING);
-    
-  gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
-  gtk_list_store_clear(gui->store);
-  populate_list(gui);
-  gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), 
-                          GTK_TREE_MODEL(gui->store));
-                          
-  change_list(gui);
-  gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
 }
 
 #ifdef G_OS_WIN32
@@ -366,19 +278,18 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
-  clock_t       start, end;
+  
 
-  start = clock();
-    
   model=gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
-  gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
-  gtk_list_store_clear(gui->store);
   
   if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter))
   {
+	clock_t       start, end;
+	start = clock();
     g_free(gui->rompath);
     gtk_tree_model_get(model, &iter, 0 ,&gui->rompath, -1);
-
+    gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
+    gtk_list_store_clear(gui->store);
     if (gui->rompath!=NULL)
       scan_dir(gui->rompath, gui);
     
@@ -392,20 +303,95 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
       gtk_tree_selection_select_iter(gtk_tree_view_get_selection(
                                   GTK_TREE_VIEW(gui->gamelist)), &iter);
     }
-  }                   
-  gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
-  
-  end = clock();
+      end = clock();
 
   printf( "CPU time taken to populate list: %f\n", 
           ( (gdouble)( end - start ) ) / CLOCKS_PER_SEC );
+  }                   
+  gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
+  
+
 }
 
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
-void on_recursivemenuitem_toggled(GtkCheckMenuItem *menuitem, guidata *gui)
+void header_clicked(GtkTreeViewColumn *treeviewcolumn, guidata *gui)
 {
-  gui->recursive = gtk_check_menu_item_get_active(menuitem);
-  fill_list(NULL,gui);
+  if (gtk_tree_view_column_get_sort_order(gui->column) == GTK_SORT_ASCENDING)                                  
+    gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_DESCENDING);
+  else               
+    gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_ASCENDING);
+   
+   gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
+  gtk_list_store_clear(gui->store); 
+  gui->itemlist = g_slist_reverse(gui->itemlist);
+  populate_list(gui);
+  gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), 
+                          GTK_TREE_MODEL(gui->store));
+                          
+  gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_radiomenuall_activate(GtkMenuItem *menuitem, guidata *gui)
+{
+  if (gui->filter != 0)
+  {
+    gui->filter=0;
+    fill_list(NULL, gui);
+    gtk_tree_view_column_set_title(gui->column, " Games");
+  }
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_radiomenuzip_activate(GtkMenuItem *menuitem, guidata *gui)
+{
+  if (gui->filter != 1)
+  {
+    gui->filter=1;
+    fill_list(NULL, gui);
+    gtk_tree_view_column_set_title(gui->column, " Games (zip)");
+  }
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_radiomenucue_activate(GtkMenuItem *menuitem, guidata *gui)
+{
+  if (gui->filter != 2)
+  {
+    gui->filter=2;
+    fill_list(NULL, gui);
+    gtk_tree_view_column_set_title(gui->column, " Games (cue/toc/m3u)");
+  }
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_normalmenu_activate(GtkMenuItem *menuitem, guidata *gui)
+{
+  if (gui->listmode != 0)
+  {
+    gui->listmode = 0;
+    fill_list(NULL,gui);
+  }
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_recursivemenu_activate(GtkMenuItem *menuitem, guidata *gui)
+{
+  if (gui->listmode != 1)
+  {
+    gui->listmode = 1;
+    fill_list(NULL,gui);
+  }
 }

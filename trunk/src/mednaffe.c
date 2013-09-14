@@ -130,7 +130,7 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
     
     g_free(gui->rom);
     g_free(gui->fullpath);
-    gtk_tree_model_get(model, &iter, 0, &gui->rom, 3, &gui->fullpath, -1);
+    gtk_tree_model_get(model, &iter, 0, &gui->rom, 1, &gui->fullpath, -1);
     gtk_statusbar_pop(GTK_STATUSBAR(gui->sbname), 1);
     selected = g_strconcat(" Game selected: ", gui->rom, NULL);
     gtk_statusbar_push(GTK_STATUSBAR(gui->sbname), 1, selected);
@@ -192,9 +192,13 @@ void quit(GObject *object, guidata *gui)
   option = GTK_WIDGET(gtk_builder_get_object(gui->builder,"showtooltips"));         
   g_key_file_set_boolean(key_file, "GUI", "Tooltips",
                          gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option)));
-                         
-  g_key_file_set_boolean(key_file, "GUI", "Recursive", gui->recursive);                       
+  
+  g_key_file_set_integer(key_file, "GUI", "Filter", gui->filter);                   
+  g_key_file_set_integer(key_file, "GUI", "View Mode", gui->listmode);                     
   g_key_file_set_integer(key_file, "GUI", "ActionLaunch", gui->state);
+
+  if (gtk_tree_view_column_get_sort_order(gui->column) == GTK_SORT_DESCENDING)                                  
+    g_key_file_set_boolean(key_file, "GUI", "Reverse Sort", TRUE);
 
   list = g_hash_table_get_keys(gui->clist);
 
@@ -239,7 +243,7 @@ void quit(GObject *object, guidata *gui)
   g_free(gui->rompath);
   g_free(gui->rom);
   g_free(gui->system);
-  g_strfreev(gui->list);
+  g_slist_free_full(gui->itemlist, g_free);
 
   gtk_main_quit();
 }
@@ -291,22 +295,60 @@ void load_conf(guidata *gui)
     }
     option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
                                                "showtooltips"));
-    value = g_key_file_get_boolean(key_file, "GUI", "Tooltips", &err);
+                                               
+    value = g_key_file_get_boolean(key_file, "GUI", "Reverse Sort", &err);
     
+     if (err==NULL)
+     {
+      if (value) 
+        gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_DESCENDING);
+     }
+    else
+    {
+      g_error_free (err);
+      err=NULL;
+    }
+      
+    value = g_key_file_get_boolean(key_file, "GUI", "Tooltips", &err);
+        
     if (err==NULL)
       gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option),value);
     else
+    {
       g_error_free (err);
+      err=NULL;
+    }
 
     option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
                                                "recursivemenuitem"));
-    value = g_key_file_get_boolean(key_file, "GUI", "Recursive", &err);
+    value = g_key_file_get_integer(key_file, "GUI", "Recursive", &err);
     
     if (err==NULL)
       gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(option),value);
     else
+    {
       g_error_free (err);
+      err=NULL;
+    }
+
+    state=g_key_file_get_integer(key_file, "GUI", "Filter", NULL);
+
+    switch (state)
+    {
+      case 1:
+        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "radiomenuzip"));            
+        gtk_menu_item_activate (GTK_MENU_ITEM(option));
+      break;
       
+      case 2:
+        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "radiomenucue"));            
+        gtk_menu_item_activate (GTK_MENU_ITEM(option));
+      break;
+      
+      default:
+      break;
+    }
+    
     state=g_key_file_get_integer(key_file, "GUI", "ActionLaunch", NULL);
 
     switch (state)
@@ -319,6 +361,19 @@ void load_conf(guidata *gui)
       case 1:
         option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "rbminimize"));            
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option), TRUE);
+      break;
+      
+      default:
+      break;
+    }
+    
+    state=g_key_file_get_integer(key_file, "GUI", "View Mode", NULL);
+
+    switch (state)
+    {
+      case 1:
+        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "recursivemenu"));            
+        gtk_menu_item_activate (GTK_MENU_ITEM(option));
       break;
       
       default:
@@ -510,11 +565,7 @@ int main(int argc, char **argv)
         "changed", G_CALLBACK(global_selected), &gui);
 
   /* Create store and models */
-  gui.store = 
-    gtk_list_store_new(4, G_TYPE_STRING, 
-                          G_TYPE_BOOLEAN, 
-                          G_TYPE_BOOLEAN, 
-                          G_TYPE_STRING);
+  gui.store = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
 
   gtk_tree_view_set_model(
     GTK_TREE_VIEW(gui.gamelist), GTK_TREE_MODEL(gui.store));
@@ -525,9 +576,9 @@ int main(int argc, char **argv)
 
 
   /* Set initial values */
-  gui.recursive = FALSE;
-  gui.list = NULL;
-  gui.n_items = 0;
+  gui.listmode = 0;
+  gui.filter = 0;
+  gui.itemlist = NULL;
   gui.state = 0;
   gui.executing = FALSE;
   gui.fullpath = NULL;
