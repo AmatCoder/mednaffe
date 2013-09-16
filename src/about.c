@@ -48,12 +48,12 @@ GdkPixbuf *pixbuf = gdk_pixbuf_new_from_inline (-1, logo, FALSE, NULL);
 gtk_show_about_dialog(
   GTK_WINDOW(gui->topwindow),
   "program-name", "Mednaffe",
-  "version" ,"0.4",
+  "version" ,"0.5",
   "authors", authors,
   "copyright", "Copyright \xc2\xa9 2010-2013 AmatCoder",
   "comments", "A front-end (GUI) for Mednafen emulator",
   "license", gpl3,
-  "website", "https://sites.google.com/site/amatcoder/mednaffe",
+  "website", "http://code.google.com/p/mednaffe/",
   "logo", pixbuf, 
   NULL);
   
