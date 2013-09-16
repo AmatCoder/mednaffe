@@ -284,8 +284,6 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
   
   if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter))
   {
-	clock_t       start, end;
-	start = clock();
     g_free(gui->rompath);
     gtk_tree_model_get(model, &iter, 0 ,&gui->rompath, -1);
     gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
@@ -303,10 +301,6 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
       gtk_tree_selection_select_iter(gtk_tree_view_get_selection(
                                   GTK_TREE_VIEW(gui->gamelist)), &iter);
     }
-      end = clock();
-
-  printf( "CPU time taken to populate list: %f\n", 
-          ( (gdouble)( end - start ) ) / CLOCKS_PER_SEC );
   }                   
   gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
   
