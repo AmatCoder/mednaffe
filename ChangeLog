@@ -1,3 +1,13 @@
+16/ September/ 2013
+Mednaffe 0.5 is released with the following changes:
+ - Support for 0.9.31/32-WIP added.
+ - Added an option to search files recursively. (Thanks to Shoegazer for the suggestion)
+ - Improve performance when filling list (x20 speed up).
+ - List options (filters, sort direction) are saved now.
+ - Fix 'Open' buttons signals on Windows.
+ - Now Mednaffe restore after minimize on Windows.
+ - Fix Windows icon (hopefully) 
+
 30 / August / 2013
 Mednaffe 0.4 is released with the following changes:
   - Mednaffe has been rewritten from scratch in C language.
