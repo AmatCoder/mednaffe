@@ -31,7 +31,10 @@ void on_showtooltips_toggled(GtkToggleButton *togglebutton,
   gchar *text;
   GSList *list = NULL;
   GSList *iterator = NULL;
+  gboolean state;
 
+  state = gtk_toggle_button_get_active(togglebutton);
+  
   list = gtk_builder_get_objects (gui->builder);
 
   for (iterator = list; iterator; iterator = iterator->next)
@@ -41,7 +44,26 @@ void on_showtooltips_toggled(GtkToggleButton *togglebutton,
       text=gtk_widget_get_tooltip_text(iterator->data);
       if (text!=NULL)
         gtk_widget_set_has_tooltip(
-            iterator->data, gtk_toggle_button_get_active(togglebutton));
+            iterator->data, state);
+          
+      g_free(text);
+    }
+  }
+  
+  g_slist_free(list);
+  
+  list = NULL;
+  
+  list = gtk_builder_get_objects (gui->specific);
+
+  for (iterator = list; iterator; iterator = iterator->next)
+  {
+    if (GTK_IS_WIDGET(iterator->data))
+    {
+      text=gtk_widget_get_tooltip_text(iterator->data);
+      if (text!=NULL)
+        gtk_widget_set_has_tooltip(
+            iterator->data, state);
           
       g_free(text);
     }
