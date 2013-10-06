@@ -137,10 +137,11 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
     g_free(selected);
   }
 }
+
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
-void quit(GObject *object, guidata *gui)
+void quit(GtkWidget *widget, guidata *gui)
 {
   GtkTreeIter iter;
   GtkTreeModel *combostore;
@@ -192,7 +193,23 @@ void quit(GObject *object, guidata *gui)
   option = GTK_WIDGET(gtk_builder_get_object(gui->builder,"showtooltips"));         
   g_key_file_set_boolean(key_file, "GUI", "Tooltips",
                          gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option)));
-  
+                         
+  option = GTK_WIDGET(gtk_builder_get_object(gui->builder,"remembersize"));                         
+  g_key_file_set_boolean(key_file, "GUI", "RememberSize",
+                         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option))); 
+  if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option))) 
+    {
+	  gint width;
+	  gint height;
+	  
+	  gtk_window_get_size(GTK_WINDOW(gui->topwindow), &width, &height);
+	  if (width && height)
+	  {
+	    g_key_file_set_integer(key_file, "GUI", "Width", width);                   
+        g_key_file_set_integer(key_file, "GUI", "Height", height);
+	  }
+	} 
+	                     
   g_key_file_set_integer(key_file, "GUI", "Filter", gui->filter);                   
   g_key_file_set_integer(key_file, "GUI", "View Mode", gui->listmode);                     
   g_key_file_set_integer(key_file, "GUI", "ActionLaunch", gui->state);
@@ -293,9 +310,7 @@ void load_conf(guidata *gui)
         gtk_list_store_set(combostore, &iter, 0, folders[n_items], -1);
       }
     }
-    option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
-                                               "showtooltips"));
-                                               
+                                        
     value = g_key_file_get_boolean(key_file, "GUI", "Reverse Sort", &err);
     
      if (err==NULL)
@@ -308,9 +323,10 @@ void load_conf(guidata *gui)
       g_error_free (err);
       err=NULL;
     }
-      
-    value = g_key_file_get_boolean(key_file, "GUI", "Tooltips", &err);
-        
+    
+    option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                                               "showtooltips"));      
+    value = g_key_file_get_boolean(key_file, "GUI", "Tooltips", &err);    
     if (err==NULL)
       gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option),value);
     else
@@ -318,7 +334,29 @@ void load_conf(guidata *gui)
       g_error_free (err);
       err=NULL;
     }
-
+    
+    option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                                               "remembersize"));    
+    value = g_key_file_get_boolean(key_file, "GUI", "RememberSize", &err); 
+    if (err==NULL)
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option),value);
+    else
+    {
+      g_error_free (err);
+      err=NULL;
+    }
+    if (value)
+    {
+	  gint width;
+	  gint height;
+	  
+	  width = g_key_file_get_integer(key_file, "GUI", "Width", NULL);
+	  height = g_key_file_get_integer(key_file, "GUI", "Height", NULL);
+	  
+	  if (width && height)
+	    gtk_window_resize(GTK_WINDOW(gui->topwindow), width, height);
+	}
+    
     option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
                                                "recursivemenuitem"));
     value = g_key_file_get_integer(key_file, "GUI", "Recursive", &err);
@@ -408,6 +446,14 @@ void load_conf(guidata *gui)
 
   if (a_item > -1)
     gtk_combo_box_set_active(GTK_COMBO_BOX(gui->cbpath), a_item);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void delete(GtkWidget *widget, GdkEvent *event, guidata *gui)
+{
+  quit(widget,gui);
 }
 
 gchar *get_cfg(const gchar *home)

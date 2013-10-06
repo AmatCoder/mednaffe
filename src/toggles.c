@@ -259,6 +259,8 @@ void set_values(GtkBuilder *builder, guidata *gui)
   list = g_slist_remove(list, gtk_builder_get_object(gui->builder,
                                                        "showtooltips"));
   list = g_slist_remove(list, gtk_builder_get_object(gui->builder,
+                                                       "remembersize"));
+  list = g_slist_remove(list, gtk_builder_get_object(gui->builder,
                                                           "rbnothing"));
   list = g_slist_remove(list, gtk_builder_get_object(gui->builder,
                                                          "rbminimize"));
