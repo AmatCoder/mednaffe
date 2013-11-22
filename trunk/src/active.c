@@ -81,6 +81,30 @@ void on_entry_icon_release(GtkEntry *entry,
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
+void on_button_entry_clicked_folder(GtkButton *button, GtkEntry *entry)
+{
+  GtkWidget *folder;
+
+  folder = gtk_file_chooser_dialog_new(
+    "Choose a folder...", NULL,
+    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, GTK_STOCK_CANCEL,
+    GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, 
+    NULL);
+  
+  if (gtk_dialog_run(GTK_DIALOG(folder)) == GTK_RESPONSE_ACCEPT)
+  {
+    gchar *path;
+    
+    path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (folder));
+    gtk_entry_set_text(entry, path);
+    g_free(path);
+  }
+  gtk_widget_destroy(folder);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
 void on_button_entry_clicked(GtkButton *button, GtkEntry *entry)
 {
   GtkWidget *folder;
