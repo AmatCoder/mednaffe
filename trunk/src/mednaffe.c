@@ -273,7 +273,7 @@ void load_conf(guidata *gui)
   gchar **folders = NULL;
   GKeyFile *key_file;
   gboolean value;
-  guint n_items = 0;
+  gsize n_items = 0;
   gint a_item = -1;
   gint state;
   GError *err = NULL;
