@@ -50,7 +50,11 @@ typedef struct
    GHashTable* clist;
    GSList *dinlist;
    gboolean executing;
+ #ifdef G_OS_WIN32
+   gchar *command;
+ #else
    gchar **command;
+ #endif
    gchar *system;
    gboolean changing;
    gint state;
