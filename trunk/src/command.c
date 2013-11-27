@@ -22,6 +22,43 @@
 
 #include "common.h"
 
+#ifdef G_OS_WIN32
+  #include <windows.h>
+  #include <io.h>
+#endif
+
+#ifdef G_OS_WIN32
+gchar *build_command_win(guidata *gui)
+{
+  gchar *command;
+  gchar *command2;
+  GList *list = NULL;
+  GList *iterator = NULL;
+
+  list = g_hash_table_get_keys(gui->clist);
+  command = g_strconcat("\"", gui->binpath, "\"", NULL);
+
+  for (iterator = list; iterator; iterator = iterator->next)
+  {
+    command2 = g_strconcat(command, " ", iterator->data, NULL);
+    g_free(command);
+    iterator->data = ((gchar *)iterator->data)+1;
+    
+    command =
+      g_strconcat(command2, " ", 
+        g_hash_table_lookup(gui->hash, iterator->data), NULL);
+        
+    g_free(command2);
+  }
+  g_list_free(list);
+
+  command2 = g_strconcat(command, " \"", gui->fullpath, "\"", NULL );
+
+  return command2;
+}
+
+#else
+
 gchar **build_command(guidata *gui)
 {
   gchar **command;
@@ -52,24 +89,31 @@ gchar **build_command(guidata *gui)
   return command;
 }
 
+#endif
+
 void child_watch(GPid pid, gint status, guidata *gui)
 {
   gpointer name;
-  gint i=0;
-  
+
   g_spawn_close_pid( pid );
   gui->executing = FALSE;
 
   printf ("\n[Mednaffe] End of execution catched\n");
   printf ("[Mednaffe] Command line used: '");
-  while (gui->command[i])
-  {
-    printf("%s ",gui->command[i]);
-    i++;
-  }
-  printf ("'\n");
   
-  g_strfreev(gui->command);
+  #ifdef G_OS_WIN32
+    printf("%s\n", gui->command);
+    g_free(gui->command);
+  #else
+    gint i=0;
+    while (gui->command[i])
+    {
+      printf("%s ",gui->command[i]);
+      i++;
+    }
+    printf ("'\n");
+    g_strfreev(gui->command);
+  #endif
   
   g_hash_table_remove_all(gui->clist);
 
@@ -89,7 +133,40 @@ void child_watch(GPid pid, gint status, guidata *gui)
 
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
-#endif
+void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
+              GtkTreeViewColumn *col, guidata *gui)
+{
+  if ((gui->executing == TRUE) || (gui->rompath == NULL)) 
+    return;
+    
+  BOOL ret = FALSE;
+  STARTUPINFO si;  
+  PROCESS_INFORMATION pi; 
+   
+  ZeroMemory(&si, sizeof(STARTUPINFO));
+  si.cb = sizeof(STARTUPINFO);
+  ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
+  
+  gui->command = build_command_win(gui);
+  ret = CreateProcess(NULL, gui->command, NULL, NULL, FALSE, 0, 
+                      NULL, NULL, &si, &pi); 
+  if (!ret) 
+  {
+   printf("[Mednaffe] Executing mednafen failed!\n");
+   g_free(gui->command);
+   return;
+  }
+  else 
+  {
+    g_child_watch_add(pi.hProcess, (GChildWatchFunc)child_watch, gui);
+    gui->executing = TRUE;
+    if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
+    if (gui->state==2) gtk_widget_hide(gui->topwindow);
+  }
+} 
+
+#else
+
 void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
               GtkTreeViewColumn *col, guidata *gui)
 {
@@ -117,6 +194,8 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
   if (gui->state==2) gtk_widget_hide(gui->topwindow);
 }
+
+#endif
 
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
