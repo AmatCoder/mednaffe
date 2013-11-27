@@ -523,10 +523,7 @@ int main(int argc, char **argv)
   if (!cfg_path)
   {
     #ifdef G_OS_WIN32
-      gchar *wincommand[2] = {gui.binpath, NULL};
-      g_spawn_sync( NULL, wincommand, NULL,
-                    G_SPAWN_STDOUT_TO_DEV_NULL, NULL,
-                    NULL, NULL, NULL, NULL, NULL );
+      system(gui.binpath);
       Sleep(1000); /* race condition? */
     #else
       g_spawn_command_line_sync(gui.binpath, NULL, NULL, NULL, NULL);
