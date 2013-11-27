@@ -24,7 +24,6 @@
 
 #ifdef G_OS_WIN32
   #include <windows.h>
-  #include <io.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -94,7 +93,27 @@ gchar **build_command(guidata *gui)
 void child_watch(GPid pid, gint status, guidata *gui)
 {
   gpointer name;
-
+  
+  #ifdef G_OS_WIN32
+    DWORD lpExitCode=0;
+  
+    GetExitCodeProcess( pid, &lpExitCode);
+    if (lpExitCode!=0)
+    {
+	  GtkWidget *dialog;
+	  
+      dialog = gtk_message_dialog_new (GTK_WINDOW(gui->topwindow),
+                                       GTK_DIALOG_DESTROY_WITH_PARENT,
+                                       GTK_MESSAGE_ERROR,
+                                       GTK_BUTTONS_CLOSE,
+                       "Mednafen error.\nRead stdout.txt for details.");
+                       
+      gtk_dialog_run (GTK_DIALOG (dialog));
+      gtk_widget_destroy (dialog);
+      printf ("[Mednaffe] Mednafen error. Read stdout.txt for details.");
+    }
+  #endif
+  
   g_spawn_close_pid( pid );
   gui->executing = FALSE;
 
@@ -148,6 +167,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
   
   gui->command = build_command_win(gui);
+  printf ("[Mednaffe] Executing mednafen:\n\n");
   ret = CreateProcess(NULL, gui->command, NULL, NULL, FALSE, 0, 
                       NULL, NULL, &si, &pi); 
   if (!ret) 
