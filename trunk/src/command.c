@@ -96,9 +96,14 @@ void child_watch(GPid pid, gint status, guidata *gui)
   
   #ifdef G_OS_WIN32
     DWORD lpExitCode=0;
-  
+    const gchar *err="Mednafen error.\nRead stdout.txt for details."
+
     GetExitCodeProcess( pid, &lpExitCode);
     if (lpExitCode!=0)
+  #else
+    const gchar *err="Mednafen error.";
+    if (status!=0)
+  #endif   
     {
 	  GtkWidget *dialog;
 	  
@@ -106,13 +111,12 @@ void child_watch(GPid pid, gint status, guidata *gui)
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
                                        GTK_MESSAGE_ERROR,
                                        GTK_BUTTONS_CLOSE,
-                       "Mednafen error.\nRead stdout.txt for details.");
+                                       err);
                        
       gtk_dialog_run (GTK_DIALOG (dialog));
       gtk_widget_destroy (dialog);
-      printf ("[Mednaffe] Mednafen error. Read stdout.txt for details.");
+      printf ("[Mednaffe] %s", err);
     }
-  #endif
   
   g_spawn_close_pid( pid );
   gui->executing = FALSE;
