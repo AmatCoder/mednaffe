@@ -61,14 +61,15 @@ gchar *build_command_win(guidata *gui)
 gchar **build_command(guidata *gui)
 {
   gchar **command;
-  gint num = 1;
+  gint num = 3;
   GList *list = NULL;
   GList *iterator = NULL;
 
   list = g_hash_table_get_keys(gui->clist);
-  command = g_new(gchar *, ((g_list_length(list))*2)+3);
+  command = g_new(gchar *, ((g_list_length(list))*2)+5);
   command[0] = g_strdup(gui->binpath);
-
+  command[1] = g_strdup("-remote");
+  command[2] = g_strdup("Mednafen_");
   for (iterator = list; iterator; iterator = iterator->next)
   {
     command[num] = g_strdup(iterator->data);
@@ -88,6 +89,59 @@ gchar **build_command(guidata *gui)
   return command;
 }
 
+gchar* format_err(gchar *string, gsize len)
+{
+  gchar *copy;
+
+  //memmove(string, string+24, len-27);
+  string[len-3] = ' ';
+  string[8]=' ';string[14]=' ';string[22]=':';string[23]='\n';
+  copy = g_strcompress(string);
+  g_free(string);
+  return copy;
+}
+
+gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
+{
+  gchar *string;
+  gsize  size;
+
+  if(cond == G_IO_HUP)
+  {
+    g_io_channel_unref( channel );
+    return FALSE;
+  }
+
+  g_io_channel_read_line( channel, &string, &size, NULL, NULL );
+  if (string[9]=='e')
+  {
+    GtkWidget *dialog;
+  
+    gchar *err=format_err(string, size);
+    dialog = gtk_message_dialog_new (GTK_WINDOW(gui->topwindow),
+                                     GTK_DIALOG_DESTROY_WITH_PARENT,
+                                     GTK_MESSAGE_ERROR,
+                                     GTK_BUTTONS_CLOSE,
+                                     err);
+
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    printf ("[Mednaffe] %s\n", err);
+    g_free(err);
+    g_io_channel_unref(channel);
+    return FALSE;      
+  }
+
+  if (string[0]!='M')
+  {
+    g_io_channel_unref( channel );
+    return FALSE;
+  }
+  
+  g_free(string);
+  return TRUE;
+}
+
 #endif
 
 void child_watch(GPid pid, gint status, guidata *gui)
@@ -100,10 +154,6 @@ void child_watch(GPid pid, gint status, guidata *gui)
 
     GetExitCodeProcess( pid, &lpExitCode);
     if (lpExitCode!=0)
-  #else
-    const gchar *err="Mednafen error.";
-    if (status!=0)
-  #endif   
     {
 	  GtkWidget *dialog;
 	  
@@ -117,7 +167,8 @@ void child_watch(GPid pid, gint status, guidata *gui)
       gtk_widget_destroy (dialog);
       printf ("[Mednaffe] %s", err);
     }
-  
+  #endif
+
   g_spawn_close_pid( pid );
   gui->executing = FALSE;
 
@@ -196,7 +247,9 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
 {
   GPid pid;
   gboolean ret;
-
+  gint out;
+  GIOChannel *out_ch;
+  
   if ((gui->executing == TRUE) || (gui->rompath == NULL)) 
     return;
 
@@ -204,7 +257,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   printf ("[Mednaffe] Executing mednafen:\n\n");
   ret = g_spawn_async_with_pipes( NULL, gui->command, NULL,
                                   G_SPAWN_DO_NOT_REAP_CHILD, NULL,
-                                  NULL, &pid, NULL, NULL, NULL, NULL );
+                                  NULL, &pid, NULL, &out, NULL, NULL );
   if (!ret)
   {
     printf("[Mednaffe] Executing mednafen failed!\n");
@@ -213,6 +266,8 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   }
   
   g_child_watch_add(pid, (GChildWatchFunc)child_watch, gui);
+  out_ch = g_io_channel_unix_new(out);
+  g_io_add_watch(out_ch, G_IO_IN|G_IO_HUP, (GIOFunc)out_watch, gui);
   
   gui->executing = TRUE;
   if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
