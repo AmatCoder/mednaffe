@@ -161,10 +161,12 @@ void scan_files(gchar *romdir, guidata *gui)
           g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, testdir, NULL));
       }
       else if ((gui->filter == 2) && (g_str_has_suffix(FindFileData.cFileName, ".cue") || 
-                     g_str_has_suffix(FindFileData.cFileName, ".toc") || 
+                     g_str_has_suffix(FindFileData.cFileName, ".toc") ||
+                     g_str_has_suffix(FindFileData.cFileName, ".ccd") ||
                      g_str_has_suffix(FindFileData.cFileName, ".m3u") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".CUE") || 
+                     g_str_has_suffix(FindFileData.cFileName, ".CUE") ||
                      g_str_has_suffix(FindFileData.cFileName, ".TOC") || 
+                     g_str_has_suffix(FindFileData.cFileName, ".CCD") ||
                      g_str_has_suffix(FindFileData.cFileName, ".M3U")))
       {
         gui->itemlist = g_slist_prepend(gui->itemlist, 
@@ -212,10 +214,12 @@ void scan_files(gchar *romdir, guidata *gui)
             g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
         }
         else if ((gui->filter == 2) && (g_str_has_suffix(file, ".cue") || 
-                     g_str_has_suffix(file, ".toc") || 
+                     g_str_has_suffix(file, ".toc") ||
+                     g_str_has_suffix(file, ".ccd") ||
                      g_str_has_suffix(file, ".m3u") ||
-                     g_str_has_suffix(file, ".CUE") || 
+                     g_str_has_suffix(file, ".CUE") ||
                      g_str_has_suffix(file, ".TOC") || 
+                     g_str_has_suffix(file, ".CCD") ||
                      g_str_has_suffix(file, ".M3U")))
         {
           gui->itemlist = g_slist_prepend(gui->itemlist, 
@@ -362,7 +366,7 @@ void on_radiomenucue_activate(GtkMenuItem *menuitem, guidata *gui)
   {
     gui->filter=2;
     fill_list(NULL, gui);
-    gtk_tree_view_column_set_title(gui->column, " Games (cue/toc/m3u)");
+    gtk_tree_view_column_set_title(gui->column, " Games (cue/toc/ccd/m3u)");
   }
 }
 
