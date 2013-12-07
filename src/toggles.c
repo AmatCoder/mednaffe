@@ -26,24 +26,20 @@ void select_rows(guidata *gui)
 {
   GtkTreeIter iter;
   GList *chain = NULL;
-
-  if (gtk_tree_model_get_iter_first(
-        gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist)), &iter))
-  { 
-    gtk_tree_selection_select_iter(
-      gtk_tree_view_get_selection(GTK_TREE_VIEW(gui->systemlist)), &iter);
-    
-    gtk_tree_view_set_search_column(GTK_TREE_VIEW(gui->systemlist), -1);
-  }
   
   if (gtk_tree_model_get_iter_first(
+        gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist)), &iter))
+    gtk_tree_selection_select_iter(
+      gtk_tree_view_get_selection(GTK_TREE_VIEW(gui->systemlist)), &iter);
+  
+  if (!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(
+                          GTK_TREE_VIEW(gui->systemlist)), NULL, NULL))
+    gtk_widget_hide(gui->notebook); else gtk_widget_show(gui->notebook);
+      
+  if (gtk_tree_model_get_iter_first(
           gtk_tree_view_get_model(GTK_TREE_VIEW(gui->globalist)), &iter))
-  {
     gtk_tree_selection_select_iter(gtk_tree_view_get_selection(
                                      GTK_TREE_VIEW(gui->globalist)), &iter);
-
-    gtk_tree_view_set_search_column(GTK_TREE_VIEW(gui->globalist), -1);
-  }
   
   chain = g_list_prepend(chain, gui->gamelist);
   

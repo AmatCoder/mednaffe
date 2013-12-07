@@ -25,16 +25,18 @@
   Compile me with:
 
   gcc -O2 -std=c99 -Wall -DGTK2_ENABLED -o mednaffe about.c 
-  active.c command.c gui.c list.c toggles.c mednaffe.c 
+  active.c command.c gui.c prefs.c list.c toggles.c mednaffe.c 
   $(pkg-config --cflags --libs gtk+-2.0 gmodule-export-2.0)
 
 */
 
 #include "common.h"
 #include "toggles.h"
+#include "prefs.h"
 #include "logo.h"
 #include "mednaffe_glade.h"
 #include "system_glade.h"
+#include "settings_glade.h"
 
 #ifdef G_OS_WIN32
   #include <windows.h>
@@ -76,7 +78,7 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
   GSList *iterator;
   gint page;
   
-  model=gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist));
+  model = gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist));
 
   if (gtk_tree_selection_get_selected(treeselection, &model, &iter))
   {
@@ -141,117 +143,65 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
+void on_cell_toggled(GtkCellRendererToggle *cell_renderer,
+                                    gchar *path,
+                                    guidata *gui)
+{
+  GtkTreeIter iter, iter2, iter3;
+  GtkTreeModel *model;
+  GtkTreeModel *model2;
+  gboolean bool;
+  gint row, row2;
+  
+  model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(
+                                           gui->settings,"treeview1")));
+  model2 = GTK_TREE_MODEL(gtk_builder_get_object(
+                                           gui->builder, "liststore3"));
+  
+  if (gtk_tree_model_get_iter_from_string(model, &iter, path))
+  {
+	gtk_tree_model_get(model, &iter, 1, &bool, 2, &row, -1);
+    gtk_list_store_set(GTK_LIST_STORE(model), &iter, 1, (!bool), -1);
+    gtk_tree_model_get_iter_first(model2, &iter2); 
+
+    do
+    {
+	  gtk_tree_model_get(model2, &iter2, 2, &row2, -1);
+	  if (row==row2)
+	  {
+	    gtk_list_store_set(GTK_LIST_STORE(model2), &iter2, 3, (!bool), -1);
+	    break;
+	  }
+    } while (gtk_tree_model_iter_next(model2, &iter2));
+    
+    if (gtk_tree_model_get_iter_first(
+        gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist)), &iter3))
+    { 
+      gtk_tree_selection_select_iter(
+        gtk_tree_view_get_selection(GTK_TREE_VIEW(gui->systemlist)), &iter3);
+
+        gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(
+          gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist))));
+    }
+    
+    if (!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(
+                           GTK_TREE_VIEW(gui->systemlist)), NULL, NULL))
+      gtk_widget_hide(gui->notebook); else gtk_widget_show(gui->notebook);
+  }
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
 void quit(GtkWidget *widget, guidata *gui)
 {
-  GtkTreeIter iter;
-  GtkTreeModel *combostore;
-  gchar *conf_file;
-  gchar *conf;
-  FILE *file;
-  GKeyFile *key_file;
-  gchar **array;
-  gint n_items, a_item;
-  gboolean valid;
-  GtkWidget *option;
-  GList *list = NULL;
-  GList *iterator = NULL;
-  gint i=0;
-
-  printf("[Mednaffe] Exiting Mednaffe\n");
-
-  a_item=gtk_combo_box_get_active(GTK_COMBO_BOX(gui->cbpath));
-  combostore = gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
-  
-  #ifdef G_OS_WIN32
-    conf_file=g_strconcat(g_path_get_dirname(gui->binpath), "\\mednaffe.ini", NULL);
-  #else
-    conf_file=g_strconcat(g_get_user_config_dir(),"/mednaffe.conf", NULL);
-  #endif
-  
-  n_items = gtk_tree_model_iter_n_children(combostore, NULL);
-
-  /*const gchar* array[n_items];*/
-  array = g_new(gchar *, n_items+1);
-  array[n_items]=NULL;
-
-  key_file=g_key_file_new();
-  /*g_key_file_set_list_separator(key_file,  0x0D);*/
-
-  valid = gtk_tree_model_get_iter_first (combostore, &iter);
-  while (valid)
-  {
-    gtk_tree_model_get (combostore, &iter, 0, &array[i], -1);
-    i++;
-    valid = gtk_tree_model_iter_next (combostore, &iter);
-  }
-
-  g_key_file_set_string_list(key_file, "GUI", "Folders",
-                                        (const gchar **)array, n_items);
-                                        
-  g_key_file_set_integer(key_file, "GUI", "Last Folder", a_item);
-                         
-  option = GTK_WIDGET(gtk_builder_get_object(gui->builder,"showtooltips"));         
-  g_key_file_set_boolean(key_file, "GUI", "Tooltips",
-                         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option)));
-                         
-  option = GTK_WIDGET(gtk_builder_get_object(gui->builder,"remembersize"));                         
-  g_key_file_set_boolean(key_file, "GUI", "RememberSize",
-                         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option))); 
-  if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(option))) 
-    {
-	  gint width;
-	  gint height;
-	  
-	  gtk_window_get_size(GTK_WINDOW(gui->topwindow), &width, &height);
-	  if (width && height)
-	  {
-	    g_key_file_set_integer(key_file, "GUI", "Width", width);                   
-        g_key_file_set_integer(key_file, "GUI", "Height", height);
-	  }
-	} 
-	                     
-  g_key_file_set_integer(key_file, "GUI", "Filter", gui->filter);                   
-  g_key_file_set_integer(key_file, "GUI", "View Mode", gui->listmode);                     
-  g_key_file_set_integer(key_file, "GUI", "ActionLaunch", gui->state);
-
-  if (gtk_tree_view_column_get_sort_order(gui->column) == GTK_SORT_DESCENDING)                                  
-    g_key_file_set_boolean(key_file, "GUI", "Reverse Sort", TRUE);
-
-  list = g_hash_table_get_keys(gui->clist);
-
-  for (iterator = list; iterator; iterator = iterator->next)
-  {
-    gchar *value;
-    
-    iterator->data = ((gchar *)iterator->data)+1;
-    value=g_strdup(g_hash_table_lookup(gui->hash, iterator->data));
-    iterator->data = ((gchar *)iterator->data)-1;
-    g_key_file_set_string(key_file, "Emulator", iterator->data, value);
-    g_free(value);
-  }
-  g_list_free(list);
-
-  conf=g_key_file_to_data(key_file, NULL, NULL);
-
-  file=fopen(conf_file, "w");
-  fputs(conf, file);
-  fclose(file);
-
-  g_key_file_free(key_file);
-  g_free(conf);
-  g_strfreev(array);
-  g_free(conf_file);
-
-  /*while(n_items>0)
-  {
-    n_items--;
-  //g_print("%s\n", array[n_items]);*/
-  /*g_free((gpointer *)array[n_items]);
-  }*/
+  save_prefs(gui);
+  printf("[Mednaffe] Exiting Mednaffe...\n");
 
   /* To free items makes happy to Valgrind ;-) */
   g_object_unref(G_OBJECT(gui->builder));
   g_object_unref(G_OBJECT(gui->specific));
+  g_object_unref(G_OBJECT(gui->settings));
   g_hash_table_destroy(gui->hash);
   g_hash_table_destroy(gui->clist);
   g_slist_free(gui->dinlist);
@@ -263,189 +213,6 @@ void quit(GtkWidget *widget, guidata *gui)
   g_slist_free_full(gui->itemlist, g_free);
 
   gtk_main_quit();
-}
-
-void load_conf(guidata *gui)
-{
-  GtkTreeIter iter;
-  GtkListStore *combostore;
-  gchar *conf_file;
-  gchar **folders = NULL;
-  GKeyFile *key_file;
-  gboolean value;
-  gsize n_items = 0;
-  gint a_item = -1;
-  gint state;
-  GError *err = NULL;
-  gsize length = 0;
-
-  combostore = GTK_LIST_STORE(
-                   gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
-  #ifdef G_OS_WIN32
-    conf_file=g_strconcat(g_path_get_dirname(gui->binpath), "\\mednaffe.ini", NULL);
-  #else
-    conf_file=g_strconcat(g_get_user_config_dir(), "/mednaffe.conf", NULL);
-  #endif
-
-  key_file=g_key_file_new();
-  /*g_key_file_set_list_separator(key_file,  0x0D);*/
-
-  if (g_key_file_load_from_file(key_file, conf_file,
-                                G_KEY_FILE_NONE, NULL))
-  {
-    GtkWidget *option;
-    gchar **ffekeys;
-
-    folders=g_key_file_get_string_list(key_file, "GUI", "Folders",
-                                                        &n_items, NULL);
-                                                        
-    a_item=g_key_file_get_integer(key_file, "GUI", "Last Folder", NULL);
-
-    if (folders!=NULL)
-    {
-      while (n_items>0)
-      {
-        n_items--;
-        gtk_list_store_prepend(combostore, &iter);
-        gtk_list_store_set(combostore, &iter, 0, folders[n_items], -1);
-      }
-    }
-                                        
-    value = g_key_file_get_boolean(key_file, "GUI", "Reverse Sort", &err);
-    
-     if (err==NULL)
-     {
-      if (value) 
-        gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_DESCENDING);
-     }
-    else
-    {
-      g_error_free (err);
-      err=NULL;
-    }
-    
-    option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
-                                               "showtooltips"));      
-    value = g_key_file_get_boolean(key_file, "GUI", "Tooltips", &err);    
-    if (err==NULL)
-      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option),value);
-    else
-    {
-      g_error_free (err);
-      err=NULL;
-    }
-    
-    option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
-                                               "remembersize"));    
-    value = g_key_file_get_boolean(key_file, "GUI", "RememberSize", &err); 
-    if (err==NULL)
-      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option),value);
-    else
-    {
-      g_error_free (err);
-      err=NULL;
-    }
-    if (value)
-    {
-	  gint width;
-	  gint height;
-	  
-	  width = g_key_file_get_integer(key_file, "GUI", "Width", NULL);
-	  height = g_key_file_get_integer(key_file, "GUI", "Height", NULL);
-	  
-	  if (width && height)
-	    gtk_window_resize(GTK_WINDOW(gui->topwindow), width, height);
-	}
-    
-    option = GTK_WIDGET(gtk_builder_get_object(gui->builder,
-                                               "recursivemenuitem"));
-    value = g_key_file_get_integer(key_file, "GUI", "Recursive", &err);
-    
-    if (err==NULL)
-      gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(option),value);
-    else
-    {
-      g_error_free (err);
-      err=NULL;
-    }
-
-    state=g_key_file_get_integer(key_file, "GUI", "Filter", NULL);
-
-    switch (state)
-    {
-      case 1:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "radiomenuzip"));            
-        gtk_menu_item_activate (GTK_MENU_ITEM(option));
-      break;
-      
-      case 2:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "radiomenucue"));            
-        gtk_menu_item_activate (GTK_MENU_ITEM(option));
-      break;
-      
-      default:
-      break;
-    }
-    
-    state=g_key_file_get_integer(key_file, "GUI", "ActionLaunch", NULL);
-
-    switch (state)
-    {
-      case 2:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "rbhide"));
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option), TRUE);
-      break;
-      
-      case 1:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "rbminimize"));            
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option), TRUE);
-      break;
-      
-      default:
-      break;
-    }
-    
-    state=g_key_file_get_integer(key_file, "GUI", "View Mode", NULL);
-
-    switch (state)
-    {
-      case 1:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "recursivemenu"));            
-        gtk_menu_item_activate (GTK_MENU_ITEM(option));
-      break;
-      
-      default:
-      break;
-    }
-
-    ffekeys = g_key_file_get_keys(key_file, "Emulator", &length, NULL);
-
-    if (length>0)
-    {
-      gint i=0;
-
-      while (ffekeys[i])
-      {
-        gchar *ffecopy;
-
-        ffecopy = g_strdup((ffekeys[i])+1);
-        g_hash_table_insert(gui->hash, ffecopy,
-                            g_key_file_get_string(key_file, "Emulator", 
-                            ffekeys[i], NULL));
-
-        g_hash_table_replace(gui->clist, ffekeys[i], ffekeys[i]);
-        i++;
-      }
-    }
-    g_free(ffekeys);
-  }
-  
-  g_strfreev(folders);
-  g_key_file_free(key_file);
-  g_free(conf_file);
-
-  if (a_item > -1)
-    gtk_combo_box_set_active(GTK_COMBO_BOX(gui->cbpath), a_item);
 }
 
 #ifdef G_OS_WIN32
@@ -493,7 +260,7 @@ int main(int argc, char **argv)
 
   /* Init GTK+ */
   gtk_init(&argc, &argv);
-  printf("[Mednaffe] Starting Mednaffe 0.4\n");
+  printf("[Mednaffe] Starting Mednaffe 0.5...\n");
 
   /* Search for HOME variable*/
   #ifndef G_OS_WIN32
@@ -539,23 +306,26 @@ int main(int argc, char **argv)
 
   /* Create new GtkBuilder objects */
   gui.builder = gtk_builder_new();
-  
   if (!gtk_builder_add_from_string(gui.builder, mednaffe_glade, -1, NULL))
   {
-    g_object_unref(G_OBJECT(gui.builder));
-    show_error("Error reading glade file!\n");
+    show_error("Error reading mednaffe glade file!\n");
     return 1;
   }
 
   gui.specific = gtk_builder_new();
-  
   if (!gtk_builder_add_from_string(gui.specific, system_glade, -1, NULL))
   {
-    g_object_unref(G_OBJECT(gui.specific));
-    show_error("Error reading glade file!\n");
+    show_error("Error reading system glade file!\n");
     return 1;
   }
-
+  
+  gui.settings = gtk_builder_new();
+  if (!gtk_builder_add_from_string(gui.settings, settings_glade, -1, NULL))
+  {
+    show_error("Error reading settings glade file!\n");
+    return 1;
+  }
+  
   /* Get widget pointers from UI */
   gui.topwindow = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                              "topwindow"));
@@ -594,7 +364,7 @@ int main(int argc, char **argv)
   /* Connect signals */
   gtk_builder_connect_signals(gui.builder, &gui);
   gtk_builder_connect_signals(gui.specific, &gui);
-
+  gtk_builder_connect_signals(gui.settings, &gui);
   g_signal_connect(
     gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.gamelist)), 
         "changed", G_CALLBACK(game_selected), &gui);
@@ -617,6 +387,8 @@ int main(int argc, char **argv)
   gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(gui.store), 
     GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID, GTK_SORT_ASCENDING);
 
+  gtk_tree_model_filter_set_visible_column(GTK_TREE_MODEL_FILTER(
+    gtk_tree_view_get_model(GTK_TREE_VIEW(gui.systemlist))), 3);
 
   /* Set initial values */
   gui.listmode = 0;
@@ -634,17 +406,29 @@ int main(int argc, char **argv)
   gtk_notebook_set_show_tabs(GTK_NOTEBOOK(gui.notebook2),FALSE);
 
   /* Set statusbar messages */
-  if (GTK_MAJOR_VERSION==2)
-  {
+  #ifdef GTK2_ENABLED
     gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(gui.sbname),FALSE);
     gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(gui.sbnumber),FALSE);
-  }
+  #endif
   
   gtk_statusbar_push
     (GTK_STATUSBAR(gui.sbname), 1, " Game selected: None");
   gtk_statusbar_push
     (GTK_STATUSBAR(gui.sbnumber), 1, " Games in list: 0");
 
+  /* Set cellrenderertoogle (bug in gtk-win?) */
+  GtkCellRenderer *celltoggle = gtk_cell_renderer_toggle_new();
+  gtk_tree_view_column_pack_end((GTK_TREE_VIEW_COLUMN(
+                                 gtk_builder_get_object(gui.settings, 
+                                 "treeviewcolumn1"))), celltoggle, TRUE);
+                                 
+  gtk_tree_view_column_add_attribute((GTK_TREE_VIEW_COLUMN(
+                                      gtk_builder_get_object(gui.settings,
+                                      "treeviewcolumn1"))), 
+                                      celltoggle, "active", 1);
+                                      
+  g_signal_connect(celltoggle, "toggled", G_CALLBACK(on_cell_toggled), &gui);
+  
   /* Read configuration from mednafen*.cfg */
   if (!read_cfg(cfg_path, &gui))
   {
@@ -655,7 +439,7 @@ int main(int argc, char **argv)
   g_free(cfg_path);
 
   /* Load mednaffe config file */
-  load_conf(&gui);
+  load_prefs(&gui);
   set_values(gui.builder, &gui);
   set_values(gui.specific, &gui);
   select_rows(&gui);

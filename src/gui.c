@@ -22,53 +22,43 @@
 
 #include "common.h"
 
+void display_tooltips(GtkBuilder *builder, gboolean state)
+{
+  gchar *text;
+  GSList *list = NULL;
+  GSList *iterator = NULL;
+  
+  list = gtk_builder_get_objects(builder);
+
+  for (iterator = list; iterator; iterator = iterator->next)
+  {
+    if (GTK_IS_WIDGET(iterator->data))
+    {
+      text = gtk_widget_get_tooltip_text(iterator->data);
+      if (text!=NULL)
+        gtk_widget_set_has_tooltip(
+            iterator->data, state);
+          
+      g_free(text);
+    }
+  }
+  
+  g_slist_free(list);
+}
+
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
 void on_showtooltips_toggled(GtkToggleButton *togglebutton,
                              guidata *gui)
 {
-  gchar *text;
-  GSList *list = NULL;
-  GSList *iterator = NULL;
   gboolean state;
 
   state = gtk_toggle_button_get_active(togglebutton);
   
-  list = gtk_builder_get_objects (gui->builder);
-
-  for (iterator = list; iterator; iterator = iterator->next)
-  {
-    if (GTK_IS_WIDGET(iterator->data))
-    {
-      text=gtk_widget_get_tooltip_text(iterator->data);
-      if (text!=NULL)
-        gtk_widget_set_has_tooltip(
-            iterator->data, state);
-          
-      g_free(text);
-    }
-  }
-  
-  g_slist_free(list);
-  
-  list = NULL;
-  
-  list = gtk_builder_get_objects (gui->specific);
-
-  for (iterator = list; iterator; iterator = iterator->next)
-  {
-    if (GTK_IS_WIDGET(iterator->data))
-    {
-      text=gtk_widget_get_tooltip_text(iterator->data);
-      if (text!=NULL)
-        gtk_widget_set_has_tooltip(
-            iterator->data, state);
-          
-      g_free(text);
-    }
-  }
-  g_slist_free(list);
+  display_tooltips(gui->builder, state);
+  display_tooltips(gui->specific, state);
+  display_tooltips(gui->settings, state);
 }
 
 #ifdef G_OS_WIN32
@@ -93,4 +83,33 @@ G_MODULE_EXPORT
 void on_rbhide_activate(GtkButton *button, guidata *gui)
 {
   gui->state=2;
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+gboolean close_prefs(GtkWidget *widget, GdkEvent *event, guidata *gui)
+{
+  gtk_widget_hide_on_delete(GTK_WIDGET(gtk_builder_get_object(gui->settings,
+                             "dialog1")));
+  return TRUE;
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void cancel_prefs(GtkButton *button, guidata *gui)
+{
+  gtk_widget_hide(GTK_WIDGET(gtk_builder_get_object(gui->settings,
+                             "dialog1")));
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_preferences_activate(GtkMenuItem *menuitem, guidata *gui)
+{
+  gtk_widget_show(GTK_WIDGET(gtk_builder_get_object(gui->settings,
+                             "dialog1")));
+
 }

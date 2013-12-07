@@ -37,6 +37,7 @@ typedef struct
    GtkWidget *globalist;
    GtkBuilder *specific;
    GtkBuilder *builder;
+   GtkBuilder *settings;
    GtkTreeViewColumn *column;
    GtkListStore *store;
    gint listmode;
