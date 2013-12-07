@@ -310,30 +310,18 @@ void load_prefs(guidata *gui)
 	  if (width && height)
 	    gtk_window_resize(GTK_WINDOW(gui->topwindow), width, height);
 	}
-    
-    option = GTK_WIDGET(gtk_builder_get_object(gui->settings,
-                                               "recursivemenuitem"));
-    value = g_key_file_get_integer(key_file, "GUI", "Recursive", &err);
-    
-    if (err==NULL)
-      gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(option),value);
-    else
-    {
-      g_error_free (err);
-      err=NULL;
-    }
 
     state=g_key_file_get_integer(key_file, "GUI", "Filter", NULL);
 
     switch (state)
     {
       case 1:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->settings, "radiomenuzip"));            
+        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "radiomenuzip"));            
         gtk_menu_item_activate (GTK_MENU_ITEM(option));
       break;
       
       case 2:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->settings, "radiomenucue"));            
+        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "radiomenucue"));            
         gtk_menu_item_activate (GTK_MENU_ITEM(option));
       break;
       
@@ -364,7 +352,7 @@ void load_prefs(guidata *gui)
     switch (state)
     {
       case 1:
-        option = GTK_WIDGET(gtk_builder_get_object(gui->settings, "recursivemenu"));            
+        option = GTK_WIDGET(gtk_builder_get_object(gui->builder, "recursivemenu"));            
         gtk_menu_item_activate (GTK_MENU_ITEM(option));
       break;
       
