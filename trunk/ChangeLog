@@ -1,3 +1,15 @@
+10/ December/ 2013
+Mednaffe 0.6 is released with the following changes:
+ - A message error is showed when mednafen gives an error.
+ -  Descriptive error messages via '-remote' option (Only on Linux).
+ - Gui options have been moved to Edit->Preferences menu.
+ - Now you can choose which systems are showed. (Thanks to Shinra for the suggestion)
+ - Now Mednaffe can resize down to 768x516. (Thanks to StarrySky for report it)
+ - Added an option to remember window size.
+ - Add support to filter ccd files from CloneCd images.
+ - Add a desktop file and icons to install on Linux.
+ - Some minor fixes.
+
 16/ September/ 2013
 Mednaffe 0.5 is released with the following changes:
  - Support for 0.9.31/32-WIP added.

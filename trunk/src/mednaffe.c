@@ -260,7 +260,7 @@ int main(int argc, char **argv)
 
   /* Init GTK+ */
   gtk_init(&argc, &argv);
-  printf("[Mednaffe] Starting Mednaffe 0.5...\n");
+  printf("[Mednaffe] Starting Mednaffe 0.6...\n");
 
   /* Search for HOME variable*/
   #ifndef G_OS_WIN32
