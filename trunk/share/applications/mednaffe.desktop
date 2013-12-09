@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Mednaffe
+Comment=A front-end (GUI) for mednafen emulator
+Exec=mednaffe
+Terminal=false
+Icon=mednaffe
+Categories=GTK;Game;Emulator;
