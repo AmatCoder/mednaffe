@@ -128,7 +128,7 @@ gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
                                        GTK_MESSAGE_ERROR,
                                        GTK_BUTTONS_CLOSE,
-                                       err);
+                                       "%s", err);
 
       gtk_dialog_run (GTK_DIALOG (dialog));
       gtk_widget_destroy (dialog);
@@ -168,11 +168,11 @@ void child_watch(GPid pid, gint status, guidata *gui)
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
                                        GTK_MESSAGE_ERROR,
                                        GTK_BUTTONS_CLOSE,
-                                       err);
+                                       "%s", err);
                        
       gtk_dialog_run (GTK_DIALOG (dialog));
       gtk_widget_destroy (dialog);
-      printf ("[Mednaffe] %s", err);
+      printf ("[Mednaffe] ***ERROR***\n%s", err);
     }
   #endif
 
