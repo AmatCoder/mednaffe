@@ -157,12 +157,13 @@ void child_watch(GPid pid, gint status, guidata *gui)
   
   #ifdef G_OS_WIN32
     DWORD lpExitCode=0;
-    const gchar *err="Mednafen error.\nRead stdout.txt for details.";
+    
 
     GetExitCodeProcess( pid, &lpExitCode);
     if (lpExitCode!=0)
     {
 	  GtkWidget *dialog;
+	  const gchar *err="Mednafen error.\nRead stdout.txt for details.";
 	  
       dialog = gtk_message_dialog_new (GTK_WINDOW(gui->topwindow),
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
