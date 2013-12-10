@@ -190,8 +190,6 @@ void load_combo(GKeyFile *key_file, guidata *gui)
 void load_systems_showed(GKeyFile *key_file, guidata *gui)
 {
   GtkTreeIter iter, iter2;
-  GtkListStore *store;
-  GtkTreeModel *model;
   gboolean *showed;
   gsize length = 0;
   gint n_items = 0;
@@ -200,6 +198,9 @@ void load_systems_showed(GKeyFile *key_file, guidata *gui)
                                                         &length, NULL);
   if (showed)
   {
+    GtkListStore *store;
+    GtkTreeModel *model;
+
     store = GTK_LIST_STORE(gtk_builder_get_object(gui->builder, "liststore3"));                                                    
     model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(
                                           gui->settings, "treeview1")));
