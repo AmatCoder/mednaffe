@@ -177,7 +177,7 @@ void child_watch(GPid pid, gint status, guidata *gui)
     }
   #endif
 
-  g_spawn_close_pid( pid );
+  g_spawn_close_pid(pid);
   gui->executing = FALSE;
 
   printf ("[Mednaffe] End of execution catched\n");
@@ -242,6 +242,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   else 
   {
     g_child_watch_add(pi.hProcess, (GChildWatchFunc)child_watch, gui);
+    CloseHandle(pi.hThread);
     gui->executing = TRUE;
     if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
     if (gui->state==2) gtk_widget_hide(gui->topwindow);
@@ -275,6 +276,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
 
   g_child_watch_add(pid, (GChildWatchFunc)child_watch, gui);
   out_ch = g_io_channel_unix_new(out);
+  g_io_channel_set_close_on_unref(out_ch, TRUE);
   g_io_add_watch(out_ch, G_IO_IN|G_IO_HUP, (GIOFunc)out_watch, gui);
   
   gui->executing = TRUE;
