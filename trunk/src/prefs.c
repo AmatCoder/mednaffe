@@ -272,7 +272,7 @@ void load_prefs(guidata *gui)
      if (err==NULL)
      {
       if (value) 
-        gtk_tree_view_column_set_sort_order(gui->column, GTK_SORT_DESCENDING);
+        gtk_tree_view_column_clicked(gui->column);
      }
     else
     {
