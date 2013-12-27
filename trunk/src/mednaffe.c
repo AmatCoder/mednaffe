@@ -330,6 +330,9 @@ int main(int argc, char **argv)
   gui.topwindow = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                              "topwindow"));
                              
+  gui.prefwindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
+                             "dialog1"));
+                                                          
   gui.cbpath = GTK_WIDGET(gtk_builder_get_object(gui.builder, 
                           "cbpath"));
                           
@@ -360,7 +363,7 @@ int main(int argc, char **argv)
   gui.setlabel = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                             "settings_label"));                   
   g_object_ref(gui.setlabel);
-  
+
   /* Connect signals */
   gtk_builder_connect_signals(gui.builder, &gui);
   gtk_builder_connect_signals(gui.specific, &gui);
@@ -404,6 +407,8 @@ int main(int argc, char **argv)
   gui.dinlist = NULL;
   gui.system = NULL;
   gtk_notebook_set_show_tabs(GTK_NOTEBOOK(gui.notebook2),FALSE);
+  gtk_window_set_transient_for(GTK_WINDOW(gui.prefwindow), 
+                               GTK_WINDOW(gui.topwindow));
 
   /* Set statusbar messages */
   #ifdef GTK2_ENABLED
