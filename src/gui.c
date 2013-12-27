@@ -90,8 +90,7 @@ G_MODULE_EXPORT
 #endif
 gboolean close_prefs(GtkWidget *widget, GdkEvent *event, guidata *gui)
 {
-  gtk_widget_hide_on_delete(GTK_WIDGET(gtk_builder_get_object(gui->settings,
-                             "dialog1")));
+  gtk_widget_hide_on_delete(gui->prefwindow);
   return TRUE;
 }
 
@@ -100,8 +99,7 @@ G_MODULE_EXPORT
 #endif
 void cancel_prefs(GtkButton *button, guidata *gui)
 {
-  gtk_widget_hide(GTK_WIDGET(gtk_builder_get_object(gui->settings,
-                             "dialog1")));
+  gtk_widget_hide(gui->prefwindow);
 }
 
 #ifdef G_OS_WIN32
@@ -109,7 +107,6 @@ G_MODULE_EXPORT
 #endif
 void on_preferences_activate(GtkMenuItem *menuitem, guidata *gui)
 {
-  gtk_widget_show(GTK_WIDGET(gtk_builder_get_object(gui->settings,
-                             "dialog1")));
+  gtk_widget_show(gui->prefwindow);
 
 }

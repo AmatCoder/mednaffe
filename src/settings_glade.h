@@ -35,7 +35,6 @@ static const char *settings_glade =
 "<property name=\"modal\">True</property>\n"
 "<property name=\"destroy_with_parent\">True</property>\n"
 "<property name=\"type_hint\">dialog</property>\n"
-"<property name=\"skip_taskbar_hint\">True</property>\n"
 "<signal name=\"delete-event\" handler=\"close_prefs\" swapped=\"no\"/>\n"
 "<child internal-child=\"vbox\">\n"
 "<object class=\"GtkVBox\" id=\"dialog-vbox1\">\n"

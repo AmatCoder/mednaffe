@@ -25,6 +25,7 @@
 typedef struct
 {
    GtkWidget *topwindow;
+   GtkWidget *prefwindow;
    GtkWidget *cbpath;
    GtkWidget *sbname;
    GtkWidget *sbnumber;
