@@ -37,7 +37,13 @@ void change_list (guidata *gui)
     
   total = g_strconcat(" Games in list: ", buff, NULL);
   gtk_statusbar_pop(GTK_STATUSBAR(gui->sbnumber), 1);
+  gtk_statusbar_pop(GTK_STATUSBAR(gui->sbname), 1);
   gtk_statusbar_push(GTK_STATUSBAR(gui->sbnumber), 1, total);
+  gtk_statusbar_push(GTK_STATUSBAR(gui->sbname), 1, " Game selected: None");
+  g_free(gui->rom);
+  g_free(gui->fullpath);
+  gui->rom = NULL;
+  gui->fullpath = NULL;
   g_free(total);
   g_free(buff);
 
