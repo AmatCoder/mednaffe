@@ -1,5 +1,3 @@
-### Description
-
 Mednaffe is a front-end (GUI) for [mednafen emulator](http://mednafen.sourceforge.net "mednafen emulator")
 
 Its main features are:
@@ -10,16 +8,16 @@ Its main features are:
 
 *Note: Mednaffe only works with 0.9.3x versions of mednafen emulator.*
 
-### Downloads - Version 0.6
+#### Downloads - Version 0.6
  * [Sources](https://sites.google.com/site/amatcoder/mednaffe/downloads/mednaffe-0.6.tar.gz?attredirects=0&d=1 "mednaffe-0.6.tar.gz").
    Build instructions for Linux [here](https://github.com/AmatCoder/mednaffe/blob/wiki/Building.md "Building on Linux").
 
  * [Windows binary](https://sites.google.com/site/amatcoder/mednaffe/downloads/mednaffe-0.6.zip?attredirects=0&d=1 "mednaffe-0.6.zip").
-   *You need the GTK+ runtime for Windows. You can get it [here](http://downloads.sourceforge.net/gtk-win/gtk2-runtime-2.24.10-2012-10-10-ash.exe?download "gtk2-runtime-2.24.10-2012-10-10-ash.exe").* 
+   You need the GTK+ runtime for Windows. You can get it [here](http://downloads.sourceforge.net/gtk-win/gtk2-runtime-2.24.10-2012-10-10-ash.exe?download "gtk2-runtime-2.24.10-2012-10-10-ash.exe").
 
 You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
 
-### Screenshots
+#### Screenshots
 
 ###### Linux/GTK+2
 
