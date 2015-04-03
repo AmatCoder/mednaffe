@@ -1,7 +1,7 @@
 /*
  * mednaffe.c
  *
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -24,8 +24,9 @@
 /*
   Compile me with:
 
-  gcc -O2 -std=c99 -Wall -DGTK2_ENABLED -o mednaffe about.c 
-  active.c command.c gui.c prefs.c list.c toggles.c mednaffe.c 
+  gcc -g -std=c99 -Wall -DGTK2_ENABLED -o mednaffe about.c 
+  active.c command.c gui.c prefs.c list.c toggles.c 
+  input.c joystick_linux.c md5.c mednaffe.c 
   $(pkg-config --cflags --libs gtk+-2.0 gmodule-export-2.0)
 
 */
@@ -76,16 +77,39 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
   GtkTreeIter iter;
   GtkTreeModel *model;
   GSList *iterator;
-  gint page;
   
   model = gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist));
 
   if (gtk_tree_selection_get_selected(treeselection, &model, &iter))
   {
     GtkWidget *embed;
+    GtkContainer *container;
+    gchar *astring;
+    
 
-    g_free(gui->system);
-    gtk_tree_model_get(model, &iter, 1, &gui->system,  -1);
+    if (gui->system)
+    { 
+      gui->system++;
+      astring = g_strconcat(gui->system, "inputbox", NULL);
+      gui->system--;
+      container = GTK_CONTAINER(gtk_builder_get_object(gui->specific, (const char *)astring));
+      g_free(astring);
+      embed = GTK_WIDGET(gtk_builder_get_object(gui->builder, "inputbutton"));
+      gtk_container_remove (container, embed);
+      
+      container = GTK_CONTAINER(gtk_builder_get_object(gui->builder,
+                                                     "embox"));
+      embed = GTK_WIDGET(gtk_builder_get_object(gui->specific,
+                                            (const char *)gui->system));
+                                            
+      gtk_container_remove (container, embed);
+      
+      g_free(gui->system);
+    }
+    g_free(gui->fullsystem);
+    gtk_tree_model_get(model, &iter, 0, &gui->fullsystem, 
+                                     1, &gui->system, 
+                                     2, &gui->pagesys,  -1);
     gui->changing = TRUE;
     
     for (iterator = gui->dinlist; iterator; iterator = iterator->next)
@@ -100,17 +124,26 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
     g_slist_free(iterator);
     
     gui->changing = FALSE;
+    container = GTK_CONTAINER(gtk_builder_get_object(gui->builder,
+                                                     "embox"));
     embed = GTK_WIDGET(gtk_builder_get_object(gui->specific,
-                                            (const char *)gui->system));
-
-    gtk_notebook_remove_page(GTK_NOTEBOOK(gui->notebook),0);
+                                            (const char *)gui->system));    
+    gtk_container_add (container, embed);
+    gui->system++;
+    astring = g_strconcat(gui->system, "inputbox", NULL);
+    gui->system--;
+    container = GTK_CONTAINER(gtk_builder_get_object(gui->specific, (const char *)astring));
+    embed = GTK_WIDGET(gtk_builder_get_object(gui->builder, "inputbutton"));
+    gtk_container_add (container, embed);
+    gtk_box_set_child_packing(GTK_BOX(container), embed, FALSE, FALSE, 0, GTK_PACK_START);
+    g_free(astring);                               
+    /*gtk_notebook_remove_page(GTK_NOTEBOOK(gui->notebook),0);
     gtk_notebook_prepend_page(GTK_NOTEBOOK(gui->notebook),
-                                                  embed, gui->setlabel);
+                                                  embed, gui->setlabel);*/
 
     gtk_notebook_set_current_page(GTK_NOTEBOOK(gui->notebook), 0);
     
-    gtk_tree_model_get(model, &iter, 2, &page, -1);
-    if (page==4)
+    if (gui->pagesys==4)
       gtk_widget_show(GTK_WIDGET(
         gtk_notebook_get_nth_page(GTK_NOTEBOOK(gui->notebook), 3)));
     else
@@ -209,7 +242,11 @@ void quit(GtkWidget *widget, guidata *gui)
   g_free(gui->fullpath);
   g_free(gui->rompath);
   g_free(gui->rom);
+  g_free(gui->fullsystem);
   g_free(gui->system);
+  g_free(gui->cfgfile);
+  g_free(gui->port)
+  ;g_free(gui->treepath);
   g_slist_free_full(gui->itemlist, g_free);
 
   gtk_main_quit();
@@ -225,7 +262,7 @@ void delete(GtkWidget *widget, GdkEvent *event, guidata *gui)
 
 gchar *get_cfg(const gchar *home)
 {
-  gchar *cfg_path = NULL;
+  gchar *cfg_path;
 
   /* Search for mednafen configuration file */
   #ifdef G_OS_WIN32
@@ -236,8 +273,9 @@ gchar *get_cfg(const gchar *home)
 
   if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
     printf("[Mednaffe] Mednafen 09x configuration file found\n");
-  else
-  {
+  else return NULL;
+
+  /*{
   #ifdef G_OS_WIN32
     cfg_path = g_strconcat(home, "\\mednafen.cfg", NULL);
   #else
@@ -247,7 +285,7 @@ gchar *get_cfg(const gchar *home)
       printf("[Mednaffe] Mednafen 08x configuration file found\n");
     else
       cfg_path = NULL;
-  }
+  }*/
   
   return cfg_path;
 }
@@ -255,25 +293,14 @@ gchar *get_cfg(const gchar *home)
 int main(int argc, char **argv)
 {
   guidata gui;
-  gchar *cfg_path;
   const gchar *home = NULL;
-
+  gchar *stout = NULL;
+          
   /* Init GTK+ */
   gtk_init(&argc, &argv);
-  printf("[Mednaffe] Starting Mednaffe 0.6...\n");
-
-  /* Search for HOME variable*/
-  #ifndef G_OS_WIN32
-    home = g_getenv ("HOME");
-    if (!home) home = g_get_home_dir();
-    if (!home)
-    {
-      show_error("Error searching for home variable!\n");
-      return 1;
-    }
-  #endif
+  printf("[Mednaffe] Starting Mednaffe 0.7...\n");
   
-  /* Try to search mednafen bin & cfg */
+  /* Search for mednafen executable */
   gui.binpath = g_find_program_in_path("mednafen");
   if (gui.binpath==NULL)
   {
@@ -282,33 +309,55 @@ int main(int argc, char **argv)
     return 1;
   }
   
+  /* Search for HOME variable */
+  
   #ifdef G_OS_WIN32
     home = g_path_get_dirname(gui.binpath);
+  #else
+    home = g_getenv ("HOME");
+    if (!home) home = g_get_home_dir();
   #endif
-  cfg_path = get_cfg(home);
-
-  if (!cfg_path)
-  {
-    #ifdef G_OS_WIN32
-      system(gui.binpath);
-      Sleep(1000); /* race condition? */
-    #else
-      g_spawn_command_line_sync(gui.binpath, NULL, NULL, NULL, NULL);
-      sleep (1); /* race condition? */
-    #endif
-    cfg_path = get_cfg(home);
-    if (!cfg_path)
+    if (!home)
     {
-      show_error("No mednafen configuration file found...\n");
+      show_error("Error searching for home variable!\n");
       return 1;
     }
+
+  #ifdef G_OS_WIN32
+    gchar *path = g_strconcat(home, "\\stdout.txt", NULL);
+    gchar *qbin = g_strconcat("\"", gui.binpath, "\"", NULL);
+    gchar *cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
+    
+    if ((g_file_get_contents(path, &stout, NULL, NULL)) && (g_file_test(cfg_path, G_FILE_TEST_IS_REGULAR)))
+    {} 
+    else
+    {
+	  system(qbin);
+      //Sleep(1000); /* race condition? */
+      g_file_get_contents(path, &stout, NULL, NULL);
+    }
+    g_free(cfg_path);
+    g_free(qbin);
+    g_free(path);
+
+  #else
+    g_spawn_command_line_sync(gui.binpath, &stout, NULL, NULL, NULL);
+    //sleep (1); /* race condition? */
+  #endif
+
+  /* Search mednafen configuration file */
+  gui.cfgfile = get_cfg(home);
+  if (!gui.cfgfile)
+  {
+    show_error("No mednafen configuration file found...\n");
+    return 1;
   }
 
   /* Create new GtkBuilder objects */
   gui.builder = gtk_builder_new();
   if (!gtk_builder_add_from_string(gui.builder, mednaffe_glade, -1, NULL))
   {
-    show_error("Error reading mednaffe glade file!\n");
+    printf("Error reading mednaffe glade file!\n");
     return 1;
   }
 
@@ -332,7 +381,10 @@ int main(int argc, char **argv)
                              
   gui.prefwindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
                              "dialog1"));
-                                                          
+                             
+  gui.inputwindow = GTK_WIDGET(gtk_builder_get_object(gui.specific, 
+                             "inputdialog"));
+                                                                                      
   gui.cbpath = GTK_WIDGET(gtk_builder_get_object(gui.builder, 
                           "cbpath"));
                           
@@ -358,11 +410,14 @@ int main(int argc, char **argv)
                             "notebook3"));
                             
   gui.notebook2 = GTK_WIDGET(gtk_builder_get_object(gui.builder,
-                             "notebook2"));  
-                                                            
-  gui.setlabel = GTK_WIDGET(gtk_builder_get_object(gui.builder,
+                             "notebook2"));
+                              
+  gui.launch = GTK_WIDGET(gtk_builder_get_object(gui.builder,
+                             "button1"));
+                                                                                                                
+  /*gui.setlabel = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                             "settings_label"));                   
-  g_object_ref(gui.setlabel);
+  g_object_ref(gui.setlabel);*/
 
   /* Connect signals */
   gtk_builder_connect_signals(gui.builder, &gui);
@@ -399,17 +454,26 @@ int main(int argc, char **argv)
   gui.itemlist = NULL;
   gui.state = 0;
   gui.executing = FALSE;
+  gui.changed = FALSE;
   gui.fullpath = NULL;
   gui.rompath = NULL;
   gui.rom = NULL;
   gui.command = NULL;
   gui.changing = FALSE;
   gui.dinlist = NULL;
+  gui.fullsystem = NULL;
   gui.system = NULL;
+  gui.port = NULL;
+  gui.treepath = NULL;
+  gui.inputedited = TRUE;
+  gui.m_error = FALSE;
+  gui.clist = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+  gui.hash = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+  
   gtk_notebook_set_show_tabs(GTK_NOTEBOOK(gui.notebook2),FALSE);
-  gtk_window_set_transient_for(GTK_WINDOW(gui.prefwindow), 
-                               GTK_WINDOW(gui.topwindow));
-
+  gtk_window_set_transient_for(GTK_WINDOW(gui.prefwindow), GTK_WINDOW(gui.topwindow));
+  gtk_window_set_transient_for(GTK_WINDOW(gui.inputwindow), GTK_WINDOW(gui.topwindow));
+  
   /* Set statusbar messages */
   #ifdef GTK2_ENABLED
     gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(gui.sbname),FALSE);
@@ -434,16 +498,24 @@ int main(int argc, char **argv)
                                       
   g_signal_connect(celltoggle, "toggled", G_CALLBACK(on_cell_toggled), &gui);
   
-  /* Read configuration from mednafen*.cfg */
-  if (!read_cfg(cfg_path, &gui))
-  {
+  /* Check mednafen version */
+  if (!check_version(stout, &gui))
+   {
     show_error(
-    "Mednafen version is not compatible.\nYou need 0.9.3x-WIP version.\n");
+    "Mednafen version is not compatible.\nYou need 0.9.36 version or above.\n");
     return 1; /* Items are not freed here */
   }
-  g_free(cfg_path);
+  g_free(stout);
+  
+  /* Read configuration from mednafen-09x.cfg */
+  if (!read_cfg(&gui))
+  {
+    show_error(
+    "Error parsing mednafen configuration file.\n");
+    return 1; /* Items are not freed here */
+  }
 
-  /* Load mednaffe config file */
+  /* Set values into gui */
   load_prefs(&gui);
   set_values(gui.builder, &gui);
   set_values(gui.specific, &gui);
@@ -453,9 +525,10 @@ int main(int argc, char **argv)
   gtk_window_set_icon(GTK_WINDOW(gui.topwindow), 
                     gdk_pixbuf_new_from_inline (-1, logo, FALSE, NULL));
                     
-  /* Show window */
+  /* Show window and set focus */
   gtk_widget_show(gui.topwindow);
-
+  gtk_widget_grab_focus(gui.gamelist);
+  
   /* Start main loop */
   gtk_main();
 
