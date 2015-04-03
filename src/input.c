@@ -406,8 +406,10 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   else
     g_object_set(G_OBJECT(gtk_builder_get_object(gui->specific,
                                   "cellkey")), "editable", FALSE, NULL); 
-
+                                  
   gtk_widget_show(gui->inputwindow);
+  gtk_tree_view_columns_autosize(GTK_TREE_VIEW(gtk_builder_get_object(
+                                     gui->specific, "treeview_input")));
   gtk_window_set_resizable(GTK_WINDOW(gui->inputwindow), FALSE);
 }
 
