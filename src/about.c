@@ -54,7 +54,7 @@ gtk_show_about_dialog(
   "comments", "A front-end (GUI) for Mednafen emulator",
   "license", gpl3,
   "wrap-license", TRUE,
-  "website", "http://code.google.com/p/mednaffe/",
+  "website", "https://github.com/AmatCoder/mednaffe",
   "logo", pixbuf, 
   NULL);
   
