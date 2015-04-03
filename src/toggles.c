@@ -1,7 +1,7 @@
 /*
  * toggles.c
  *
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -106,6 +106,7 @@ void adj_changed(GtkWidget *widget, guidata *gui)
   GObject *objadj;
   gdouble afloat;
   gchar *value;
+  gint digits;
 
   name = add_to_list(widget, gui);
   g_object_get(G_OBJECT(widget), "adjustment", &objadj, NULL);
@@ -114,19 +115,21 @@ void adj_changed(GtkWidget *widget, guidata *gui)
 
   if (GTK_IS_SPIN_BUTTON(widget))
   {
-    if (gtk_spin_button_get_digits(GTK_SPIN_BUTTON(widget)) > 0)
+    digits = gtk_spin_button_get_digits(GTK_SPIN_BUTTON(widget));
+    if (digits > 0)
     {
       g_free(value);
-      value = g_strdup_printf("%f", afloat);
+      value = g_strdup_printf("%.*f", digits, afloat);
     }
   }
   
-  if (GTK_IS_SCALE(widget))
+  else if (GTK_IS_SCALE(widget))
   {
-    if (gtk_scale_get_digits(GTK_SCALE(widget)) > 0)
+    digits = gtk_scale_get_digits(GTK_SCALE(widget));
+    if (digits > 0)
     {
       g_free(value);
-      value = g_strdup_printf("%f", afloat);
+      value = g_strdup_printf("%.*f", digits, afloat);
     }
   }
 
@@ -328,37 +331,58 @@ void set_values(GtkBuilder *builder, guidata *gui)
   g_slist_free(list);
 }
 
-gboolean read_cfg(gchar *cfg_path, guidata *gui)
+/*void test_watch(GFileMonitor *mon,
+GFile *first,
+GFile *second,
+GFileMonitorEvent event,
+guidata *gui)
+{
+if (event == G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+  {
+  gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(gui->builder, "inputbutton")), TRUE);
+  }
+}*/
+
+gboolean check_version (gchar *stout, guidata *gui)
+{
+  if (stout)
+  {
+    gchar **achar = g_strsplit(stout, "\n", 0);
+    gchar **aline = g_strsplit(achar[0], " ", 2);
+    gchar *version = g_strconcat(aline[1], " detected...", NULL);
+    printf("[Mednaffe] %s\n",version);
+  
+    if ((aline[1][11]!='9') || (aline[1][13]!='3') || ((aline[1][14]-'0')<6))
+      return FALSE;
+                                                
+    GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
+    gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, version);
+    g_strfreev(achar);
+    g_strfreev(aline);
+    g_free(version);
+  
+    return TRUE;
+  } 
+  else return FALSE;
+}
+
+gboolean read_cfg(guidata *gui)
 {
   gchar *string;
   gint num = 0;
   gint i;
-  GtkStatusbar *sbversion;
+  
+  /*GFile *file = g_file_new_for_path(cfg_path);
+  GFileMonitor *test = g_file_monitor (file, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
+  g_signal_connect (test, "changed", G_CALLBACK (test_watch), gui);*/
 
-  gui->clist = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-  gui->hash = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-
-  sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
-
-  if (g_file_get_contents(cfg_path, &string, NULL, NULL))
+  if (g_file_get_contents(gui->cfgfile, &string, NULL, NULL))
   {
     gchar **achar;
     gchar **aline;
-    gchar *version;
 
     achar = g_strsplit(string, "\n", 0);
     num = g_strv_length(achar);
-    aline = g_strsplit(achar[0], " ", 2);
-    version = g_strconcat(" Mednafen version ", aline[1], 
-                                                " detected...", NULL);
-
-    if ((achar[0][11]!='9') || (achar[0][13]!='3'))
-      return FALSE;
-                                                
-    printf("[Mednaffe] %s\n",version);
-    gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, version);
-    g_strfreev(aline);
-    g_free(version);
 
     for (i = 0; i < num; i++)
     {

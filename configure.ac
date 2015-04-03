@@ -10,7 +10,7 @@ AC_CONFIG_HEADERS([config.h])
 # Checks for programs.
 AC_PROG_CC
 AC_LANG_C
-CFLAGS="-O2 -std=c99 -Wall -s -Wl,-export-dynamic"
+CFLAGS="-g -std=c99 -Wall -Wl,-export-dynamic"
 
 # Checks for libraries.
 AC_ARG_ENABLE(gtk3, [AC_HELP_STRING([--enable-gtk3], [Compile against GTK 3.x explicitly])], [enable_gtk3=$enableval], [enable_gtk3="no"])

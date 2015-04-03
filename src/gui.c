@@ -1,7 +1,7 @@
 /*
  * gui.c
  *
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -108,5 +108,4 @@ G_MODULE_EXPORT
 void on_preferences_activate(GtkMenuItem *menuitem, guidata *gui)
 {
   gtk_widget_show(gui->prefwindow);
-
 }

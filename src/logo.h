@@ -1,7 +1,7 @@
 /*
  * logo.h
  * 
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 

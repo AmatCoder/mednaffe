@@ -1,7 +1,7 @@
 /*
  * common.h
  * 
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -24,8 +24,18 @@
 
 typedef struct
 {
+  gint js_fd;
+  gint ev_fd;
+  long long unsigned int id;
+  gchar name[128];
+  GIOChannel *channel;
+}joydata;
+
+typedef struct
+{
    GtkWidget *topwindow;
    GtkWidget *prefwindow;
+   GtkWidget *inputwindow;
    GtkWidget *cbpath;
    GtkWidget *sbname;
    GtkWidget *sbnumber;
@@ -34,6 +44,7 @@ typedef struct
    GtkWidget *notebook;
    GtkWidget *notebook2;
    GtkWidget *setlabel;
+   GtkWidget *launch;
    GtkWidget *systemlist;
    GtkWidget *globalist;
    GtkBuilder *specific;
@@ -43,21 +54,31 @@ typedef struct
    GtkListStore *store;
    gint listmode;
    gint filter;
+   gint pagesys;
    GSList *itemlist;
    gchar *binpath;
    gchar *fullpath;
    gchar *rompath;
    gchar *rom;
+   gchar *cfgfile;
    GHashTable* hash;
    GHashTable* clist;
    GSList *dinlist;
    gboolean executing;
+   gboolean changed;
  #ifdef G_OS_WIN32
    gchar *command;
  #else
    gchar **command;
  #endif
    gchar *system;
+   gchar *fullsystem;
+   gchar *treepath;
+   gchar *port;
    gboolean changing;
    gint state;
+   joydata joy[9];
+   gboolean inputedited;
+   gboolean m_error;
+
 }guidata;

@@ -1,7 +1,7 @@
 /*
- * toggles.h
+ * joystick_linux.h
  * 
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -20,15 +20,9 @@
  * 
  */
  
-#ifndef TOGGLES_H
-#define TOGGLES_H
+#ifndef JOYSTICK_LINUX_H
+#define JOYSTICK_LINUX_H
 
-  void select_rows(guidata *gui);
-  void set_toogle(gpointer widget, guidata *gui);
-  void set_combo(gpointer widget, guidata *gui);
-  void set_spin(gpointer widget, guidata *gui);
-  void set_values(GtkBuilder *builder, guidata *gui);
-  gboolean check_version(gchar *stout, guidata *gui);
-  gboolean read_cfg(guidata *gui);
+  gint GetJoy(guint js, guidata *gui);
 
-#endif /* TOGGLES_H */
+#endif /* JOYSTICK_LINUX_H */

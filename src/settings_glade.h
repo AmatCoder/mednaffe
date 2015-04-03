@@ -1,7 +1,7 @@
 /*
  * settings_glade.h
  * 
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -32,6 +32,7 @@ static const char *settings_glade =
 "<property name=\"can_focus\">False</property>\n"
 "<property name=\"border_width\">5</property>\n"
 "<property name=\"title\" translatable=\"yes\">Preferences</property>\n"
+"<property name=\"resizable\">False</property>\n"
 "<property name=\"modal\">True</property>\n"
 "<property name=\"destroy_with_parent\">True</property>\n"
 "<property name=\"type_hint\">dialog</property>\n"

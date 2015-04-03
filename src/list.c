@@ -1,7 +1,7 @@
 /*
  * list.c
  *
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2015 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -72,6 +72,7 @@ void remove_folder(GtkWidget *sender, guidata *gui)
     if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(combostore), &iter2))
       gtk_list_store_remove(combostore, &iter);
 
+    gtk_list_store_clear(gui->store);
     gtk_statusbar_pop(GTK_STATUSBAR(gui->sbnumber), 1);
     gtk_statusbar_push(GTK_STATUSBAR(gui->sbnumber), 1,
                                                   " Games in list: 0 ");
