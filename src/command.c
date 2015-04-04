@@ -240,7 +240,7 @@ G_MODULE_EXPORT
 void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
               GtkTreeViewColumn *col, guidata *gui)
 {
-  if ((gui->executing == TRUE) || (gui->rompath == NULL)) 
+  if ((gui->executing == TRUE) || (gui->fullpath == NULL)) 
     return;
     
   BOOL ret;
@@ -283,7 +283,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   gint out;
   GIOChannel *out_ch;
   
-  if ((gui->executing == TRUE) || (gui->rompath == NULL)) 
+  if ((gui->executing == TRUE) || (gui->fullpath == NULL)) 
     return;
 
   /* Always to send 'video.fs' and 'cheats' */
