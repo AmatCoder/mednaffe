@@ -203,7 +203,7 @@ void load_systems_showed(GKeyFile *key_file, guidata *gui)
 
     store = GTK_LIST_STORE(gtk_builder_get_object(gui->builder, "liststore3"));                                                    
     model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(
-                                          gui->settings, "treeview1")));
+                                          gui->settings, "se_treeview")));
                                           
     gtk_tree_model_get_iter_first(GTK_TREE_MODEL(store), &iter);
     gtk_tree_model_get_iter_first(model, &iter2);

@@ -187,7 +187,7 @@ void on_cell_toggled(GtkCellRendererToggle *cell_renderer,
   gint row, row2;
   
   model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(
-                                           gui->settings,"treeview1")));
+                                           gui->settings,"se_treeview")));
   model2 = GTK_TREE_MODEL(gtk_builder_get_object(
                                            gui->builder, "liststore3"));
   
@@ -489,11 +489,11 @@ int main(int argc, char **argv)
   GtkCellRenderer *celltoggle = gtk_cell_renderer_toggle_new();
   gtk_tree_view_column_pack_end((GTK_TREE_VIEW_COLUMN(
                                  gtk_builder_get_object(gui.settings, 
-                                 "treeviewcolumn1"))), celltoggle, TRUE);
+                                 "Visible"))), celltoggle, TRUE);
                                  
   gtk_tree_view_column_add_attribute((GTK_TREE_VIEW_COLUMN(
                                       gtk_builder_get_object(gui.settings,
-                                      "treeviewcolumn1"))), 
+                                      "Visible"))), 
                                       celltoggle, "active", 1);
                                       
   g_signal_connect(celltoggle, "toggled", G_CALLBACK(on_cell_toggled), &gui);
