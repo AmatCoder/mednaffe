@@ -1,11 +1,10 @@
  ??/??/????
 
-- Input assignments for systems (keyboard and gamepads for Linux, 
-  only keyboard for Windows)
+- Controller setup for systems (keyboard and gamepads)
 - Static build for Windows (standalone executable to avoid GTK+ runtime dependency)
 - Descriptive error messages on Windows.
 - Added new settings until 0.9.36
-- Mednafen version is detected properly now.
+- Mednafen version is detected properly now on Linux.
 - Fixed freezing while executing emulator under some conditions on Linux.
 - Fix to handle spaces in paths on Windows.
 - Spins disregarding values fixed.
