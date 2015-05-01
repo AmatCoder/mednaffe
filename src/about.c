@@ -50,7 +50,11 @@ gtk_show_about_dialog(
   "program-name", "Mednaffe",
   "version" ,"0.7",
   "authors", authors,
+#ifdef STATIC_ENABLED
+  "copyright", "See NOTICE file for license details.",
+#else
   "copyright", "Copyright \xc2\xa9 2010-2015 AmatCoder",
+#endif
   "comments", "A front-end (GUI) for Mednafen emulator",
   "license", gpl3,
   "wrap-license", TRUE,
