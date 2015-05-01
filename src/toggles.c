@@ -352,9 +352,13 @@ gboolean check_version (gchar *stout, guidata *gui)
     gchar *version = g_strconcat(aline[1], " detected...", NULL);
     printf("[Mednaffe] %s\n",version);
   
-    if ((aline[1][11]!='9') || (aline[1][13]!='3') || ((aline[1][14]-'0')<6))
+    if (aline[1][11]!='9')
       return FALSE;
-                                                
+    if (aline[1][13]-'0'<3)
+      return FALSE;
+    if ((aline[1][13]=='3') && ((aline[1][14]-'0')<6))
+      return FALSE;
+                                    
     GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
     gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, version);
     g_strfreev(achar);
