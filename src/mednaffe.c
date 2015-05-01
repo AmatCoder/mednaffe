@@ -465,8 +465,10 @@ int main(int argc, char **argv)
   gui.system = NULL;
   gui.port = NULL;
   gui.treepath = NULL;
+  gui.editable = NULL;
   gui.inputedited = TRUE;
   gui.m_error = FALSE;
+
   gui.clist = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
   gui.hash = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
   

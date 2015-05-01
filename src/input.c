@@ -28,6 +28,15 @@
  #include "joystick_linux.h"
  #include <linux/joystick.h>
  #include <fcntl.h>
+#else
+ #include <windows.h>
+ #include "joystick_win.h"
+ 
+  static int bool;
+  static guint which;
+  static gchar *on; 
+  static gchar *joyc;
+  static GMutex mutex;
 #endif
 
 void close_channels(guidata *gui)
@@ -41,6 +50,16 @@ void close_channels(guidata *gui)
       g_io_channel_unref(gui->joy[a].channel);
     }
   }
+#endif
+
+#ifdef G_OS_WIN32
+int i;
+for(i=0;i<9;i++)
+{
+  if(SDL_JoystickGetAttached(gui->joy[i].sdljoy))
+    SDL_JoystickClose(gui->joy[i].sdljoy);
+}
+   SDL_Quit(); 
 #endif
 
   gtk_window_set_resizable(GTK_WINDOW(gui->inputwindow), TRUE);
@@ -285,6 +304,45 @@ void read_input(guidata *gui)
 	    g_free(hash);
 	  }
 	  #endif
+	  
+	    #ifdef G_OS_WIN32
+	    else if (hashkey[0]=='j')
+	    {
+		  gchar *value = hash2joy(hashkey, 2);
+		  gchar *hash = hash2joy(hashkey, 1);
+		  long long unsigned int ll = g_ascii_strtoull(value, NULL, 16);
+		  
+		  g_free(value);
+		  
+          int a;
+          for (a=0;a<9;a++)
+          {
+		    if (gui->joy[a].id == g_ascii_strtoull(hash, NULL, 16))
+		    {
+			  if (ll>0x7FFF)
+			  {
+			    if (ll % 2) 
+                {
+                  if (ll<0xc000) value = g_strdup_printf("Axis %01I64x Down", ll & 0xFFF);
+                  else value = g_strdup_printf("Axis %01I64x Up", ll & 0xFFF);
+                }
+                else
+                {
+	              if (ll<0xc000) value = g_strdup_printf("Axis %01I64x Right", ll & 0xFFF);
+	              else value = g_strdup_printf("Axis %01I64x Left", ll & 0xFFF);
+	            }
+	          }
+	          else value = g_strdup_printf("Button %02I64i", ll & 0xFF);
+	         if ((value) && (gui->joy[a].name))
+               gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, value, 3, gui->joy[a].name, -1);
+            g_free(value);
+		  }
+		 // else gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, "", 3 , hash, -1);
+	    }
+	    g_free(hash);
+	  }
+	  #endif	  
+	  
 	  else gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, "", 3 , "", -1);
       }
     } while (gtk_tree_model_iter_next(model, &iter));
@@ -327,6 +385,121 @@ void set_builtin(GtkNotebook *notebook, guidata *gui)
   gui->port = g_strdup("builtin.");
   gtk_notebook_set_show_tabs(notebook, FALSE);  
 }
+
+ #ifdef G_OS_WIN32
+ int GetControllerIndex(SDL_JoystickID instance, guidata *gui)
+ {
+  int i;
+  for(i=0;i<9;i++){
+	  if (gui->joy[i].sdl_id == instance)
+	  return i;
+  }
+  return -1;
+ }
+ 
+DWORD WINAPI joy_thread(LPVOID lpParam)
+{  
+  guidata *gui = lpParam;
+  SDL_Event event;
+  
+  SDL_JoystickEventState(SDL_ENABLE);
+  
+  while (SDL_PollEvent(&event)){} //Drops pending events
+  
+  while(SDL_WaitEvent(&event)) {
+
+  if (bool==1) break;
+   
+  //printf("Unhandled Event: %i\n", event.type);
+   
+  if ((event.type == SDL_JOYBUTTONDOWN) || 
+      (event.type == SDL_JOYAXISMOTION) ||
+      (event.type == SDL_JOYHATMOTION))
+  {
+
+  unsigned int b;
+  int a;
+  
+  g_mutex_lock (&mutex);
+    bool=1;
+  g_mutex_unlock (&mutex);
+  
+  if (event.type == SDL_JOYBUTTONDOWN) {
+	
+    b = event.jbutton.button;
+    on = g_strdup_printf("Button %02i", b);
+    a = GetControllerIndex(event.jbutton.which, gui);
+    if (a>-1)
+    {
+      joyc = g_strdup_printf("joystick %016I64x %08x", gui->joy[a].id, b);
+      //printf("Button Event: %s\n", joyc);
+      which = a;
+    }
+  }
+  else
+    if (event.type == SDL_JOYHATMOTION) {
+	    a = GetControllerIndex(event.jhat.which, gui);
+    if (a>-1)
+    {
+	//printf("Value: %i\n", event.jhat.value);
+	int h=(((event.jhat.hat*2)-1) + SDL_JoystickNumAxes(gui->joy[a].sdljoy));
+    b = (0x8000 | h);
+    if (event.jhat.value == SDL_HAT_UP)
+    { 
+      on = g_strdup_printf("Axis %i Up", h+2);
+      b = (0x4000 | b)+2;
+    }
+    else if(event.jhat.value == SDL_HAT_DOWN)
+    {
+	  on = g_strdup_printf("Axis %i Down", h+2);
+	  b=b+2;
+	}
+    else if(event.jhat.value == SDL_HAT_RIGHT)
+    {
+	  on = g_strdup_printf("Axis %i Right", h+1);
+	  b=b+1;
+	}
+    else if(event.jhat.value == SDL_HAT_LEFT)
+    {
+	  on = g_strdup_printf("Axis %i Left", h+1);
+	  b = (0x4000 | b)+1;
+	}
+
+	which = a;
+    joyc = g_strdup_printf("joystick %016I64x %08x", gui->joy[a].id, b);
+    //printf("Hat Event: %s\n", joyc);
+  }
+}
+  else
+  if (event.type == SDL_JOYAXISMOTION) {
+	    a = GetControllerIndex(event.jaxis.which, gui);
+    if (a>-1)
+    {  
+    //printf("Value: %i\n", event.jaxis.value);
+    
+    if (event.jaxis.axis % 2) 
+    {
+      if (event.jaxis.value<0) on = g_strdup_printf("Axis %i Up", event.jaxis.axis);
+        else on = g_strdup_printf("Axis %i Down", event.jaxis.axis);
+    }
+    else
+    {
+	  if (event.jaxis.value<0) on = g_strdup_printf("Axis %i Left", event.jaxis.axis);
+	    else on = g_strdup_printf("Axis %i Right", event.jaxis.axis);
+	}
+	which = a;
+    b = (0x8000 | event.jaxis.axis);
+    if (event.jaxis.value<0) b = (0x4000 | b);
+    joyc = g_strdup_printf("joystick %016I64x %08x", gui->joy[a].id, b);
+    //printf("Axis Event: %s\n", joyc);
+    }
+   }
+  }
+}
+  SDL_JoystickEventState(SDL_IGNORE);
+  return 0;
+}
+#endif
 
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
@@ -396,6 +569,77 @@ void on_input_clicked (GtkButton *button, guidata *gui)
      gui->joy[a].channel = NULL; 
 	}
   }
+  #endif 
+  
+  #ifdef G_OS_WIN32
+  
+  SDL_SetHint("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1");
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
+  
+  int i;
+  for(i=0;i<9;i++)
+  {
+    gui->joy[i].sdljoy = SDL_JoystickOpen(i);
+  
+    if(!gui->joy[i].sdljoy)
+    {
+        printf("Couldn't open Joystick %i\n", i);
+    }
+    else
+    {
+      gui->joy[i].sdl_id = SDL_JoystickInstanceID(gui->joy[i].sdljoy);
+      gui->joy[i].name = g_strdup(SDL_JoystickName(gui->joy[i].sdljoy));
+      
+      SDL_JoystickGUID guid = SDL_JoystickGetGUID(gui->joy[i].sdljoy);
+      if ((guid.data[0]=='x') && 
+          (guid.data[1]=='i') && 
+          (guid.data[2]=='n') && 
+          (guid.data[3]=='p') && 
+          (guid.data[4]=='u') && 
+          (guid.data[5]=='t'))
+     {
+      gui->joy[i].id = (0x01 << 24) | (guid.data[6] << 16);
+	 }
+     else GetJoy(i, gui);
+     
+     CheckDuplicates(i, gui);
+     printf("Index: %i - Instance: %i - Name: %s - ID: %016I64x\n", i, 
+              SDL_JoystickInstanceID(gui->joy[i].sdljoy), 
+              SDL_JoystickName(gui->joy[i].sdljoy), 
+              gui->joy[i].id);
+    }
+  }
+
+   /* gchar *string;
+      
+      gchar *dir = g_win32_get_package_installation_directory_of_module(NULL);
+      gchar *path =g_strconcat(dir, "\\stdout.txt", NULL);
+
+      if (g_file_get_contents(path, &string, NULL, NULL))
+      {
+        gchar **aline = g_strsplit(string, "\n", 0);
+        gint num = g_strv_length(aline);
+        gint l;
+        for(l=0;l<num-1;l++)
+        {
+		  if (aline[l][2]=='J')
+		  {
+			 gint ii = g_ascii_digit_value(aline[l][11]);
+			 printf ("\n%i\n",ii);
+			 gchar *id = g_strrstr(aline[l],"ID:");
+			 gui->joy[ii].id = g_strndup(id+=4,16);
+			 //id = g_strrstr(aline[l],"Joystick ");
+			 //gui->joy[ii].name = g_strndup(id+=13,(strlen(aline[l])-45));
+			 printf (gui->joy[ii].id);
+			 //printf (gui->joy[ii].name);
+		  }
+		}
+        g_free(string);
+        g_strfreev(aline);
+      }
+      g_free(dir);
+      g_free(path); */
+      
   #endif
   
   read_input(gui);
@@ -427,11 +671,17 @@ guint gdk_to_sdl_keyval(guint gdk_key)
         return sdl_key;
 }
 
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
 gboolean editable_mouse_cb(GtkWidget *ed, GdkEvent *event, guidata *gui)
 {
   return TRUE;
 }
 
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
 gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
 {
   GtkTreeModel *model;
@@ -440,7 +690,16 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
   gchar *fullcommand;
   gchar *key = NULL;
   guint nkey;
-
+  
+  #ifdef G_OS_WIN32
+    g_mutex_lock (&mutex);
+    if (bool==1) {
+      g_mutex_unlock (&mutex);
+      return TRUE;
+    }
+    bool=1;
+  #endif
+  
   nkey = gdk_to_sdl_keyval(event->keyval);
   if (sdl_to_gdk[nkey] != NULL) 
     key = g_strdup(sdl_to_gdk[nkey]);//g_ascii_strup(gdk_keyval_name(event->keyval), -1);
@@ -466,6 +725,12 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
   gtk_cell_editable_editing_done(GTK_CELL_EDITABLE(ed));
   gtk_cell_editable_remove_widget(GTK_CELL_EDITABLE(ed));
   
+  gui->inputedited = TRUE;
+  
+  #ifdef G_OS_WIN32 
+    g_mutex_unlock (&mutex);
+  #endif
+  
   return TRUE;
 }
 
@@ -483,6 +748,42 @@ else
 }
 
 #ifdef G_OS_WIN32
+void thread_watch(GPid pid, gint status, guidata *gui)
+{
+   //printf("Exiting from thread\n");
+   g_mutex_lock (&mutex);
+   
+   if ((joyc != NULL) && (on != NULL) && (!gui->inputedited))
+   {
+     GtkTreeIter  iter;
+     gchar *command;
+     
+     GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(gui->specific, "treeview_input")));  
+     gtk_tree_model_get_iter_from_string(model, &iter, gui->treepath);
+     gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, on, 3, gui->joy[which].name, -1);
+     gtk_tree_model_get(model, &iter, 1, &command, -1);
+    
+     gchar *fullcommand = g_strconcat(gui->system,".input.",gui->port, command, NULL);
+     g_free(command);
+     g_hash_table_replace(gui->clist, fullcommand, fullcommand);
+     fullcommand++;
+     g_hash_table_insert(gui->hash, g_strdup(fullcommand), joyc);
+     fullcommand--;
+    
+     gtk_cell_editable_editing_done(gui->editable);
+     gtk_cell_editable_remove_widget(gui->editable);
+   }
+   
+   gui->inputedited = TRUE;
+     
+   g_free(on);
+     
+   g_mutex_unlock (&mutex);
+   g_spawn_close_pid(pid);
+}
+#endif
+
+#ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
 void key_setting (GtkCellRendererText *renderer, 
@@ -496,6 +797,8 @@ void key_setting (GtkCellRendererText *renderer,
       
     g_free(gui->treepath);
     gui->treepath = g_strdup(path);
+    
+    gui->editable = editable;
     gui->inputedited = FALSE;
     
     g_signal_connect(GTK_WIDGET(editable), "button-press-event", 
@@ -503,6 +806,16 @@ void key_setting (GtkCellRendererText *renderer,
                        
     g_signal_connect(GTK_WIDGET(editable), "key-press-event", 
                      G_CALLBACK(editable_key_cb), gui);
+    
+#ifdef G_OS_WIN32
+   bool = 0;
+   on = NULL;
+   joyc = NULL;
+   which = 0;
+   
+   HANDLE hThread = CreateThread(NULL, 0, joy_thread, gui, 0, NULL); 
+   g_child_watch_add(hThread, (GChildWatchFunc)thread_watch, gui);
+#endif
   
   }
 }

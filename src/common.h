@@ -22,13 +22,25 @@
  
 #include <gtk/gtk.h>
 
+#ifdef G_OS_WIN32
+ #include <windows.h>
+ #include "SDL2/SDL.h"
+#endif
+
 typedef struct
 {
+#ifdef G_OS_UNIX
   gint js_fd;
   gint ev_fd;
   long long unsigned int id;
   gchar name[128];
   GIOChannel *channel;
+#else
+  SDL_Joystick *sdljoy;
+  SDL_JoystickID sdl_id;
+  long long unsigned int id;
+  gchar *name;
+#endif
 }joydata;
 
 typedef struct
@@ -52,6 +64,7 @@ typedef struct
    GtkBuilder *settings;
    GtkTreeViewColumn *column;
    GtkListStore *store;
+   GtkCellEditable *editable;
    gint listmode;
    gint filter;
    gint pagesys;
