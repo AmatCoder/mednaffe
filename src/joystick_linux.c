@@ -84,8 +84,10 @@ void CheckDuplicates(guint js, guidata *gui)
   for (a=0;a<9;a++)
   {
     if (a==js) break;
-    if (gui->joy[js].id == gui->joy[a].id)
-      gui->joy[js].id++;  
+    if (gui->joy[js].id == gui->joy[a].id){
+      gui->joy[js].id++;
+      CheckDuplicates(js, gui);
+    }  
   } 
 }
 

@@ -603,13 +603,15 @@ void on_input_clicked (GtkButton *button, guidata *gui)
      else GetJoy(i, gui);
      
      CheckDuplicates(i, gui);
+    }
+  }
+    for(i=0;i<9;i++)
+  {
      printf("Index: %i - Instance: %i - Name: %s - ID: %016I64x\n", i, 
               SDL_JoystickInstanceID(gui->joy[i].sdljoy), 
               SDL_JoystickName(gui->joy[i].sdljoy), 
               gui->joy[i].id);
-    }
   }
-
    /* gchar *string;
       
       gchar *dir = g_win32_get_package_installation_directory_of_module(NULL);
