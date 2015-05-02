@@ -233,6 +233,8 @@ void child_watch(GPid pid, gint status, guidata *gui)
   if (gui->state==1) gtk_window_present(GTK_WINDOW(gui->topwindow));
   if (gui->state==2) gtk_widget_show(gui->topwindow);
   gtk_widget_set_sensitive (gui->launch, TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                             "inputbutton")), TRUE);
 }
 
 #ifdef G_OS_WIN32
@@ -266,8 +268,9 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
     g_child_watch_add(pi.hProcess, (GChildWatchFunc)child_watch, gui);
     CloseHandle(pi.hThread);
     gui->executing = TRUE;
-    //sensitive_widgets(gui, FALSE);
     gtk_widget_set_sensitive(gui->launch, FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                             "inputbutton")), FALSE);
     if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
     if (gui->state==2) gtk_widget_hide(gui->topwindow);
   }
@@ -320,6 +323,8 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   
   gui->executing = TRUE;
   gtk_widget_set_sensitive (gui->launch, FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                             "inputbutton")), FALSE);
   if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
   if (gui->state==2) gtk_widget_hide(gui->topwindow);  
 }

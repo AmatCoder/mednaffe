@@ -506,21 +506,21 @@ G_MODULE_EXPORT
 #endif
 void on_input_clicked (GtkButton *button, guidata *gui)
 {
-  gchar *text;
-  GtkNotebook *notebook;
   
-  text = g_strconcat("<b>Key Assignments - ", 
+  if (gui->executing) return;
+  
+  gchar *text = g_strconcat("<b>Controller Setup - ", 
                      gui->fullsystem, "</b>", NULL);
                      
   gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(
                                      gui->specific, "label108")), text);
   g_free(text);
   
-  text = g_strconcat("Key Assignments - ", gui->fullsystem, NULL);
+  text = g_strconcat("Controller Setup - ", gui->fullsystem, NULL);
   gtk_window_set_title (GTK_WINDOW(gui->inputwindow), text);
   g_free(text);
 	
-  notebook = GTK_NOTEBOOK(gtk_builder_get_object(gui->specific, "notebook1"));
+  GtkNotebook *notebook = GTK_NOTEBOOK(gtk_builder_get_object(gui->specific, "notebook1"));
   
   g_free(gui->port);
   
