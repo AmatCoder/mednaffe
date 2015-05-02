@@ -156,10 +156,13 @@ gboolean joy_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
      break;
   }
   
-  if ((fd==0) || (fd != gui->joy[a].js_fd))
-    return FALSE;
-    
-  read (fd, &e, sizeof(e));
+  if (fd==0) return FALSE;
+  if (a>8) return FALSE;
+  if (fd != gui->joy[a].js_fd) return FALSE;
+  
+  ssize_t s = read (fd, &e, sizeof(e));
+  
+  if (s==-1) return TRUE;
   
   if (gui->inputedited == TRUE)
    return TRUE;
