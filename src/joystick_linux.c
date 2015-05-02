@@ -98,6 +98,8 @@ gint GetJoy(guint js, guidata *gui)
  unsigned char tmp;
 
  gui->joy[js].channel= NULL;
+ gui->joy[js].name[0]= '\0';
+ gui->joy[js].id = 1;
  
  gchar *number = g_strdup_printf("%i",js);
  gchar *path = g_strconcat("/dev/input/js", number, NULL);

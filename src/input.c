@@ -583,7 +583,10 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   
     if(!gui->joy[i].sdljoy)
     {
-        printf("Couldn't open Joystick %i\n", i);
+      //printf("Couldn't open Joystick %i\n", i);
+      gui->joy[i].sdl_id = 0;
+      gui->joy[i].id = 1;
+      gui->joy[i].name = NULL;
     }
     else
     {
@@ -605,13 +608,13 @@ void on_input_clicked (GtkButton *button, guidata *gui)
      CheckDuplicates(i, gui);
     }
   }
-    for(i=0;i<9;i++)
+  /*  for(i=0;i<9;i++)
   {
      printf("Index: %i - Instance: %i - Name: %s - ID: %016I64x\n", i, 
               SDL_JoystickInstanceID(gui->joy[i].sdljoy), 
               SDL_JoystickName(gui->joy[i].sdljoy), 
               gui->joy[i].id);
-  }
+  }*/
    /* gchar *string;
       
       gchar *dir = g_win32_get_package_installation_directory_of_module(NULL);
@@ -769,7 +772,7 @@ void thread_watch(GPid pid, gint status, guidata *gui)
      g_free(command);
      g_hash_table_replace(gui->clist, fullcommand, fullcommand);
      fullcommand++;
-     g_hash_table_insert(gui->hash, g_strdup(fullcommand), joyc);
+     g_hash_table_insert(gui->hash, g_strdup(fullcommand), g_strdup(joyc));
      fullcommand--;
     
      gtk_cell_editable_editing_done(gui->editable);
@@ -779,6 +782,7 @@ void thread_watch(GPid pid, gint status, guidata *gui)
    gui->inputedited = TRUE;
      
    g_free(on);
+   g_free(joyc);
      
    g_mutex_unlock (&mutex);
    g_spawn_close_pid(pid);
