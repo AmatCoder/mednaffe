@@ -1,4 +1,6 @@
- ??/??/????
+#### 02 / May / 2015
+
+Mednaffe 0.7 is released with the following changes:
 
 - Controller setup for systems (keyboard and gamepads)
 - Static build for Windows (standalone executable to avoid GTK+ runtime dependency)

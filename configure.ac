@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([mednaffe], [0.6], [BUG-REPORT-ADDRESS])
+AC_INIT([mednaffe], [0.7], [BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_CONFIG_SRCDIR([src/common.h])
 AC_CONFIG_HEADERS([config.h])
@@ -10,7 +10,7 @@ AC_CONFIG_HEADERS([config.h])
 # Checks for programs.
 AC_PROG_CC
 AC_LANG_C
-CFLAGS="-g -std=c99 -Wall -Wl,-export-dynamic"
+CFLAGS="-O2 -s -std=c99 -Wall -Wl,-export-dynamic"
 
 # Checks for libraries.
 AC_ARG_ENABLE(gtk3, [AC_HELP_STRING([--enable-gtk3], [Compile against GTK 3.x explicitly])], [enable_gtk3=$enableval], [enable_gtk3="no"])
