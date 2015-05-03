@@ -11,10 +11,10 @@ Its main features are:
 *Note: Mednaffe only works with 0.9.36 or higher versions of mednafen emulator.*
 
 #### Downloads - Version 0.7
- * [Linux sources](https://sites.google.com/site/amatcoder/mednaffe/downloads/mednaffe-0.7.tar.gz?attredirects=0 "mednaffe-0.7.tar.gz").
+ * [Linux sources](https://sites.google.com/site/amatcoder/mednaffe/downloads/mednaffe-0.7.tar.gz?attredirects=0&d=1 "mednaffe-0.7.tar.gz").
 Build instructions for Linux [here](https://github.com/AmatCoder/mednaffe/blob/wiki/Building.md "Building on Linux").
 
- * [Windows binary](https://sites.google.com/site/amatcoder/mednaffe/downloads/mednaffe-0.7-static.zip?attredirects=0 "mednaffe-0.7-static.zip").
+ * [Windows binary](https://sites.google.com/site/amatcoder/mednaffe/downloads/mednaffe-0.7-static.zip?attredirects=0&d=1 "mednaffe-0.7-static.zip"). Build instructions to cross compile to Windows [here](https://github.com/AmatCoder/mednaffe/blob/wiki/CrossCompileToWindows.md "Cross compile to Windows").
 
 *Note: Since this version you do _not_ need the GTK+ runtime for Windows. Just extract executable into the folder where mednafen emulator is.*
 
