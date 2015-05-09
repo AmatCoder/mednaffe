@@ -100,6 +100,7 @@ gint GetJoy(guint js, guidata *gui)
  gui->joy[js].channel= NULL;
  gui->joy[js].name[0]= '\0';
  gui->joy[js].id = 1;
+ gui->joy[js].ev_fd = -1;
  
  gchar *number = g_strdup_printf("%i",js);
  gchar *path = g_strconcat("/dev/input/js", number, NULL);
@@ -127,16 +128,16 @@ gint GetJoy(guint js, guidata *gui)
      gui->joy[js].ev_fd = open(evdev_path, O_RDONLY);
      if(gui->joy[js].ev_fd == -1)
      {
-       printf("WARNING: Failed to open event device \"%s\" --- !!!!! BASE JOYSTICK FUNCTIONALITY WILL BE AVAILABLE, BUT FORCE-FEEDBACK(E.G. RUMBLE) WILL BE UNAVAILABLE, AND THE CALCULATED JOYSTICK ID WILL BE DIFFERENT. !!!!!\n", evdev_path);
+       printf("WARNING: Failed to open event device \"%s\"\n", evdev_path);
      }
      else
      {
-       printf("WARNING: Could only open event device \"%s\" for reading, and not reading+writing --- !!!!! FORCE-FEEDBACK(E.G. RUMBLE) WILL BE UNAVAILABLE. !!!!!\n", evdev_path);
+       printf("WARNING: Could only open event device \"%s\" for reading, and not reading+writing\n", evdev_path);
      }
    }
  }
  else
-   printf("WARNING: Failed to find a valid corresponding event device to joystick device \"s\" --- !!!!! BASE JOYSTICK FUNCTIONALITY WILL BE AVAILABLE, BUT FORCE-FEEDBACK(E.G. RUMBLE) WILL BE UNAVAILABLE, AND THE CALCULATED JOYSTICK ID WILL BE DIFFERENT. !!!!!\n");
+   printf("WARNING: Failed to find a valid corresponding event device to joystick device\n");
 
  if(gui->joy[js].ev_fd != -1)
   fcntl(gui->joy[js].ev_fd, F_SETFL, fcntl(gui->joy[js].ev_fd, F_GETFL) | O_NONBLOCK);
@@ -182,6 +183,10 @@ gint GetJoy(guint js, guidata *gui)
   g_free(evdev_path);
   gui->joy[js].id = CalcOldStyleID(ev_abs_count - ev_hat_count, 0, ev_hat_count / 2, num_buttons);
   CheckDuplicates(js, gui);
+  printf("Index: %i - Instance: %i - Name: %i - ID: %016llx\n", ev_abs_count, 
+              ev_hat_count, 
+              num_buttons, 
+              gui->joy[js].id);
   return 2;
   }
   else
