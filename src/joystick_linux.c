@@ -183,10 +183,6 @@ gint GetJoy(guint js, guidata *gui)
   g_free(evdev_path);
   gui->joy[js].id = CalcOldStyleID(ev_abs_count - ev_hat_count, 0, ev_hat_count / 2, num_buttons);
   CheckDuplicates(js, gui);
-  printf("Index: %i - Instance: %i - Name: %i - ID: %016llx\n", ev_abs_count, 
-              ev_hat_count, 
-              num_buttons, 
-              gui->joy[js].id);
   return 2;
   }
   else
