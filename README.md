@@ -21,9 +21,10 @@ Its main features are:
 
 ###### Linux/GTK+2
 
-![Mednaffe on Linux/GTK+2](https://github.com/AmatCoder/mednaffe/blob/wiki/screenshot_0830121713.png "Mednaffe on Linux/GTK+2")
+![Mednaffe on Linux/GTK+2](https://github.com/AmatCoder/mednaffe/blob/wiki/mednaffe_systems_settings_gtk2.png "Mednaffe on Linux/GTK+2")
 
 ###### Windows
 
-![Mednaffe on Windows 7](https://github.com/AmatCoder/mednaffe/blob/wiki/screen_29_8_2013.png "Mednaffe on Windows 7")
+![Mednaffe on Windows 7](https://github.com/AmatCoder/mednaffe/blob/wiki/mednaffe_systems_settings_win.png "Mednaffe on Windows 7")
 
+More screenshots [here](https://sites.google.com/site/amatcoder/mednaffe/screenshot "screenshots").
