@@ -24,9 +24,9 @@
 /*
   Compile me with:
 
-  gcc -g -std=c99 -Wall -DGTK2_ENABLED -o mednaffe about.c 
-  active.c command.c gui.c prefs.c list.c toggles.c 
-  input.c joystick_linux.c md5.c mednaffe.c 
+  gcc -g -std=c99 -Wall -DGTK2_ENABLED -o mednaffe about.c
+  active.c command.c gui.c prefs.c list.c toggles.c
+  input.c joystick_linux.c md5.c mednaffe.c
   $(pkg-config --cflags --libs gtk+-2.0 gmodule-export-2.0)
 
 */
@@ -51,7 +51,7 @@ void show_error(const gchar *message)
                                    GTK_MESSAGE_ERROR,
                                    GTK_BUTTONS_CLOSE,
                                    "%s", message);
-                                   
+
   gtk_dialog_run (GTK_DIALOG (dialog));
   gtk_widget_destroy (dialog);
   printf("%s", message);
@@ -77,7 +77,7 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
   GtkTreeIter iter;
   GtkTreeModel *model;
   GSList *iterator;
-  
+
   model = gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist));
 
   if (gtk_tree_selection_get_selected(treeselection, &model, &iter))
@@ -85,10 +85,10 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
     GtkWidget *embed;
     GtkContainer *container;
     gchar *astring;
-    
+
 
     if (gui->system)
-    { 
+    {
       gui->system++;
       astring = g_strconcat(gui->system, "inputbox", NULL);
       gui->system--;
@@ -96,22 +96,22 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
       g_free(astring);
       embed = GTK_WIDGET(gtk_builder_get_object(gui->builder, "inputbutton"));
       gtk_container_remove (container, embed);
-      
+
       container = GTK_CONTAINER(gtk_builder_get_object(gui->builder,
                                                      "embox"));
       embed = GTK_WIDGET(gtk_builder_get_object(gui->specific,
                                             (const char *)gui->system));
-                                            
+
       gtk_container_remove (container, embed);
-      
+
       g_free(gui->system);
     }
     g_free(gui->fullsystem);
-    gtk_tree_model_get(model, &iter, 0, &gui->fullsystem, 
-                                     1, &gui->system, 
+    gtk_tree_model_get(model, &iter, 0, &gui->fullsystem,
+                                     1, &gui->system,
                                      2, &gui->pagesys,  -1);
     gui->changing = TRUE;
-    
+
     for (iterator = gui->dinlist; iterator; iterator = iterator->next)
     {
       if (GTK_IS_TOGGLE_BUTTON(iterator->data))
@@ -122,12 +122,12 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
         set_spin(iterator->data, gui);
     }
     g_slist_free(iterator);
-    
+
     gui->changing = FALSE;
     container = GTK_CONTAINER(gtk_builder_get_object(gui->builder,
                                                      "embox"));
     embed = GTK_WIDGET(gtk_builder_get_object(gui->specific,
-                                            (const char *)gui->system));    
+                                            (const char *)gui->system));
     gtk_container_add (container, embed);
     gui->system++;
     astring = g_strconcat(gui->system, "inputbox", NULL);
@@ -136,13 +136,13 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
     embed = GTK_WIDGET(gtk_builder_get_object(gui->builder, "inputbutton"));
     gtk_container_add (container, embed);
     gtk_box_set_child_packing(GTK_BOX(container), embed, FALSE, FALSE, 0, GTK_PACK_START);
-    g_free(astring);                               
+    g_free(astring);
     /*gtk_notebook_remove_page(GTK_NOTEBOOK(gui->notebook),0);
     gtk_notebook_prepend_page(GTK_NOTEBOOK(gui->notebook),
                                                   embed, gui->setlabel);*/
 
     gtk_notebook_set_current_page(GTK_NOTEBOOK(gui->notebook), 0);
-    
+
     if (gui->pagesys==4)
       gtk_widget_show(GTK_WIDGET(
         gtk_notebook_get_nth_page(GTK_NOTEBOOK(gui->notebook), 3)));
@@ -162,7 +162,7 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
   if (gtk_tree_selection_get_selected(treeselection, &model, &iter))
   {
     gchar *selected = NULL;
-    
+
     g_free(gui->rom);
     g_free(gui->fullpath);
     gtk_tree_model_get(model, &iter, 0, &gui->rom, 1, &gui->fullpath, -1);
@@ -185,38 +185,38 @@ void on_cell_toggled(GtkCellRendererToggle *cell_renderer,
   GtkTreeModel *model2;
   gboolean bool;
   gint row, row2;
-  
+
   model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(
                                            gui->settings,"se_treeview")));
   model2 = GTK_TREE_MODEL(gtk_builder_get_object(
                                            gui->builder, "liststore3"));
-  
+
   if (gtk_tree_model_get_iter_from_string(model, &iter, path))
   {
-	gtk_tree_model_get(model, &iter, 1, &bool, 2, &row, -1);
+  gtk_tree_model_get(model, &iter, 1, &bool, 2, &row, -1);
     gtk_list_store_set(GTK_LIST_STORE(model), &iter, 1, (!bool), -1);
-    gtk_tree_model_get_iter_first(model2, &iter2); 
+    gtk_tree_model_get_iter_first(model2, &iter2);
 
     do
     {
-	  gtk_tree_model_get(model2, &iter2, 2, &row2, -1);
-	  if (row==row2)
-	  {
-	    gtk_list_store_set(GTK_LIST_STORE(model2), &iter2, 3, (!bool), -1);
-	    break;
-	  }
+    gtk_tree_model_get(model2, &iter2, 2, &row2, -1);
+    if (row==row2)
+    {
+      gtk_list_store_set(GTK_LIST_STORE(model2), &iter2, 3, (!bool), -1);
+      break;
+    }
     } while (gtk_tree_model_iter_next(model2, &iter2));
-    
+
     if (gtk_tree_model_get_iter_first(
         gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist)), &iter3))
-    { 
+    {
       gtk_tree_selection_select_iter(
         gtk_tree_view_get_selection(GTK_TREE_VIEW(gui->systemlist)), &iter3);
 
         gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(
           gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist))));
     }
-    
+
     if (!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(
                            GTK_TREE_VIEW(gui->systemlist)), NULL, NULL))
       gtk_widget_hide(gui->notebook); else gtk_widget_show(gui->notebook);
@@ -280,13 +280,13 @@ gchar *get_cfg(const gchar *home)
     cfg_path = g_strconcat(home, "\\mednafen.cfg", NULL);
   #else
     cfg_path = g_strconcat(home, "/.mednafen/mednafen.cfg", NULL);
-  #endif  
+  #endif
     if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
       printf("[Mednaffe] Mednafen 08x configuration file found\n");
     else
       cfg_path = NULL;
   }*/
-  
+
   return cfg_path;
 }
 
@@ -295,11 +295,11 @@ int main(int argc, char **argv)
   guidata gui;
   const gchar *home = NULL;
   gchar *stout = NULL;
-          
+
   /* Init GTK+ */
   gtk_init(&argc, &argv);
   printf("[Mednaffe] Starting Mednaffe 0.7...\n");
-  
+
   /* Search for mednafen executable */
   gui.binpath = g_find_program_in_path("mednafen");
   if (gui.binpath==NULL)
@@ -308,9 +308,9 @@ int main(int argc, char **argv)
       "Error: Mednafen executable is not installed in path!\n");
     return 1;
   }
-  
+
   /* Search for HOME variable */
-  
+
   #ifdef G_OS_WIN32
     home = g_path_get_dirname(gui.binpath);
   #else
@@ -327,12 +327,12 @@ int main(int argc, char **argv)
     gchar *path = g_strconcat(home, "\\stdout.txt", NULL);
     gchar *qbin = g_strconcat("\"", gui.binpath, "\"", NULL);
     gchar *cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
-    
+
     if ((g_file_get_contents(path, &stout, NULL, NULL)) && (g_file_test(cfg_path, G_FILE_TEST_IS_REGULAR)))
-    {} 
+    {}
     else
     {
-	  system(qbin);
+    system(qbin);
       //Sleep(1000); /* race condition? */
       g_file_get_contents(path, &stout, NULL, NULL);
     }
@@ -367,56 +367,56 @@ int main(int argc, char **argv)
     show_error("Error reading system glade file!\n");
     return 1;
   }
-  
+
   gui.settings = gtk_builder_new();
   if (!gtk_builder_add_from_string(gui.settings, settings_glade, -1, NULL))
   {
     show_error("Error reading settings glade file!\n");
     return 1;
   }
-  
+
   /* Get widget pointers from UI */
   gui.topwindow = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                              "topwindow"));
-                             
+
   gui.prefwindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
                              "dialog1"));
-                             
-  gui.inputwindow = GTK_WIDGET(gtk_builder_get_object(gui.specific, 
+
+  gui.inputwindow = GTK_WIDGET(gtk_builder_get_object(gui.specific,
                              "inputdialog"));
-                                                                                      
-  gui.cbpath = GTK_WIDGET(gtk_builder_get_object(gui.builder, 
+
+  gui.cbpath = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                           "cbpath"));
-                          
-  gui.sbname = GTK_WIDGET(gtk_builder_get_object(gui.builder, 
+
+  gui.sbname = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                           "sbname"));
-                          
+
   gui.sbnumber = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                             "sbnumber"));
-                            
+
   gui.gamelist = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                             "gamelist"));
-                            
+
   gui.scrollwindow = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                                 "scrollwindow"));
-                                
+
   gui.systemlist = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                               "systemlist"));
-                              
+
   gui.globalist = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                              "globalist"));
-                             
+
   gui.notebook = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                             "notebook3"));
-                            
+
   gui.notebook2 = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                              "notebook2"));
-                              
+
   gui.launch = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                              "button1"));
-                                                                                                                
+
   /*gui.setlabel = GTK_WIDGET(gtk_builder_get_object(gui.builder,
-                            "settings_label"));                   
+                            "settings_label"));
   g_object_ref(gui.setlabel);*/
 
   /* Connect signals */
@@ -424,15 +424,15 @@ int main(int argc, char **argv)
   gtk_builder_connect_signals(gui.specific, &gui);
   gtk_builder_connect_signals(gui.settings, &gui);
   g_signal_connect(
-    gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.gamelist)), 
+    gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.gamelist)),
         "changed", G_CALLBACK(game_selected), &gui);
-        
+
   g_signal_connect(
-    gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.systemlist)), 
+    gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.systemlist)),
         "changed", G_CALLBACK(system_selected), &gui);
-        
+
   g_signal_connect(
-    gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.globalist)), 
+    gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.globalist)),
         "changed", G_CALLBACK(global_selected), &gui);
 
   /* Create store and models */
@@ -442,11 +442,17 @@ int main(int argc, char **argv)
     GTK_TREE_VIEW(gui.gamelist), GTK_TREE_MODEL(gui.store));
 
   gui.column = gtk_tree_view_get_column(GTK_TREE_VIEW(gui.gamelist), 0);
-  gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(gui.store), 
+  gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(gui.store),
     GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID, GTK_SORT_ASCENDING);
 
   gtk_tree_model_filter_set_visible_column(GTK_TREE_MODEL_FILTER(
     gtk_tree_view_get_model(GTK_TREE_VIEW(gui.systemlist))), 3);
+
+  /* Windows-Only options */
+  #ifdef G_OS_WIN32
+  gtk_widget_set_visible(GTK_WIDGET(gtk_builder_get_object(gui.builder,
+                         "-video.disable_composition")), TRUE);
+  #endif
 
   /* Set initial values */
   gui.listmode = 0;
@@ -471,17 +477,17 @@ int main(int argc, char **argv)
 
   gui.clist = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
   gui.hash = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-  
+
   gtk_notebook_set_show_tabs(GTK_NOTEBOOK(gui.notebook2),FALSE);
   gtk_window_set_transient_for(GTK_WINDOW(gui.prefwindow), GTK_WINDOW(gui.topwindow));
   gtk_window_set_transient_for(GTK_WINDOW(gui.inputwindow), GTK_WINDOW(gui.topwindow));
-  
+
   /* Set statusbar messages */
   #ifdef GTK2_ENABLED
     gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(gui.sbname),FALSE);
     gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(gui.sbnumber),FALSE);
   #endif
-  
+
   gtk_statusbar_push
     (GTK_STATUSBAR(gui.sbname), 1, " Game selected: None");
   gtk_statusbar_push
@@ -490,16 +496,16 @@ int main(int argc, char **argv)
   /* Set cellrenderertoogle (bug in gtk-win?) */
   GtkCellRenderer *celltoggle = gtk_cell_renderer_toggle_new();
   gtk_tree_view_column_pack_end((GTK_TREE_VIEW_COLUMN(
-                                 gtk_builder_get_object(gui.settings, 
+                                 gtk_builder_get_object(gui.settings,
                                  "Visible"))), celltoggle, TRUE);
-                                 
+
   gtk_tree_view_column_add_attribute((GTK_TREE_VIEW_COLUMN(
                                       gtk_builder_get_object(gui.settings,
-                                      "Visible"))), 
+                                      "Visible"))),
                                       celltoggle, "active", 1);
-                                      
+
   g_signal_connect(celltoggle, "toggled", G_CALLBACK(on_cell_toggled), &gui);
-  
+
   /* Check mednafen version */
   if (!check_version(stout, &gui))
    {
@@ -508,7 +514,7 @@ int main(int argc, char **argv)
     return 1; /* Items are not freed here */
   }
   g_free(stout);
-  
+
   /* Read configuration from mednafen-09x.cfg */
   if (!read_cfg(&gui))
   {
@@ -524,13 +530,13 @@ int main(int argc, char **argv)
   select_rows(&gui);
 
   /* Create icon */
-  gtk_window_set_icon(GTK_WINDOW(gui.topwindow), 
+  gtk_window_set_icon(GTK_WINDOW(gui.topwindow),
                     gdk_pixbuf_new_from_inline (-1, logo, FALSE, NULL));
-                    
+
   /* Show window and set focus */
   gtk_widget_show(gui.topwindow);
   gtk_widget_grab_focus(gui.gamelist);
-  
+
   /* Start main loop */
   gtk_main();
 
