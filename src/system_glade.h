@@ -723,7 +723,7 @@ static const char *system_glade =
 "<property name=\"can_focus\">False</property>\n"
 "<property name=\"left_padding\">12</property>\n"
 "<child>\n"
-"<object class=\"GtkCheckButton\" id=\"-md.correct_aspect1\">\n"
+"<object class=\"GtkCheckButton\" id=\"-md.correct_aspect\">\n"
 "<property name=\"label\" translatable=\"yes\">Correct the aspect ratio</property>\n"
 "<property name=\"visible\">True</property>\n"
 "<property name=\"can_focus\">True</property>\n"
