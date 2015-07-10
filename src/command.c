@@ -42,11 +42,11 @@ gchar *build_command_win(guidata *gui)
     command2 = g_strconcat(command, " ", iterator->data, NULL);
     g_free(command);
     iterator->data = ((gchar *)iterator->data)+1;
-    
+
     command =
-      g_strconcat(command2, " \"", 
+      g_strconcat(command2, " \"",
         g_hash_table_lookup(gui->hash, iterator->data), "\"", NULL);
-        
+
     g_free(command2);
   }
   g_list_free(list);
@@ -61,15 +61,17 @@ gchar *build_command_win(guidata *gui)
 gchar **build_command(guidata *gui)
 {
   gchar **command;
-  gint num = 3;
+  gint num = 5;
   GList *list = NULL;
   GList *iterator = NULL;
 
   list = g_hash_table_get_keys(gui->clist);
-  command = g_new(gchar *, ((g_list_length(list))*2)+5);
+  command = g_new(gchar *, ((g_list_length(list))*2)+7);
   command[0] = g_strdup(gui->binpath);
   command[1] = g_strdup("-remote");
   command[2] = g_strdup("Mednafen_");
+  command[3] = g_strdup("-psx.dbg_level");
+  command[4] = g_strdup("0");
   for (iterator = list; iterator; iterator = iterator->next)
   {
     command[num] = g_strdup(iterator->data);
@@ -113,7 +115,7 @@ gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
   }
 
   g_io_channel_read_line(channel, &string, &size, NULL, NULL);
-  
+
   if (string)
   {
     if (size>9)
@@ -121,9 +123,9 @@ gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
       if (string[9]=='e')
       {
         GtkWidget *dialog;
-  
+
         gchar *err = format_err(string, size);
-        
+
          gui->m_error = TRUE;
          if (gui->state==1) gtk_window_present(GTK_WINDOW(gui->topwindow));
          if (gui->state==2) gtk_widget_show(gui->topwindow);
@@ -138,10 +140,10 @@ gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
          printf ("[Mednaffe] ***ERROR***\n%s", err);
          g_free(err);
          g_io_channel_unref(channel);
-         
-         return FALSE;      
+
+         return FALSE;
        }
-       
+
        if (string[0]!='M')
        {
          g_io_channel_unref(channel);
@@ -166,16 +168,16 @@ void child_watch(GPid pid, gint status, guidata *gui)
 {
   #ifdef G_OS_WIN32
     DWORD lpExitCode=0;
-    
+
 
     GetExitCodeProcess( pid, &lpExitCode);
     if (lpExitCode!=0)
     {
       gchar *string;
       gchar *err = NULL;
-      
+
       gui->m_error = TRUE;
-      
+
       gchar *dir = g_win32_get_package_installation_directory_of_module(NULL);
       gchar *path =g_strconcat(dir, "\\stdout.txt", NULL);
 
@@ -189,16 +191,16 @@ void child_watch(GPid pid, gint status, guidata *gui)
       }
       g_free(dir);
       g_free(path);
-      
+
       if (!err) err = g_strdup("Mednafen error.\nRead stdout.txt for details.");
-	  GtkWidget *dialog;
-	  
+    GtkWidget *dialog;
+
       dialog = gtk_message_dialog_new (GTK_WINDOW(gui->topwindow),
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
                                        GTK_MESSAGE_ERROR,
                                        GTK_BUTTONS_CLOSE,
                                        "%s", err);
-                       
+
       gtk_dialog_run (GTK_DIALOG (dialog));
       gtk_widget_destroy (dialog);
       printf ("[Mednaffe] ***ERROR***\n%s", err);
@@ -209,10 +211,10 @@ void child_watch(GPid pid, gint status, guidata *gui)
   g_spawn_close_pid(pid);
   gui->executing = FALSE;
   gui->changed = TRUE;
-  
+
   printf ("[Mednaffe] End of execution catched\n");
   printf ("[Mednaffe] Command line used: '");
-  
+
   #ifdef G_OS_WIN32
     printf("%s\n", gui->command);
     g_free(gui->command);
@@ -226,7 +228,7 @@ void child_watch(GPid pid, gint status, guidata *gui)
     printf ("'\n");
     g_strfreev(gui->command);
   #endif
-  
+
   if (gui->m_error == FALSE) g_hash_table_remove_all(gui->clist);
   gui->m_error = FALSE;
 
@@ -242,28 +244,28 @@ G_MODULE_EXPORT
 void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
               GtkTreeViewColumn *col, guidata *gui)
 {
-  if ((gui->executing == TRUE) || (gui->fullpath == NULL)) 
+  if ((gui->executing == TRUE) || (gui->fullpath == NULL))
     return;
-    
+
   BOOL ret;
-  STARTUPINFO si;  
-  PROCESS_INFORMATION pi; 
-   
+  STARTUPINFO si;
+  PROCESS_INFORMATION pi;
+
   ZeroMemory(&si, sizeof(STARTUPINFO));
   si.cb = sizeof(STARTUPINFO);
   ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
-  
+
   gui->command = build_command_win(gui);
   printf ("[Mednaffe] Executing mednafen...\n");
-  ret = CreateProcess(NULL, gui->command, NULL, NULL, FALSE, 0, 
-                      NULL, NULL, &si, &pi); 
-  if (!ret) 
+  ret = CreateProcess(NULL, gui->command, NULL, NULL, FALSE, 0,
+                      NULL, NULL, &si, &pi);
+  if (!ret)
   {
    printf("[Mednaffe] Executing mednafen failed!\n");
    g_free(gui->command);
    return;
   }
-  else 
+  else
   {
     g_child_watch_add(pi.hProcess, (GChildWatchFunc)child_watch, gui);
     CloseHandle(pi.hThread);
@@ -274,7 +276,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
     if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
     if (gui->state==2) gtk_widget_hide(gui->topwindow);
   }
-} 
+}
 
 #else
 
@@ -285,24 +287,24 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   gboolean ret;
   gint out;
   GIOChannel *out_ch;
-  
-  if ((gui->executing == TRUE) || (gui->fullpath == NULL)) 
+
+  if ((gui->executing == TRUE) || (gui->fullpath == NULL))
     return;
 
   /* Always to send 'video.fs' and 'cheats' */
-  
+
   gpointer name;
   name = g_strdup(g_object_get_data(gtk_builder_get_object(
                                      gui->builder, "-video.fs"), "cname"));
 
   g_hash_table_insert(gui->clist, name, name);
-  
+
   name = g_strdup(g_object_get_data(gtk_builder_get_object(
                                      gui->builder, "-cheats"), "cname"));
 
   g_hash_table_insert(gui->clist, name, name);
   /*                                         */
-  
+
   gui->command = build_command(gui);
   printf ("[Mednaffe] Executing mednafen...\n");
   ret = g_spawn_async_with_pipes( NULL, gui->command, NULL,
@@ -318,15 +320,15 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   g_child_watch_add(pid, (GChildWatchFunc)child_watch, gui);
   out_ch = g_io_channel_unix_new(out);
   g_io_channel_set_flags (out_ch, G_IO_FLAG_NONBLOCK, NULL);
-  g_io_channel_set_close_on_unref(out_ch, TRUE);
+  //g_io_channel_set_close_on_unref(out_ch, TRUE);
   g_io_add_watch(out_ch, G_IO_IN|G_IO_HUP, (GIOFunc)out_watch, gui);
-  
+
   gui->executing = TRUE;
   gtk_widget_set_sensitive (gui->launch, FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
                              "inputbutton")), FALSE);
   if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
-  if (gui->state==2) gtk_widget_hide(gui->topwindow);  
+  if (gui->state==2) gtk_widget_hide(gui->topwindow);
 }
 
 #endif
@@ -352,23 +354,23 @@ void open_rom(GtkWidget *sender, guidata *gui)
     GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL );
 
   if (gtk_dialog_run(GTK_DIALOG(folder)) == GTK_RESPONSE_ACCEPT)
-  {  
+  {
     gchar *filename;
-    
+
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (folder));
-    
+
     if (filename != NULL)
-    { 
+    {
       gchar *g_fullpath;
 
-	  g_fullpath = gui->fullpath;
-	  gui->fullpath = filename;
-	  
-	  row_exec(NULL, NULL, NULL, gui);
-	  
-	  g_free(gui->fullpath);
-	  gui->fullpath = g_fullpath;
-	}
+    g_fullpath = gui->fullpath;
+    gui->fullpath = filename;
+
+    row_exec(NULL, NULL, NULL, gui);
+
+    g_free(gui->fullpath);
+    gui->fullpath = g_fullpath;
+  }
   }
   gtk_widget_destroy(folder);
 }
