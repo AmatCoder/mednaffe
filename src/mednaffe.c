@@ -86,15 +86,14 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
     GtkContainer *container;
     gchar *astring;
 
-
     if (gui->system)
     {
       gui->system++;
       astring = g_strconcat(gui->system, "inputbox", NULL);
       gui->system--;
-      container = GTK_CONTAINER(gtk_builder_get_object(gui->specific, (const char *)astring));
+      container = GTK_CONTAINER(gtk_builder_get_object(gui->builder, "inputbox"));
+      embed = GTK_WIDGET(gtk_builder_get_object(gui->specific, (const char *)astring));
       g_free(astring);
-      embed = GTK_WIDGET(gtk_builder_get_object(gui->builder, "inputbutton"));
       gtk_container_remove (container, embed);
 
       container = GTK_CONTAINER(gtk_builder_get_object(gui->builder,
@@ -132,8 +131,8 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
     gui->system++;
     astring = g_strconcat(gui->system, "inputbox", NULL);
     gui->system--;
-    container = GTK_CONTAINER(gtk_builder_get_object(gui->specific, (const char *)astring));
-    embed = GTK_WIDGET(gtk_builder_get_object(gui->builder, "inputbutton"));
+    container = GTK_CONTAINER(gtk_builder_get_object(gui->builder, "inputbox"));
+    embed = GTK_WIDGET(gtk_builder_get_object(gui->specific, (const char *)astring));
     gtk_container_add (container, embed);
     gtk_box_set_child_packing(GTK_BOX(container), embed, FALSE, FALSE, 0, GTK_PACK_START);
     g_free(astring);
@@ -145,10 +144,10 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
 
     if (gui->pagesys==4)
       gtk_widget_show(GTK_WIDGET(
-        gtk_notebook_get_nth_page(GTK_NOTEBOOK(gui->notebook), 3)));
+        gtk_notebook_get_nth_page(GTK_NOTEBOOK(gui->notebook), 4)));
     else
       gtk_widget_hide(GTK_WIDGET(
-        gtk_notebook_get_nth_page(GTK_NOTEBOOK(gui->notebook), 3)));
+        gtk_notebook_get_nth_page(GTK_NOTEBOOK(gui->notebook), 4)));
   }
 }
 
