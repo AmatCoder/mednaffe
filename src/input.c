@@ -39,6 +39,8 @@
   static GMutex mutex;
 #endif
 
+#define DEADZONE 16384
+
 void close_channels(guidata *gui)
 {
 #ifdef G_OS_UNIX
@@ -167,7 +169,9 @@ gboolean joy_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
   if (gui->inputedited == TRUE)
    return TRUE;
 
-  if ((e.type == JS_EVENT_BUTTON) || (e.type == JS_EVENT_AXIS))
+  if ((e.type == JS_EVENT_BUTTON) ||
+     ((e.type == JS_EVENT_AXIS) &&
+     ((e.value < -DEADZONE) || (e.value > DEADZONE))))
   {
   GtkTreeIter  iter;
   gchar *command;
@@ -466,10 +470,10 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
   //printf("Unhandled Event: %i\n", event.type);
 
   if ((event.type == SDL_JOYBUTTONDOWN) ||
-      (event.type == SDL_JOYAXISMOTION) ||
-      (event.type == SDL_JOYHATMOTION))
+      (event.type == SDL_JOYHATMOTION) ||
+      ((event.type == SDL_JOYAXISMOTION) && 
+       ((event.jaxis.value < -DEADZONE) || (event.jaxis.value > DEADZONE))))
   {
-
   unsigned int b;
   int a;
 
@@ -531,8 +535,9 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
   }
 }
   else
-  if (event.type == SDL_JOYAXISMOTION) {
-        a = GetControllerIndex(event.jaxis.which, gui);
+  if (event.type == SDL_JOYAXISMOTION)
+  {
+    a = GetControllerIndex(event.jaxis.which, gui);
     if (a>-1)
     {
     printf("Value: %i\n", event.jaxis.value);
@@ -541,7 +546,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
     {
       if (gui->joy[a].xinput==TRUE)
       {
-        if (event.jaxis.value>0) on = g_strdup_printf("Axis %i Up", event.jaxis.axis);
+        if (event.jaxis.value<0) on = g_strdup_printf("Axis %i Up", event.jaxis.axis);
           else on = g_strdup_printf("Axis %i Down", event.jaxis.axis);
 
           if (event.jaxis.axis==5)
