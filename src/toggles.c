@@ -379,6 +379,9 @@ gboolean check_version(gchar *stout, guidata *gui)
 
     GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
     gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, version);
+
+    gtk_widget_set_tooltip_text(GTK_WIDGET(sbversion), gui->binpath);
+
     g_strfreev(achar);
     g_strfreev(aline);
     g_free(version);

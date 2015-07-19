@@ -57,6 +57,42 @@ void show_error(const gchar *message)
   printf("%s", message);
 }
 
+gchar* show_chooser(const gchar *message)
+{
+  GtkWidget *exe;
+  gchar *filename = NULL;
+  GtkWidget *dialog;
+
+  dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_QUESTION,
+                                   GTK_BUTTONS_YES_NO,
+                                   "%s", message);
+
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_NO)
+  {
+    gtk_widget_destroy (dialog);
+    return NULL;
+  }
+  gtk_widget_destroy (dialog);
+
+  exe = gtk_file_chooser_dialog_new(
+    "Choose a mednafen executable...", NULL,
+    GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL,
+    GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL );
+
+  GtkFileFilter* filter = gtk_file_filter_new();
+  gtk_file_filter_add_pattern(filter, "mednafen.exe");
+  gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(exe), filter);
+
+  if (gtk_dialog_run(GTK_DIALOG(exe)) == GTK_RESPONSE_ACCEPT)
+  {
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(exe));
+  }
+  gtk_widget_destroy(exe);
+
+  return filename;
+}
+
 void global_selected(GtkTreeSelection *treeselection, guidata *gui)
 {
   GtkTreeIter iter;
@@ -299,59 +335,6 @@ int main(int argc, char **argv)
   gtk_init(&argc, &argv);
   printf("[Mednaffe] Starting Mednaffe 0.7...\n");
 
-  /* Search for mednafen executable */
-  gui.binpath = g_find_program_in_path("mednafen");
-  if (gui.binpath==NULL)
-  {
-    show_error(
-      "Error: Mednafen executable is not installed in path!\n");
-    return 1;
-  }
-
-  /* Search for HOME variable */
-
-  #ifdef G_OS_WIN32
-    home = g_path_get_dirname(gui.binpath);
-  #else
-    home = g_getenv ("HOME");
-    if (!home) home = g_get_home_dir();
-  #endif
-    if (!home)
-    {
-      show_error("Error searching for home variable!\n");
-      return 1;
-    }
-
-  #ifdef G_OS_WIN32
-    gchar *path = g_strconcat(home, "\\stdout.txt", NULL);
-    gchar *qbin = g_strconcat("\"", gui.binpath, "\"", NULL);
-    gchar *cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
-
-    if ((g_file_get_contents(path, &stout, NULL, NULL)) && (g_file_test(cfg_path, G_FILE_TEST_IS_REGULAR)))
-    {}
-    else
-    {
-    system(qbin);
-      //Sleep(1000); /* race condition? */
-      g_file_get_contents(path, &stout, NULL, NULL);
-    }
-    g_free(cfg_path);
-    g_free(qbin);
-    g_free(path);
-
-  #else
-    g_spawn_command_line_sync(gui.binpath, &stout, NULL, NULL, NULL);
-    //sleep (1); /* race condition? */
-  #endif
-
-  /* Search mednafen configuration file */
-  gui.cfgfile = get_cfg(home);
-  if (!gui.cfgfile)
-  {
-    show_error("No mednafen configuration file found...\n");
-    return 1;
-  }
-
   /* Create new GtkBuilder objects */
   gui.builder = gtk_builder_new();
   if (!gtk_builder_add_from_string(gui.builder, mednaffe_glade, -1, NULL))
@@ -460,6 +443,7 @@ int main(int argc, char **argv)
   gui.state = 0;
   gui.executing = FALSE;
   gui.changed = FALSE;
+  gui.binpath = NULL;
   gui.fullpath = NULL;
   gui.rompath = NULL;
   gui.rom = NULL;
@@ -505,11 +489,75 @@ int main(int argc, char **argv)
 
   g_signal_connect(celltoggle, "toggled", G_CALLBACK(on_cell_toggled), &gui);
 
+  /* Load preferences */
+  load_prefs(&gui);
+
+ /* Search for mednafen executable */
+  if (gui.binpath==NULL)
+    gui.binpath = g_find_program_in_path("mednafen");
+  if (gui.binpath==NULL)
+  {
+    gui.binpath = show_chooser(
+      "Warning: Mednafen executable is not installed in path.\nDo you \
+want to select the file manually?\n");
+    if (gui.binpath==NULL)
+    {
+      show_error(
+      "Error: Mednafen executable not found.\n");
+      return 1;
+    }
+  }
+
+  /* Search for HOME variable */
+  #ifdef G_OS_WIN32
+    home = g_path_get_dirname(gui.binpath);
+  #else
+    home = g_getenv ("HOME");
+    if (!home) home = g_get_home_dir();
+  #endif
+    if (!home)
+    {
+      show_error("Error searching for home variable.\n");
+      return 1;
+    }
+
+  #ifdef G_OS_WIN32
+    gchar *path = g_strconcat(home, "\\stdout.txt", NULL);
+    gchar *qbin = g_strconcat("\"", gui.binpath, "\"", NULL);
+    gchar *cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
+
+    if ((g_file_get_contents(path, &stout, NULL, NULL)) && 
+        (g_file_test(cfg_path, G_FILE_TEST_IS_REGULAR)))
+    {}
+    else
+    {
+    system(qbin);
+      //Sleep(1000); /* race condition? */
+      g_file_get_contents(path, &stout, NULL, NULL);
+    }
+    g_free(cfg_path);
+    g_free(qbin);
+    g_free(path);
+
+  #else
+    g_spawn_command_line_sync(gui.binpath, &stout, NULL, NULL, NULL);
+    //sleep (1); /* race condition? */
+  #endif
+
+  /* Search mednafen configuration file */
+  gui.cfgfile = get_cfg(home);
+  if (!gui.cfgfile)
+  {
+    show_error("Error: No mednafen configuration file found.\n");
+    return 1;
+  }
+
   /* Check mednafen version */
   if (!check_version(stout, &gui))
    {
     show_error(
-    "Mednafen version is not compatible.\nYou need 0.9.36 version or above.\n");
+    "Error: Mednafen version is not compatible.\nYou need 0.9.36.2 \
+version or above.\n");
     return 1; /* Items are not freed here */
   }
   g_free(stout);
@@ -523,7 +571,6 @@ int main(int argc, char **argv)
   }
 
   /* Set values into gui */
-  load_prefs(&gui);
   set_values(gui.builder, &gui);
   set_values(gui.specific, &gui);
   select_rows(&gui);
