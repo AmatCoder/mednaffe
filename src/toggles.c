@@ -21,31 +21,32 @@
  */
 
 #include "common.h"
+#include "string.h"
 
 void select_rows(guidata *gui)
 {
   GtkTreeIter iter;
   GList *chain = NULL;
-  
+
   if (gtk_tree_model_get_iter_first(
         gtk_tree_view_get_model(GTK_TREE_VIEW(gui->systemlist)), &iter))
     gtk_tree_selection_select_iter(
       gtk_tree_view_get_selection(GTK_TREE_VIEW(gui->systemlist)), &iter);
-  
+
   if (!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(
                           GTK_TREE_VIEW(gui->systemlist)), NULL, NULL))
     gtk_widget_hide(gui->notebook); else gtk_widget_show(gui->notebook);
-      
+
   if (gtk_tree_model_get_iter_first(
           gtk_tree_view_get_model(GTK_TREE_VIEW(gui->globalist)), &iter))
     gtk_tree_selection_select_iter(gtk_tree_view_get_selection(
                                      GTK_TREE_VIEW(gui->globalist)), &iter);
-  
+
   chain = g_list_prepend(chain, gui->gamelist);
-  
+
   gtk_container_set_focus_chain(GTK_CONTAINER(
     gtk_builder_get_object(gui->builder, "vbox2")), chain);
-    
+
   g_list_free(chain);
 }
 
@@ -68,7 +69,7 @@ gchar *add_to_list (GtkWidget *widget, guidata *gui)
   fullname++;
   nameinc = g_strdup(fullname);
   fullname--;
-  if (gui->changing == TRUE) 
+  if (gui->changing == TRUE)
     g_free(fullname);
 
   return nameinc;
@@ -122,7 +123,7 @@ void adj_changed(GtkWidget *widget, guidata *gui)
       value = g_strdup_printf("%.*f", digits, afloat);
     }
   }
-  
+
   else if (GTK_IS_SCALE(widget))
   {
     digits = gtk_scale_get_digits(GTK_SCALE(widget));
@@ -280,7 +281,7 @@ void set_values(GtkBuilder *builder, guidata *gui)
 
       g_signal_connect(GTK_TOGGLE_BUTTON(iterator->data), "toggled",
                                        G_CALLBACK(toggle_changed), gui);
-                                       
+
     }
     else if (GTK_IS_COMBO_BOX(iterator->data))
     {
@@ -294,9 +295,9 @@ void set_values(GtkBuilder *builder, guidata *gui)
 
       g_signal_connect(GTK_COMBO_BOX(iterator->data), "changed",
                                         G_CALLBACK(combo_changed), gui);
-                                        
+
     }
-    else if (GTK_IS_SPIN_BUTTON(iterator->data) || 
+    else if (GTK_IS_SPIN_BUTTON(iterator->data) ||
             (GTK_IS_SCALE(iterator->data)))
     {
       name = gtk_buildable_get_name(GTK_BUILDABLE(iterator->data));
@@ -309,10 +310,10 @@ void set_values(GtkBuilder *builder, guidata *gui)
 
       g_signal_connect(GTK_WIDGET(iterator->data),"value-changed",
                                           G_CALLBACK(adj_changed), gui);
-                                          
-      /*g_signal_connect(GTK_WIDGET(iterator->data), "focus-out-event", 
+
+      /*g_signal_connect(GTK_WIDGET(iterator->data), "focus-out-event",
        *                              G_CALLBACK(adj_focus_out), gui);*/
-       
+
     }
     else if (GTK_IS_ENTRY(iterator->data))
     {
@@ -320,10 +321,10 @@ void set_values(GtkBuilder *builder, guidata *gui)
       g_object_set_data(G_OBJECT(iterator->data), "cname", (gpointer)name);
       name++;
       cvalue = g_hash_table_lookup (gui->hash, name);
-      
+
       if (cvalue != NULL)
         gtk_entry_set_text(GTK_ENTRY(iterator->data), cvalue);
-        
+
       g_signal_connect(GTK_ENTRY(iterator->data), "changed",
                                         G_CALLBACK(entry_changed), gui);
     }
@@ -343,30 +344,47 @@ if (event == G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
   }
 }*/
 
-gboolean check_version (gchar *stout, guidata *gui)
+gboolean check_version(gchar *stout, guidata *gui)
 {
   if (stout)
   {
+    if (strlen(stout)<1) return FALSE;
+
     gchar **achar = g_strsplit(stout, "\n", 0);
     gchar **aline = g_strsplit(achar[0], " ", 2);
-    gchar *version = g_strconcat(aline[1], " detected...", NULL);
-    printf("[Mednaffe] %s\n",version);
-  
+
+    if (g_strv_length(aline)<2) return FALSE;
+    if (strlen(aline[1])<15) return FALSE;
+
     if (aline[1][11]!='9')
       return FALSE;
     if (aline[1][13]-'0'<3)
       return FALSE;
     if ((aline[1][13]=='3') && ((aline[1][14]-'0')<6))
       return FALSE;
-                                    
+
+    if (strlen(aline[1])>16)
+    {
+      if ((aline[1][13]=='3') && (aline[1][14]=='6') && ((aline[1][16]-'0')<2))
+        return FALSE;
+    }
+    else
+    {
+    if ((aline[1][13]=='3') && ((aline[1][14]-'0')<7))
+      return FALSE;
+    }
+
+    gchar *version = g_strconcat(aline[1], " detected...", NULL);
+    printf("[Mednaffe] %s\n",version);
+
     GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
     gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, version);
     g_strfreev(achar);
     g_strfreev(aline);
     g_free(version);
-  
+
     return TRUE;
-  } 
+  }
   else return FALSE;
 }
 
@@ -375,7 +393,7 @@ gboolean read_cfg(guidata *gui)
   gchar *string;
   gint num = 0;
   gint i;
-  
+
   /*GFile *file = g_file_new_for_path(cfg_path);
   GFileMonitor *test = g_file_monitor (file, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
   g_signal_connect (test, "changed", G_CALLBACK (test_watch), gui);*/
@@ -401,6 +419,6 @@ gboolean read_cfg(guidata *gui)
     g_strfreev(achar);
   }
   else return FALSE;
-  
+
   return TRUE;
 }
