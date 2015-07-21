@@ -93,6 +93,6 @@ typedef struct
    gint state;
    joydata joy[9];
    gboolean inputedited;
+   gboolean inputkeys;
    gboolean m_error;
-
 }guidata;

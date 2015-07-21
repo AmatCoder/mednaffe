@@ -104,6 +104,34 @@ gchar* hash2joy(gchar *key ,gint i)
   return joy_hash;
 }
 
+gchar* modkeys(gchar *key, gchar *value)
+{
+  if (key[0] == '\0') return NULL;
+
+  gchar **items;
+  gchar *value2 = NULL;
+  guint num,i;
+
+  items = g_strsplit(key, "+", 4);
+  num = g_strv_length(items);
+
+  if (num>1)
+  {
+    for (i=(num-1);i>0;i--)
+    {
+      if (items[i][0]=='a') value2 = g_strconcat("Alt+", value, NULL);
+      else if (items[i][0]=='c') value2 = g_strconcat("Ctrl+", value, NULL);
+      else if (items[i][0]=='s') value2 = g_strconcat("Shift+", value, NULL);
+
+      g_free(value);
+      value = value2;
+    }
+  }
+  g_strfreev(items);
+
+  return value;
+}
+
 gchar* sdl2gdk(gchar *key)
 {
   gchar **line;
@@ -208,13 +236,20 @@ gboolean joy_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
 
   if ((gui->treepath != NULL) && (!gui->inputedited))
   {
-    GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(gui->specific, "treeview_input")));
+    gchar *fullcommand;
+    GtkTreeModel *model;
+
+    model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(gui->specific, "treeview_input")));
     gtk_tree_model_get_iter_from_string(model, &iter, gui->treepath);
     gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, on, 3, gui->joy[a].name, -1);
 
     gtk_tree_model_get(model, &iter, 1, &command, -1);
 
-    gchar *fullcommand = g_strconcat(gui->system,".input.",gui->port, command, NULL);
+    if (gui->inputkeys)
+      fullcommand = g_strconcat("-command.", command, NULL);
+    else
+      fullcommand = g_strconcat(gui->system,".input.",gui->port, command, NULL);
+
     g_free(command);
     g_hash_table_replace(gui->clist, fullcommand, fullcommand);
 
@@ -266,10 +301,15 @@ void read_input(guidata *gui)
   GtkTreeIter  iter;
 
   gui->system++;
-
-  model = GTK_TREE_MODEL(gtk_builder_get_object(
+  if (gui->inputkeys)
+  {
+    model = GTK_TREE_MODEL(gtk_builder_get_object(gui->builder, "keys"));
+  }
+  else
+  {
+    model = GTK_TREE_MODEL(gtk_builder_get_object(
                                            gui->specific, gui->system));
-
+  }
   gtk_tree_view_set_model(GTK_TREE_VIEW(gtk_builder_get_object(
                               gui->specific, "treeview_input")), model);
 
@@ -282,8 +322,10 @@ void read_input(guidata *gui)
       gchar *hashkey;
 
       gtk_tree_model_get(model, &iter, 1, &action, -1);
-      command = g_strconcat(gui->system, ".input.",
-                            gui->port, action, NULL);
+      if (gui->inputkeys) command = g_strconcat("command.", action, NULL);
+      else
+        command = g_strconcat(gui->system, ".input.",
+                              gui->port, action, NULL);
       g_free(action);
       hashkey = g_hash_table_lookup(gui->hash, command);
       g_free(command);
@@ -293,6 +335,8 @@ void read_input(guidata *gui)
         if (hashkey[0]=='k')
         {
           gchar *value = sdl2gdk(hashkey);
+
+          if ((value != NULL) && (gui->inputkeys)) value = modkeys(hashkey, value);
 
           if (value != NULL)
           {
@@ -471,7 +515,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
 
   if ((event.type == SDL_JOYBUTTONDOWN) ||
       (event.type == SDL_JOYHATMOTION) ||
-      ((event.type == SDL_JOYAXISMOTION) && 
+      ((event.type == SDL_JOYAXISMOTION) &&
        ((event.jaxis.value < -DEADZONE) || (event.jaxis.value > DEADZONE))))
   {
   unsigned int b;
@@ -604,41 +648,58 @@ void on_input_clicked (GtkButton *button, guidata *gui)
 
   if (gui->executing) return;
 
-  gchar *text = g_strconcat("<b>Controller Setup - ",
-                     gui->fullsystem, "</b>", NULL);
+  gui->inputkeys = (gtk_button_get_label(button)[0]=='K');
 
-  gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(
-                                     gui->specific, "label108")), text);
-  g_free(text);
+  GtkNotebook *notebook =
+    GTK_NOTEBOOK(gtk_builder_get_object(gui->specific, "notebook1"));
 
-  text = g_strconcat("Controller Setup - ", gui->fullsystem, NULL);
-  gtk_window_set_title (GTK_WINDOW(gui->inputwindow), text);
-  g_free(text);
-
-  GtkNotebook *notebook = GTK_NOTEBOOK(gtk_builder_get_object(gui->specific, "notebook1"));
-
-  g_free(gui->port);
-
-  switch (gui->pagesys)
+  if (gui->inputkeys)
   {
-    case 0:  set_builtin(notebook, gui); break;
-    case 1:  set_builtin(notebook, gui); break;
-    case 2:  set_builtin(notebook, gui); break;
-    case 3:  set_builtin(notebook, gui); break;
-    case 4:  set_ports(4, notebook, gui); break;
-    case 5:  set_ports(5, notebook, gui); break;
-    case 6:  set_ports(2, notebook, gui); break;
-    case 7:  set_builtin(notebook, gui); break;
-    case 8:  set_ports(2, notebook, gui); break;
-    case 9:  set_ports(2, notebook, gui); break;
-    case 10: set_ports(8, notebook, gui); break;
-    case 11: set_ports(2, notebook, gui); break;
-    case 12: set_builtin(notebook, gui); break;
-    case 13: set_builtin(notebook, gui); break;
-    default : break;
-  }
+    gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(
+                                   gui->specific, "label108")), "<b>Key Assignments</b>");
 
-  gtk_notebook_set_current_page(notebook, 0);
+    gtk_window_set_title (GTK_WINDOW(gui->inputwindow), "Key Assignments");
+
+    gtk_widget_hide(GTK_WIDGET(notebook));
+  }
+  else
+  {
+    gchar *text = g_strconcat("<b>Controller Setup - ",
+                    gui->fullsystem, "</b>", NULL);
+
+    gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(
+                                     gui->specific, "label108")), text);
+    g_free(text);
+
+    text = g_strconcat("Controller Setup - ", gui->fullsystem, NULL);
+    gtk_window_set_title (GTK_WINDOW(gui->inputwindow), text);
+
+    g_free(text);
+    g_free(gui->port);
+
+    gtk_widget_show(GTK_WIDGET(notebook));
+
+    switch (gui->pagesys)
+    {
+      case 0:  set_builtin(notebook, gui); break;
+      case 1:  set_builtin(notebook, gui); break;
+      case 2:  set_builtin(notebook, gui); break;
+      case 3:  set_builtin(notebook, gui); break;
+      case 4:  set_ports(4, notebook, gui); break;
+      case 5:  set_ports(5, notebook, gui); break;
+      case 6:  set_ports(2, notebook, gui); break;
+      case 7:  set_builtin(notebook, gui); break;
+      case 8:  set_ports(2, notebook, gui); break;
+      case 9:  set_ports(2, notebook, gui); break;
+      case 10: set_ports(8, notebook, gui); break;
+      case 11: set_ports(2, notebook, gui); break;
+      case 12: set_builtin(notebook, gui); break;
+      case 13: set_builtin(notebook, gui); break;
+      default : break;
+    }
+
+    gtk_notebook_set_current_page(notebook, 0);
+  }
 
   if (gui->changed)
   {
@@ -801,7 +862,23 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
   gchar *command;
   gchar *fullcommand;
   gchar *key = NULL;
+  gchar *key2;
   guint nkey;
+
+  printf("%i\n",event->keyval);
+  if (gui->inputkeys)
+  {
+    if (
+        (event->keyval==65505) ||
+        (event->keyval==65506) ||
+        (event->keyval==65507) ||
+        (event->keyval==65508) ||
+        (event->keyval==65511) ||
+        (event->keyval==65512) ||
+        (event->keyval==65513) ||
+        (event->keyval==65514)
+       ) return FALSE;
+  }
 
   #ifdef G_OS_WIN32
     g_mutex_lock (&mutex);
@@ -819,15 +896,67 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
 
   model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(gui->specific, "treeview_input")));
   gtk_tree_model_get_iter_from_string(model, &iter, gui->treepath);
+
+  if (gui->inputkeys)
+  {
+    key2 = key;
+
+    if (event->state & GDK_SHIFT_MASK)
+    {
+      key = g_strconcat("Shift+", key2, NULL);
+      g_free(key2);
+      key2 = key;
+    }
+    if (event->state & GDK_MOD1_MASK)
+    {
+      key = g_strconcat("Alt+", key2, NULL);
+      g_free(key2);
+      key2 = key;
+    }
+    if (event->state & GDK_CONTROL_MASK)
+    {
+      key = g_strconcat("Ctrl+", key2, NULL);
+      g_free(key2);
+    }
+
+  }
   gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, key, 3, "Keyboard", -1);
   g_free(key);
 
-  gtk_tree_model_get(model, &iter,1 , &command, -1);
+  gtk_tree_model_get(model, &iter, 1, &command, -1);
 
-  fullcommand = g_strconcat(gui->system,".input.",gui->port, command, NULL);
+  if (gui->inputkeys)
+   fullcommand = g_strconcat("-command.", command, NULL);
+  else
+    fullcommand = g_strconcat(gui->system,".input.",gui->port, command, NULL);
+
   g_free(command);
   g_hash_table_replace(gui->clist, fullcommand, fullcommand);
   key = g_strdup_printf("%i",nkey);
+
+  if (gui->inputkeys)
+  {
+        key2 = key;
+
+    if (event->state & GDK_CONTROL_MASK)
+    {
+      key = g_strconcat(key2, "+ctrl", NULL);
+      g_free(key2);
+      key2 = key;
+    }
+    if (event->state & GDK_MOD1_MASK)
+    {
+      key = g_strconcat(key2, "+alt", NULL);
+      g_free(key2);
+      key2 = key;
+    }
+
+    if (event->state & GDK_SHIFT_MASK)
+    {
+      key = g_strconcat(key2, "+shift", NULL);
+      g_free(key2);
+    }
+  }
 
   fullcommand++;
   g_hash_table_insert(gui->hash, g_strdup(fullcommand), g_strconcat("keyboard ", key, NULL));
@@ -869,13 +998,18 @@ void thread_watch(GPid pid, gint status, guidata *gui)
    {
      GtkTreeIter  iter;
      gchar *command;
+     gchar* fullcommand;
 
      GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtk_builder_get_object(gui->specific, "treeview_input")));
      gtk_tree_model_get_iter_from_string(model, &iter, gui->treepath);
      gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, on, 3, gui->joy[which].name, -1);
      gtk_tree_model_get(model, &iter, 1, &command, -1);
 
-     gchar *fullcommand = g_strconcat(gui->system,".input.",gui->port, command, NULL);
+    if (gui->inputkeys)
+      fullcommand = g_strconcat("-command.", command, NULL);
+    else
+      fullcommand = g_strconcat(gui->system,".input.",gui->port, command, NULL);
+
      g_free(command);
      g_hash_table_replace(gui->clist, fullcommand, fullcommand);
      fullcommand++;
