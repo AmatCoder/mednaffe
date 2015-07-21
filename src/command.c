@@ -229,7 +229,23 @@ void child_watch(GPid pid, gint status, guidata *gui)
     g_strfreev(gui->command);
   #endif
 
-  if (gui->m_error == FALSE) g_hash_table_remove_all(gui->clist);
+  if (gui->m_error == FALSE)
+  {
+    g_hash_table_remove_all(gui->clist);
+
+    /* Send 'video.fs' and 'cheats' every time */
+    gpointer name;
+    name = g_strdup(g_object_get_data(gtk_builder_get_object(
+                                  gui->builder, "-video.fs"), "cname"));
+
+    g_hash_table_insert(gui->clist, name, name);
+
+    name = g_strdup(g_object_get_data(gtk_builder_get_object(
+                                    gui->builder, "-cheats"), "cname"));
+
+    g_hash_table_insert(gui->clist, name, name);
+  }
+
   gui->m_error = FALSE;
 
   if (gui->state==1) gtk_window_present(GTK_WINDOW(gui->topwindow));
@@ -290,20 +306,6 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
 
   if ((gui->executing == TRUE) || (gui->fullpath == NULL))
     return;
-
-  /* Always to send 'video.fs' and 'cheats' */
-
-  gpointer name;
-  name = g_strdup(g_object_get_data(gtk_builder_get_object(
-                                     gui->builder, "-video.fs"), "cname"));
-
-  g_hash_table_insert(gui->clist, name, name);
-
-  name = g_strdup(g_object_get_data(gtk_builder_get_object(
-                                     gui->builder, "-cheats"), "cname"));
-
-  g_hash_table_insert(gui->clist, name, name);
-  /*                                         */
 
   gui->command = build_command(gui);
   printf ("[Mednaffe] Executing mednafen...\n");
