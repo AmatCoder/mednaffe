@@ -495,7 +495,17 @@ int main(int argc, char **argv)
 
  /* Search for mednafen executable */
   if (gui.binpath==NULL)
+  {
     gui.binpath = g_find_program_in_path("mednafen");
+  }
+  else
+  {
+    if (!g_file_test(gui.binpath, G_FILE_TEST_IS_EXECUTABLE))
+    {
+      g_free(gui.binpath);
+      gui.binpath = NULL;
+    }
+  }
   if (gui.binpath==NULL)
   {
     gui.binpath = show_chooser(
@@ -527,7 +537,7 @@ want to select the file manually?\n");
     gchar *qbin = g_strconcat("\"", gui.binpath, "\"", NULL);
     gchar *cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
 
-    if ((g_file_get_contents(path, &stout, NULL, NULL)) && 
+    if ((g_file_get_contents(path, &stout, NULL, NULL)) &&
         (g_file_test(cfg_path, G_FILE_TEST_IS_REGULAR)))
     {}
     else
