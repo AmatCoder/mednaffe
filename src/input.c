@@ -691,7 +691,7 @@ void on_input_clicked (GtkButton *button, guidata *gui)
       case 7:  set_builtin(notebook, gui); break;
       case 8:  set_ports(2, notebook, gui); break;
       case 9:  set_ports(2, notebook, gui); break;
-      case 10: set_ports(8, notebook, gui); break;
+      case 10: set_ports(2, notebook, gui); break;
       case 11: set_ports(2, notebook, gui); break;
       case 12: set_builtin(notebook, gui); break;
       case 13: set_builtin(notebook, gui); break;
@@ -865,7 +865,6 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
   gchar *key2;
   guint nkey;
 
-  printf("%i\n",event->keyval);
   if (gui->inputkeys)
   {
     if (
