@@ -51,9 +51,12 @@ gchar *build_command_win(guidata *gui)
   }
   g_list_free(list);
 
-  command2 = g_strconcat(command, " \"", gui->fullpath, "\"", NULL );
+  command2 = g_strconcat(command, " -psx.dbg_level \"0\"", NULL );
+  g_free(command);
+  command = g_strconcat(command2, " \"", gui->fullpath, "\"", NULL );
+  g_free(command2);
 
-  return command2;
+  return command;
 }
 
 #else
