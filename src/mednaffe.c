@@ -330,6 +330,7 @@ int main(int argc, char **argv)
   guidata gui;
   const gchar *home = NULL;
   gchar *stout = NULL;
+  GKeyFile *key_file;
 
   /* Init GTK+ */
   gtk_init(&argc, &argv);
@@ -490,7 +491,7 @@ int main(int argc, char **argv)
   g_signal_connect(celltoggle, "toggled", G_CALLBACK(on_cell_toggled), &gui);
 
   /* Load preferences */
-  load_prefs(&gui);
+  key_file = load_prefs(&gui);
 
  /* Search for mednafen executable */
   if (gui.binpath==NULL)
@@ -571,6 +572,7 @@ version or above.\n");
   }
 
   /* Set values into gui */
+  if (key_file) load_emu_options(key_file, &gui);
   set_values(gui.builder, &gui);
   set_values(gui.specific, &gui);
   select_rows(&gui);

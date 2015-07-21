@@ -246,9 +246,10 @@ void load_emu_options(GKeyFile *key_file, guidata *gui)
     }
   }
   g_free(ffekeys);
+  g_key_file_free(key_file);
 }
 
-void load_prefs(guidata *gui)
+GKeyFile* load_prefs(guidata *gui)
 {
   gchar *conf_file;
   GKeyFile *key_file;
@@ -262,7 +263,7 @@ void load_prefs(guidata *gui)
     conf_file=g_strconcat(g_get_user_config_dir(), "/mednaffe.conf", NULL);
   #endif
 
-  key_file=g_key_file_new();
+  key_file = g_key_file_new();
   /*g_key_file_set_list_separator(key_file,  0x0D);*/
 
   if (g_key_file_load_from_file(key_file, conf_file,
@@ -370,8 +371,13 @@ void load_prefs(guidata *gui)
     }
 
     load_systems_showed(key_file, gui);
-    load_emu_options(key_file, gui);
   }
-  g_key_file_free(key_file);
+  else
+  {
+    g_key_file_free(key_file);
+    key_file = NULL;
+  }
   g_free(conf_file);
+
+  return key_file;
 }

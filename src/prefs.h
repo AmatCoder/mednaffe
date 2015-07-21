@@ -24,6 +24,7 @@
 #define PREFS_H
 
   void save_prefs(guidata *gui);
-  void load_prefs(guidata *gui);
+  GKeyFile* load_prefs(guidata *gui);
+  void load_emu_options(GKeyFile *key_file, guidata *gui);
 
 #endif /* PREFS_H */
