@@ -28,6 +28,7 @@
   void set_combo(gpointer widget, guidata *gui);
   void set_spin(gpointer widget, guidata *gui);
   void set_values(GtkBuilder *builder, guidata *gui);
+  gchar* get_cfg(const gchar *home, guidata *gui);
   gboolean check_version(gchar *stout, guidata *gui);
   gboolean read_cfg(guidata *gui);
 
