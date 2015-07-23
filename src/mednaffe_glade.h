@@ -5606,7 +5606,7 @@ static const char *mednaffe_glade =
 "</child>\n"
 "<child>\n"
 "<object class=\"GtkStatusbar\" id=\"sbversion\">\n"
-"<property name=\"width_request\">250</property>\n"
+"<property name=\"width_request\">170</property>\n"
 "<property name=\"visible\">True</property>\n"
 "<property name=\"can_focus\">False</property>\n"
 "</object>\n"
