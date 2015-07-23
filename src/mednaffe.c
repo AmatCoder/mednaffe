@@ -57,7 +57,7 @@ void show_error(const gchar *message)
   printf("%s", message);
 }
 
-gchar* show_chooser(const gchar *message)
+gchar* show_chooser(const gchar *message, guidata *gui)
 {
   GtkWidget *exe;
   gchar *filename = NULL;
@@ -75,10 +75,17 @@ gchar* show_chooser(const gchar *message)
   }
   gtk_widget_destroy (dialog);
 
+#ifdef GTK2_ENABLED
   exe = gtk_file_chooser_dialog_new(
-    "Choose a mednafen executable...", NULL,
+    "Choose a mednafen executable...", GTK_WINDOW(gui->topwindow),
     GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL,
     GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL );
+#else
+  exe = gtk_file_chooser_dialog_new(
+    "Choose a mednafen executable...", GTK_WINDOW(gui->topwindow),
+    GTK_FILE_CHOOSER_ACTION_OPEN, ("_Cancel"),
+    GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+#endif
 
   GtkFileFilter* filter = gtk_file_filter_new();
   gtk_file_filter_add_pattern(filter, "mednafen.exe");
@@ -267,6 +274,7 @@ void quit(GtkWidget *widget, guidata *gui)
   printf("Exiting Mednaffe...\n");
 
   /* To free items makes happy to Valgrind ;-) */
+  g_object_unref(gui->pixbuf);
   g_object_unref(G_OBJECT(gui->builder));
   g_object_unref(G_OBJECT(gui->specific));
   g_object_unref(G_OBJECT(gui->settings));
@@ -280,8 +288,8 @@ void quit(GtkWidget *widget, guidata *gui)
   g_free(gui->fullsystem);
   g_free(gui->system);
   g_free(gui->cfgfile);
-  g_free(gui->port)
-  ;g_free(gui->treepath);
+  g_free(gui->port);
+  g_free(gui->treepath);
   g_slist_free_full(gui->itemlist, g_free);
 
   gtk_main_quit();
@@ -485,7 +493,7 @@ int main(int argc, char **argv)
   {
     gui.binpath = show_chooser(
       "Warning: Mednafen executable is not installed in path.\nDo you \
-want to select the file manually?\n");
+want to select the file manually?\n", &gui);
     if (gui.binpath==NULL)
     {
       show_error(
@@ -563,8 +571,8 @@ version or above.\n");
   select_rows(&gui);
 
   /* Create icon */
-  gtk_window_set_icon(GTK_WINDOW(gui.topwindow),
-                    gdk_pixbuf_new_from_inline (-1, logo, FALSE, NULL));
+  gui.pixbuf = gdk_pixbuf_new_from_inline (-1, logo, FALSE, NULL);
+  gtk_window_set_icon(GTK_WINDOW(gui.topwindow), gui.pixbuf);
 
   /* Show window and set focus */
   gtk_widget_show(gui.topwindow);

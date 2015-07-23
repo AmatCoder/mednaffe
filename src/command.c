@@ -338,11 +338,17 @@ void open_rom(GtkWidget *sender, guidata *gui)
 {
   GtkWidget *folder;
 
+#ifdef GTK2_ENABLED
   folder = gtk_file_chooser_dialog_new(
-    "Choose a ROM...", NULL,
+    "Choose a ROM...", GTK_WINDOW(gui->topwindow),
     GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL,
     GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL );
-
+#else
+  folder = gtk_file_chooser_dialog_new(
+    "Choose a ROM...", GTK_WINDOW(gui->topwindow),
+    GTK_FILE_CHOOSER_ACTION_OPEN, ("_Cancel"),
+    GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+#endif
   if (gtk_dialog_run(GTK_DIALOG(folder)) == GTK_RESPONSE_ACCEPT)
   {
     gchar *filename;

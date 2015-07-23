@@ -43,8 +43,6 @@ You should have received a copy of the GNU General Public License \
 along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.";
 
 
-GdkPixbuf *pixbuf = gdk_pixbuf_new_from_inline (-1, logo, FALSE, NULL);
-
 gtk_show_about_dialog(
   GTK_WINDOW(gui->topwindow),
   "program-name", "Mednaffe",
@@ -59,8 +57,6 @@ gtk_show_about_dialog(
   "license", gpl3,
   "wrap-license", TRUE,
   "website", "https://github.com/AmatCoder/mednaffe",
-  "logo", pixbuf, 
+  "logo", gui->pixbuf, 
   NULL);
-  
-  g_object_unref(pixbuf);
 }

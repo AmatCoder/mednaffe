@@ -27,16 +27,21 @@ G_MODULE_EXPORT
 #endif
 void on_entry_color_changed(GtkEditable *editable, gpointer colorbutton)
 {
-  GdkColor color;
+
   gchar *text;
   gchar *total;
 
   text = gtk_editable_get_chars(editable,2,-1);
   total = g_strconcat("#", text, NULL);
-
+#ifdef GTK2_ENABLED
+  GdkColor color;
   gdk_color_parse(total, &color);
   gtk_color_button_set_color(GTK_COLOR_BUTTON(colorbutton), &color);
-
+#else
+  GdkRGBA color;
+  gdk_rgba_parse (&color, total);
+  gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(colorbutton), &color);
+#endif
   g_free(text);
   g_free(total);
 }
@@ -46,23 +51,29 @@ G_MODULE_EXPORT
 #endif
 void on_cbvbdefault_color_set(GtkColorButton *widget, gpointer entry)
 {
-  GdkColor color;
   gchar *hex;
   gchar *total;
 
+#ifdef GTK2_ENABLED
+  GdkColor color;
   gtk_color_button_get_color(widget, &color);
-
   hex = gtk_color_selection_palette_to_string(&color, 1);
   hex++;
   total = g_strconcat("0x", hex, NULL);
-  /*total = g_strdup_printf ("0x%2X%2X%2X",
-                       color->red / 256,
-                       color->green / 256,
-                       color->blue / 256);*/
+  hex--;
+#else
+  GdkRGBA color;
+  gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), &color);
+  hex = gdk_rgba_to_string(&color);
+  total = g_strdup_printf ("0x%02X%02X%02X",
+                       (unsigned int)(color.red * 255),
+                       (unsigned int)(color.green * 255),
+                      (unsigned int)(color.blue * 255));
+#endif
+
 
   gtk_entry_set_text(entry, total);
 
-  hex--;
   g_free(hex);
   g_free(total);
 
@@ -85,16 +96,24 @@ void on_button_entry_clicked_folder(GtkButton *button, GtkEntry *entry)
 {
   GtkWidget *folder;
 
+#ifdef GTK2_ENABLED
   folder = gtk_file_chooser_dialog_new(
     "Choose a folder...", NULL,
     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, GTK_STOCK_CANCEL,
-    GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, 
+    GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
     NULL);
-  
+#else
+  folder = gtk_file_chooser_dialog_new(
+    "Choose a folder...", NULL,
+    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, ("_Cancel"),
+    GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT,
+    NULL);
+#endif
+
   if (gtk_dialog_run(GTK_DIALOG(folder)) == GTK_RESPONSE_ACCEPT)
   {
     gchar *path;
-    
+
     path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (folder));
     gtk_entry_set_text(entry, path);
     g_free(path);
@@ -109,16 +128,22 @@ void on_button_entry_clicked(GtkButton *button, GtkEntry *entry)
 {
   GtkWidget *folder;
 
+#ifdef GTK2_ENABLED
   folder = gtk_file_chooser_dialog_new(
     "Choose a file...", NULL,
     GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL,
-    GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, 
-    NULL);
+    GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+#else
+  folder = gtk_file_chooser_dialog_new(
+    "Choose a file...", NULL,
+    GTK_FILE_CHOOSER_ACTION_OPEN, ("_Cancel"),
+    GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+#endif
 
   if (gtk_dialog_run(GTK_DIALOG(folder)) == GTK_RESPONSE_ACCEPT)
   {
     gchar *path;
-    
+
     path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (folder));
     gtk_entry_set_text(entry, path);
     g_free(path);
@@ -133,7 +158,7 @@ void cbvideodrv_changed_cb(GtkComboBox *combobox, GtkWidget *widget)
 {
   if (gtk_combo_box_get_active(combobox)==0)
     gtk_widget_set_sensitive(widget, TRUE);
-  else 
+  else
     gtk_widget_set_sensitive(widget, FALSE);
 }
 
@@ -151,7 +176,7 @@ void on_tbsound_toggled(GtkToggleButton *sender, GtkWidget *widget)
   {
     gtk_widget_set_sensitive(
       list->data, gtk_toggle_button_get_active(sender));
-      
+
     list = list->next;
   }
   g_list_free (list);
@@ -172,7 +197,7 @@ void on_ntsc_changed(GtkComboBox *combobox, GtkWidget *widget)
 {
   if ((gtk_combo_box_get_active(combobox)==0) || (gtk_combo_box_get_active(combobox)==5))
     gtk_widget_set_sensitive(widget, TRUE);
-  else 
+  else
     gtk_widget_set_sensitive(widget, FALSE);
 }
 
@@ -183,6 +208,6 @@ void on_vbmode2_changed(GtkComboBox *combobox, GtkWidget *widget)
 {
   if (gtk_combo_box_get_active(combobox)!=0)
     gtk_widget_set_sensitive(widget, TRUE);
-  else 
-    gtk_widget_set_sensitive(widget, FALSE);  
+  else
+    gtk_widget_set_sensitive(widget, FALSE);
 }
