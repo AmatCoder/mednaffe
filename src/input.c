@@ -23,6 +23,7 @@
 #include "common.h"
 #include "input.h"
 #include "toggles.h"
+#include "log.h"
 
 #ifdef G_OS_UNIX
  #include "joystick_linux.h"
@@ -714,8 +715,13 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   {
     if (GetJoy(a,gui)>0)
     {
-      gui->joy[a].channel = g_io_channel_unix_new(gui->joy[a].js_fd);
+      gchar *id =g_strdup_printf(" - Unique ID: %016llx\n", gui->joy[a].id); 
+      print_log("Joystick detected: ", FE, gui);
+      print_log(gui->joy[a].name, FE, gui);
+      print_log(id, FE, gui);
+      g_free(id);
 
+      gui->joy[a].channel = g_io_channel_unix_new(gui->joy[a].js_fd);
       //g_io_channel_set_flags (gui->joy[a].channel, G_IO_FLAG_NONBLOCK, NULL);
       g_io_channel_set_close_on_unref(gui->joy[a].channel, TRUE);
       g_io_add_watch(gui->joy[a].channel, G_IO_IN|G_IO_HUP, (GIOFunc)joy_watch, gui);
@@ -775,13 +781,17 @@ void on_input_clicked (GtkButton *button, guidata *gui)
     }
   }
 
-  /*for(i=0;i<9;i++)
+  for(i=0;i<9;i++)
   {
-     printf("Index: %i - Instance: %i - Name: %s - ID: %016I64x\n", i,
-              SDL_JoystickInstanceID(gui->joy[i].sdljoy),
-              SDL_JoystickName(gui->joy[i].sdljoy),
-              gui->joy[i].id);
-  }*/
+    if (gui->joy[i].name != NULL)
+    {
+      gchar *id =g_strdup_printf(" - Unique ID: %016I64x\n", gui->joy[i].id);
+      print_log("Joystick detected: ", FE, gui);
+      print_log(SDL_JoystickName(gui->joy[i].sdljoy), FE, gui);
+      print_log(id, FE, gui);
+      g_free(id);
+    }
+  }
 
    /* gchar *string;
 

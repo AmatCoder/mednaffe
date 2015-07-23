@@ -26,13 +26,14 @@
 
   gcc -g -std=c99 -Wall -DGTK2_ENABLED -o mednaffe about.c
   active.c command.c gui.c prefs.c list.c toggles.c
-  input.c joystick_linux.c md5.c mednaffe.c
+  log.c input.c joystick_linux.c md5.c mednaffe.c
   $(pkg-config --cflags --libs gtk+-2.0 gmodule-export-2.0)
 
 */
 
 #include "common.h"
 #include "toggles.h"
+#include "log.h"
 #include "prefs.h"
 #include "logo.h"
 #include "mednaffe_glade.h"
@@ -264,7 +265,7 @@ G_MODULE_EXPORT
 void quit(GtkWidget *widget, guidata *gui)
 {
   save_prefs(gui);
-  printf("[Mednaffe] Exiting Mednaffe...\n");
+  printf("Exiting Mednaffe...\n");
 
   /* To free items makes happy to Valgrind ;-) */
   g_object_unref(G_OBJECT(gui->builder));
@@ -295,7 +296,7 @@ void delete(GtkWidget *widget, GdkEvent *event, guidata *gui)
   quit(widget,gui);
 }
 
-gchar *get_cfg(const gchar *home)
+gchar *get_cfg(const gchar *home, guidata *gui)
 {
   gchar *cfg_path;
 
@@ -307,7 +308,8 @@ gchar *get_cfg(const gchar *home)
   #endif
 
   if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
-    printf("[Mednaffe] Mednafen 09x configuration file found\n");
+    print_log("Starting Mednaffe 0.7\n\
+Mednafen 09x configuration file found.\n", FE, gui);
   else return NULL;
 
   /*{
@@ -317,7 +319,7 @@ gchar *get_cfg(const gchar *home)
     cfg_path = g_strconcat(home, "/.mednafen/mednafen.cfg", NULL);
   #endif
     if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
-      printf("[Mednaffe] Mednafen 08x configuration file found\n");
+      printf(" Mednafen 08x configuration file found\n");
     else
       cfg_path = NULL;
   }*/
@@ -334,7 +336,6 @@ int main(int argc, char **argv)
 
   /* Init GTK+ */
   gtk_init(&argc, &argv);
-  printf("[Mednaffe] Starting Mednaffe 0.7...\n");
 
   /* Create new GtkBuilder objects */
   gui.builder = gtk_builder_new();
@@ -398,6 +399,12 @@ int main(int argc, char **argv)
   gui.launch = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                              "button1"));
 
+  gui.textfe = GTK_TEXT_BUFFER(gtk_builder_get_object(gui.builder,
+                              "textbufferfe"));
+
+  gui.textout = GTK_TEXT_BUFFER(gtk_builder_get_object(gui.builder,
+                                "textbufferout"));
+
   /*gui.setlabel = GTK_WIDGET(gtk_builder_get_object(gui.builder,
                             "settings_label"));
   g_object_ref(gui.setlabel);*/
@@ -457,7 +464,7 @@ int main(int argc, char **argv)
   gui.treepath = NULL;
   gui.editable = NULL;
   gui.inputedited = TRUE;
-  gui.m_error = FALSE;
+  gui.m_error = NULL;
 
   gui.clist = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
   gui.hash = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
@@ -556,7 +563,7 @@ want to select the file manually?\n");
   #endif
 
   /* Search mednafen configuration file */
-  gui.cfgfile = get_cfg(home);
+  gui.cfgfile = get_cfg(home, &gui);
   if (!gui.cfgfile)
   {
     show_error("Error: No mednafen configuration file found.\n");

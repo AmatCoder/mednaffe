@@ -21,6 +21,7 @@
  */
 
 #include "common.h"
+#include "log.h"
 #include "string.h"
 
 void select_rows(guidata *gui)
@@ -374,17 +375,20 @@ gboolean check_version(gchar *stout, guidata *gui)
       return FALSE;
     }
 
-    gchar *version = g_strconcat(aline[1], " detected...", NULL);
-    printf("[Mednaffe] %s\n",version);
+    print_log("Version detected: ", FE, gui);
+    print_log(aline[1], FE, gui);
+    #ifdef G_OS_UNIX
+      print_log("\n", FE, gui);
+    #endif
+    print_log("----\n", FE, gui);
 
     GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
-    gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, version);
+    gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, aline[1]);
 
     gtk_widget_set_tooltip_text(GTK_WIDGET(sbversion), gui->binpath);
 
     g_strfreev(achar);
     g_strfreev(aline);
-    g_free(version);
 
     return TRUE;
   }

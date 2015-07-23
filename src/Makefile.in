@@ -102,7 +102,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_mednaffe_OBJECTS = mednaffe.$(OBJEXT) about.$(OBJEXT) \
 	active.$(OBJEXT) command.$(OBJEXT) list.$(OBJEXT) \
 	toggles.$(OBJEXT) input.$(OBJEXT) gui.$(OBJEXT) \
-	prefs.$(OBJEXT) joystick_linux.$(OBJEXT) md5.$(OBJEXT)
+	prefs.$(OBJEXT) log.$(OBJEXT) joystick_linux.$(OBJEXT) \
+	md5.$(OBJEXT)
 mednaffe_OBJECTS = $(am_mednaffe_OBJECTS)
 mednaffe_LDADD = $(LDADD)
 mednaffe_DEPENDENCIES =
@@ -252,7 +253,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-mednaffe_SOURCES = mednaffe.c about.c active.c command.c list.c toggles.c input.c gui.c prefs.c joystick_linux.c md5.c common.h mednaffe_glade.h settings_glade.h  system_glade.h toggles.h prefs.h input.h joystick_linux.h md5.h logo.h
+mednaffe_SOURCES = mednaffe.c about.c active.c command.c list.c toggles.c input.c gui.c prefs.c log.c joystick_linux.c md5.c common.h mednaffe_glade.h settings_glade.h  system_glade.h toggles.h prefs.h input.h log.h joystick_linux.h md5.h logo.h
 AM_CPPFLAGS = @GTK_CFLAGS@ $(GTK_DEFINES)
 LDADD = @GTK_LIBS@
 CLEANFILES = *~
@@ -350,6 +351,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/input.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joystick_linux.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/md5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mednaffe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/prefs.Po@am__quote@

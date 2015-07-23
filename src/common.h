@@ -60,6 +60,8 @@ typedef struct
    GtkWidget *launch;
    GtkWidget *systemlist;
    GtkWidget *globalist;
+   GtkTextBuffer *textfe;
+   GtkTextBuffer *textout;
    GtkBuilder *specific;
    GtkBuilder *builder;
    GtkBuilder *settings;
@@ -94,5 +96,5 @@ typedef struct
    joydata joy[9];
    gboolean inputedited;
    gboolean inputkeys;
-   gboolean m_error;
+   gchar *m_error;
 }guidata;
