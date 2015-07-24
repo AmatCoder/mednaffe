@@ -211,3 +211,20 @@ void on_vbmode2_changed(GtkComboBox *combobox, GtkWidget *widget)
   else
     gtk_widget_set_sensitive(widget, FALSE);
 }
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_audio_changed(GtkComboBox *combobox, GtkWidget *widget)
+{
+  if (
+    #ifdef G_OS_WIN32
+      (gtk_combo_box_get_active(combobox)==0) ||
+    #endif
+      (gtk_combo_box_get_active(combobox)==3) || 
+      (gtk_combo_box_get_active(combobox)==4) ||
+      (gtk_combo_box_get_active(combobox)==7))
+    gtk_widget_set_sensitive(widget, FALSE);
+  else
+    gtk_widget_set_sensitive(widget, TRUE);
+}

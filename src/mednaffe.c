@@ -418,6 +418,8 @@ int main(int argc, char **argv)
   #ifdef G_OS_WIN32
   gtk_widget_set_visible(GTK_WIDGET(gtk_builder_get_object(gui.builder,
                          "-video.disable_composition")), TRUE);
+  gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(gui.builder,
+                         "-sound.period_time")), FALSE);
   #endif
 
   /* Set initial values */
