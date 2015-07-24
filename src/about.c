@@ -46,7 +46,7 @@ along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.";
 gtk_show_about_dialog(
   GTK_WINDOW(gui->topwindow),
   "program-name", "Mednaffe",
-  "version" ,"0.7",
+  "version" ,"0.8",
   "authors", authors,
 #ifdef STATIC_ENABLED
   "copyright", "See NOTICE file for license details.",
