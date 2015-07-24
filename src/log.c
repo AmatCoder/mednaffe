@@ -46,7 +46,9 @@ void print_log(const gchar *text, elog log, guidata *gui)
 {
   if (log & FE)
   {
+  #ifdef G_OS_UNIX
     printf("%s", text);
+  #endif
     gtk_text_buffer_insert_at_cursor(gui->textfe, text, -1);
   }
 

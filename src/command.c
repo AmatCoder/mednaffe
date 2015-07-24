@@ -96,7 +96,7 @@ gchar **build_command(guidata *gui)
 gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
 {
   gsize size;
-
+GError *err = NULL;
   if (cond == G_IO_HUP)
   {
     g_io_channel_unref(channel);
@@ -106,13 +106,15 @@ gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
   g_free(gui->m_error);
   gui->m_error= NULL;
 
-  if (g_io_channel_read_line(channel, &gui->m_error, &size, NULL, NULL) != G_IO_STATUS_NORMAL)
+  if (g_io_channel_read_line(channel, &gui->m_error, &size, NULL, &err) != G_IO_STATUS_NORMAL)
     return TRUE;
 
   if (gui->m_error != NULL)
   {
+    if (g_utf8_validate (gui->m_error, -1, NULL))
       gtk_text_buffer_insert_at_cursor(gui->textout, gui->m_error, size);
   }
+
   return TRUE;
 }
 
@@ -246,7 +248,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   gui->command = build_command_win(gui);
   delete_log(EMU, gui);
 
-  print_log("Executing mednafen with command line: \n", FE|EMU, gui);
+  print_log("\nExecuting mednafen with command line: \n", FE|EMU, gui);
   print_log(gui->command, FE|EMU, gui);
   print_log("\n", FE|EMU, gui);
 
@@ -290,7 +292,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   gui->command = build_command(gui);
   
   delete_log(EMU, gui);
-  print_log("Executing mednafen with command line: \n\"", FE|EMU, gui);
+  print_log("\nExecuting mednafen with command line: \n\"", FE|EMU, gui);
 
     gint i=0;
     while (gui->command[i])
@@ -313,9 +315,12 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   }
 
   g_child_watch_add(pid, (GChildWatchFunc)child_watch, gui);
+
   out_ch = g_io_channel_unix_new(out);
-  g_io_channel_set_flags (out_ch, G_IO_FLAG_NONBLOCK, NULL);
-  //g_io_channel_set_close_on_unref(out_ch, TRUE);
+
+  g_io_channel_set_encoding(out_ch, NULL, NULL);
+  g_io_channel_set_flags (out_ch, G_IO_FLAG_NONBLOCK| G_IO_FLAG_APPEND, NULL);
+
   g_io_add_watch(out_ch, G_IO_IN|G_IO_HUP, (GIOFunc)out_watch, gui);
 
   gui->executing = TRUE;
