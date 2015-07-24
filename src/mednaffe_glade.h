@@ -2008,7 +2008,7 @@ static const char *mednaffe_glade =
 "<property name=\"visible\">True</property>\n"
 "<property name=\"can_focus\">False</property>\n"
 "<child>\n"
-"<object class=\"GtkButton\" id=\"inputbutton1\">\n"
+"<object class=\"GtkButton\" id=\"keyinputbutton\">\n"
 "<property name=\"label\" translatable=\"yes\">Key Assignments</property>\n"
 "<property name=\"width_request\">300</property>\n"
 "<property name=\"visible\">True</property>\n"

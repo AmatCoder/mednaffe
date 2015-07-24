@@ -220,6 +220,8 @@ void child_watch(GPid pid, gint status, guidata *gui)
   gtk_widget_set_sensitive (gui->launch, TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
                              "inputbutton")), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                             "keyinputbutton")), TRUE);
 
   print_log("----\n", EMU, gui);
   print_log("End of execution catched.\n", FE|EMU, gui);
@@ -264,6 +266,9 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
     gtk_widget_set_sensitive(gui->launch, FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
                              "inputbutton")), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                             "keyinputbutton")), FALSE);
+
     if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
     if (gui->state==2) gtk_widget_hide(gui->topwindow);
   }
@@ -317,6 +322,8 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   gtk_widget_set_sensitive (gui->launch, FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
                              "inputbutton")), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET(gtk_builder_get_object(gui->builder,
+                             "keyinputbutton")), FALSE);
   if (gui->state==1) gtk_window_iconify(GTK_WINDOW(gui->topwindow));
   if (gui->state==2) gtk_widget_hide(gui->topwindow);
 }
