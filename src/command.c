@@ -96,7 +96,7 @@ gchar **build_command(guidata *gui)
 gboolean out_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
 {
   gsize size;
-GError *err = NULL;
+
   if (cond == G_IO_HUP)
   {
     g_io_channel_unref(channel);
@@ -106,7 +106,7 @@ GError *err = NULL;
   g_free(gui->m_error);
   gui->m_error= NULL;
 
-  if (g_io_channel_read_line(channel, &gui->m_error, &size, NULL, &err) != G_IO_STATUS_NORMAL)
+  if (g_io_channel_read_line(channel, &gui->m_error, &size, NULL, NULL) != G_IO_STATUS_NORMAL)
     return TRUE;
 
   if (gui->m_error != NULL)
@@ -319,7 +319,7 @@ void row_exec(GtkTreeView *treeview, GtkTreePath *patho,
   out_ch = g_io_channel_unix_new(out);
 
   g_io_channel_set_encoding(out_ch, NULL, NULL);
-  g_io_channel_set_flags (out_ch, G_IO_FLAG_NONBLOCK| G_IO_FLAG_APPEND, NULL);
+  g_io_channel_set_flags (out_ch, G_IO_FLAG_NONBLOCK, NULL);
 
   g_io_add_watch(out_ch, G_IO_IN|G_IO_HUP, (GIOFunc)out_watch, gui);
 
