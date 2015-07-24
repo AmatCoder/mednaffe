@@ -21,7 +21,6 @@
  */
 
 #include "common.h"
-#include "logo.h"
 
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
