@@ -1,3 +1,20 @@
+#### 24 / Jul / 2015
+
+Mednaffe 0.8 is released with the following changes:
+
+- [Windows] Support for XInput devices.
+- Support for key assignments to (some) mednafen functions.
+- Added deadzones for analog axis (Thanks to tapcio for report it).
+- New tab with text widgets in order to read logs.
+- Added the ability to select an mednafen executable if it is not found in path.
+- [Windows] 'video.disable_composition' option added.
+- [Windows] Missing sound driver options added.
+- [Linux] Rewrite the error handling process.
+- [Linux] Fix (mostly) deprecated functions.
+- Better alingment between widgets.
+- Minor cosmetic changes.
+
+
 #### 02 / May / 2015
 
 Mednaffe 0.7 is released with the following changes:
