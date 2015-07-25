@@ -1,4 +1,4 @@
-### BUILDING MEDNAFFE ON WINDOWS ###
+### BUILDING MEDNAFFE ON WINDOWS [OBSOLETE]###
 
 #### Dependencies ####
 
