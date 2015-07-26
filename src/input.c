@@ -753,46 +753,45 @@ void on_input_clicked (GtkButton *button, guidata *gui)
     }
     else
     {
-      gui->joy[i].sdl_id = SDL_JoystickInstanceID(gui->joy[i].sdljoy);
-      gui->joy[i].name = g_strdup(SDL_JoystickName(gui->joy[i].sdljoy));
+       gui->joy[i].sdl_id = SDL_JoystickInstanceID(gui->joy[i].sdljoy);
+       gui->joy[i].name = g_strdup(SDL_JoystickName(gui->joy[i].sdljoy));
 
-      SDL_JoystickGUID guid = SDL_JoystickGetGUID(gui->joy[i].sdljoy);
-      char pszGUID[32];
-      SDL_JoystickGetGUIDString(guid, (char *)pszGUID, 33);
+       SDL_JoystickGUID guid = SDL_JoystickGetGUID(gui->joy[i].sdljoy);
+       char pszGUID[32];
+       SDL_JoystickGetGUIDString(guid, (char *)pszGUID, 33);
 
-      /*printf("GUID: %s\n", pszGUID);*/
+       /*printf("GUID: %s\n", pszGUID);*/
 
-      /*if ((guid.data[0]=='x') &&
+       /*if ((guid.data[0]=='x') &&
           (guid.data[1]=='i') &&
           (guid.data[2]=='n') &&
           (guid.data[3]=='p') &&
           (guid.data[4]=='u') &&
           (guid.data[5]=='t'))*/
-     if (g_strcmp0(pszGUID, "00000000000000000000000000000000")==0)
-     {
-        int type, subtype;
+       if (g_strcmp0(pszGUID, "00000000000000000000000000000000")==0)
+       {
+          int type, subtype;
 
-        type =  SDL_JoystickDevType(gui->joy[i].sdljoy);      // Those functions does not exits in SDL
-        subtype = SDL_JoystickDevSubType(gui->joy[i].sdljoy); // I patched it to expose XINPUT_CAPABILITIES
+          type =  SDL_JoystickDevType(gui->joy[i].sdljoy);      // Those functions do not exist in SDL
+          subtype = SDL_JoystickDevSubType(gui->joy[i].sdljoy); // I patched it to expose XINPUT_CAPABILITIES
 
-        if ((type > -1) &&
-            (type < 2) &&
-            (subtype > -1 ) &&
-            (subtype < 20))
-        {
-           gui->joy[i].id = ((type << 24) | (subtype << 16));
-        }
-        else
-        gui->joy[i].id = (0x00000000 << 24) | (0x00000001 << 16);
+          if ((type > -1) &&
+              (type < 2) &&
+              (subtype > -1 ) &&
+              (subtype < 20))
+          {
+            gui->joy[i].id = ((type << 24) | (subtype << 16));
+          }
+          else gui->joy[i].id = (0x00000000 << 24) | (0x00000001 << 16);
 
-        gui->joy[i].xinput = TRUE;
-        CheckDuplicatesXInput(i, gui);
-     }
-     else
-     {
-        GetJoy(i, gui);
-        CheckDuplicates(i, gui);
-     }
+          gui->joy[i].xinput = TRUE;
+          CheckDuplicatesXInput(i, gui);
+       }
+       else
+       {
+          GetJoy(i, gui);
+       }
+       CheckDuplicates(i, gui);
     }
   }
 

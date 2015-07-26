@@ -71,7 +71,7 @@ void CheckDuplicatesXInput(guint js, guidata *gui)
     if (a==js) break;
     if (gui->joy[js].id == gui->joy[a].id) {
       gui->joy[js].id++;
-      CheckDuplicates(js, gui);
+      CheckDuplicatesXInput(js, gui);
     }
   }
 }
