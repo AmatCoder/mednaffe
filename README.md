@@ -5,17 +5,14 @@ Its main features are:
 
  * It is written in C language.
  * Available for Linux and Windows.
- * The only dependency is GTK+2 (or GTK+3).
+ * The only dependency (on Linux) is GTK+2 (or GTK+3).
  * GPLv3 licensed.
 
-*Note: Mednaffe only works with 0.9.36 or higher versions of mednafen emulator.*
-
-#### Downloads - Version 0.7
+#### Downloads - Version 0.8
  * You can download Mednaffe [here](https://sites.google.com/site/amatcoder/mednaffe/downloads/ "Downloads").
-
-*Note: Since this version you do _not_ need the GTK+ runtime for Windows. Just extract executable into the folder where mednafen emulator is.*
-
  * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
+
+*Note: Mednaffe only works with 0.9.36.2 or higher versions of mednafen emulator.*
 
 #### Screenshots
 
