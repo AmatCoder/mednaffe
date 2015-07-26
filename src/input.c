@@ -715,7 +715,7 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   {
     if (GetJoy(a,gui)>0)
     {
-      gchar *id =g_strdup_printf(" - Unique ID: %016llx\n", gui->joy[a].id); 
+      gchar *id =g_strdup_printf(" - Unique ID: %016llx\n", gui->joy[a].id);
       print_log("Joystick detected: ", FE, gui);
       print_log(gui->joy[a].name, FE, gui);
       print_log(id, FE, gui);
@@ -770,14 +770,29 @@ void on_input_clicked (GtkButton *button, guidata *gui)
           (guid.data[5]=='t'))*/
      if (g_strcmp0(pszGUID, "00000000000000000000000000000000")==0)
      {
-      gui->joy[i].id = (0x00000000 << 24) | (0x00000001 << 16);
-      gui->joy[i].xinput = TRUE;
+        int type, subtype;
+
+        type =  SDL_JoystickDevType(gui->joy[i].sdljoy);      // Those functions does not exits in SDL
+        subtype = SDL_JoystickDevSubType(gui->joy[i].sdljoy); // I patched it to expose XINPUT_CAPABILITIES
+
+        if ((type > -1) &&
+            (type < 2) &&
+            (subtype > -1 ) &&
+            (subtype < 20))
+        {
+           gui->joy[i].id = ((type << 24) | (subtype << 16));
+        }
+        else
+        gui->joy[i].id = (0x00000000 << 24) | (0x00000001 << 16);
+
+        gui->joy[i].xinput = TRUE;
+        CheckDuplicatesXInput(i, gui);
      }
      else
      {
-      GetJoy(i, gui);
+        GetJoy(i, gui);
+        CheckDuplicates(i, gui);
      }
-     CheckDuplicates(i, gui);
     }
   }
 
