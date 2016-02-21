@@ -45,12 +45,12 @@ along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.";
 gtk_show_about_dialog(
   GTK_WINDOW(gui->topwindow),
   "program-name", "Mednaffe",
-  "version" ,"0.8",
+  "version" ,"0.8.1",
   "authors", authors,
 #ifdef STATIC_ENABLED
   "copyright", "See NOTICE file for license details.",
 #else
-  "copyright", "Copyright \xc2\xa9 2010-2015 AmatCoder",
+  "copyright", "Copyright \xc2\xa9 2010-2016 AmatCoder",
 #endif
   "comments", "A front-end (GUI) for Mednafen emulator",
   "license", gpl3,

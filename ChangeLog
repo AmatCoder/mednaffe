@@ -1,3 +1,9 @@
+#### 21 / Feb / 2016
+
+Mednaffe 0.8.1 is released with the following changes:
+
+- [Windows] Fix xbox 360 controller detection on some conditions.
+
 #### 24 / Jul / 2015
 
 Mednaffe 0.8 is released with the following changes:
