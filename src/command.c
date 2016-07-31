@@ -226,7 +226,7 @@ void child_watch(GPid pid, gint status, guidata *gui)
                              "keyinputbutton")), TRUE);
 
   print_log("----\n", EMU, gui);
-  print_log("End of execution catched.\n", FE|EMU, gui);
+  print_log("End of execution caught.\n", FE|EMU, gui);
 }
 
 #ifdef G_OS_WIN32
