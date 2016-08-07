@@ -71,7 +71,7 @@ void save_systems_showed(GKeyFile *key_file, guidata *gui)
     i++;
     valid = gtk_tree_model_iter_next (model, &iter);
   }
-  g_key_file_set_boolean_list(key_file, "GUI", "Show Systems", blist, 14);
+  g_key_file_set_boolean_list(key_file, "GUI", "Show Systems", blist, 15);
 }
 
 void save_emu_options(GKeyFile *key_file, guidata *gui)
@@ -209,7 +209,7 @@ void load_systems_showed(GKeyFile *key_file, guidata *gui)
 
     gtk_tree_model_get_iter_first(GTK_TREE_MODEL(store), &iter);
     gtk_tree_model_get_iter_first(model, &iter2);
-    while (n_items<14)
+    while (n_items<15)
     {
       gtk_list_store_set(store, &iter, 3, showed[n_items], -1);
       gtk_list_store_set(GTK_LIST_STORE(model), &iter2, 1, showed[n_items], -1);

@@ -90,7 +90,13 @@ gchar* show_chooser(const gchar *message, guidata *gui)
 #endif
 
   GtkFileFilter* filter = gtk_file_filter_new();
+
+#ifdef G_OS_WIN32
   gtk_file_filter_add_pattern(filter, "mednafen.exe");
+#else
+  gtk_file_filter_add_pattern(filter, "mednafen");
+#endif
+
   gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(exe), filter);
 
   if (gtk_dialog_run(GTK_DIALOG(exe)) == GTK_RESPONSE_ACCEPT)

@@ -694,8 +694,9 @@ void on_input_clicked (GtkButton *button, guidata *gui)
       case 9:  set_ports(2, notebook, gui); break;
       case 10: set_ports(2, notebook, gui); break;
       case 11: set_ports(2, notebook, gui); break;
-      case 12: set_builtin(notebook, gui); break;
+      case 12: set_ports(2, notebook, gui); break;
       case 13: set_builtin(notebook, gui); break;
+      case 14: set_builtin(notebook, gui); break;
       default : break;
     }
 
