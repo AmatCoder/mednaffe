@@ -59,7 +59,7 @@ void save_systems_showed(GKeyFile *key_file, guidata *gui)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
-  gboolean blist[13];
+  gboolean blist[14];
   gboolean valid;
   gint i=0;
 
