@@ -3,7 +3,7 @@
 Since 0.7 version, Mednaffe for Windows is a statically linked build.
 This means that all the libraries needed by the program are included in the resulting executable.
 
-To achieve this, you need to download this:  [mxe-mednaffe-0.8.1.tar.xz](https://drive.google.com/open?id=0B_h7m3aBOt9PNm5hQVEwUzcyQ3c "mxe-mednaffe-0.8.1.tar.xz").
+To achieve this, you need to download this:  [mxe-mednaffe-0.8.1.tar.xz](https://drive.google.com/file/d/0B_h7m3aBOt9PdmV4U21INnRJb2M "mxe-mednaffe-0.8.3.tar.xz").
 
 This archive includes complete sources and patches used to cross compile Mednaffe to Windows.
 Also it includes a modified and stripped-down version of MXE (M cross environment)  http://mxe.cc/
@@ -14,10 +14,10 @@ First, make sure that you get the requirements. See: http://mxe.cc/#requirements
 
 Then you can follow these steps:
 
-1. Download and save [mxe-mednaffe-0.8.1.tar.xz](https://drive.google.com/open?id=0B_h7m3aBOt9PNm5hQVEwUzcyQ3c "mxe-mednaffe-0.8.1.tar.xz") into some folder (like **/tmp**)
+1. Download and save [mxe-mednaffe-0.8.3.tar.xz]( https://drive.google.com/file/d/0B_h7m3aBOt9PdmV4U21INnRJb2M "mxe-mednaffe-0.8.3.tar.xz") into some folder (like **/tmp**)
 2. Extract it with:
 
-   `xz -d mxe-mednaffe-0.8.1.tar.xz && tar -xf mxe-mednaffe-0.8.1.tar`
+   `xz -d mxe-mednaffe-0.8.3.tar.xz && tar -xf mxe-mednaffe-0.8.3.tar`
 3. Change to **mxe-mednaffe** directory:
 
   `cd /tmp/mxe-mednaffe`
