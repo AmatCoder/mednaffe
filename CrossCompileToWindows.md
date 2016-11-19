@@ -3,7 +3,7 @@
 Since 0.7 version, Mednaffe for Windows is a statically linked build.
 This means that all the libraries needed by the program are included in the resulting executable.
 
-To achieve this, you need to download this:  [mxe-mednaffe-0.8.1.tar.xz](https://drive.google.com/file/d/0B_h7m3aBOt9PdmV4U21INnRJb2M "mxe-mednaffe-0.8.3.tar.xz").
+To achieve this, you need to download this:  [mxe-mednaffe-0.8.3.tar.xz](https://drive.google.com/file/d/0B_h7m3aBOt9PdmV4U21INnRJb2M "mxe-mednaffe-0.8.3.tar.xz").
 
 This archive includes complete sources and patches used to cross compile Mednaffe to Windows.
 Also it includes a modified and stripped-down version of MXE (M cross environment)  http://mxe.cc/
