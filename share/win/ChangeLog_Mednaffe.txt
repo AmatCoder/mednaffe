@@ -1,0 +1,91 @@
+#### 21 / Feb / 2016
+
+Mednaffe 0.8.1 is released with the following changes:
+
+- [Windows] Fix xbox 360 controller detection on some conditions.
+
+#### 24 / Jul / 2015
+
+Mednaffe 0.8 is released with the following changes:
+
+- [Windows] Support for XInput devices.
+- Support for key assignments to (some) mednafen functions.
+- Added deadzones for analog axis (Thanks to tapcio for report it).
+- New tab with text widgets in order to read logs.
+- Added the ability to select an mednafen executable if it is not found in path.
+- [Windows] 'video.disable_composition' option added.
+- [Windows] Missing sound driver options added.
+- [Linux] Rewrite the error handling process.
+- [Linux] Fix (mostly) deprecated functions.
+- Better alingment between widgets.
+- Minor cosmetic changes.
+
+#### 02 / May / 2015
+
+Mednaffe 0.7 is released with the following changes:
+
+- Controller setup for systems (keyboard and gamepads)
+- Static build for Windows (standalone executable to avoid GTK+ runtime dependency)
+- Descriptive error messages on Windows.
+- Added new settings until 0.9.36
+- Mednafen version is detected properly now on Linux.
+- Fixed freezing while executing emulator under some conditions on Linux.
+- Fix to handle spaces in paths on Windows.
+- Spins disregarding values fixed.
+- More minor fixes.
+
+Note: This version will need 0.9.36 (or above) of mednafen emulator.
+
+#### 10 / December / 2013
+
+Mednaffe 0.6 is released with the following changes:
+
+- A message error is showed when mednafen gives an error.
+- Descriptive error messages via '-remote' option (Only on Linux).
+- Gui options have been moved to Edit->Preferences menu.
+- Now you can choose which systems are showed. (Thanks to Shinra for the suggestion)
+- Now Mednaffe can resize down to 768x516. (Thanks to StarrySky for report it)
+- Added an option to remember window size.
+- Add support to filter ccd files from CloneCd images.
+- Add a desktop file and icons to install on Linux.
+- Some minor fixes.
+
+#### 16 / September / 2013
+
+Mednaffe 0.5 is released with the following changes:
+
+- Support for 0.9.31/32-WIP added.
+- Added an option to search files recursively. (Thanks to Shoegazer for the suggestion)
+- Improve performance when filling list (x20 speed up).
+- List options (filters, sort direction) are saved now.
+- Fix 'Open' buttons signals on Windows.
+- Now Mednaffe restore after minimize on Windows.
+- Fix Windows icon (hopefully)
+
+#### 30 / August / 2013
+
+Mednaffe 0.4 is released with the following changes:
+
+- Mednaffe has been rewritten from scratch in C language.
+
+#### 24 / October / 2010
+
+Mednaffe 0.3 is released with the following changes:
+
+- New: Qt version for Linux.
+- Rewrite 'Scanlines' component for better understanding.
+- Rewrite 'Resolution' and 'Scale' components for better
+  usability.
+- Now Mednaffe remember his position on the screen
+
+#### 22 / August / 2010
+
+Mednaffe 0.2 is released with the following changes:
+
+- Fixed: Values by default are shown now.
+- Fixed: Size of sound buffer in Linux.
+- Minor cosmetics changes.
+
+#### 12 / August / 2010
+
+Mednaffe 0.1 is released. It's an alpha version.
