@@ -229,6 +229,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+have_pkg_config = @have_pkg_config@
 host_alias = @host_alias@
 htmldir = @htmldir@
 includedir = @includedir@
