@@ -1,3 +1,11 @@
+#### 19 / Nov / 2016
+
+Mednaffe 0.8.3 is released with the following changes:
+
+- Added support for Sega Saturn (It needs 0.9.39.1 or higher of mednafen emulator).
+- [Linux] Fix stack smashing when compiling with '-fstack-protector' caused by
+  buffer overflow (Thanks to 'not-a-user' for report it).
+
 #### 21 / Feb / 2016
 
 Mednaffe 0.8.1 is released with the following changes:
