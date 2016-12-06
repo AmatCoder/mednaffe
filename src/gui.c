@@ -109,3 +109,36 @@ void on_preferences_activate(GtkMenuItem *menuitem, guidata *gui)
 {
   gtk_widget_show(gui->prefwindow);
 }
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+gboolean close_folder_settings(GtkWidget *widget, GdkEvent *event, guidata *gui)
+{
+  gtk_widget_hide_on_delete(gui->folderwindow);
+  return TRUE;
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void apply_folder_settings(GtkButton *button, guidata *gui)
+{
+  gtk_widget_hide(gui->folderwindow);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void cancel_folder_settings(GtkButton *button, guidata *gui)
+{
+  gtk_widget_hide(gui->folderwindow);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_folder_settings_activate(GtkMenuItem *menuitem, guidata *gui)
+{
+  gtk_widget_show(gui->folderwindow);
+}

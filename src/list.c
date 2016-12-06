@@ -127,6 +127,8 @@ void open_folder(GtkWidget *sender, guidata *gui)
     path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (folder));
     add_combo(GTK_COMBO_BOX(gui->cbpath), path);
     g_free(path);
+
+    gtk_widget_show(gui->folderwindow);
   }
   gtk_widget_destroy(folder);
 }

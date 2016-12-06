@@ -350,6 +350,9 @@ int main(int argc, char **argv)
   gui.prefwindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
                              "dialog1"));
 
+  gui.folderwindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
+                             "dialog2"));
+
   gui.inputwindow = GTK_WIDGET(gtk_builder_get_object(gui.specific,
                              "inputdialog"));
 
@@ -457,6 +460,7 @@ int main(int argc, char **argv)
 
   gtk_notebook_set_show_tabs(GTK_NOTEBOOK(gui.notebook2),FALSE);
   gtk_window_set_transient_for(GTK_WINDOW(gui.prefwindow), GTK_WINDOW(gui.topwindow));
+  gtk_window_set_transient_for(GTK_WINDOW(gui.folderwindow), GTK_WINDOW(gui.topwindow));
   gtk_window_set_transient_for(GTK_WINDOW(gui.inputwindow), GTK_WINDOW(gui.topwindow));
 
   /* Set statusbar messages */

@@ -48,6 +48,7 @@ typedef struct
 {
    GtkWidget *topwindow;
    GtkWidget *prefwindow;
+   GtkWidget *folderwindow;
    GtkWidget *inputwindow;
    GtkWidget *cbpath;
    GtkWidget *sbname;
