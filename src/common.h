@@ -70,7 +70,7 @@ typedef struct
    GtkListStore *store;
    GtkCellEditable *editable;
    GdkPixbuf *pixbuf;
-   gint listmode;
+   gboolean listmode;
    gint filter;
    gint pagesys;
    GSList *itemlist;

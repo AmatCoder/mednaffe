@@ -434,7 +434,7 @@ int main(int argc, char **argv)
   #endif
 
   /* Set initial values */
-  gui.listmode = 0;
+  gui.listmode = FALSE;
   gui.filter = 0;
   gui.itemlist = NULL;
   gui.state = 0;

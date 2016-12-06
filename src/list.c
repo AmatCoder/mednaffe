@@ -162,7 +162,7 @@ void scan_files(gchar *romdir, guidata *gui)
     gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, FindFileData.cFileName, NULL);
     if ((FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
     {
-      if (gui->listmode == 1 && (0 != strcmp(FindFileData.cFileName, ".")
+      if (gui->listmode == TRUE && (0 != strcmp(FindFileData.cFileName, ".")
         && 0 != strcmp (FindFileData.cFileName, "..")))
       {
         scan_files(testdir, gui);
@@ -249,7 +249,7 @@ void scan_files(gchar *romdir, guidata *gui)
       }
       else
       {
-        if (gui->listmode == 1)
+        if (gui->listmode == TRUE)
           scan_files(testdir, gui);
       }
       g_free(testdir);
@@ -310,7 +310,9 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
   if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter))
   {
     g_free(gui->rompath);
-    gtk_tree_model_get(model, &iter, 0 ,&gui->rompath, -1);
+    gtk_tree_model_get(model, &iter, 0 ,&gui->rompath,
+                                     1, &gui->listmode,
+                                     -1);
     gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
     gtk_list_store_clear(gui->store);
     if (gui->rompath!=NULL)
@@ -388,29 +390,5 @@ void on_radiomenucue_activate(GtkMenuItem *menuitem, guidata *gui)
     gui->filter=2;
     fill_list(NULL, gui);
     gtk_tree_view_column_set_title(gui->column, " Games (cue/toc/ccd/m3u)");
-  }
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_normalmenu_activate(GtkMenuItem *menuitem, guidata *gui)
-{
-  if (gui->listmode != 0)
-  {
-    gui->listmode = 0;
-    fill_list(NULL,gui);
-  }
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_recursivemenu_activate(GtkMenuItem *menuitem, guidata *gui)
-{
-  if (gui->listmode != 1)
-  {
-    gui->listmode = 1;
-    fill_list(NULL,gui);
   }
 }
