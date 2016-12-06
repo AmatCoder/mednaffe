@@ -272,7 +272,6 @@ void populate_list(guidata *gui)
 {
   GtkTreeIter iter;
   GSList *iterator = NULL;
-  gint i = 0;
 
   for (iterator = gui->itemlist; iterator; iterator = iterator->next)
   {
@@ -284,8 +283,8 @@ void populate_list(guidata *gui)
 
     gtk_list_store_insert_with_values(gui->store, &iter, -1,
                            0, str[0], 1, str[1], 2, str2[0], 3, str2[1], -1);
-    i++;
     g_strfreev(str);
+    g_strfreev(str2);
   }
 }
 
