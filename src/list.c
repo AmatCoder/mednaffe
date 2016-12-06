@@ -277,11 +277,13 @@ void populate_list(guidata *gui)
   for (iterator = gui->itemlist; iterator; iterator = iterator->next)
   {
     gchar **str;
+    gchar **str2;
 
-  str = g_strsplit (iterator->data, G_DIR_SEPARATOR_S, 2);
+    str = g_strsplit (iterator->data, G_DIR_SEPARATOR_S, 2);
+    str2 = g_strsplit (str[0], ".", -1);
 
     gtk_list_store_insert_with_values(gui->store, &iter, -1,
-                           0, str[0], 1, str[1], -1);
+                           0, str[0], 1, str[1], 2, str2[0], 3, str2[1], -1);
     i++;
     g_strfreev(str);
   }
@@ -303,7 +305,8 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
-
+  gboolean hide_ext;
+  gint column;
 
   model=gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
 
@@ -312,9 +315,19 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
     g_free(gui->rompath);
     gtk_tree_model_get(model, &iter, 0 ,&gui->rompath,
                                      1, &gui->listmode,
+                                     2, &hide_ext,
                                      -1);
     gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
     gtk_list_store_clear(gui->store);
+
+    if (hide_ext) column = 2;
+      else column = 0;
+
+    gtk_tree_view_column_set_attributes(gui->column,
+                                        GTK_CELL_RENDERER(gtk_builder_get_object(gui->builder, "cellrenderertext12")),
+                                        "text", column,
+                                        NULL);
+
     if (gui->rompath!=NULL)
       scan_dir(gui->rompath, gui);
 

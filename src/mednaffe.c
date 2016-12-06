@@ -413,7 +413,7 @@ int main(int argc, char **argv)
         "changed", G_CALLBACK(global_selected), &gui);
 
   /* Create store and models */
-  gui.store = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+  gui.store = gtk_list_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
   gtk_tree_view_set_model(
     GTK_TREE_VIEW(gui.gamelist), GTK_TREE_MODEL(gui.store));
