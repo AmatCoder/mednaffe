@@ -240,8 +240,6 @@ static const char *mednaffe_glade =
 "<column type=\"gchararray\"/>\n"
 "<!-- column-name scan -->\n"
 "<column type=\"gboolean\"/>\n"
-"<!-- column-name sort_asc -->\n"
-"<column type=\"gboolean\"/>\n"
 "<!-- column-name hide_ext -->\n"
 "<column type=\"gboolean\"/>\n"
 "<!-- column-name filters -->\n"
