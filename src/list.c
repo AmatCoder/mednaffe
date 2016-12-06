@@ -122,11 +122,16 @@ void open_folder(GtkWidget *sender, guidata *gui)
 
   if (gtk_dialog_run(GTK_DIALOG(folder)) == GTK_RESPONSE_ACCEPT)
   {
-    gchar *path;
+    g_free(gui->rompath);
+    gui->rompath = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (folder));
+    //add_combo(GTK_COMBO_BOX(gui->cbpath), path);
 
-    path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (folder));
-    add_combo(GTK_COMBO_BOX(gui->cbpath), path);
-    g_free(path);
+    gint max;
+    GtkListStore *combostore;
+
+    combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
+    max = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(combostore), NULL);
+    gtk_adjustment_set_upper (GTK_ADJUSTMENT(gtk_builder_get_object(gui->settings, "adjustment1")), (gdouble)(max+1));
 
     gtk_widget_show(gui->folderwindow);
   }

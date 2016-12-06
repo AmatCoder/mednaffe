@@ -124,6 +124,17 @@ G_MODULE_EXPORT
 #endif
 void apply_folder_settings(GtkButton *button, guidata *gui)
 {
+  GtkTreeIter iter;
+  GtkListStore *combostore;
+  gdouble position;
+
+  combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
+  position = (gtk_spin_button_get_value(GTK_SPIN_BUTTON(gtk_builder_get_object(gui->settings, "position")))-1);
+
+  gtk_list_store_insert(combostore, &iter, (guint)position);
+  gtk_list_store_set(combostore, &iter, 0, gui->rompath, 5, (guint)position, -1);
+  gtk_combo_box_set_active(GTK_COMBO_BOX(gui->cbpath), (guint)position);
+
   gtk_widget_hide(gui->folderwindow);
 }
 

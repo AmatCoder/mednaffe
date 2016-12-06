@@ -1,7 +1,7 @@
 /*
  * mednaffe_glade.h
  * 
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2016 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -237,6 +237,20 @@ static const char *mednaffe_glade =
 "<object class=\"GtkListStore\" id=\"cbpathstore\">\n"
 "<columns>\n"
 "<!-- column-name paths -->\n"
+"<column type=\"gchararray\"/>\n"
+"<!-- column-name scan -->\n"
+"<column type=\"gboolean\"/>\n"
+"<!-- column-name sort_asc -->\n"
+"<column type=\"gboolean\"/>\n"
+"<!-- column-name hide_ext -->\n"
+"<column type=\"gboolean\"/>\n"
+"<!-- column-name filters -->\n"
+"<column type=\"gchararray\"/>\n"
+"<!-- column-name position -->\n"
+"<column type=\"guint\"/>\n"
+"<!-- column-name screen_a -->\n"
+"<column type=\"gchararray\"/>\n"
+"<!-- column-name screen_b -->\n"
 "<column type=\"gchararray\"/>\n"
 "</columns>\n"
 "</object>\n"
@@ -4381,6 +4395,9 @@ static const char *mednaffe_glade =
 "<child>\n"
 "<placeholder/>\n"
 "</child>\n"
+"<child>\n"
+"<placeholder/>\n"
+"</child>\n"
 "</object>\n"
 "</child>\n"
 "</object>\n"
@@ -4517,6 +4534,9 @@ static const char *mednaffe_glade =
 "<property name=\"x_options\"/>\n"
 "<property name=\"y_options\"/>\n"
 "</packing>\n"
+"</child>\n"
+"<child>\n"
+"<placeholder/>\n"
 "</child>\n"
 "<child>\n"
 "<placeholder/>\n"
