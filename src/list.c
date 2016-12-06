@@ -223,25 +223,26 @@ void scan_files(gchar *romdir, guidata *gui)
 
       if (!g_file_test (testdir, G_FILE_TEST_IS_DIR))
       {
-        if (gui->filter == 0)
+        if (gui->filters != NULL)
         {
-          gui->itemlist = g_slist_prepend(gui->itemlist,
-            g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
+          gchar **str;
+          guint i = 0;
+
+          str = g_strsplit (gui->filters, ";", -1);
+
+          while (str[i] != NULL)
+          {
+            if ((g_str_has_suffix(file, str[i])) && (g_strcmp0(str[i], "") != 0))
+            {
+              gui->itemlist = g_slist_prepend(gui->itemlist,
+                g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
+
+            }
+            i++;
+          }
+          g_strfreev(str);
         }
-        else if ((gui->filter == 1) && (g_str_has_suffix(file, ".zip") ||
-                               g_str_has_suffix(file, ".ZIP")))
-        {
-          gui->itemlist = g_slist_prepend(gui->itemlist,
-            g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
-        }
-        else if ((gui->filter == 2) && (g_str_has_suffix(file, ".cue") ||
-                     g_str_has_suffix(file, ".toc") ||
-                     g_str_has_suffix(file, ".ccd") ||
-                     g_str_has_suffix(file, ".m3u") ||
-                     g_str_has_suffix(file, ".CUE") ||
-                     g_str_has_suffix(file, ".TOC") ||
-                     g_str_has_suffix(file, ".CCD") ||
-                     g_str_has_suffix(file, ".M3U")))
+        else
         {
           gui->itemlist = g_slist_prepend(gui->itemlist,
             g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
@@ -279,7 +280,7 @@ void populate_list(guidata *gui)
     gchar **str2;
 
     str = g_strsplit (iterator->data, G_DIR_SEPARATOR_S, 2);
-    str2 = g_strsplit (str[0], ".", -1);
+    str2 = g_strsplit (str[0], ".", 2);
 
     gtk_list_store_insert_with_values(gui->store, &iter, -1,
                            0, str[0], 1, str[1], 2, str2[0], 3, str2[1], -1);
@@ -312,9 +313,12 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
   if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter))
   {
     g_free(gui->rompath);
+    g_free(gui->filters);
+
     gtk_tree_model_get(model, &iter, 0 ,&gui->rompath,
                                      1, &gui->listmode,
                                      2, &hide_ext,
+                                     3, &gui->filters,
                                      -1);
     gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
     gtk_list_store_clear(gui->store);

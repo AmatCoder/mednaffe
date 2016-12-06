@@ -74,6 +74,7 @@ typedef struct
    gint filter;
    gint pagesys;
    GSList *itemlist;
+   gchar *filters;
    gchar *binpath;
    gchar *fullpath;
    gchar *rompath;

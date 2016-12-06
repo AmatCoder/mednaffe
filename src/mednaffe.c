@@ -290,6 +290,7 @@ void quit(GtkWidget *widget, guidata *gui)
   g_hash_table_destroy(gui->clist);
   g_slist_free(gui->dinlist);
   g_free(gui->binpath);
+  g_free(gui->filters);
   g_free(gui->fullpath);
   g_free(gui->rompath);
   g_free(gui->rom);
@@ -435,6 +436,7 @@ int main(int argc, char **argv)
 
   /* Set initial values */
   gui.listmode = FALSE;
+  gui.filters = NULL;
   gui.filter = 0;
   gui.itemlist = NULL;
   gui.state = 0;
