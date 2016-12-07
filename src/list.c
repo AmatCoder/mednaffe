@@ -232,11 +232,15 @@ void scan_files(gchar *romdir, guidata *gui)
 
           while (str[i] != NULL)
           {
-            if ((g_str_has_suffix(file, str[i])) && (g_strcmp0(str[i], "") != 0))
+            gchar *ext;
+
+            ext = g_strconcat(".", str[i], NULL);
+            if (g_str_has_suffix(file, ext))
             {
               gui->itemlist = g_slist_prepend(gui->itemlist,
                 g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
 
+              g_free(ext);
             }
             i++;
           }

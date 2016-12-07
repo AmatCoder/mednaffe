@@ -138,9 +138,6 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
   hide_ext = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")));
   filter = g_strdup (gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters"))));
 
-  if (filter[0] == '\0')
-    filter = NULL;
-
   gtk_list_store_insert(combostore, &iter, (guint)position);
   gtk_list_store_set(combostore, &iter, 0, gui->rompath,
                                         1, recursive,
@@ -148,6 +145,8 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
                                         3, filter,
                                         4, (guint)position,
                                         -1);
+
+  g_free(filter);
 
   gtk_combo_box_set_active(GTK_COMBO_BOX(gui->cbpath), (guint)position);
 
