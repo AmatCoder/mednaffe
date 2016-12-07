@@ -127,11 +127,16 @@ void open_folder(GtkWidget *sender, guidata *gui)
     //add_combo(GTK_COMBO_BOX(gui->cbpath), path);
 
     gint max;
+    gchar *text;
     GtkListStore *combostore;
 
     combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
     max = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(combostore), NULL);
     gtk_adjustment_set_upper (GTK_ADJUSTMENT(gtk_builder_get_object(gui->settings, "adjustment1")), (gdouble)(max+1));
+
+    text = g_strconcat("<b>Folder: ", gui->rompath, "</b>", NULL);
+    gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(gui->settings, "folder_label")), text);
+    g_free(text);
 
     gtk_widget_show(gui->folderwindow);
   }

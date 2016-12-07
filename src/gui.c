@@ -129,24 +129,24 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
   gdouble position;
   gboolean recursive;
   gboolean hide_ext;
-  gchar *filter;
+  const gchar *filter;
 
   combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
 
   position = (gtk_spin_button_get_value(GTK_SPIN_BUTTON(gtk_builder_get_object(gui->settings, "position")))-1);
   recursive = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "scan")));
   hide_ext = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")));
-  filter = g_strdup (gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters"))));
+  filter = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters")));
+  if (g_strcmp0(filter, "") == 0) filter = NULL;
 
   gtk_list_store_insert(combostore, &iter, (guint)position);
+
   gtk_list_store_set(combostore, &iter, 0, gui->rompath,
                                         1, recursive,
                                         2, hide_ext,
-                                        3, filter,
+                                        3, g_strdup (filter),
                                         4, (guint)position,
                                         -1);
-
-  g_free(filter);
 
   gtk_combo_box_set_active(GTK_COMBO_BOX(gui->cbpath), (guint)position);
 
