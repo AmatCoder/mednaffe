@@ -94,12 +94,40 @@ G_MODULE_EXPORT
 void on_folder_setup(GtkButton *button, guidata *gui)
 {
   gchar *text;
+  gboolean recursive = FALSE;
+  gboolean hide_ext = FALSE;
+  gchar *filter = NULL;
 
-  text = g_strconcat("<b>Folder: ", gui->rompath, "</b>", NULL);
+  text = g_strconcat("<b>Folder Setup:    <i>", gui->rompath, "</i></b>", NULL);
   gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(gui->settings, "folder_label")), text);
   g_free(text);
 
-  gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(gui->settings, "position")), (button == NULL));
+  if (button != NULL)
+  {
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+
+    gui->resetup_folder = TRUE;
+    model = gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
+    gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter);
+
+    gtk_tree_model_get (model, &iter, 1, &recursive,
+                                      2, &hide_ext,
+                                      3, &filter,
+                                      -1);
+  }
+  else gui->resetup_folder = FALSE;
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "scan")), recursive);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")), hide_ext);
+
+  if (filter != NULL)
+    gtk_entry_set_text (GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters")), filter);
+  else
+    gtk_entry_set_text (GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters")), "");
+
+  g_free(filter);  
+
   gtk_widget_show(gui->folderwindow);
 }
 
@@ -126,13 +154,6 @@ void open_folder(GtkWidget *sender, guidata *gui)
   {
     g_free(gui->rompath);
     gui->rompath = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (folder));
-
-    gint max;
-    GtkListStore *combostore;
-
-    combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
-    max = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(combostore), NULL);
-    gtk_adjustment_set_upper (GTK_ADJUSTMENT(gtk_builder_get_object(gui->settings, "adjustment1")), (gdouble)(max+1));
 
     on_folder_setup(NULL, gui);
   }
@@ -229,7 +250,7 @@ void scan_files(gchar *romdir, guidata *gui)
           gchar **str;
           guint i = 0;
 
-          str = g_strsplit (gui->filters, ";", -1);
+          str = g_strsplit (gui->filters, ",", -1);
 
           while (str[i] != NULL)
           {
@@ -373,43 +394,4 @@ void header_clicked(GtkTreeViewColumn *treeviewcolumn, guidata *gui)
                           GTK_TREE_MODEL(gui->store));
 
   gtk_tree_view_column_set_sort_indicator(gui->column, TRUE);
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_radiomenuall_activate(GtkMenuItem *menuitem, guidata *gui)
-{
-  if (gui->filter != 0)
-  {
-    gui->filter=0;
-    fill_list(NULL, gui);
-    gtk_tree_view_column_set_title(gui->column, " Games");
-  }
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_radiomenuzip_activate(GtkMenuItem *menuitem, guidata *gui)
-{
-  if (gui->filter != 1)
-  {
-    gui->filter=1;
-    fill_list(NULL, gui);
-    gtk_tree_view_column_set_title(gui->column, " Games (zip)");
-  }
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
-void on_radiomenucue_activate(GtkMenuItem *menuitem, guidata *gui)
-{
-  if (gui->filter != 2)
-  {
-    gui->filter=2;
-    fill_list(NULL, gui);
-    gtk_tree_view_column_set_title(gui->column, " Games (cue/toc/ccd/m3u)");
-  }
 }

@@ -95,6 +95,7 @@ typedef struct
    gchar *treepath;
    gchar *port;
    gboolean changing;
+   gboolean resetup_folder;
    gint state;
    joydata joy[9];
    gboolean inputedited;

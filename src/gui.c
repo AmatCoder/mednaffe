@@ -126,29 +126,30 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
 {
   GtkTreeIter iter;
   GtkListStore *combostore;
-  gdouble position;
   gboolean recursive;
   gboolean hide_ext;
   const gchar *filter;
 
   combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
 
-  position = (gtk_spin_button_get_value(GTK_SPIN_BUTTON(gtk_builder_get_object(gui->settings, "position")))-1);
   recursive = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "scan")));
   hide_ext = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")));
   filter = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters")));
   if (g_strcmp0(filter, "") == 0) filter = NULL;
 
-  gtk_list_store_insert(combostore, &iter, (guint)position);
+  if (!gui->resetup_folder)
+    gtk_list_store_insert(combostore, &iter, 0);
+  else
+    gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter);
 
   gtk_list_store_set(combostore, &iter, 0, gui->rompath,
                                         1, recursive,
                                         2, hide_ext,
                                         3, g_strdup (filter),
-                                        4, (guint)position,
                                         -1);
 
-  gtk_combo_box_set_active(GTK_COMBO_BOX(gui->cbpath), (guint)position);
+  gtk_combo_box_set_active_iter(GTK_COMBO_BOX(gui->cbpath), NULL);
+  gtk_combo_box_set_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter);
 
   gtk_widget_hide(gui->folderwindow);
 }
