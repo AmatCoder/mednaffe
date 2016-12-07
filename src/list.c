@@ -88,17 +88,19 @@ void remove_folder(GtkWidget *sender, guidata *gui)
   }
 }
 
-void add_combo(GtkComboBox *combopath, const char *string)
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_folder_setup(GtkButton *button, guidata *gui)
 {
-  GtkTreeIter iter;
-  GtkListStore *combostore;
+  gchar *text;
 
-  combostore = GTK_LIST_STORE(gtk_combo_box_get_model(combopath));
+  text = g_strconcat("<b>Folder: ", gui->rompath, "</b>", NULL);
+  gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(gui->settings, "folder_label")), text);
+  g_free(text);
 
-  gtk_list_store_prepend(combostore, &iter);
-  gtk_list_store_set(combostore, &iter, 0, string, -1);
-
-  gtk_combo_box_set_active(combopath, 0);
+  gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(gui->settings, "position")), (button == NULL));
+  gtk_widget_show(gui->folderwindow);
 }
 
 #ifdef G_OS_WIN32
@@ -124,21 +126,15 @@ void open_folder(GtkWidget *sender, guidata *gui)
   {
     g_free(gui->rompath);
     gui->rompath = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (folder));
-    //add_combo(GTK_COMBO_BOX(gui->cbpath), path);
 
     gint max;
-    gchar *text;
     GtkListStore *combostore;
 
     combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
     max = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(combostore), NULL);
     gtk_adjustment_set_upper (GTK_ADJUSTMENT(gtk_builder_get_object(gui->settings, "adjustment1")), (gdouble)(max+1));
 
-    text = g_strconcat("<b>Folder: ", gui->rompath, "</b>", NULL);
-    gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(gui->settings, "folder_label")), text);
-    g_free(text);
-
-    gtk_widget_show(gui->folderwindow);
+    on_folder_setup(NULL, gui);
   }
   gtk_widget_destroy(folder);
 }
