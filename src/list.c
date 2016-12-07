@@ -245,7 +245,7 @@ void scan_files(gchar *romdir, guidata *gui)
 
       if (!g_file_test (testdir, G_FILE_TEST_IS_DIR))
       {
-        if (gui->filters != NULL)
+        if (g_strcmp0(gui->filters, "") != 0)
         {
           gchar **str;
           guint i = 0;

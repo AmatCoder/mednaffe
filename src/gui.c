@@ -135,7 +135,6 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
   recursive = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "scan")));
   hide_ext = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")));
   filter = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters")));
-  if (g_strcmp0(filter, "") == 0) filter = NULL;
 
   if (!gui->resetup_folder)
     gtk_list_store_insert(combostore, &iter, 0);
