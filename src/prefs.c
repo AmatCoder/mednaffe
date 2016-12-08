@@ -29,6 +29,8 @@ void save_combo(GKeyFile *key_file, guidata *gui)
   gint a_item, n_items;
   gchar **array;
   gchar **filters;
+  gchar **screen_a;
+  gchar **screen_b;
   gboolean *recur;
   gboolean *ext;
   gboolean valid;
@@ -44,6 +46,10 @@ void save_combo(GKeyFile *key_file, guidata *gui)
 
   filters = g_new(gchar *, n_items+1);
   filters[n_items]=NULL;
+  screen_a = g_new(gchar *, n_items+1);
+  screen_a[n_items]=NULL;
+  screen_b = g_new(gchar *, n_items+1);
+  screen_b[n_items]=NULL;
 
   recur = g_new(gboolean, n_items+1);
   ext = g_new(gboolean, n_items+1);
@@ -51,7 +57,13 @@ void save_combo(GKeyFile *key_file, guidata *gui)
   valid = gtk_tree_model_get_iter_first (combostore, &iter);
   while (valid)
   {
-    gtk_tree_model_get (combostore, &iter, 0, &array[i], 1, &recur[i], 2, &ext[i], 3, &filters[i], -1);
+    gtk_tree_model_get (combostore, &iter, 0, &array[i],
+                                           1, &recur[i],
+                                           2, &ext[i],
+                                           3, &filters[i],
+                                           4, &screen_a[i],
+                                           5, &screen_b[i],
+                                           -1);
     i++;
     valid = gtk_tree_model_iter_next (combostore, &iter);
   }
@@ -60,6 +72,11 @@ void save_combo(GKeyFile *key_file, guidata *gui)
                                         (const gchar **)array, n_items);
   g_key_file_set_string_list(key_file, "GUI", "Filters",
                                         (const gchar **)filters, n_items);
+  g_key_file_set_string_list(key_file, "GUI", "ScreenShots Folders A",
+                                        (const gchar **)screen_a, n_items);
+  g_key_file_set_string_list(key_file, "GUI", "ScreenShots Folders B",
+                                        (const gchar **)screen_b, n_items);
+
   g_key_file_set_boolean_list (key_file, "GUI", "Scan Recursive",
                                recur,
                                n_items);
@@ -71,6 +88,8 @@ void save_combo(GKeyFile *key_file, guidata *gui)
 
   g_strfreev(array);
   g_strfreev(filters);
+  g_strfreev(screen_a);
+  g_strfreev(screen_b);
 }
 
 void save_systems_showed(GKeyFile *key_file, guidata *gui)
@@ -183,6 +202,8 @@ void load_combo(GKeyFile *key_file, guidata *gui)
   gint a_item;
   gchar **folders = NULL;
   gchar **filters;
+  gchar **screen_a;
+  gchar **screen_b;
   gboolean *recur;
   gboolean *ext;
 
@@ -191,6 +212,10 @@ void load_combo(GKeyFile *key_file, guidata *gui)
   folders = g_key_file_get_string_list(key_file, "GUI", "Folders",
                                                         &n_items, NULL);
   filters = g_key_file_get_string_list(key_file, "GUI", "Filters",
+                                                        &n_items, NULL);
+  screen_a = g_key_file_get_string_list(key_file, "GUI", "ScreenShots Folders A",
+                                                        &n_items, NULL);
+  screen_b = g_key_file_get_string_list(key_file, "GUI", "ScreenShots Folders B",
                                                         &n_items, NULL);
   recur = g_key_file_get_boolean_list(key_file, "GUI", "Scan Recursive",
                                                         &n_items, NULL);
@@ -205,7 +230,13 @@ void load_combo(GKeyFile *key_file, guidata *gui)
     {
       n_items--;
       gtk_list_store_prepend(GTK_LIST_STORE(combostore), &iter);
-      gtk_list_store_set(GTK_LIST_STORE(combostore), &iter, 0, folders[n_items], 1, recur[n_items], 2, ext[n_items], 3, filters[n_items], -1);
+      gtk_list_store_set(GTK_LIST_STORE(combostore), &iter, 0, folders[n_items],
+                                                            1, recur[n_items],
+                                                            2, ext[n_items],
+                                                            3, filters[n_items],
+                                                            4, screen_a[n_items],
+                                                            5, screen_b[n_items],
+                                                            -1);
     }
   }
 
@@ -213,6 +244,8 @@ void load_combo(GKeyFile *key_file, guidata *gui)
 
   g_strfreev(folders);
   g_strfreev(filters);
+  g_strfreev(screen_a);
+  g_strfreev(screen_b);
 }
 
 void load_systems_showed(GKeyFile *key_file, guidata *gui)

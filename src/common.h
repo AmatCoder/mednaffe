@@ -69,12 +69,16 @@ typedef struct
    GtkTreeViewColumn *column;
    GtkListStore *store;
    GtkCellEditable *editable;
+   GtkImage *screen_a;
+   GtkImage *screen_b;
    GdkPixbuf *pixbuf;
    gboolean listmode;
    gint filter;
    gint pagesys;
    GSList *itemlist;
    gchar *filters;
+   gchar *path_screen_a;
+   gchar *path_screen_b;
    gchar *binpath;
    gchar *fullpath;
    gchar *rompath;

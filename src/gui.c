@@ -129,12 +129,16 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
   gboolean recursive;
   gboolean hide_ext;
   const gchar *filter;
+  const gchar *screen_a;
+  const gchar *screen_b;
 
   combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
 
   recursive = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "scan")));
   hide_ext = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")));
   filter = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters")));
+  screen_a = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "screen_a")));
+  screen_b = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "screen_b")));
 
   if (!gui->resetup_folder)
     gtk_list_store_insert(combostore, &iter, 0);
@@ -145,6 +149,8 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
                                         1, recursive,
                                         2, hide_ext,
                                         3, g_strdup (filter),
+                                        4, g_strdup (screen_a),
+                                        5, g_strdup (screen_b),
                                         -1);
 
   gtk_combo_box_set_active_iter(GTK_COMBO_BOX(gui->cbpath), NULL);
@@ -164,7 +170,31 @@ void cancel_folder_settings(GtkButton *button, guidata *gui)
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
-void on_folder_settings_activate(GtkMenuItem *menuitem, guidata *gui)
+void on_button_snaps_folder(GtkButton *button, GtkEntry *entry)
 {
-  gtk_widget_show(gui->folderwindow);
+  GtkWidget *folder;
+
+#ifdef GTK2_ENABLED
+  folder = gtk_file_chooser_dialog_new(
+    "Choose a folder...", NULL,
+    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, GTK_STOCK_CANCEL,
+    GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+    NULL);
+#else
+  folder = gtk_file_chooser_dialog_new(
+    "Choose a folder...", NULL,
+    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, ("_Cancel"),
+    GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT,
+    NULL);
+#endif
+
+  if (gtk_dialog_run(GTK_DIALOG(folder)) == GTK_RESPONSE_ACCEPT)
+  {
+    gchar *path;
+
+    path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (folder));
+    gtk_entry_set_text(entry, path);
+    g_free(path);
+  }
+  gtk_widget_destroy(folder);
 }

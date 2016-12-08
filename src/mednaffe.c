@@ -206,6 +206,7 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
 {
   GtkTreeIter iter;
   GtkTreeModel *model;
+  gchar *filename;
 
   model=gtk_tree_view_get_model(GTK_TREE_VIEW(gui->gamelist));
 
@@ -215,11 +216,28 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
 
     g_free(gui->rom);
     g_free(gui->fullpath);
-    gtk_tree_model_get(model, &iter, 0, &gui->rom, 1, &gui->fullpath, -1);
+    gtk_tree_model_get(model, &iter, 0, &gui->rom,
+                                     1, &gui->fullpath,
+                                     2, &filename,
+                                     -1);
+
     gtk_statusbar_pop(GTK_STATUSBAR(gui->sbname), 1);
     selected = g_strconcat(" Game selected: ", gui->rom, NULL);
     gtk_statusbar_push(GTK_STATUSBAR(gui->sbname), 1, selected);
     g_free(selected);
+    if (g_strcmp0(gui->path_screen_a, "") != 0)
+    {
+      selected = g_strconcat(gui->path_screen_a, G_DIR_SEPARATOR_S, filename, ".png", NULL);
+      gtk_image_set_from_file (gui->screen_a, selected);
+      g_free(selected);
+    }
+    if (g_strcmp0(gui->path_screen_b, "") != 0)
+    {
+      selected = g_strconcat(gui->path_screen_b, G_DIR_SEPARATOR_S, filename, ".png", NULL);
+      gtk_image_set_from_file (gui->screen_b, selected);
+      g_free(selected);
+    }
+    g_free(filename);
   }
 }
 
@@ -291,6 +309,8 @@ void quit(GtkWidget *widget, guidata *gui)
   g_slist_free(gui->dinlist);
   g_free(gui->binpath);
   g_free(gui->filters);
+  g_free(gui->path_screen_a);
+  g_free(gui->path_screen_b);
   g_free(gui->fullpath);
   g_free(gui->rompath);
   g_free(gui->rom);
@@ -353,6 +373,12 @@ int main(int argc, char **argv)
 
   gui.folderwindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
                              "dialog2"));
+
+  gui.screen_a = GTK_IMAGE(gtk_builder_get_object(gui.builder,
+                             "snap_a"));
+
+  gui.screen_b = GTK_IMAGE(gtk_builder_get_object(gui.builder,
+                             "snap_b"));
 
   gui.inputwindow = GTK_WIDGET(gtk_builder_get_object(gui.specific,
                              "inputdialog"));
@@ -437,6 +463,8 @@ int main(int argc, char **argv)
   /* Set initial values */
   gui.listmode = FALSE;
   gui.filters = NULL;
+  gui.path_screen_a = NULL;
+  gui.path_screen_b = NULL;
   gui.filter = 0;
   gui.itemlist = NULL;
   gui.state = 0;

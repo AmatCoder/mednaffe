@@ -97,6 +97,8 @@ void on_folder_setup(GtkButton *button, guidata *gui)
   gboolean recursive = FALSE;
   gboolean hide_ext = FALSE;
   gchar *filter = NULL;
+  gchar *screen_a = NULL;
+  gchar *screen_b = NULL;
 
   text = g_strconcat("<b>Folder Setup:    <i>", gui->rompath, "</i></b>", NULL);
   gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(gui->settings, "folder_label")), text);
@@ -114,6 +116,8 @@ void on_folder_setup(GtkButton *button, guidata *gui)
     gtk_tree_model_get (model, &iter, 1, &recursive,
                                       2, &hide_ext,
                                       3, &filter,
+                                      4, &screen_a,
+                                      5, &screen_b,
                                       -1);
   }
   else gui->resetup_folder = FALSE;
@@ -126,7 +130,19 @@ void on_folder_setup(GtkButton *button, guidata *gui)
   else
     gtk_entry_set_text (GTK_ENTRY(gtk_builder_get_object(gui->settings, "filters")), "");
 
-  g_free(filter);  
+  if (screen_a != NULL)
+    gtk_entry_set_text (GTK_ENTRY(gtk_builder_get_object(gui->settings, "screen_a")), screen_a);
+  else
+    gtk_entry_set_text (GTK_ENTRY(gtk_builder_get_object(gui->settings, "screen_a")), "");
+
+  if (screen_b != NULL)
+    gtk_entry_set_text (GTK_ENTRY(gtk_builder_get_object(gui->settings, "screen_b")), screen_b);
+  else
+    gtk_entry_set_text (GTK_ENTRY(gtk_builder_get_object(gui->settings, "screen_b")), "");
+
+  g_free(filter);
+  g_free(screen_a);
+  g_free(screen_b);  
 
   gtk_widget_show(gui->folderwindow);
 }
@@ -345,6 +361,8 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
                                      1, &gui->listmode,
                                      2, &hide_ext,
                                      3, &gui->filters,
+                                     4, &gui->path_screen_a,
+                                     5, &gui->path_screen_b,
                                      -1);
     gtk_tree_view_set_model(GTK_TREE_VIEW(gui->gamelist), NULL);
     gtk_list_store_clear(gui->store);
@@ -356,6 +374,14 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
                                         GTK_CELL_RENDERER(gtk_builder_get_object(gui->builder, "cellrenderertext12")),
                                         "text", column,
                                         NULL);
+
+    gint width;
+    gint height;
+    gtk_window_get_size(GTK_WINDOW(gui->topwindow), &width, &height);
+
+    if ((g_strcmp0(gui->path_screen_a, "") == 0) && (g_strcmp0(gui->path_screen_a, "") == 0))
+      gtk_paned_set_position(GTK_PANED(gtk_builder_get_object(gui->builder, "hpaned1")), width);
+    else gtk_paned_set_position(GTK_PANED(gtk_builder_get_object(gui->builder, "hpaned1")), width-400);
 
     if (gui->rompath!=NULL)
       scan_dir(gui->rompath, gui);
