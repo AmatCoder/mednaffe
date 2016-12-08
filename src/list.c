@@ -376,12 +376,16 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
                                         NULL);
 
     gint width;
-    gint height;
-    gtk_window_get_size(GTK_WINDOW(gui->topwindow), &width, &height);
+    gtk_window_get_size(GTK_WINDOW(gui->topwindow), &width, NULL);
 
     if ((g_strcmp0(gui->path_screen_a, "") == 0) && (g_strcmp0(gui->path_screen_a, "") == 0))
+    {
+      gtk_image_set_from_file (gui->screen_a, NULL);
+      gtk_image_set_from_file (gui->screen_b, NULL);
       gtk_paned_set_position(GTK_PANED(gtk_builder_get_object(gui->builder, "hpaned1")), width);
-    else gtk_paned_set_position(GTK_PANED(gtk_builder_get_object(gui->builder, "hpaned1")), width-400);
+    }
+    else
+      gtk_paned_set_position(GTK_PANED(gtk_builder_get_object(gui->builder, "hpaned1")), width-400);
 
     if (gui->rompath!=NULL)
       scan_dir(gui->rompath, gui);
