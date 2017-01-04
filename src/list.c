@@ -319,15 +319,25 @@ void populate_list(guidata *gui)
   for (iterator = gui->itemlist; iterator; iterator = iterator->next)
   {
     gchar **str;
-    gchar **str2;
+    gchar *base;
+    char *str2;
 
     str = g_strsplit (iterator->data, G_DIR_SEPARATOR_S, 2);
-    str2 = g_strsplit (str[0], ".", 2);
+    str2 = strrchr(str[0], '.');
+
+    if (str2 == NULL)
+    {
+      base = g_strdup(str[0]);
+    }
+    else
+    {
+      base = g_strndup(str[0], str2-str[0]);
+    }
 
     gtk_list_store_insert_with_values(gui->store, &iter, -1,
-                           0, str[0], 1, str[1], 2, str2[0], 3, str2[1], -1);
+                           0, str[0], 1, str[1], 2, base, 3, str2, -1);
     g_strfreev(str);
-    g_strfreev(str2);
+    g_free(base);
   }
 }
 
