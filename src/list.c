@@ -257,45 +257,40 @@ void scan_files(gchar *romdir, guidata *gui)
 
     while ((file=g_dir_read_name(dir)) != NULL)
     {
-      gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, file, NULL);
+      gchar *filepath = g_strconcat(romdir, G_DIR_SEPARATOR_S, file, NULL);
 
-      if (!g_file_test (testdir, G_FILE_TEST_IS_DIR))
+      if (!g_file_test (filepath, G_FILE_TEST_IS_DIR))
       {
         if (g_strcmp0(gui->filters, "") != 0)
         {
-          gchar **str;
+          gchar **flt;
           guint i = 0;
 
-          str = g_strsplit (gui->filters, ",", -1);
+          flt = g_strsplit (gui->filters, ",", -1);
 
-          while (str[i] != NULL)
+          while (flt[i] != NULL)
           {
             gchar *ext;
 
-            ext = g_strconcat(".", str[i], NULL);
-            if (g_str_has_suffix(file, ext))
-            {
-              gui->itemlist = g_slist_prepend(gui->itemlist,
-                g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
+            ext = g_strconcat(".", flt[i], NULL);
 
-              g_free(ext);
-            }
+            if (g_str_has_suffix(file, ext))
+              gui->itemlist = g_slist_prepend(gui->itemlist, g_strdup(filepath));
+
+            g_free(ext);
             i++;
           }
-          g_strfreev(str);
+          g_strfreev(flt);
         }
         else
-        {
-          gui->itemlist = g_slist_prepend(gui->itemlist,
-            g_strconcat(file, G_DIR_SEPARATOR_S, testdir, NULL));
-        }
+          gui->itemlist = g_slist_prepend(gui->itemlist, g_strdup(filepath));
       }
       else
       {
         if (gui->listmode == TRUE)
-          scan_files(testdir, gui);
+          scan_files(filepath, gui);
       }
-      g_free(testdir);
+      g_free(filepath);
     }
     g_dir_close(dir);
   }
@@ -318,25 +313,21 @@ void populate_list(guidata *gui)
 
   for (iterator = gui->itemlist; iterator; iterator = iterator->next)
   {
-    gchar **str;
+    char *file;
+    char *ext;
     gchar *base;
-    char *str2;
 
-    str = g_strsplit (iterator->data, G_DIR_SEPARATOR_S, 2);
-    str2 = strrchr(str[0], '.');
+    file = (strrchr(iterator->data, G_DIR_SEPARATOR)+1);
+    ext = strrchr(file, '.');
 
-    if (str2 == NULL)
-    {
-      base = g_strdup(str[0]);
-    }
+    if (ext == NULL)
+      base = g_strdup(file);
     else
-    {
-      base = g_strndup(str[0], str2-str[0]);
-    }
+      base = g_strndup(file, ext-file);
 
     gtk_list_store_insert_with_values(gui->store, &iter, -1,
-                           0, str[0], 1, str[1], 2, base, 3, str2, -1);
-    g_strfreev(str);
+                           0, file, 1, iterator->data, 2, base, 3, ext, -1);
+
     g_free(base);
   }
 }
