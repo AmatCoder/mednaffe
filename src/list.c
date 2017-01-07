@@ -61,30 +61,41 @@ G_MODULE_EXPORT
 #endif
 void remove_folder(GtkWidget *sender, guidata *gui)
 {
-  GtkTreeIter iter, iter2;
-  GtkListStore *combostore;
+  GtkTreeIter iter, iter2, iter3;
+  GtkTreeModel *treemodel;
+  GtkTreeSelection *selection;
 
-  combostore =
-    GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
-
-  if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter))
+  selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(gtk_builder_get_object(gui->settings, "treeview1")));
+  if (gtk_tree_selection_get_selected(selection, &treemodel, &iter))
   {
-    if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(combostore), &iter2))
-      gtk_list_store_remove(combostore, &iter);
+    if (gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter2))
+    {
+      gchar *str_a;
+      gchar *str_b;
+  
+      gtk_tree_model_get (treemodel, &iter, 0, &str_a, -1);
+      gtk_tree_model_get (treemodel, &iter2, 0, &str_b, -1);
+    
+      if (g_strcmp0(str_a, str_b) == 0)
+      {
+        gtk_list_store_clear(gui->store);
+        gtk_statusbar_pop(GTK_STATUSBAR(gui->sbnumber), 1);
+        gtk_statusbar_push(GTK_STATUSBAR(gui->sbnumber), 1, " Games in list: 0 ");
+        gtk_statusbar_pop(GTK_STATUSBAR(gui->sbname), 1);
+        gtk_statusbar_push(GTK_STATUSBAR(gui->sbname), 1, " Game selected: None");
 
-    gtk_list_store_clear(gui->store);
-    gtk_statusbar_pop(GTK_STATUSBAR(gui->sbnumber), 1);
-    gtk_statusbar_push(GTK_STATUSBAR(gui->sbnumber), 1,
-                                                  " Games in list: 0 ");
-
-    gtk_statusbar_pop(GTK_STATUSBAR(gui->sbname), 1);
-    gtk_statusbar_push(GTK_STATUSBAR(gui->sbname), 1,
-                                                " Game selected: None");
-
-    g_free(gui->rompath);
-    g_free(gui->rom);
-    gui->rompath=NULL;
-    gui->rom=NULL;
+        g_free(gui->fullpath);
+        g_free(gui->rompath);
+        g_free(gui->rom);
+        gui->fullpath=NULL;
+        gui->rompath=NULL;
+        gui->rom=NULL;
+      }
+      g_free (str_a);
+      g_free (str_b);
+    }
+    if (gtk_tree_model_get_iter_first(treemodel, &iter3))
+      gtk_list_store_remove(GTK_LIST_STORE(treemodel), &iter);
   }
 }
 
@@ -94,33 +105,44 @@ G_MODULE_EXPORT
 void on_folder_setup(GtkButton *button, guidata *gui)
 {
   gchar *text;
+  gchar *path;
   gboolean recursive = FALSE;
   gboolean hide_ext = FALSE;
   gchar *filter = NULL;
   gchar *screen_a = NULL;
   gchar *screen_b = NULL;
 
-  text = g_strconcat("<b>Folder Setup:    <i>", gui->rompath, "</i></b>", NULL);
-  gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(gui->settings, "folder_label")), text);
-  g_free(text);
-
   if (button != NULL)
   {
     GtkTreeModel *model;
+    GtkTreeSelection *selection;
     GtkTreeIter iter;
 
     gui->resetup_folder = TRUE;
-    model = gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
-    gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter);
 
-    gtk_tree_model_get (model, &iter, 1, &recursive,
-                                      2, &hide_ext,
-                                      3, &filter,
-                                      4, &screen_a,
-                                      5, &screen_b,
-                                      -1);
+    selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(gtk_builder_get_object(gui->settings, "treeview1")));
+    if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    {
+
+      gtk_tree_model_get (model, &iter, 0, &path,
+                                        1, &recursive,
+                                        2, &hide_ext,
+                                        3, &filter,
+                                        4, &screen_a,
+                                        5, &screen_b,
+                                        -1);
+      text = g_strconcat("<b>Folder Setup:   <i>", path, " </i></b>", NULL);
+    }
+    else return;
   }
-  else gui->resetup_folder = FALSE;
+  else
+  {
+    gui->resetup_folder = FALSE;
+    text = g_strconcat("<b>Folder Setup:   <i>", gui->rompath, " </i></b>", NULL);
+  }
+
+  gtk_label_set_markup(GTK_LABEL(gtk_builder_get_object(gui->settings, "folder_label")), text);
+  g_free(text);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "scan")), recursive);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")), hide_ext);
@@ -145,6 +167,15 @@ void on_folder_setup(GtkButton *button, guidata *gui)
   g_free(screen_b);  
 
   gtk_widget_show(gui->folderwindow);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_folders_list_setup(GtkMenuItem *menuitem, guidata *gui)
+{
+  gtk_tree_view_set_model((GTK_TREE_VIEW(gtk_builder_get_object(gui->settings, "treeview1"))), gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
+  gtk_widget_show(gui->folderlistwindow);
 }
 
 #ifdef G_OS_WIN32

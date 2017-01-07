@@ -122,17 +122,26 @@ gboolean close_folder_settings(GtkWidget *widget, GdkEvent *event, guidata *gui)
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
+gboolean close_folder_list(GtkWidget *widget, GdkEvent *event, guidata *gui)
+{
+  gtk_widget_hide_on_delete(gui->folderlistwindow);
+  return TRUE;
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
 void apply_folder_settings(GtkButton *button, guidata *gui)
 {
   GtkTreeIter iter;
-  GtkListStore *combostore;
+  GtkTreeModel *combomodel;
   gboolean recursive;
   gboolean hide_ext;
   const gchar *filter;
   const gchar *screen_a;
   const gchar *screen_b;
 
-  combostore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
+  combomodel = gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath));
 
   recursive = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "scan")));
   hide_ext = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(gtk_builder_get_object(gui->settings, "hide_ext")));
@@ -141,17 +150,24 @@ void apply_folder_settings(GtkButton *button, guidata *gui)
   screen_b = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(gui->settings, "screen_b")));
 
   if (!gui->resetup_folder)
-    gtk_list_store_insert(combostore, &iter, 0);
+  {
+    gtk_list_store_insert(GTK_LIST_STORE(combomodel), &iter, 0);
+    gtk_list_store_set(GTK_LIST_STORE(combomodel), &iter, 0, gui->rompath, -1);
+  }
   else
-    gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter);
+  {
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(gtk_builder_get_object(gui->settings, "treeview1")));
 
-  gtk_list_store_set(combostore, &iter, 0, gui->rompath,
-                                        1, recursive,
-                                        2, hide_ext,
-                                        3, g_strdup (filter),
-                                        4, g_strdup (screen_a),
-                                        5, g_strdup (screen_b),
-                                        -1);
+    if (!gtk_tree_selection_get_selected(selection, &combomodel, &iter))
+      return;
+  }
+
+  gtk_list_store_set(GTK_LIST_STORE(combomodel), &iter, 1, recursive,
+                                                        2, hide_ext,
+                                                        3, g_strdup (filter),
+                                                        4, g_strdup (screen_a),
+                                                        5, g_strdup (screen_b),
+                                                        -1);
 
   gtk_combo_box_set_active_iter(GTK_COMBO_BOX(gui->cbpath), NULL);
   gtk_combo_box_set_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter);
@@ -165,6 +181,14 @@ G_MODULE_EXPORT
 void cancel_folder_settings(GtkButton *button, guidata *gui)
 {
   gtk_widget_hide(gui->folderwindow);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void cancel_folder_list(GtkButton *button, guidata *gui)
+{
+  gtk_widget_hide(gui->folderlistwindow);
 }
 
 #ifdef G_OS_WIN32

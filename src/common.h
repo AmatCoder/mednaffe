@@ -49,6 +49,7 @@ typedef struct
    GtkWidget *topwindow;
    GtkWidget *prefwindow;
    GtkWidget *folderwindow;
+   GtkWidget *folderlistwindow;
    GtkWidget *inputwindow;
    GtkWidget *cbpath;
    GtkWidget *sbname;
