@@ -1,7 +1,7 @@
 /*
  * mednaffe_glade.h
  * 
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2017 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -3740,7 +3740,7 @@ static const char *mednaffe_glade =
 "</packing>\n"
 "</child>\n"
 "<child>\n"
-"<object class=\"GtkComboBox\" id=\".pixshader\">\n"
+"<object class=\"GtkComboBox\" id=\".shader\">\n"
 "<property name=\"visible\">True</property>\n"
 "<property name=\"can_focus\">False</property>\n"
 "<property name=\"has_tooltip\">True</property>\n"
@@ -4381,6 +4381,9 @@ static const char *mednaffe_glade =
 "<child>\n"
 "<placeholder/>\n"
 "</child>\n"
+"<child>\n"
+"<placeholder/>\n"
+"</child>\n"
 "</object>\n"
 "</child>\n"
 "</object>\n"
@@ -4517,6 +4520,9 @@ static const char *mednaffe_glade =
 "<property name=\"x_options\"/>\n"
 "<property name=\"y_options\"/>\n"
 "</packing>\n"
+"</child>\n"
+"<child>\n"
+"<placeholder/>\n"
 "</child>\n"
 "<child>\n"
 "<placeholder/>\n"

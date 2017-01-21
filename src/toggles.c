@@ -357,7 +357,7 @@ gchar* get_cfg(const gchar *home, guidata *gui)
   #endif
 
   if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
-    print_log("Starting Mednaffe 0.8.3\n\
+    print_log("Starting Mednaffe 0.8.4\n\
 Mednafen 09x configuration file found.\n", FE, gui);
   else return NULL;
 
@@ -390,10 +390,10 @@ gboolean check_version(gchar *stout, guidata *gui)
 
     if (aline[1][11]!='9')
       return FALSE;
-    if (aline[1][13]-'0'<3)
+    if (aline[1][13]-'0'<4)
       return FALSE;
-    if ((aline[1][13]=='3') && ((aline[1][14]-'0')<9))
-      return FALSE;
+    /* if ((aline[1][13]=='3') && ((aline[1][14]-'0')<9)) 
+      return FALSE; */
     /*
     if (strlen(aline[1])>16)
     {
