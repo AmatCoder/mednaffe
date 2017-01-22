@@ -1,3 +1,10 @@
+#### 21 / Jan / 2017
+
+Mednaffe 0.8.4 is released with the following changes:
+
+- Added support for new settings added by mednafen 0.9.41 (Obviously,
+  it needs this version or higher to work).
+
 #### 19 / Nov / 2016
 
 Mednaffe 0.8.3 is released with the following changes:
