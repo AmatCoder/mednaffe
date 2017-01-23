@@ -1110,6 +1110,7 @@ static const char *system_glade =
 "</object>\n"
 "<object class=\"GtkAdjustment\" id=\"adjsmsslend\">\n"
 "<property name=\"upper\">239</property>\n"
+"<property name=\"value\">239</property>\n"
 "<property name=\"step_increment\">1</property>\n"
 "<property name=\"page_increment\">10</property>\n"
 "</object>\n"
