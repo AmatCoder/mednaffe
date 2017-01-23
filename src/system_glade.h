@@ -1,7 +1,7 @@
 /*
  * system_glade.h
  * 
- * Copyright 2013 AmatCoder
+ * Copyright 2013-2017 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -22,7 +22,7 @@
  
 #ifndef SYSTEM_GLADE_H
 #define SYSTEM_GLADE_H
- 
+
 static const char *system_glade =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 "<interface>\n"
@@ -267,6 +267,10 @@ static const char *system_glade =
 "<property name=\"can_focus\">False</property>\n"
 "<property name=\"left_padding\">12</property>\n"
 "<child>\n"
+"<object class=\"GtkVBox\" id=\"vbox37\">\n"
+"<property name=\"visible\">True</property>\n"
+"<property name=\"can_focus\">False</property>\n"
+"<child>\n"
 "<object class=\"GtkCheckButton\" id=\"-snes.correct_aspect\">\n"
 "<property name=\"label\" translatable=\"yes\">Correct the aspect ratio</property>\n"
 "<property name=\"visible\">True</property>\n"
@@ -275,6 +279,28 @@ static const char *system_glade =
 "<property name=\"has_tooltip\">True</property>\n"
 "<property name=\"tooltip_text\" translatable=\"yes\">Note that regardless of this setting's value, \"512\" and \"256\" width modes will be scaled to the same dimensions for display.</property>\n"
 "<property name=\"draw_indicator\">True</property>\n"
+"</object>\n"
+"<packing>\n"
+"<property name=\"expand\">True</property>\n"
+"<property name=\"fill\">True</property>\n"
+"<property name=\"position\">0</property>\n"
+"</packing>\n"
+"</child>\n"
+"<child>\n"
+"<object class=\"GtkCheckButton\" id=\"-snes.h_blend\">\n"
+"<property name=\"label\" translatable=\"yes\">Enable horizontal blend(blur) filter</property>\n"
+"<property name=\"visible\">True</property>\n"
+"<property name=\"can_focus\">True</property>\n"
+"<property name=\"receives_default\">False</property>\n"
+"<property name=\"tooltip_text\" translatable=\"yes\">Intended for use in combination with the \"goat\" OpenGL shader, or with bilinear interpolation or linear interpolation on the X axis enabled.</property>\n"
+"<property name=\"draw_indicator\">True</property>\n"
+"</object>\n"
+"<packing>\n"
+"<property name=\"expand\">True</property>\n"
+"<property name=\"fill\">True</property>\n"
+"<property name=\"position\">1</property>\n"
+"</packing>\n"
+"</child>\n"
 "</object>\n"
 "</child>\n"
 "</object>\n"
@@ -7530,4 +7556,4 @@ static const char *system_glade =
 "</interface>\n"
 ;
 
-#endif /* SYSTEM__GLADE_H  */
+#endif /* SYSTEM_GLADE_H */
