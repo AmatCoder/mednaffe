@@ -1,7 +1,7 @@
 /*
  * about.c
  *
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2017 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -45,12 +45,12 @@ along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.";
 gtk_show_about_dialog(
   GTK_WINDOW(gui->topwindow),
   "program-name", "Mednaffe",
-  "version" ,"0.8.3",
+  "version" ,"0.9.0beta",
   "authors", authors,
 #ifdef STATIC_ENABLED
   "copyright", "See NOTICE file for license details.",
 #else
-  "copyright", "Copyright \xc2\xa9 2010-2016 AmatCoder",
+  "copyright", "Copyright \xc2\xa9 2010-2017 AmatCoder",
 #endif
   "comments", "A front-end (GUI) for Mednafen emulator",
   "license", gpl3,

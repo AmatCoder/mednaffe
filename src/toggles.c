@@ -1,7 +1,7 @@
 /*
  * toggles.c
  *
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2017 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -357,7 +357,7 @@ gchar* get_cfg(const gchar *home, guidata *gui)
   #endif
 
   if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
-    print_log("Starting Mednaffe 0.8.3\n\
+    print_log("Starting Mednaffe 0.9.0beta\n\
 Mednafen 09x configuration file found.\n", FE, gui);
   else return NULL;
 
