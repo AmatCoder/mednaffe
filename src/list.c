@@ -303,7 +303,7 @@ void scan_files(gchar *romdir, guidata *gui)
           {
             gchar *ext;
 
-            ext = g_strconcat(".", flt[i], NULL);
+            ext = g_strconcat(".", g_strstrip(flt[i]), NULL);
 
             if (g_str_has_suffix(file, ext))
               gui->itemlist = g_slist_prepend(gui->itemlist, g_strdup(filepath));
