@@ -393,10 +393,10 @@ gboolean check_version(gchar *stout, guidata *gui)
 
     if (aline[1][11]!='9')
       return FALSE;
-    if (aline[1][13]-'0'<3)
+    if (aline[1][13]-'0'<4)
       return FALSE;
-    if ((aline[1][13]=='3') && ((aline[1][14]-'0')<9))
-      return FALSE;
+    /* if ((aline[1][13]=='3') && ((aline[1][14]-'0')<9))
+      return FALSE; */
     /*
     if (strlen(aline[1])>16)
     {
