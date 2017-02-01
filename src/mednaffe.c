@@ -244,6 +244,72 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
+void check_bios(GtkEditable *editable, guidata *gui)
+{
+  const gchar* const system[7] = { "-pcfx.bios",
+                                   "-psx.bios_eu",
+                                   "-psx.bios_jp",
+                                   "-psx.bios_na",
+                                   "-ss.bios_na_eu",
+                                   "-ss.bios_jp",
+                                   NULL };
+
+  const gchar* const sha256[7] = { "4b44ccf5d84cc83daa2e6a2bee00fdafa14eb58bdf5859e96d8861a891675417",
+                                   "1faaa18fa820a0225e488d9f086296b8e6c46df739666093987ff7d8fd352c09",
+                                   "9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb",
+                                   "11052b6499e466bbf0a709b1f9cb6834a9418e66680387912451e971cf8a1fef",
+                                   "96e106f740ab448cf89f0dd49dfbac7fe5391cb6bd6e14ad5e3061c13330266f",
+                                   "dcfef4b99605f872b6c3b6d05c045385cdea3d1b702906a0ed930df7bcb7deac",
+                                   NULL };
+
+  gpointer *cname = g_object_get_data (G_OBJECT(editable), "cname");
+
+  gchar *path = gtk_editable_get_chars (editable, 0, -1);
+
+  GMappedFile *mfile = g_mapped_file_new (path, FALSE, NULL);
+
+  if (mfile != NULL)
+  {
+    gsize len = g_mapped_file_get_length (mfile);
+    gchar *content = g_mapped_file_get_contents (mfile);
+
+    gchar *hash = g_compute_checksum_for_data (G_CHECKSUM_SHA256,
+                                               (const guchar *)content,
+                                               len);
+
+    gint i = 0;
+    while (system[i] != NULL)
+    {
+      if (g_strcmp0((gchar *)cname, system[i]) == 0)
+      {
+        if (g_strcmp0(hash, sha256[i]) == 0)
+        {
+          g_object_set(G_OBJECT(editable), "secondary-icon-stock", GTK_STOCK_APPLY,
+                                           "secondary-icon-tooltip-text", "Bios image file is correct",
+                                           NULL);
+        }
+        else
+        {
+          g_object_set(G_OBJECT(editable), "secondary-icon-stock", GTK_STOCK_CANCEL,
+                                           "secondary-icon-tooltip-text", "Bios image file is not valid!",
+                                           NULL);
+        }
+      }
+      i++;
+    }
+
+    g_mapped_file_unref (mfile);
+    g_free(hash);
+  }
+  else
+    g_object_set(G_OBJECT(editable), "secondary-icon-stock", GTK_STOCK_CANCEL,
+                                     "secondary-icon-tooltip-text", "Bios image file not found!",
+                                      NULL);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
 void on_cell_toggled(GtkCellRendererToggle *cell_renderer,
                                     gchar *path,
                                     guidata *gui)
