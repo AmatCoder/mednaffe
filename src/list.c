@@ -209,12 +209,12 @@ void open_folder(GtkWidget *sender, guidata *gui)
 
 int descend_sort(const void * a, const void * b)
 {
-  return strcmp(strrchr(a, G_DIR_SEPARATOR), strrchr(b, G_DIR_SEPARATOR));
+  return g_strcmp0(strrchr(a, G_DIR_SEPARATOR), strrchr(b, G_DIR_SEPARATOR));
 }
 
 int ascend_sort(const void * a, const void * b)
 {
-  return strcmp(strrchr(b, G_DIR_SEPARATOR), strrchr(a, G_DIR_SEPARATOR));
+  return g_strcmp0(strrchr(b, G_DIR_SEPARATOR), strrchr(a, G_DIR_SEPARATOR));
 }
 
 #ifdef G_OS_WIN32 /* g_file_test is too slow on Windows */
