@@ -266,7 +266,49 @@ void check_bios(GtkEditable *editable, guidata *gui)
 
   gchar *path = gtk_editable_get_chars (editable, 0, -1);
 
+  if (!g_path_is_absolute(path))
+  {
+    GtkEntry *entry = GTK_ENTRY(gtk_builder_get_object(gui->builder, "-filesys.path_firmware"));
+    const gchar *firm_path = gtk_entry_get_text(entry);
+
+    if (g_path_is_absolute(firm_path))
+    {
+      gchar *path2 = g_strconcat(firm_path, path, NULL);
+      g_free(path);
+      path = path2;
+    }
+    else
+    {
+      const gchar *home;
+    #ifdef G_OS_WIN32
+      home = g_path_get_dirname(gui->binpath);
+    #else
+      home = g_getenv ("HOME");
+      if (home != NULL) home = g_get_home_dir();
+    #endif
+
+    #ifdef G_OS_WIN32
+       gchar *path2 = g_strconcat(home, firm_path, G_DIR_SEPARATOR_S, path, NULL);
+    #else
+       gchar *path2 = g_strconcat(home,"/.mednafen/", firm_path, G_DIR_SEPARATOR_S, path, NULL);
+    #endif
+
+       if (!g_file_test (path2, G_FILE_TEST_EXISTS))
+       {
+         g_free(path2);
+      #ifdef G_OS_WIN32
+         path2 = g_strconcat(home, path, NULL);
+      #else
+         path2 = g_strconcat(home,"/.mednafen/", path, NULL);
+      #endif
+       }
+       g_free(path);
+       path = path2;   
+    }
+  }
+
   GMappedFile *mfile = g_mapped_file_new (path, FALSE, NULL);
+  g_free(path);
 
   if (mfile != NULL)
   {
