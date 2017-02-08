@@ -228,42 +228,42 @@ void scan_files(gchar *romdir, guidata *gui)
 
   while (hFind != INVALID_HANDLE_VALUE)
   {
-    gchar *testdir = g_strconcat(romdir, G_DIR_SEPARATOR_S, FindFileData.cFileName, NULL);
+    gchar *filepath = g_strconcat(romdir, G_DIR_SEPARATOR_S, FindFileData.cFileName, NULL);
     if ((FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
     {
       if (gui->listmode == TRUE && (0 != strcmp(FindFileData.cFileName, ".")
         && 0 != strcmp (FindFileData.cFileName, "..")))
       {
-        scan_files(testdir, gui);
+        scan_files(filepath, gui);
       }
     }
     else
     {
-    if (gui->filter == 0)
+    if (g_strcmp0(gui->filters, "") != 0)
     {
-      gui->itemlist = g_slist_prepend(gui->itemlist,
-        g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, testdir, NULL));
-    }
-      else if ((gui->filter == 1) && (g_str_has_suffix(FindFileData.cFileName, ".zip") ||
-                               g_str_has_suffix(FindFileData.cFileName, ".ZIP")))
+      gchar **flt;
+      guint i = 0;
+
+      flt = g_strsplit (gui->filters, ",", -1);
+
+      while (flt[i] != NULL)
       {
-        gui->itemlist = g_slist_prepend(gui->itemlist,
-          g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, testdir, NULL));
+        gchar *ext;
+
+        ext = g_strconcat(".", g_strstrip(flt[i]), NULL);
+
+        if (g_str_has_suffix(FindFileData.cFileName, ext))
+          gui->itemlist = g_slist_prepend(gui->itemlist, g_strdup(filepath));
+
+        g_free(ext);
+        i++;
+        }
+        g_strfreev(flt);
       }
-      else if ((gui->filter == 2) && (g_str_has_suffix(FindFileData.cFileName, ".cue") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".toc") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".ccd") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".m3u") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".CUE") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".TOC") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".CCD") ||
-                     g_str_has_suffix(FindFileData.cFileName, ".M3U")))
-      {
-        gui->itemlist = g_slist_prepend(gui->itemlist,
-          g_strconcat(FindFileData.cFileName, G_DIR_SEPARATOR_S, testdir, NULL));
-      }
+      else
+        gui->itemlist = g_slist_prepend(gui->itemlist, g_strdup(filepath));
     }
-    g_free(testdir);
+    g_free(filepath);
 
     if (!FindNextFile(hFind, &FindFileData))
     {
