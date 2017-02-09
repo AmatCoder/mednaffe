@@ -141,6 +141,8 @@ void on_folders_list_setup(GtkMenuItem *menuitem, guidata *gui)
   gtk_combo_box_get_active_iter(GTK_COMBO_BOX(gui->cbpath), &iter);
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(gtk_builder_get_object(gui->settings, "treeview1")));
   gtk_tree_selection_select_iter(selection, &iter);
+
+  gtk_widget_grab_focus(GTK_WIDGET(gtk_builder_get_object(gui->settings, "treeview1")));
 }
 
 #ifdef G_OS_WIN32
