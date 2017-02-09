@@ -324,14 +324,16 @@ void check_bios(GtkEditable *editable, guidata *gui)
       {
         if (g_strcmp0(hash, sha256[i]) == 0)
         {
-          g_object_set(G_OBJECT(editable), "secondary-icon-stock", GTK_STOCK_APPLY,
+          g_object_set(G_OBJECT(editable), "secondary-icon-pixbuf", gui->ok,
                                            "secondary-icon-tooltip-text", "Bios image file is correct",
+                                           "tooltip-text", "Bios image file is correct",
                                            NULL);
         }
         else
         {
-          g_object_set(G_OBJECT(editable), "secondary-icon-stock", GTK_STOCK_CANCEL,
+          g_object_set(G_OBJECT(editable), "secondary-icon-pixbuf", gui->notok,
                                            "secondary-icon-tooltip-text", "Bios image file is not valid!",
+                                           "tooltip-text", "Bios image file is not valid!",
                                            NULL);
         }
       }
@@ -342,8 +344,9 @@ void check_bios(GtkEditable *editable, guidata *gui)
     g_free(hash);
   }
   else
-    g_object_set(G_OBJECT(editable), "secondary-icon-stock", GTK_STOCK_CANCEL,
+    g_object_set(G_OBJECT(editable), "secondary-icon-pixbuf", gui->missing,
                                      "secondary-icon-tooltip-text", "Bios image file not found!",
+                                     "tooltip-text", "Bios image file not found!",
                                       NULL);
 }
 
@@ -407,6 +410,9 @@ void quit(GtkWidget *widget, guidata *gui)
 
   /* To free items makes happy to Valgrind ;-) */
   g_object_unref(gui->pixbuf);
+  g_object_unref(gui->ok);
+  g_object_unref(gui->missing);
+  g_object_unref(gui->notok);
   g_object_unref(G_OBJECT(gui->builder));
   g_object_unref(G_OBJECT(gui->specific));
   g_object_unref(G_OBJECT(gui->settings));
@@ -721,15 +727,19 @@ version or above.\n");
     return 1; /* Items are not freed here */
   }
 
+  /* Create icon */
+  gui.pixbuf = gdk_pixbuf_new_from_resource("/org/gtk/mednaffe/mednaffe.png", NULL);
+  gtk_window_set_icon(GTK_WINDOW(gui.topwindow), gui.pixbuf);
+
+  gui.ok = gdk_pixbuf_new_from_resource("/org/gtk/mednaffe/gtk-apply.png", NULL);
+  gui.missing = gdk_pixbuf_new_from_resource("/org/gtk/mednaffe/gtk-cancel.png", NULL);
+  gui.notok = gdk_pixbuf_new_from_resource("/org/gtk/mednaffe/dialog-warning.png", NULL);
+
   /* Set values into gui */
   if (key_file) load_emu_options(key_file, &gui);
   set_values(gui.builder, &gui);
   set_values(gui.specific, &gui);
   select_rows(&gui);
-
-  /* Create icon */
-  gui.pixbuf = gdk_pixbuf_new_from_resource("/org/gtk/mednaffe/mednaffe.png", NULL);
-  gtk_window_set_icon(GTK_WINDOW(gui.topwindow), gui.pixbuf);
 
   /* Show window and set focus */
   gtk_widget_show(gui.topwindow);

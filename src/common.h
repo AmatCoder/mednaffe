@@ -73,6 +73,9 @@ typedef struct
    GtkImage *screen_a;
    GtkImage *screen_b;
    GdkPixbuf *pixbuf;
+   GdkPixbuf *ok;
+   GdkPixbuf *missing;
+   GdkPixbuf *notok;
    gboolean listmode;
    gint filter;
    gint pagesys;
