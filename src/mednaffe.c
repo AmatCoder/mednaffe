@@ -37,12 +37,10 @@
 #include "mednaffe_glade.h"
 #include "system_glade.h"
 #include "settings_glade.h"
+#include "resource.h"
 
 #ifdef G_OS_WIN32
   #include <windows.h>
-  #include "logo.h"
-#else
-  #include "resource.h"
 #endif
 
 void show_error(const gchar *message)
@@ -730,11 +728,7 @@ version or above.\n");
   select_rows(&gui);
 
   /* Create icon */
-#ifdef G_OS_WIN32
-  gui.pixbuf = gdk_pixbuf_new_from_inline (-1, logo, FALSE, NULL);
-#else
   gui.pixbuf = gdk_pixbuf_new_from_resource("/org/gtk/mednaffe/mednaffe.png", NULL);
-#endif
   gtk_window_set_icon(GTK_WINDOW(gui.topwindow), gui.pixbuf);
 
   /* Show window and set focus */
