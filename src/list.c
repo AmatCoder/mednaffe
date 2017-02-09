@@ -172,15 +172,6 @@ void on_folder_setup(GtkButton *button, guidata *gui)
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
-void on_folders_list_setup(GtkMenuItem *menuitem, guidata *gui)
-{
-  gtk_tree_view_set_model((GTK_TREE_VIEW(gtk_builder_get_object(gui->settings, "treeview1"))), gtk_combo_box_get_model(GTK_COMBO_BOX(gui->cbpath)));
-  gtk_widget_show(gui->folderlistwindow);
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
 void open_folder(GtkWidget *sender, guidata *gui)
 {
   GtkWidget *folder;

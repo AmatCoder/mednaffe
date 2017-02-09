@@ -563,6 +563,9 @@ int main(int argc, char **argv)
   gtk_tree_model_filter_set_visible_column(GTK_TREE_MODEL_FILTER(
     gtk_tree_view_get_model(GTK_TREE_VIEW(gui.systemlist))), 3);
 
+  gtk_tree_view_set_model((GTK_TREE_VIEW(gtk_builder_get_object(gui.settings, "treeview1"))),
+                            gtk_combo_box_get_model(GTK_COMBO_BOX(gui.cbpath)));
+
   /* Windows-Only options */
   #ifdef G_OS_WIN32
   gtk_widget_set_visible(GTK_WIDGET(gtk_builder_get_object(gui.builder,
