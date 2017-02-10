@@ -78,7 +78,7 @@ gchar* get_checksum(gchar *path)
 
     hash = g_compute_checksum_for_data (G_CHECKSUM_SHA256,
                                         (const guchar *)content,
-                                        len);src/settings_glade.h
+                                        len);
 
     g_mapped_file_unref (mfile);
   }
