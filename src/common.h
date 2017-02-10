@@ -51,6 +51,7 @@ typedef struct
    GtkWidget *folderwindow;
    GtkWidget *folderlistwindow;
    GtkWidget *inputwindow;
+   GtkWidget *bioswindow;
    GtkWidget *cbpath;
    GtkWidget *sbname;
    GtkWidget *sbnumber;

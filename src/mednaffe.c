@@ -1,7 +1,7 @@
 /*
  * mednaffe.c
  *
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2017 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,7 +25,7 @@
   Compile me with:
 
   gcc -g -std=c99 -Wall -DGTK2_ENABLED -o mednaffe about.c
-  active.c command.c gui.c prefs.c list.c toggles.c
+  active.c command.c gui.c prefs.c list.c toggles.c bios.c
   log.c input.c joystick_linux.c md5.c resource.c mednaffe.c
   $(pkg-config --cflags --libs gtk+-2.0 gmodule-export-2.0)
 
@@ -242,117 +242,6 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
-void check_bios(GtkEditable *editable, guidata *gui)
-{
-  const gchar* const system[7] = { "-pcfx.bios",
-                                   "-psx.bios_eu",
-                                   "-psx.bios_jp",
-                                   "-psx.bios_na",
-                                   "-ss.bios_na_eu",
-                                   "-ss.bios_jp",
-                                   NULL };
-
-  const gchar* const sha256[7] = { "4b44ccf5d84cc83daa2e6a2bee00fdafa14eb58bdf5859e96d8861a891675417",
-                                   "1faaa18fa820a0225e488d9f086296b8e6c46df739666093987ff7d8fd352c09",
-                                   "9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb",
-                                   "11052b6499e466bbf0a709b1f9cb6834a9418e66680387912451e971cf8a1fef",
-                                   "96e106f740ab448cf89f0dd49dfbac7fe5391cb6bd6e14ad5e3061c13330266f",
-                                   "dcfef4b99605f872b6c3b6d05c045385cdea3d1b702906a0ed930df7bcb7deac",
-                                   NULL };
-
-  gpointer *cname = g_object_get_data (G_OBJECT(editable), "cname");
-
-  gchar *path = gtk_editable_get_chars (editable, 0, -1);
-
-  if (!g_path_is_absolute(path))
-  {
-    GtkEntry *entry = GTK_ENTRY(gtk_builder_get_object(gui->builder, "-filesys.path_firmware"));
-    const gchar *firm_path = gtk_entry_get_text(entry);
-
-    if (g_path_is_absolute(firm_path))
-    {
-      gchar *path2 = g_strconcat(firm_path, path, NULL);
-      g_free(path);
-      path = path2;
-    }
-    else
-    {
-      const gchar *home;
-    #ifdef G_OS_WIN32
-      home = g_path_get_dirname(gui->binpath);
-    #else
-      home = g_getenv ("HOME");
-      if (home != NULL) home = g_get_home_dir();
-    #endif
-
-    #ifdef G_OS_WIN32
-       gchar *path2 = g_strconcat(home, firm_path, G_DIR_SEPARATOR_S, path, NULL);
-    #else
-       gchar *path2 = g_strconcat(home,"/.mednafen/", firm_path, G_DIR_SEPARATOR_S, path, NULL);
-    #endif
-
-       if (!g_file_test (path2, G_FILE_TEST_EXISTS))
-       {
-         g_free(path2);
-      #ifdef G_OS_WIN32
-         path2 = g_strconcat(home, path, NULL);
-      #else
-         path2 = g_strconcat(home,"/.mednafen/", path, NULL);
-      #endif
-       }
-       g_free(path);
-       path = path2;   
-    }
-  }
-
-  GMappedFile *mfile = g_mapped_file_new (path, FALSE, NULL);
-  g_free(path);
-
-  if (mfile != NULL)
-  {
-    gsize len = g_mapped_file_get_length (mfile);
-    gchar *content = g_mapped_file_get_contents (mfile);
-
-    gchar *hash = g_compute_checksum_for_data (G_CHECKSUM_SHA256,
-                                               (const guchar *)content,
-                                               len);
-
-    gint i = 0;
-    while (system[i] != NULL)
-    {
-      if (g_strcmp0((gchar *)cname, system[i]) == 0)
-      {
-        if (g_strcmp0(hash, sha256[i]) == 0)
-        {
-          g_object_set(G_OBJECT(editable), "secondary-icon-pixbuf", gui->ok,
-                                           "secondary-icon-tooltip-text", "Bios image file is correct",
-                                           "tooltip-text", "Bios image file is correct",
-                                           NULL);
-        }
-        else
-        {
-          g_object_set(G_OBJECT(editable), "secondary-icon-pixbuf", gui->notok,
-                                           "secondary-icon-tooltip-text", "Bios image file is not valid!",
-                                           "tooltip-text", "Bios image file is not valid!",
-                                           NULL);
-        }
-      }
-      i++;
-    }
-
-    g_mapped_file_unref (mfile);
-    g_free(hash);
-  }
-  else
-    g_object_set(G_OBJECT(editable), "secondary-icon-pixbuf", gui->missing,
-                                     "secondary-icon-tooltip-text", "Bios image file not found!",
-                                     "tooltip-text", "Bios image file not found!",
-                                      NULL);
-}
-
-#ifdef G_OS_WIN32
-G_MODULE_EXPORT
-#endif
 void on_cell_toggled(GtkCellRendererToggle *cell_renderer,
                                     gchar *path,
                                     guidata *gui)
@@ -489,6 +378,9 @@ int main(int argc, char **argv)
   gui.folderlistwindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
                              "dialog3"));
 
+  gui.bioswindow = GTK_WIDGET(gtk_builder_get_object(gui.settings,
+                             "dialog4"));
+
   gui.screen_a = GTK_IMAGE(gtk_builder_get_object(gui.builder,
                              "snap_a"));
 
@@ -611,6 +503,7 @@ int main(int argc, char **argv)
   gtk_window_set_transient_for(GTK_WINDOW(gui.folderwindow), GTK_WINDOW(gui.topwindow));
   gtk_window_set_transient_for(GTK_WINDOW(gui.folderlistwindow), GTK_WINDOW(gui.topwindow));
   gtk_window_set_transient_for(GTK_WINDOW(gui.inputwindow), GTK_WINDOW(gui.topwindow));
+  gtk_window_set_transient_for(GTK_WINDOW(gui.bioswindow), GTK_WINDOW(gui.topwindow));
 
   /* Set statusbar messages */
   #ifdef GTK2_ENABLED
