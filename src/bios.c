@@ -85,15 +85,15 @@ gchar* get_checksum(gchar *path)
   return hash;
 }
 
-void set_bios(GtkEditable *editable, GdkPixbuf *icon, const gchar *message, guidata *gui)
+void set_bios(GtkEditable *editable, GdkPixbuf *icon, const gchar *message, const gchar *m_ext, guidata *gui)
 {
   gchar *cname;
 
   if (editable != NULL)
   {
     g_object_set(G_OBJECT(editable), "secondary-icon-pixbuf", icon,
-                                     "secondary-icon-tooltip-text", message,
-                                     "tooltip-text", message,
+                                     "secondary-icon-tooltip-text", m_ext,
+                                     "tooltip-text", m_ext,
                                      NULL);
 
     cname = (gchar *)g_object_get_data (G_OBJECT(editable), "cname");
@@ -104,11 +104,13 @@ void set_bios(GtkEditable *editable, GdkPixbuf *icon, const gchar *message, guid
   gchar *str = g_strconcat("label", cname, NULL);
   GtkLabel *label = GTK_LABEL(gtk_builder_get_object(gui->settings, str));
   gtk_label_set_text (label, message);
+  gtk_widget_set_tooltip_text (GTK_WIDGET(label), m_ext);
   g_free(str);
 
   str = g_strconcat("image", cname, NULL);
   GtkImage *image = GTK_IMAGE(gtk_builder_get_object(gui->settings, str));
   gtk_image_set_from_pixbuf(image, icon);
+  gtk_widget_set_tooltip_text (GTK_WIDGET(image), m_ext);
   g_free(str);
 }
 
@@ -139,7 +141,6 @@ void check_bios(GtkEditable *editable, guidata *gui)
   gchar *real_path = get_real_path (path, gui);
   g_free(path);
   gchar *hash = get_checksum (real_path);
-  g_free(real_path);
 
   if (hash != NULL)
   {
@@ -149,34 +150,53 @@ void check_bios(GtkEditable *editable, guidata *gui)
       if (g_strcmp0((gchar *)cname, system[i]) == 0)
       {
         if (g_strcmp0(hash, sha256[i]) == 0)
-          set_bios(editable, gui->ok, "Correct", gui);
+        {
+          gchar *m_ext = g_strconcat ("Path:\n", real_path, "\n\nSHA256:\n",hash, NULL);
+          set_bios(editable, gui->ok, "Correct", m_ext, gui);
+          g_free(m_ext);
+        }
         else
-          set_bios(editable, gui->notok, "Not valid", gui);
+        {
+          gchar *m_ext = g_strconcat ("Path:\n", real_path, "\n\nSHA256:\n", hash, "\n\nShould be:\n", sha256[i], NULL);
+          set_bios(editable, gui->notok, "Not valid", m_ext, gui);
+          g_free(m_ext);
+        }
       }
       i++;
     }
   }
   else
-    set_bios(editable, gui->missing, "Not found", gui);
+    set_bios(editable, gui->missing, "Not found", "Not found", gui);
 
+  g_free(real_path);
   g_free(hash);
 }
 
 void check_lynx_bios(guidata *gui)
 {
+  const gchar *bios = "c26a36c1990bcf841155e5a6fea4d2ee1a4d53b3cc772e70f257a962ad43b383";
   gchar *path = get_real_path("lynxboot.img", gui);
   gchar *hash = get_checksum(path);
-  g_free(path);
 
   if (hash != NULL)
   {
-    if (g_strcmp0(hash, "c26a36c1990bcf841155e5a6fea4d2ee1a4d53b3cc772e70f257a962ad43b383") == 0)
-      set_bios(NULL, gui->ok, "Correct", gui);
+    if (g_strcmp0(hash, bios) == 0)
+    {
+      gchar *m_ext = g_strconcat ("Path:\n", path, "\n\nSHA256:\n", hash, NULL);
+      set_bios(NULL, gui->ok, "Correct", m_ext, gui);
+      g_free(m_ext);
+    }
     else
-      set_bios(NULL, gui->notok, "Not valid", gui);
+    {
+      gchar *m_ext = g_strconcat ("Path:\n", path, "\n\nSHA256:\n", hash, "\n\nShould be:\n", bios, NULL);
+      set_bios(NULL, gui->notok, "Not valid", m_ext, gui);
+      g_free(m_ext);
+    }
   }
   else
-   set_bios(NULL, gui->missing, "Not found", gui);
+   set_bios(NULL, gui->missing, "Not found", "Not found", gui);
+
+  g_free(path);
 }
 
 #ifdef G_OS_WIN32
