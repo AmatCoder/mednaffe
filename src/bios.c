@@ -161,6 +161,7 @@ void check_bios(GtkEditable *editable, guidata *gui)
           set_bios(editable, gui->notok, "Not valid", m_ext, gui);
           g_free(m_ext);
         }
+        break;
       }
       i++;
     }
