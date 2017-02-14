@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([mednaffe], [0.8.4], [BUG-REPORT-ADDRESS])
+AC_INIT([mednaffe], [0.8.5], [BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_CONFIG_SRCDIR([src/common.h])
 AC_CONFIG_HEADERS([config.h])
@@ -23,11 +23,11 @@ else
 fi
 
 if test "x$enable_gtk3" = xyes; then
-  PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.4 glib-2.0 >= 2.28 gthread-2.0], AC_MSG_NOTICE([GTK 3.x selected explicitly]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.4 development libraries))
+  PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.4 glib-2.0 >= 2.32 gthread-2.0], AC_MSG_NOTICE([GTK 3.x selected explicitly]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.4 development libraries))
   GTK_DEFINES="-DGTK3_ENABLED"
   AC_DEFINE([GTK3_ENABLED],[1],[Define to 1 if you have GTK 3])
 else
-  PKG_CHECK_MODULES([GTK],[gtk+-2.0 >= 2.24 glib-2.0 >= 2.28 gthread-2.0], AC_MSG_NOTICE([selecting GTK 2.x automatically]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 2.24 development libraries))
+  PKG_CHECK_MODULES([GTK],[gtk+-2.0 >= 2.24 glib-2.0 >= 2.32 gthread-2.0], AC_MSG_NOTICE([selecting GTK 2.x automatically]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 2.24 development libraries))
   GTK_DEFINES="-DGTK2_ENABLED"
   AC_DEFINE([GTK2_ENABLED],[1],[Define to 1 if you have GTK 2])
 fi

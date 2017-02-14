@@ -1,3 +1,12 @@
+#### 14 / Feb / 2017
+
+Mednaffe 0.8.5 is released with the following changes:
+
+- Check properly version of mednafen emulator (It fails when used
+  spanish locale on Linux).
+- Fixed Saturn bios setup. 
+- Add expansion cart option for Saturn.
+
 #### 21 / Jan / 2017
 
 Mednaffe 0.8.4 is released with the following changes:
