@@ -402,9 +402,9 @@ void fill_list(GtkComboBox *combobox, guidata *gui)
     gtk_image_set_from_file (gui->screen_b, NULL);
 
     if ((g_strcmp0(gui->path_screen_a, "") == 0) && (g_strcmp0(gui->path_screen_b, "") == 0))
-      gtk_widget_hide(GTK_WIDGET(gtk_builder_get_object(gui->builder, "vbox4")));
+      gtk_widget_hide(GTK_WIDGET(gtk_builder_get_object(gui->builder, "vpaned1")));
     else
-      gtk_widget_show(GTK_WIDGET(gtk_builder_get_object(gui->builder, "vbox4")));
+      gtk_widget_show(GTK_WIDGET(gtk_builder_get_object(gui->builder, "vpaned1")));
 
     if (gui->rompath!=NULL)
       scan_dir(gui->rompath, gui);

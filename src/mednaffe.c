@@ -200,6 +200,35 @@ void system_selected(GtkTreeSelection *treeselection, guidata *gui)
   }
 }
 
+void set_image(gchar *path, gchar *filename, GtkWidget *image)
+{
+  GtkAllocation alloc;
+  gtk_widget_get_allocation (GTK_WIDGET(image), &alloc);
+
+  if (g_strcmp0(path, "") != 0)
+  {
+    gchar *full_path = g_strconcat(path, G_DIR_SEPARATOR_S, filename, ".png", NULL);
+    GdkPixbuf *scaled = NULL;
+
+    if (g_file_test(full_path, G_FILE_TEST_EXISTS))
+    {
+      scaled = gdk_pixbuf_new_from_file_at_scale (full_path, (alloc.width)-8, (alloc.height)-8, TRUE, NULL);
+
+      if (scaled != NULL)
+      {
+        gtk_image_set_from_pixbuf(GTK_IMAGE(image), scaled);
+        g_object_set_data_full(G_OBJECT(image), "path", full_path, g_free);
+        g_object_unref (G_OBJECT(scaled));
+      }
+    }
+    else if (scaled == NULL)
+    {
+      gtk_image_clear(GTK_IMAGE(image));
+      g_object_set_data_full(G_OBJECT(image), "path", NULL, g_free);
+    }
+  }
+}
+
 void game_selected(GtkTreeSelection *treeselection, guidata *gui)
 {
   GtkTreeIter iter;
@@ -223,20 +252,56 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
     selected = g_strconcat(" Game selected: ", gui->rom, NULL);
     gtk_statusbar_push(GTK_STATUSBAR(gui->sbname), 1, selected);
     g_free(selected);
-    if (g_strcmp0(gui->path_screen_a, "") != 0)
-    {
-      selected = g_strconcat(gui->path_screen_a, G_DIR_SEPARATOR_S, filename, ".png", NULL);
-      gtk_image_set_from_file (gui->screen_a, selected);
-      g_free(selected);
-    }
-    if (g_strcmp0(gui->path_screen_b, "") != 0)
-    {
-      selected = g_strconcat(gui->path_screen_b, G_DIR_SEPARATOR_S, filename, ".png", NULL);
-      gtk_image_set_from_file (gui->screen_b, selected);
-      g_free(selected);
-    }
+
+    set_image(gui->path_screen_a, filename, GTK_WIDGET(gui->screen_a));
+    set_image(gui->path_screen_b, filename, GTK_WIDGET(gui->screen_b));
+
     g_free(filename);
   }
+}
+
+void scale_pixbuf(GtkImage *image, gchar *path, guidata *gui)
+{
+ if (path == NULL) return;
+
+  GtkAllocation alloc;
+  gtk_widget_get_allocation (GTK_WIDGET(image), &alloc);
+  GdkPixbuf *dest = gdk_pixbuf_new_from_file_at_scale (path, (alloc.width)-8, (alloc.height)-8, TRUE, NULL);
+  gtk_image_set_from_pixbuf (image, dest);
+  g_object_unref (G_OBJECT(dest));
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+void on_resize_screen(GObject *gobject, GParamSpec *pspec, guidata *gui)
+{
+  gchar *path = g_object_get_data(G_OBJECT(gui->screen_a), "path");
+  scale_pixbuf(gui->screen_a, path, gui);
+  path = g_object_get_data(G_OBJECT(gui->screen_b), "path");
+  scale_pixbuf(gui->screen_b, path ,gui);
+}
+
+#ifdef G_OS_WIN32
+G_MODULE_EXPORT
+#endif
+gboolean on_topwindow_size_allocate(GtkWidget *widget, GdkEventConfigure *event, guidata *gui)
+{
+  if (event->type == GDK_CONFIGURE)
+  {
+    gpointer intval = NULL;
+    GtkPaned *vpaned = GTK_PANED(gtk_builder_get_object(gui->builder, "vpaned1"));
+    intval = g_object_get_data(G_OBJECT(vpaned), "height");
+
+    if (intval != NULL)
+    {
+      gint new = ((event->height)-GPOINTER_TO_INT(intval))/2;
+      gtk_paned_set_position (vpaned, (gtk_paned_get_position(vpaned)) + new);
+    }
+    g_object_set_data (G_OBJECT(vpaned), "height", GINT_TO_POINTER(event->height));
+  }
+
+  return FALSE;
 }
 
 #ifdef G_OS_WIN32
@@ -445,6 +510,17 @@ int main(int argc, char **argv)
   g_signal_connect(
     gtk_tree_view_get_selection(GTK_TREE_VIEW(gui.globalist)),
         "changed", G_CALLBACK(global_selected), &gui);
+
+
+  g_signal_connect (gtk_builder_get_object(gui.builder, "vpaned1"),
+                    "notify::position",
+                    G_CALLBACK (on_resize_screen),
+                    &gui);
+
+  g_signal_connect (gtk_builder_get_object(gui.builder, "hpaned1"),
+                    "notify::position",
+                    G_CALLBACK (on_resize_screen),
+                    &gui);
 
   /* Create store and models */
   gui.store = gtk_list_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
