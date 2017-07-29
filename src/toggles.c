@@ -360,7 +360,7 @@ gchar* get_cfg(const gchar *home, guidata *gui)
   #endif
 
   if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
-    print_log("Starting Mednaffe 0.8.5\n\
+    print_log("Starting Mednaffe 0.8.6\n\
 Mednafen 09x configuration file found.\n", FE, gui);
   else return NULL;
 

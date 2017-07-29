@@ -1,3 +1,10 @@
+#### 29 / Jul / 2017
+
+Mednaffe 0.8.6 is released with the following changes:
+
+- Add checks to avoid access array out of bounds (It cause a segfault
+  when configuring some keys)
+
 #### 14 / Feb / 2017
 
 Mednaffe 0.8.5 is released with the following changes:
