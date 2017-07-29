@@ -23,7 +23,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-static const guint const gdk_to_sdl[256] =
+static const guint gdk_to_sdl[256] =
 {
   0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 13, 12, 0, 13, 0, 0,
   0, 0, 0, 19, 302, 317, 0, 0, 0, 0, 0, 27, 0, 0, 0, 0,

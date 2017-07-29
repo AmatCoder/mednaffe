@@ -156,7 +156,7 @@ gchar* sdl2gdk(gchar *key)
   g_strfreev(item);
   g_strfreev(line);
 
-  if (sdl_value < 325)
+  if (sdl_value < 324)
     gdk_key = g_strdup(sdl_to_gdk[sdl_value]);
   else
     gdk_key = NULL;
@@ -864,6 +864,7 @@ guint gdk_to_sdl_keyval(guint gdk_key)
         }
 
         if (gdk_key & 0xFFFF0000) return 0;
+        if ((gdk_key & 0xFF) > 323) return 0;
 
         guint sdl_key = gdk_to_sdl[gdk_key & 0xFF];
         return sdl_key;
@@ -914,6 +915,9 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
   #endif
 
   nkey = gdk_to_sdl_keyval(event->keyval);
+
+  if (nkey > 323) return TRUE;
+
   if (sdl_to_gdk[nkey] != NULL)
     key = g_strdup(sdl_to_gdk[nkey]);//g_ascii_strup(gdk_keyval_name(event->keyval), -1);
   else return TRUE;
