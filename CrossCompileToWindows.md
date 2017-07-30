@@ -18,12 +18,14 @@ Then you can follow these steps:
 2. Extract it with:
 
    `xz -d mxe-mednaffe-0.8.6.tar.xz && tar -xf mxe-mednaffe-0.8.6.tar`
+
 3. Change to **mxe-mednaffe** directory:
 
-  `cd /tmp/mxe-mednaffe`
+   `cd /tmp/mxe-mednaffe`
+
 4. Type:
 
-  `make mednaffe`
+   `make mednaffe`
 
 It takes a while because it compiles all packages needed (gcc included).
 
