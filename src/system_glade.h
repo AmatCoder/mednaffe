@@ -3445,7 +3445,7 @@ static const char *system_glade =
 "<property name=\"can_focus\">True</property>\n"
 "<property name=\"receives_default\">True</property>\n"
 "<property name=\"use_stock\">True</property>\n"
-"<signal name=\"clicked\" handler=\"on_button_entry_clicked\" swapped=\"no\"/>\n"
+"<signal name=\"clicked\" handler=\"on_button_entry_clicked\" object=\"-pce.gecdbios\" swapped=\"no\"/>\n"
 "</object>\n"
 "<packing>\n"
 "<property name=\"expand\">False</property>\n"
