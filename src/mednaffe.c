@@ -544,7 +544,9 @@ want to select the file manually?\n", &gui);
     g_free(path);
 
   #else
-    g_spawn_command_line_sync(gui.binpath, &stout, NULL, NULL, NULL);
+    gchar *command = g_shell_quote (gui.binpath);
+    g_spawn_command_line_sync(command, &stout, NULL, NULL, NULL);
+    g_free(command);
     //sleep (1); /* race condition? */
   #endif
 
