@@ -5,6 +5,8 @@ if LINUX
   mednaffe_SOURCES+= joystick_linux.c joystick_linux.h
 endif
 
+override CFLAGS +=-std=c99 -Wall -Wl,-export-dynamic
+
 AM_CPPFLAGS        = @GTK_CFLAGS@ $(GTK_DEFINES)
 LDADD           = @GTK_LIBS@
 CLEANFILES      = *~

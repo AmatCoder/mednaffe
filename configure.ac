@@ -12,8 +12,6 @@ AC_CANONICAL_HOST
 AC_PROG_CC
 AC_LANG_C
 
-CFLAGS="-std=c99 -Wall -Wl,-export-dynamic $CFLAGS"
-
 # Check for host
 case $host_os in
   linux*)
