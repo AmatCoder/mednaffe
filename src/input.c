@@ -872,7 +872,6 @@ guint gdk_to_sdl_keyval(guint gdk_key)
         }
 
         if (gdk_key & 0xFFFF0000) return 0;
-        if ((gdk_key & 0xFF) > 323) return 0;
 
         guint sdl_key = gdk_to_sdl[gdk_key & 0xFF];
         return sdl_key;
