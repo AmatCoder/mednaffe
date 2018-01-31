@@ -6,10 +6,21 @@ AC_INIT([mednaffe], [0.8.6], [BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_CONFIG_SRCDIR([src/common.h])
 AC_CONFIG_HEADERS([config.h])
+AC_CANONICAL_HOST
 
 # Checks for programs.
 AC_PROG_CC
 AC_LANG_C
+
+# Check for host
+case $host_os in
+	linux*)
+		AM_CONDITIONAL([LINUX], [true])
+		;;
+		*)
+		AM_CONDITIONAL([LINUX], [false])
+		;;
+esac
 
 # Checks for libraries.
 AC_ARG_ENABLE(gtk3, [AC_HELP_STRING([--enable-gtk3], [Compile against GTK 3.x explicitly])], [enable_gtk3=$enableval], [enable_gtk3="no"])
