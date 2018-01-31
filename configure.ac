@@ -14,12 +14,12 @@ AC_LANG_C
 
 # Check for host
 case $host_os in
-	linux*)
-		AM_CONDITIONAL([LINUX], [true])
-		;;
-		*)
-		AM_CONDITIONAL([LINUX], [false])
-		;;
+  linux*)
+    AM_CONDITIONAL([LINUX], [true])
+    ;;
+    *)
+    AM_CONDITIONAL([LINUX], [false])
+    ;;
 esac
 
 # Checks for libraries.

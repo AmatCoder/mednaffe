@@ -3551,8 +3551,8 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 # Check for host
 case $host_os in
-	linux*)
-		 if true; then
+  linux*)
+     if true; then
   LINUX_TRUE=
   LINUX_FALSE='#'
 else
@@ -3560,9 +3560,9 @@ else
   LINUX_FALSE=
 fi
 
-		;;
-		*)
-		 if false; then
+    ;;
+    *)
+     if false; then
   LINUX_TRUE=
   LINUX_FALSE='#'
 else
@@ -3570,7 +3570,7 @@ else
   LINUX_FALSE=
 fi
 
-		;;
+    ;;
 esac
 
 # Checks for libraries.

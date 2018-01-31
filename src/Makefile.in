@@ -89,6 +89,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = mednaffe$(EXEEXT)
+@LINUX_TRUE@am__append_1 = joystick_linux.c joystick_linux.h
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -101,10 +102,17 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am__mednaffe_SOURCES_DIST = mednaffe.c about.c active.c command.c \
+	list.c toggles.c input.c gui.c prefs.c log.c md5.c resource.c \
+	common.h mednaffe_glade.h settings_glade.h system_glade.h \
+	toggles.h prefs.h input.h log.h md5.h resource.h \
+	joystick_linux.c joystick_linux.h
+@LINUX_TRUE@am__objects_1 = joystick_linux.$(OBJEXT)
 am_mednaffe_OBJECTS = mednaffe.$(OBJEXT) about.$(OBJEXT) \
 	active.$(OBJEXT) command.$(OBJEXT) list.$(OBJEXT) \
 	toggles.$(OBJEXT) input.$(OBJEXT) gui.$(OBJEXT) \
-	prefs.$(OBJEXT) log.$(OBJEXT) md5.$(OBJEXT) resource.$(OBJEXT)
+	prefs.$(OBJEXT) log.$(OBJEXT) md5.$(OBJEXT) resource.$(OBJEXT) \
+	$(am__objects_1)
 mednaffe_OBJECTS = $(am_mednaffe_OBJECTS)
 mednaffe_LDADD = $(LDADD)
 mednaffe_DEPENDENCIES =
@@ -137,7 +145,7 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(mednaffe_SOURCES)
-DIST_SOURCES = $(mednaffe_SOURCES)
+DIST_SOURCES = $(am__mednaffe_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -263,7 +271,11 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-mednaffe_SOURCES = mednaffe.c about.c active.c command.c list.c toggles.c input.c gui.c prefs.c log.c md5.c resource.c common.h mednaffe_glade.h settings_glade.h  system_glade.h toggles.h prefs.h input.h log.h md5.h resource.h
+mednaffe_SOURCES = mednaffe.c about.c active.c command.c list.c \
+	toggles.c input.c gui.c prefs.c log.c md5.c resource.c \
+	common.h mednaffe_glade.h settings_glade.h system_glade.h \
+	toggles.h prefs.h input.h log.h md5.h resource.h \
+	$(am__append_1)
 AM_CPPFLAGS = @GTK_CFLAGS@ $(GTK_DEFINES)
 LDADD = @GTK_LIBS@
 CLEANFILES = *~
@@ -359,6 +371,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/command.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/input.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joystick_linux.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/md5.Po@am__quote@
@@ -589,8 +602,6 @@ uninstall-am: uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 
-
-@LINUX_TRUE@	mednaffe_SOURCES+= joystick_linux.c joystick_linux.h
 
 override CFLAGS +=-std=c99 -Wall -Wl,-export-dynamic
 
