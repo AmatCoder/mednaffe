@@ -117,7 +117,8 @@ gint GetJoy(guint js, guidata *gui)
  
  gchar *evdev_path = FindEv(js);
  
- fcntl(gui->joy[js].js_fd, F_SETFL, fcntl(gui->joy[js].js_fd, F_GETFL) | O_NONBLOCK);
+ if (fcntl(gui->joy[js].js_fd, F_SETFL, fcntl(gui->joy[js].js_fd, F_GETFL) | O_NONBLOCK) == -1)
+   printf("WARNING: Failed to enable O_NONBLOCK flag\n");
 
  if(evdev_path != NULL)
  {
@@ -140,7 +141,10 @@ gint GetJoy(guint js, guidata *gui)
    printf("WARNING: Failed to find a valid corresponding event device to joystick device\n");
 
  if(gui->joy[js].ev_fd != -1)
-  fcntl(gui->joy[js].ev_fd, F_SETFL, fcntl(gui->joy[js].ev_fd, F_GETFL) | O_NONBLOCK);
+  {
+    if (fcntl(gui->joy[js].ev_fd, F_SETFL, fcntl(gui->joy[js].ev_fd, F_GETFL) | O_NONBLOCK) == -1)
+      printf("WARNING: Failed to enable O_NONBLOCK flag\n");
+  }
 
  if(ioctl(gui->joy[js].js_fd, JSIOCGAXES, &tmp) == -1)
  {
