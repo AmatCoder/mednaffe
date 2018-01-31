@@ -114,16 +114,19 @@ gchar* modkeys(gchar *key, gchar *value)
   if (key[0] == '\0') return NULL;
 
   gchar **items;
-  gchar *value2 = NULL;
-  guint num,i;
+  guint num;
 
   items = g_strsplit(key, "+", 4);
   num = g_strv_length(items);
 
   if (num>1)
   {
+    gchar *value2;
+    guint i;
+
     for (i=(num-1);i>0;i--)
     {
+      value2 = NULL;
       if (items[i][0]=='a') value2 = g_strconcat("Alt+", value, NULL);
       else if (items[i][0]=='c') value2 = g_strconcat("Ctrl+", value, NULL);
       else if (items[i][0]=='s') value2 = g_strconcat("Shift+", value, NULL);
@@ -131,6 +134,7 @@ gchar* modkeys(gchar *key, gchar *value)
       g_free(value);
       value = value2;
     }
+
   }
   g_strfreev(items);
 
