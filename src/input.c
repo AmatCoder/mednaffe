@@ -25,11 +25,15 @@
 #include "toggles.h"
 #include "log.h"
 
+#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
+  #undef G_OS_UNIX
+#endif
+
 #ifdef G_OS_UNIX
  #include "joystick_linux.h"
  #include <linux/joystick.h>
  #include <fcntl.h>
-#else
+#elif G_OS_WIN32
  #include <windows.h>
  #include "joystick_win.h"
 
