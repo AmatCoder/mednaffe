@@ -375,41 +375,27 @@ gboolean check_version(gchar *stout, guidata *gui)
 
     gchar **achar = g_strsplit(stout, "\n", 0);
 
-    gchar *check =g_strrstr (achar[0], "0.9.");
+    gchar *check =g_strrstr (achar[0], " 1.");
     if (check == NULL) return FALSE;
 
-    gchar **aline = g_strsplit(check, " ", 2);
+    gchar **aline = g_strsplit(check, " ", 0);
 
-    if (strlen(aline[0])<6) return FALSE;
+    if (strlen(aline[1])<4) return FALSE;
 
-    if (aline[0][4]-'0'<4)
+    if (aline[1][2]-'0'<2)
       return FALSE;
 
-    /* if ((aline[1][13]=='3') && ((aline[1][14]-'0')<9)) 
-      return FALSE; */
-    /*
-    if (strlen(aline[1])>16)
-    {
-      if ((aline[1][13]=='3') && (aline[1][14]=='6') && ((aline[1][16]-'0')<2))
-        return FALSE;
-    }
-    else
-    {
-    if ((aline[1][13]=='3') && ((aline[1][14]-'0')<7))
-      return FALSE;
-    }
-  */
     print_log("Mednafen version detected: ", FE, gui);
-    print_log(aline[0], FE, gui);
+    print_log(aline[1], FE, gui);
     #ifdef G_OS_UNIX
       print_log("\n", FE, gui);
     #endif
     print_log("----\n", FE, gui);
 
     GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
-    gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, aline[0]);
+    gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, aline[1]);
 
-    gchar *tooltip = g_strconcat("Mednafen version detected: ",aline[0], "\nPath: ", gui->binpath, NULL);    
+    gchar *tooltip = g_strconcat("Mednafen version detected: ",aline[1], "\nPath: ", gui->binpath, NULL);
     gtk_widget_set_tooltip_text(GTK_WIDGET(sbversion), tooltip);
     g_free(tooltip);
 
