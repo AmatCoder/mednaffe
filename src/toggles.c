@@ -354,27 +354,15 @@ gchar* get_cfg(const gchar *home, guidata *gui)
 
   /* Search for mednafen configuration file */
   #ifdef G_OS_WIN32
-    cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
-  #else
-    cfg_path = g_strconcat(home, "/.mednafen/mednafen-09x.cfg", NULL);
-  #endif
-
-  if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
-    print_log("Starting Mednaffe 0.8.6\n\
-Mednafen 09x configuration file found.\n", FE, gui);
-  else return NULL;
-
-  /*{
-  #ifdef G_OS_WIN32
     cfg_path = g_strconcat(home, "\\mednafen.cfg", NULL);
   #else
     cfg_path = g_strconcat(home, "/.mednafen/mednafen.cfg", NULL);
   #endif
-    if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
-      printf(" Mednafen 08x configuration file found\n");
-    else
-      cfg_path = NULL;
-  }*/
+
+  if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
+    print_log("Starting Mednaffe 0.8.6\n\
+Mednafen configuration file found.\n", FE, gui);
+  else return NULL;
 
   return cfg_path;
 }
