@@ -1,7 +1,7 @@
 /*
  * input.c
  *
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2018 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -144,31 +144,38 @@ gchar* modkeys(gchar *key, gchar *value)
 gchar* sdl2gdk(gchar *key)
 {
   gchar **line;
-  gchar **item;
-  gchar *gdk_key;
-  guint sdl_value;
+  gchar *gdk_key = NULL;
+  guint sdl_value = 0;
 
-  if (key[0] == '\0') return NULL;
+  line = g_strsplit(key, " ", 0);
 
-  line = g_strsplit(key, " ", 2);
+  if (g_strcmp0(line[1], "0x0"))
+  {
+    g_strfreev(line);
+    return NULL;
+  }
 
-  if (!line) return NULL;
+  if (line[2] != NULL)
+    sdl_value = g_ascii_strtod(line[2], NULL);
 
-  item = g_strsplit(line[1], "~", 2);
-
-  if (item[1] != NULL)
-    sdl_value = g_ascii_strtod(item[0], NULL);
-  else
-    sdl_value = g_ascii_strtod(line[1], NULL);
-
-  g_strfreev(item);
   g_strfreev(line);
 
-  if (sdl_value < 324)
-    gdk_key = g_strdup(sdl_to_gdk[sdl_value]);
-  else
-    gdk_key = NULL;
+  if ((sdl_value > 0) && (sdl_value < 245))
+  {
+    guint keyval;
 
+    gdk_keymap_translate_keyboard_state(gdk_keymap_get_for_display(gdk_display_get_default()),
+                                        sdl_to_gdk[sdl_value],
+                                        0,
+                                        0,
+                                        &keyval,
+                                        NULL,
+                                        NULL,
+                                        NULL);
+
+    if (keyval > 0)
+      gdk_key = g_strdup(gdk_keyval_name(gdk_keyval_to_upper(keyval)));
+  }
   return gdk_key;
 }
 
@@ -863,20 +870,6 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   gtk_window_set_resizable(GTK_WINDOW(gui->inputwindow), FALSE);
 }
 
-guint gdk_to_sdl_keyval(guint gdk_key)
-{
-        if (!(gdk_key & 0xFF00))
-        {
-                gdk_key = g_ascii_tolower(gdk_key);
-                return gdk_key;
-        }
-
-        if (gdk_key & 0xFFFF0000) return 0;
-
-        guint sdl_key = gdk_to_sdl[gdk_key & 0xFF];
-        return sdl_key;
-}
-
 #ifdef G_OS_WIN32
 G_MODULE_EXPORT
 #endif
@@ -896,7 +889,6 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
   gchar *fullcommand;
   gchar *key = NULL;
   gchar *key2;
-  guint nkey;
 
   if (gui->inputkeys)
   {
@@ -912,13 +904,13 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
        ) return FALSE;
   }
 
-  nkey = gdk_to_sdl_keyval(event->keyval);
+  if (event->hardware_keycode > 244) return TRUE;
 
-  if (nkey > 323) return TRUE;
-
-  if (sdl_to_gdk[nkey] != NULL)
-    key = g_strdup(sdl_to_gdk[nkey]);//g_ascii_strup(gdk_keyval_name(event->keyval), -1);
+  if (gdk_to_sdl[event->hardware_keycode] != 0)
+    key = g_strdup(gdk_keyval_name(gdk_keyval_to_upper(event->keyval)));
   else return TRUE;
+
+  if (key == NULL) return TRUE;
 
   #ifdef G_OS_WIN32
     g_mutex_lock (&mutex);
@@ -967,7 +959,7 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
 
   g_free(command);
   g_hash_table_replace(gui->clist, fullcommand, fullcommand);
-  key = g_strdup_printf("%i",nkey);
+  key = g_strdup_printf("%i", gdk_to_sdl[event->hardware_keycode]);
 
   if (gui->inputkeys)
   {
@@ -994,7 +986,7 @@ gboolean editable_key_cb(GtkWidget *ed, GdkEventKey *event, guidata *gui)
   }
 
   fullcommand++;
-  g_hash_table_insert(gui->hash, g_strdup(fullcommand), g_strconcat("keyboard ", key, NULL));
+  g_hash_table_insert(gui->hash, g_strdup(fullcommand), g_strconcat("keyboard 0x0 ", key, NULL));
   fullcommand--;
   g_free(key);
 
