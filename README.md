@@ -13,6 +13,7 @@ Its main features are:
  * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
 
 *Note: Mednaffe only works with 0.9.41 or higher versions of mednafen emulator.*
+##### *Warning: Actual version (0.8.6) is not compatible with 1.xx.x versions of mednafen emulator.*
 
 #### Screenshots
 
