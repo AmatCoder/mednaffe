@@ -1,7 +1,7 @@
 /*
  * joystick_linux.c
  * 
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2018 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -19,76 +19,140 @@
  * along with Mednaffe; if not, see <http://www.gnu.org/licenses/>.
  * 
  */
+#define _GNU_SOURCE
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <string.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/stat.h>
+
+#include <linux/joystick.h>
 
 #include "common.h"
-#include "md5.h"
-#include "stdint.h"
-#include "string.h"
-#include <linux/joystick.h>
-#include <fcntl.h>
-
-gchar* FindEv(int js)
-{
-  gchar *path = NULL;
-  gchar *syspath;
-  
-  gchar *number = g_strdup_printf("%i",js);
-  syspath = g_strconcat("/sys/class/input/js", number, "/device/", NULL);
-  g_free(number);
-  
-  GDir *dir =g_dir_open (syspath, 0, NULL);
-  if (dir)
-  { 
-    const gchar* file = NULL;	  
-    do {
-         file = g_dir_read_name(dir);
-         if ((g_ascii_strncasecmp("event",file,5) == 0)) break;
-       } while (file != NULL);
-  
-    if (file) path = g_strconcat("/dev/input/", file, NULL);
- 
-    g_dir_close(dir);
-  }
-  g_free(syspath);
-  return path;
-}
-
-uint64_t CalcOldStyleID(unsigned arg_num_axes, unsigned arg_num_balls, 
-                        unsigned arg_num_hats, unsigned arg_num_buttons)
-{
-  uint8 digest[16];
-  int tohash[4];
-  md5_context hashie;
-  uint64_t ret = 0;
-    
- tohash[0] = arg_num_axes;
- tohash[1] = arg_num_balls;
- tohash[2] = arg_num_hats;
- tohash[3] = arg_num_buttons;
-
- md5_starts(&hashie);
- md5_update(&hashie, (uint8 *)tohash, sizeof(tohash));
- md5_finish(&hashie, digest);
-
- int x;
- for(x = 0; x < 16; x++)
- {
-   ret ^= (uint64_t)digest[x] << ((x & 7) * 8);
- }
- return ret;
-}
 
 void CheckDuplicates(guint js, guidata *gui)
 {
-  int a;
-  for (a=0;a<9;a++)
+  int i;
+  for (i=0; i<9; i++)
   {
-    if (a==js) break;
-    if (gui->joy[js].id == gui->joy[a].id){
-      gui->joy[js].id++;
+    if (i == js)
+      break;
+
+    if (g_strcmp0 (gui->joy[js].id, gui->joy[i].id) == 0)
+    {
+      gui->joy[js].id[33]++;
       CheckDuplicates(js, gui);
-    }  
-  } 
+    }
+  }
+}
+
+static const char* FindSysFSInputBase()
+{
+  static const char* p[] = { "/sys/subsystem/input", "/sys/bus/input", "/sys/block/input", "/sys/class/input" };
+  struct stat stat_buf;
+
+  for(size_t i = 0; i < sizeof(p) / sizeof(p[0]); i++)
+  {
+    if(!stat(p[i], &stat_buf))
+    {
+      //printf("%s\n", p[i]);
+      return p[i];
+    }
+    else if(errno != ENOENT && errno != ENOTDIR)
+    {
+      printf("stat() failed.");
+      return NULL;
+    }
+  }
+ printf("Couldn't find input subsystem under /sys.");
+ return NULL;
+}
+
+static gchar* FindSysFSInputDeviceByJSDev(const gchar* jsdev_name)
+{
+  gchar* ret;
+  const char* input_subsys_path = FindSysFSInputBase();
+  char buf[256];
+  char* tmp;
+
+  if (input_subsys_path == NULL)
+    return NULL;
+
+  snprintf(buf, sizeof(buf), "%s/%s", input_subsys_path, jsdev_name);
+
+  if(!(tmp = realpath(buf, NULL)))
+  {
+    printf("realpath(\"%s\") failed.", buf);
+    return NULL;
+  }
+
+  for(;;)
+  {
+    char* p = strrchr(tmp, '/');
+    unsigned idx;
+
+    if(!p)
+    {
+      printf("Couldn't find parent input subsystem device of joystick device \"%s\".", jsdev_name);
+      return NULL;
+    }
+
+    if(sscanf(p, "/input%u", &idx) == 1)
+      break;
+
+    *p = 0;
+  }
+  ret = tmp;
+
+  return ret;
+}
+
+guint64 GetBVPV(const gchar* jsdev_name)
+{
+  guint64 ret = 0;
+  FILE *fp;
+  char *lb = NULL;
+  size_t len = 0;
+
+  gchar* sysfs_input_dev_path = FindSysFSInputDeviceByJSDev(jsdev_name);
+
+  if (sysfs_input_dev_path == NULL) return 0;
+
+  for(unsigned i = 0; i < 4; i++)
+  {
+    unsigned t = 0;
+    static const gchar* fns[4] = { "/id/bustype", "/id/vendor", "/id/product", "/id/version" };
+    gchar* idpath = g_strconcat(sysfs_input_dev_path, fns[i], NULL);
+
+    fp = fopen(idpath, "r");
+
+    if (fp == NULL)
+      return 0;
+
+    getline(&lb, &len, fp);
+
+    if(sscanf(lb, "%x", &t) != 1)
+    {
+      printf("Bad data in \"%s\".", idpath);
+      return 0;
+    }
+
+    if(t > 0xFFFF)
+    {
+      printf("Data read from \"%s\" has value(0x%x) larger than 0xFFFF\n", idpath, t);
+      t &= 0xFFFF;
+    }
+    ret <<= 16;
+    ret |= t;
+
+    fclose(fp);
+ }
+ g_free(sysfs_input_dev_path);
+
+ return ret;
 }
 
 gint GetJoy(guint js, guidata *gui)
@@ -99,15 +163,14 @@ gint GetJoy(guint js, guidata *gui)
 
  gui->joy[js].channel= NULL;
  gui->joy[js].name[0]= '\0';
- gui->joy[js].id = 1;
+ gui->joy[js].id = NULL;
  gui->joy[js].ev_fd = -1;
  
- gchar *number = g_strdup_printf("%i",js);
- gchar *path = g_strconcat("/dev/input/js", number, NULL);
+ gchar *number = g_strdup_printf("js%i",js);
+ gchar *path = g_strconcat("/dev/input/", number, NULL);
  
  gui->joy[js].js_fd = open(path, O_RDONLY);
  
- g_free(number);
  g_free(path); 
  
  if(gui->joy[js].js_fd == -1)
@@ -115,36 +178,8 @@ gint GetJoy(guint js, guidata *gui)
   return 0;
  }
  
- gchar *evdev_path = FindEv(js);
- 
  if (fcntl(gui->joy[js].js_fd, F_SETFL, fcntl(gui->joy[js].js_fd, F_GETFL) | O_NONBLOCK) == -1)
    printf("WARNING: Failed to enable O_NONBLOCK flag\n");
-
- if(evdev_path != NULL)
- {
-   gui->joy[js].ev_fd = open(evdev_path, O_RDWR);
-   
-   if(gui->joy[js].ev_fd == -1)
-   {
-     gui->joy[js].ev_fd = open(evdev_path, O_RDONLY);
-     if(gui->joy[js].ev_fd == -1)
-     {
-       printf("WARNING: Failed to open event device \"%s\"\n", evdev_path);
-     }
-     else
-     {
-       printf("WARNING: Could only open event device \"%s\" for reading, and not reading+writing\n", evdev_path);
-     }
-   }
- }
- else
-   printf("WARNING: Failed to find a valid corresponding event device to joystick device\n");
-
- if(gui->joy[js].ev_fd != -1)
- {
-   if (fcntl(gui->joy[js].ev_fd, F_SETFL, fcntl(gui->joy[js].ev_fd, F_GETFL) | O_NONBLOCK) == -1)
-     printf("WARNING: Failed to enable O_NONBLOCK flag\n");
- }
 
  if(ioctl(gui->joy[js].js_fd, JSIOCGAXES, &tmp) == -1)
  {
@@ -162,38 +197,10 @@ gint GetJoy(guint js, guidata *gui)
 
  ioctl(gui->joy[js].js_fd, JSIOCGNAME(sizeof(gui->joy[js].name)),gui->joy[js].name);
 
- if(gui->joy[js].ev_fd != -1)
- {
-   uint8 absaxbits[(ABS_CNT + 7) / 8];
-   unsigned ev_abs_count = 0;
-   unsigned ev_hat_count = 0;
-   unsigned aat;
-   
-   memset(absaxbits, 0, sizeof(absaxbits));
-   ioctl(gui->joy[js].ev_fd, EVIOCGBIT(EV_ABS, sizeof(absaxbits)), absaxbits);
+ gui->joy[js].id = g_strdup_printf("0x%016lx%04x%04x%08x", GetBVPV(number), num_axes, num_buttons, 0);
+ g_free(number);
 
-  for(aat = 0; aat < ABS_CNT; aat++)
-  {
-    if(absaxbits[(aat >> 3)] & (1U << (aat & 0x7)))
-    {
-      if(aat >= ABS_HAT0X && aat <= ABS_HAT3Y)
-      {
-        ev_hat_count++;
-      }
-      ev_abs_count++;
-    }
-  }
-  close(gui->joy[js].ev_fd);
-  g_free(evdev_path);
-  gui->joy[js].id = CalcOldStyleID(ev_abs_count - ev_hat_count, 0, ev_hat_count / 2, num_buttons);
-  CheckDuplicates(js, gui);
-  return 2;
-  }
-  else
-  {
-  g_free(evdev_path);
-  gui->joy[js].id = CalcOldStyleID(num_axes, 0, 0, num_buttons);
-  CheckDuplicates(js, gui);
-  return 1;
-  }
+ CheckDuplicates(js, gui);
+
+ return 1;
 }

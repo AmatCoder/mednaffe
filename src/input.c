@@ -52,6 +52,11 @@ void close_channels(guidata *gui)
   int a;
   for (a=0;a<9;a++)
   {
+    if (gui->joy[a].id != NULL)
+    {
+      g_free(gui->joy[a].id);
+    }
+
     if (gui->joy[a].channel != NULL)
     {
       g_io_channel_unref(gui->joy[a].channel);
@@ -221,13 +226,10 @@ gboolean joy_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
   gchar *command;
   gchar *on;
   gchar *joyc;
-  unsigned int b;
 
   if (e.type == JS_EVENT_BUTTON) {
-    b = e.number;
-    on = g_strdup_printf("Button %02i", b);
-    //printf("Event: %08x\n", b);
-    joyc = g_strdup_printf("joystick %016llx %08x", gui->joy[a].id, b);
+    on = g_strdup_printf("Button %u", e.number);
+    joyc = g_strdup_printf("joystick %s button_%u", gui->joy[a].id, e.number);
   }
   else
   if (e.type == JS_EVENT_AXIS) {
@@ -244,10 +246,10 @@ gboolean joy_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
         else on = g_strdup_printf("Axis %i Right", e.number);
     }
 
-    b = (0x8000 | e.number);
-    if (e.value<0) b = (0x4000 | b);
-    //printf("Event: %08x\n", b);
-    joyc = g_strdup_printf("joystick %016llx %08x", gui->joy[a].id, b);
+    if (e.value<0)
+      joyc = g_strdup_printf("joystick %s abs_%u-", gui->joy[a].id, e.number);
+    else
+      joyc = g_strdup_printf("joystick %s abs_%u+", gui->joy[a].id, e.number);
   }
 
   if ((gui->treepath != NULL) && (!gui->inputedited))
@@ -366,38 +368,43 @@ void read_input(guidata *gui)
         {
           gchar *value = hash2joy(hashkey, 2);
           gchar *hash = hash2joy(hashkey, 1);
-          long long unsigned int ll = g_ascii_strtoull(value, NULL, 16);
+          gchar *pch = g_strrstr(value, "_");
 
-          g_free(value);
+          if (pch != NULL)
+            pch++;
 
           int a;
           for (a=0;a<9;a++)
           {
-            if (gui->joy[a].id == g_ascii_strtoull(hash, NULL, 16))
+            if (g_strcmp0(gui->joy[a].id, hash) == 0)
             {
-              if (ll>0x7FFF)
+              gchar* value2;
+              if (value[0] == 'a')
               {
-                if (ll % 2)
+                int ll = g_ascii_strtoll(pch, NULL, 10);
+                if (0 % 2)
                 {
-                  if (ll<0xc000) value = g_strdup_printf("Axis %01llx Down", ll & 0xFFF);
-                  else value = g_strdup_printf("Axis %01llx Up", ll & 0xFFF);
+                  if (g_strrstr(value, "+")) value2 = g_strdup_printf("Axis %i Down", ll);
+                  else value2 = g_strdup_printf("Axis %i Up", ll);
                 }
                 else
                 {
-                  if (ll<0xc000) value = g_strdup_printf("Axis %01llx Right", ll & 0xFFF);
-                  else value = g_strdup_printf("Axis %01llx Left", ll & 0xFFF);
+                  if (g_strrstr(value, "+")) value2 = g_strdup_printf("Axis %i Right", ll);
+                  else value2 = g_strdup_printf("Axis %i Left", ll);
                 }
               }
-              else value = g_strdup_printf("Button %02lli", ll & 0xFF);
+              else
+                value2 = g_strdup_printf("Button %s", pch);
 
-            gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, value, 3, gui->joy[a].name, -1);
-            g_free(value);
+              gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, value2, 3, gui->joy[a].name, -1);
+              g_free(value2);
+            }
+            //else gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, "", 3 , hash, -1);
           }
-         // else gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, "", 3 , hash, -1);
+          g_free(value);
+          g_free(hash);
         }
-        g_free(hash);
-      }
-      #endif
+        #endif
 
         #ifdef G_OS_WIN32
         else if (hashkey[0]=='j')
@@ -411,7 +418,7 @@ void read_input(guidata *gui)
           int a;
           for (a=0;a<9;a++)
           {
-            if (gui->joy[a].id == g_ascii_strtoull(hash, NULL, 16))
+            if (g_strcmp0(gui->joy[a].id, hash) == 0)
             {
               if (ll>0x7FFF)
               {
@@ -550,7 +557,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
       if ((gui->joy[a].xinput==TRUE) && (b>9))
         b=b+2;
 
-      joyc = g_strdup_printf("joystick %016I64x %08x", gui->joy[a].id, b);
+      joyc = g_strdup_printf("joystick %s %08x", gui->joy[a].id, b);
       //printf("Button Event: %s\n", joyc);
       which = a;
     }
@@ -590,7 +597,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
     }
 
     which = a;
-    joyc = g_strdup_printf("joystick %016I64x %08x", gui->joy[a].id, b);
+    joyc = g_strdup_printf("joystick %s %08x", gui->joy[a].id, b);
     //printf("Hat Event: %s\n", joyc);
   }
 }
@@ -645,7 +652,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
     {
       if (event.jaxis.value<0) b = (0x4000 | b);
     }
-    joyc = g_strdup_printf("joystick %016I64x %08x", gui->joy[a].id, b);
+    joyc = g_strdup_printf("joystick %s %08x", gui->joy[a].id, b);
     printf("Axis Event: %s\n", joyc);
     }
    }
@@ -731,7 +738,7 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   {
     if (GetJoy(a,gui)>0)
     {
-      gchar *id =g_strdup_printf(" - Unique ID: %016llx\n", gui->joy[a].id);
+      gchar *id =g_strdup_printf(" - Unique ID: %s\n", gui->joy[a].id);
       print_log("Joystick detected: ", FE, gui);
       print_log(gui->joy[a].name, FE, gui);
       print_log(id, FE, gui);

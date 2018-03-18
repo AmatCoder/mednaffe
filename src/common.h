@@ -1,7 +1,7 @@
 /*
  * common.h
  *
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2018 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -32,7 +32,7 @@ typedef struct
 #ifdef G_OS_UNIX
   gint js_fd;
   gint ev_fd;
-  long long unsigned int id;
+  gchar* id;
   gchar name[128];
   GIOChannel *channel;
 #else
