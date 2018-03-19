@@ -526,22 +526,17 @@ want to select the file manually?\n", &gui);
     }
 
   #ifdef G_OS_WIN32
-    gchar *path = g_strconcat(home, "\\stdout.txt", NULL);
     gchar *qbin = g_strconcat("\"", gui.binpath, "\"", NULL);
-    gchar *cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
+    gchar *cfg_path = g_strconcat(home, "\\mednafen.cfg", NULL);
 
-    if ((g_file_get_contents(path, &stout, NULL, NULL)) &&
-        (g_file_test(cfg_path, G_FILE_TEST_IS_REGULAR)))
-    {}
-    else
+    if (!g_file_get_contents(cfg_path, &stout, NULL, NULL))
     {
     system(qbin);
       //Sleep(1000); /* race condition? */
-      g_file_get_contents(path, &stout, NULL, NULL);
+      g_file_get_contents(cfg_path, &stout, NULL, NULL);
     }
     g_free(cfg_path);
     g_free(qbin);
-    g_free(path);
 
   #else
     gchar *command = g_shell_quote (gui.binpath);
