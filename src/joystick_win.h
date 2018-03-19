@@ -1,7 +1,7 @@
 /*
  * joystick_win.h
  *
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2018 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,6 +25,5 @@
 
   void CheckDuplicates(guint js, guidata *gui);
   void CheckDuplicatesXInput(guint js, guidata *gui);
-  gint GetJoy(guint js, guidata *gui);
 
 #endif /* JOYSTICK_WIN_H */

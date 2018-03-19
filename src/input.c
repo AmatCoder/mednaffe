@@ -33,7 +33,9 @@
  #include "joystick_linux.h"
  #include <linux/joystick.h>
  #include <fcntl.h>
-#elif G_OS_WIN32
+#endif
+
+#ifdef G_OS_WIN32
  #include <windows.h>
  #include "joystick_win.h"
 
@@ -411,39 +413,45 @@ void read_input(guidata *gui)
         {
           gchar *value = hash2joy(hashkey, 2);
           gchar *hash = hash2joy(hashkey, 1);
-          long long unsigned int ll = g_ascii_strtoull(value, NULL, 16);
+          gchar *pch = g_strrstr(value, "_");
 
-          g_free(value);
+          if (pch != NULL)
+            pch++;
+
+          int ll = g_ascii_strtoll(pch, NULL, 10);
 
           int a;
           for (a=0;a<9;a++)
           {
             if (g_strcmp0(gui->joy[a].id, hash) == 0)
             {
-              if (ll>0x7FFF)
+
+              gchar* value2;
+
+              if (value[0] == 'a')
               {
                 if (ll % 2)
                 {
-                  if (ll<0xc000) value = g_strdup_printf("Axis %01I64x Down", ll & 0xFFF);
-                  else value = g_strdup_printf("Axis %01I64x Up", ll & 0xFFF);
+                  if (g_strrstr(value, "+")) value2 = g_strdup_printf("Axis %i Down", ll);
+                  else value2 = g_strdup_printf("Axis %i Up", ll);
                 }
                 else
                 {
-                  if (ll<0xc000) value = g_strdup_printf("Axis %01I64x Right", ll & 0xFFF);
-                  else value = g_strdup_printf("Axis %01I64x Left", ll & 0xFFF);
+                  if (g_strrstr(value, "+")) value2 = g_strdup_printf("Axis %i Right", ll);
+                  else value2 = g_strdup_printf("Axis %i Left", ll);
                 }
 
                 if (gui->joy[a].xinput==TRUE)
                 {
-                  if ((ll & 0xFFF)==4)
+                  if (ll == 4)
                   {
-                    g_free(value);
-                    value = g_strdup("Trigger Left");
+                    g_free(value2);
+                    value2 = g_strdup("Trigger Left");
                   }
-                  else if ((ll & 0xFFF)==5)
+                  else if (ll == 5)
                   {
-                    g_free(value);
-                    value = g_strdup("Trigger Right");
+                    g_free(value2);
+                    value2 = g_strdup("Trigger Right");
                   }
                 }
 
@@ -452,17 +460,18 @@ void read_input(guidata *gui)
               {
                 if (gui->joy[a].xinput==TRUE)
                 {
-                  value = xinput_map((ll & 0xFF));
+                  value2 = xinput_map(ll);
                 }
-                else value = g_strdup_printf("Button %02I64i", ll & 0xFF);
+                else value2 = g_strdup_printf("Button %s", pch);
               }
 
-             if ((value) && (gui->joy[a].name))
-               gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, value, 3, gui->joy[a].name, -1);
-            g_free(value);
+             if ((value2) && (gui->joy[a].name))
+               gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, value2, 3, gui->joy[a].name, -1);
+            g_free(value2);
           }
          // else gtk_list_store_set(GTK_LIST_STORE(model), &iter, 2, "", 3 , hash, -1);
         }
+        g_free(value);
         g_free(hash);
       }
       #endif
@@ -534,8 +543,6 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
 
   if (bool==1) break;
 
-  //printf("Unhandled Event: %i\n", event.type);
-
   if ((event.type == SDL_JOYBUTTONDOWN) ||
       (event.type == SDL_JOYHATMOTION) ||
       ((event.type == SDL_JOYAXISMOTION) &&
@@ -557,8 +564,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
       if ((gui->joy[a].xinput==TRUE) && (b>9))
         b=b+2;
 
-      joyc = g_strdup_printf("joystick %s %08x", gui->joy[a].id, b);
-      //printf("Button Event: %s\n", joyc);
+      joyc = g_strdup_printf("joystick %s button_%u", gui->joy[a].id, b);
       which = a;
     }
     if (gui->joy[a].xinput==TRUE)
@@ -572,33 +578,34 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
         a = GetControllerIndex(event.jhat.which, gui);
     if (a>-1)
     {
-    //printf("Value: %i\n", event.jhat.value);
-    int h=(((event.jhat.hat*2)-1) + SDL_JoystickNumAxes(gui->joy[a].sdljoy));
-    b = (0x8000 | h);
+    b = (((event.jhat.hat*2)-1) + SDL_JoystickNumAxes(gui->joy[a].sdljoy));
+
     if (event.jhat.value == SDL_HAT_UP)
     {
-      on = g_strdup_printf("Axis %i Up", h+2);
-      b = (0x4000 | b)+2;
+      on = g_strdup_printf("Axis %i Up", b+2);
+      b =b+2;
+      joyc = g_strdup_printf("joystick %s abs_%u+", gui->joy[a].id, b);
     }
     else if(event.jhat.value == SDL_HAT_DOWN)
     {
-      on = g_strdup_printf("Axis %i Down", h+2);
+      on = g_strdup_printf("Axis %i Down", b+2);
       b=b+2;
+      joyc = g_strdup_printf("joystick %s abs_%u+", gui->joy[a].id, b);
     }
     else if(event.jhat.value == SDL_HAT_RIGHT)
     {
-      on = g_strdup_printf("Axis %i Right", h+1);
+      on = g_strdup_printf("Axis %i Right", b+1);
       b=b+1;
+      joyc = g_strdup_printf("joystick %s abs_%u-", gui->joy[a].id, b);
     }
     else if(event.jhat.value == SDL_HAT_LEFT)
     {
-      on = g_strdup_printf("Axis %i Left", h+1);
-      b = (0x4000 | b)+1;
+      on = g_strdup_printf("Axis %i Left", b+1);
+      b = b+1;
+     joyc = g_strdup_printf("joystick %s abs_%u-", gui->joy[a].id, b);
     }
 
     which = a;
-    joyc = g_strdup_printf("joystick %s %08x", gui->joy[a].id, b);
-    //printf("Hat Event: %s\n", joyc);
   }
 }
   else
@@ -607,31 +614,46 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
     a = GetControllerIndex(event.jaxis.which, gui);
     if (a>-1)
     {
-    printf("Value: %i\n", event.jaxis.value);
-
+    char c;
     if (event.jaxis.axis % 2)
     {
-      if (gui->joy[a].xinput==TRUE)
+      if (event.jaxis.value<0)
       {
-        if (event.jaxis.value<0) on = g_strdup_printf("Axis %i Up", event.jaxis.axis);
-          else on = g_strdup_printf("Axis %i Down", event.jaxis.axis);
-
-          if (event.jaxis.axis==5)
-          {
-            g_free(on);
-            on = g_strdup("Trigger Right");
-          }
+        c = '-';
+        on = g_strdup_printf("Axis %i Up", event.jaxis.axis);
       }
       else
       {
-        if (event.jaxis.value<0) on = g_strdup_printf("Axis %i Up", event.jaxis.axis);
-         else on = g_strdup_printf("Axis %i Down", event.jaxis.axis);
+        c = '+';
+        on = g_strdup_printf("Axis %i Down", event.jaxis.axis);
+      }
+
+      if (gui->joy[a].xinput == TRUE)
+      {
+        if (event.jaxis.axis == 4)
+        {
+          g_free(on);
+          on = g_strdup("Trigger Left");
+        }
+        else if (event.jaxis.axis == 5)
+        {
+          g_free(on);
+          on = g_strdup("Trigger Right");
+        }
       }
     }
     else
     {
-      if (event.jaxis.value<0) {on = g_strdup_printf("Axis %i Left", event.jaxis.axis);}
-        else {on = g_strdup_printf("Axis %i Right", event.jaxis.axis);}
+      if (event.jaxis.value<0)
+      {
+        c = '-';
+        on = g_strdup_printf("Axis %i Left", event.jaxis.axis);
+      }
+      else
+      {
+        c = '+';
+        on = g_strdup_printf("Axis %i Right", event.jaxis.axis);
+      }
 
       if (gui->joy[a].xinput==TRUE)
       {
@@ -643,16 +665,19 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
       }
     }
     which = a;
-    b = (0x8000 | event.jaxis.axis);
-    if ((gui->joy[a].xinput==TRUE) && (event.jaxis.axis % 2))
+    b = event.jaxis.axis;
+    if (gui->joy[a].xinput == TRUE)
     {
-      if (event.jaxis.value>0) b = (0x4000 | b);
+      if (event.jaxis.axis % 2)
+      {
+        if (event.jaxis.value > 0)
+          c = '-';
+        else
+          c = '+';
+      }
     }
-    else
-    {
-      if (event.jaxis.value<0) b = (0x4000 | b);
-    }
-    joyc = g_strdup_printf("joystick %s %08x", gui->joy[a].id, b);
+
+    joyc = g_strdup_printf("joystick %s abs_%u%c", gui->joy[a].id, b, c);
     printf("Axis Event: %s\n", joyc);
     }
    }
@@ -766,12 +791,12 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   {
     gui->joy[i].sdljoy = SDL_JoystickOpen(i);
     gui->joy[i].xinput = FALSE;
+    gui->joy[i].id = NULL;
 
     if(!gui->joy[i].sdljoy)
     {
       //printf("Couldn't open Joystick %i\n", i);
       gui->joy[i].sdl_id = 0;
-      gui->joy[i].id = 1;
       gui->joy[i].name = NULL;
     }
     else
@@ -793,26 +818,24 @@ void on_input_clicked (GtkButton *button, guidata *gui)
           (guid.data[5]=='t'))*/
        if (g_strcmp0(pszGUID, "00000000000000000000000000000000")==0)
        {
-          int type, subtype;
+         int type =  SDL_JoystickDevType(gui->joy[i].sdljoy);      // Those functions does not exist in SDL
+         int subtype = SDL_JoystickDevSubType(gui->joy[i].sdljoy); // I patched it to expose XINPUT_CAPABILITIES
+         int flags =  SDL_JoystickCapsFlags(gui->joy[i].sdljoy);
+         int wButtons = SDL_JoystickCapsGamepadwButtons(gui->joy[i].sdljoy);
 
-          type =  SDL_JoystickDevType(gui->joy[i].sdljoy);      // Those functions do not exist in SDL
-          subtype = SDL_JoystickDevSubType(gui->joy[i].sdljoy); // I patched it to expose XINPUT_CAPABILITIES
+         gui->joy[i].id = g_strdup_printf("0x%016x%02x%02x%04x%04x%04x", 0, type, subtype, flags, wButtons, 0);
 
-          if ((type > -1) &&
-              (type < 2) &&
-              (subtype > -1 ) &&
-              (subtype < 20))
-          {
-            gui->joy[i].id = ((type << 24) | (subtype << 16));
-          }
-          else gui->joy[i].id = (0x00000000 << 24) | (0x00000001 << 16);
-
-          gui->joy[i].xinput = TRUE;
-          CheckDuplicatesXInput(i, gui);
+         gui->joy[i].xinput = TRUE;
+         CheckDuplicatesXInput(i, gui);
        }
        else
        {
-          GetJoy(i, gui);
+         int p1 = SDL_JoystickGuidProduct1(gui->joy[i].sdljoy);
+         int p2 = SDL_JoystickGuidProduct2(gui->joy[i].sdljoy);
+         int p3 = SDL_JoystickGuidProduct3(gui->joy[i].sdljoy);
+         char *p4 = SDL_JoystickGuidProduct4(gui->joy[i].sdljoy);
+
+         gui->joy[i].id = g_strdup_printf("0x%08x%04x%04x%02x%02x%02x%02x%02x%02x%02x%02x",p1, p2, p3, p4[0],p4[1],p4[2],p4[3],p4[4],p4[5],p4[6],p4[7]);
        }
        CheckDuplicates(i, gui);
     }
@@ -822,7 +845,7 @@ void on_input_clicked (GtkButton *button, guidata *gui)
   {
     if (gui->joy[i].name != NULL)
     {
-      gchar *id =g_strdup_printf(" - Unique ID: %016I64x\n", gui->joy[i].id);
+      gchar *id =g_strdup_printf(" - Unique ID: %s\n", gui->joy[i].id);
       print_log("Joystick detected: ", FE, gui);
       print_log(SDL_JoystickName(gui->joy[i].sdljoy), FE, gui);
       print_log(id, FE, gui);

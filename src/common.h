@@ -38,7 +38,7 @@ typedef struct
 #else
   SDL_Joystick *sdljoy;
   SDL_JoystickID sdl_id;
-  long long unsigned int id;
+  gchar* id;
   gchar *name;
   gboolean xinput;
 #endif
