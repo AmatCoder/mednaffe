@@ -152,7 +152,7 @@ void child_watch(GPid pid, gint status, guidata *gui)
       if (gui->m_error == NULL) 
         gui->m_error = g_strdup("Mednafen error. Read stdout.txt for details.");
 
-      GtkWidget *dialog;
+      /*GtkWidget *dialog;
 
       dialog = gtk_message_dialog_new (GTK_WINDOW(gui->topwindow),
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -161,7 +161,8 @@ void child_watch(GPid pid, gint status, guidata *gui)
                                         "%s", gui->m_error);
 
       gtk_dialog_run (GTK_DIALOG (dialog));
-      gtk_widget_destroy (dialog);
+      gtk_widget_destroy (dialog);*/
+
       print_log("***ERROR***: ", FE, gui);
       print_log(gui->m_error, FE, gui);
     }
