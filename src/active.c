@@ -156,10 +156,10 @@ G_MODULE_EXPORT
 #endif
 void cbvideodrv_changed_cb(GtkComboBox *combobox, GtkWidget *widget)
 {
-  if (gtk_combo_box_get_active(combobox)==0)
-    gtk_widget_set_sensitive(widget, TRUE);
-  else
+  if (gtk_combo_box_get_active(combobox) == 2)
     gtk_widget_set_sensitive(widget, FALSE);
+  else
+    gtk_widget_set_sensitive(widget, TRUE);
 }
 
 #ifdef G_OS_WIN32
