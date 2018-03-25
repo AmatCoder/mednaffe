@@ -72,6 +72,11 @@ for(i=0;i<9;i++)
 {
   if(SDL_JoystickGetAttached(gui->joy[i].sdljoy))
     SDL_JoystickClose(gui->joy[i].sdljoy);
+
+  if (gui->joy[i].name != NULL)
+  {
+    g_free(gui->joy[i].name);
+  }
 }
    SDL_Quit();
 #endif
