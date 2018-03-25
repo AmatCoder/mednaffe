@@ -103,7 +103,7 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__mednaffe_SOURCES_DIST = mednaffe.c about.c active.c command.c \
-	list.c toggles.c input.c gui.c prefs.c log.c md5.c resource.c \
+	list.c toggles.c input.c gui.c prefs.c log.c resource.c \
 	common.h mednaffe_glade.h settings_glade.h system_glade.h \
 	toggles.h prefs.h input.h log.h md5.h resource.h \
 	joystick_linux.c joystick_linux.h
@@ -111,7 +111,7 @@ am__mednaffe_SOURCES_DIST = mednaffe.c about.c active.c command.c \
 am_mednaffe_OBJECTS = mednaffe.$(OBJEXT) about.$(OBJEXT) \
 	active.$(OBJEXT) command.$(OBJEXT) list.$(OBJEXT) \
 	toggles.$(OBJEXT) input.$(OBJEXT) gui.$(OBJEXT) \
-	prefs.$(OBJEXT) log.$(OBJEXT) md5.$(OBJEXT) resource.$(OBJEXT) \
+	prefs.$(OBJEXT) log.$(OBJEXT) resource.$(OBJEXT) \
 	$(am__objects_1)
 mednaffe_OBJECTS = $(am_mednaffe_OBJECTS)
 mednaffe_LDADD = $(LDADD)
@@ -272,10 +272,9 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 mednaffe_SOURCES = mednaffe.c about.c active.c command.c list.c \
-	toggles.c input.c gui.c prefs.c log.c md5.c resource.c \
-	common.h mednaffe_glade.h settings_glade.h system_glade.h \
-	toggles.h prefs.h input.h log.h md5.h resource.h \
-	$(am__append_1)
+	toggles.c input.c gui.c prefs.c log.c resource.c common.h \
+	mednaffe_glade.h settings_glade.h system_glade.h toggles.h \
+	prefs.h input.h log.h md5.h resource.h $(am__append_1)
 AM_CPPFLAGS = @GTK_CFLAGS@ $(GTK_DEFINES)
 LDADD = @GTK_LIBS@
 CLEANFILES = *~
@@ -374,7 +373,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joystick_linux.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/md5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mednaffe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/prefs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resource.Po@am__quote@
