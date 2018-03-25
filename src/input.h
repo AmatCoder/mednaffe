@@ -23,6 +23,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#ifdef G_OS_UNIX
 static const guint sdl_to_gdk[245] = {
   0,  /*    SDL_SCANCODE_UNKNOWN = 0, */
   0,  /*    SDL_SCANCODE_UNKNOWN = 1,*/
@@ -518,5 +519,504 @@ static const guint gdk_to_sdl[245] = {
   0,    /*  243    SDL_SCANCODE_UNKNOWN, KEY_DOCUMENTS */
   0    /*  244    SDL_SCANCODE_UNKNOWN,  KEY_BATTERY */
 };
+#endif
+
+#ifdef G_OS_WIN32
+static const guint sdl_to_gdk[245] = {
+  0,   /*    SDL_SCANCODE_UNKNOWN = 0, */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 1,*/
+  0,   /*    SDL_SCANCODE_UNKNOWN = 2,*/
+  0,   /*    SDL_SCANCODE_UNKNOWN = 3,*/
+  65,  /*    SDL_SCANCODE_A = 4, */
+  66,  /*    SDL_SCANCODE_B = 5, */
+  67,  /*    SDL_SCANCODE_C = 6, */
+  68,  /*    SDL_SCANCODE_D = 7, */
+  69,  /*    SDL_SCANCODE_E = 8, */
+  70,  /*    SDL_SCANCODE_F = 9, */
+  71,  /*    SDL_SCANCODE_G = 10, */
+  72,  /*    SDL_SCANCODE_H = 11, */
+  73,  /*    SDL_SCANCODE_I = 12, */
+  74,  /*    SDL_SCANCODE_J = 13, */
+  75,  /*    SDL_SCANCODE_K = 14, */
+  76,  /*    SDL_SCANCODE_L = 15, */
+  77,  /*    SDL_SCANCODE_M = 16, */
+  78,  /*    SDL_SCANCODE_N = 17, */
+  79,  /*    SDL_SCANCODE_O = 18, */
+  80,  /*    SDL_SCANCODE_P = 19, */
+  81,  /*    SDL_SCANCODE_Q = 20, */
+  82,  /*    SDL_SCANCODE_R = 21, */
+  83,  /*    SDL_SCANCODE_S = 22, */
+  84,  /*    SDL_SCANCODE_T = 23, */
+  85,  /*    SDL_SCANCODE_U = 24, */
+  86,  /*    SDL_SCANCODE_V = 25, */
+  87,  /*    SDL_SCANCODE_W = 26, */
+  88,  /*    SDL_SCANCODE_X = 27, */
+  89,  /*    SDL_SCANCODE_Y = 28, */
+  90,  /*    SDL_SCANCODE_Z = 29, */
+  49,  /*    SDL_SCANCODE_1 = 30, */
+  50,  /*    SDL_SCANCODE_2 = 31, */
+  51,  /*    SDL_SCANCODE_3 = 32, */
+  52,  /*    SDL_SCANCODE_4 = 33, */
+  53,  /*    SDL_SCANCODE_5 = 34, */
+  54,  /*    SDL_SCANCODE_6 = 35, */
+  55,  /*    SDL_SCANCODE_7 = 36, */
+  56,  /*    SDL_SCANCODE_8 = 37, */
+  57,  /*    SDL_SCANCODE_9 = 38, */
+  48,  /*    SDL_SCANCODE_0 = 39, */
+  13,  /*    SDL_SCANCODE_RETURN = 40, */
+  27,  /*    SDL_SCANCODE_ESCAPE = 41, */
+  8,   /*    SDL_SCANCODE_BACKSPACE = 42, */
+  9,   /*    SDL_SCANCODE_TAB = 43, */
+  32,  /*    SDL_SCANCODE_SPACE = 44, */
+  189, /*    SDL_SCANCODE_MINUS = 45, */
+  187, /*    SDL_SCANCODE_EQUALS = 46, */
+  219, /*    SDL_SCANCODE_LEFTBRACKET = 47, */
+  221, /*    SDL_SCANCODE_RIGHTBRACKET = 48, */
+  220, /*    SDL_SCANCODE_BACKSLASH = 49, */
+  0,   /*    SDL_SCANCODE_NONUSHASH = 50, */
+  186, /*    SDL_SCANCODE_SEMICOLON = 51, */
+  222, /*    SDL_SCANCODE_APOSTROPHE = 52, */
+  192, /*    SDL_SCANCODE_GRAVE = 53, */
+  188, /*    SDL_SCANCODE_COMMA = 54, */
+  190, /*    SDL_SCANCODE_PERIOD = 55, */
+  191, /*    SDL_SCANCODE_SLASH = 56, */
+  20,  /*    SDL_SCANCODE_CAPSLOCK = 57, */
+  112, /*    SDL_SCANCODE_F1 = 58, */
+  113, /*    SDL_SCANCODE_F2 = 59, */
+  114, /*    SDL_SCANCODE_F3 = 60, */
+  115, /*    SDL_SCANCODE_F4 = 61, */
+  116, /*    SDL_SCANCODE_F5 = 62, */
+  117, /*    SDL_SCANCODE_F6 = 63, */
+  118, /*    SDL_SCANCODE_F7 = 64, */
+  119, /*    SDL_SCANCODE_F8 = 65, */
+  120, /*    SDL_SCANCODE_F9 = 66, */
+  121, /*    SDL_SCANCODE_F10 = 67, */
+  122, /*    SDL_SCANCODE_F11 = 68, */
+  123, /*    SDL_SCANCODE_F12 = 69, */
+  44,  /*    SDL_SCANCODE_PRINTSCREEN = 70, */
+  145, /*    SDL_SCANCODE_SCROLLOCK = 71, */
+  19,  /*    SDL_SCANCODE_PAUSE = 72, */
+  45,  /*    SDL_SCANCODE_INSERT = 73, */
+  36,  /*    SDL_SCANCODE_HOME = 74, */
+  33,  /*    SDL_SCANCODE_PAGEUP = 75, */
+  46,  /*    SDL_SCANCODE_DELETE = 76, */
+  35,  /*   SDL_SCANCODE_END = 77, */
+  34,  /*    SDL_SCANCODE_PAGEDOWN = 78, */
+  39,  /*    SDL_SCANCODE_RIGHT = 79, */
+  37,  /*    SDL_SCANCODE_LEFT = 80, */
+  40,  /*    SDL_SCANCODE_DOWN = 81, */
+  38,  /*    SDL_SCANCODE_UP = 82, */
+  144, /*    SDL_SCANCODE_NUMLOCKCLEAR = 83, */
+  111, /*    SDL_SCANCODE_KP_DIVIDE = 84, */
+  106, /*    SDL_SCANCODE_KP_MULTIPLY = 85, */
+  109, /*    SDL_SCANCODE_KP_MINUS = 86, */
+  107, /*    SDL_SCANCODE_KP_PLUS = 87, */
+  0,   /*    SDL_SCANCODE_KP_ENTER = 88, */
+  97,  /*    SDL_SCANCODE_KP_1 = 89, */
+  98,  /*    SDL_SCANCODE_KP_2 = 90, */
+  99,  /*    SDL_SCANCODE_KP_3 = 91, */
+  100, /*    SDL_SCANCODE_KP_4 = 92, */
+  101, /*    SDL_SCANCODE_KP_5 = 93, */
+  102, /*    SDL_SCANCODE_KP_6 = 94, */
+  103, /*    SDL_SCANCODE_KP_7 = 95, */
+  104, /*    SDL_SCANCODE_KP_8 = 96, */
+  105, /*    SDL_SCANCODE_KP_9 = 97, */
+  96,  /*    SDL_SCANCODE_KP_0 = 98, */
+  110, /*    SDL_SCANCODE_KP_PERIOD = 99, */
+  226, /*    SDL_SCANCODE_NONUSBACKSLASH = 100, */
+  93,  /*    SDL_SCANCODE_APPLICATION = 101, */
+  0,   /*    SDL_SCANCODE_POWER = 102, */
+  0,   /*   SDL_SCANCODE_KP_EQUALS = 103, */
+  124, /*    SDL_SCANCODE_F13 = 104, */
+  125, /*    SDL_SCANCODE_F14 = 105, */
+  126, /*    SDL_SCANCODE_F15 = 106, */
+  127, /*    SDL_SCANCODE_F16 = 107, */
+  128, /*    SDL_SCANCODE_F17 = 108, */
+  129, /*    SDL_SCANCODE_F18 = 109, */
+  130, /*    SDL_SCANCODE_F19 = 110, */
+  131, /*    SDL_SCANCODE_F20 = 111, */
+  132, /*    SDL_SCANCODE_F21 = 112, */
+  133, /*    SDL_SCANCODE_F22 = 113, */
+  134, /*    SDL_SCANCODE_F23 = 114, */
+  135, /*    SDL_SCANCODE_F24 = 115, */
+  0,   /*    SDL_SCANCODE_EXECUTE = 116, */
+  0,   /*    SDL_SCANCODE_HELP = 117, */
+  0,   /*    SDL_SCANCODE_MENU = 118, */
+  0,   /*    SDL_SCANCODE_SELECT = 119, */
+  0,   /*    SDL_SCANCODE_STOP = 120, */
+  0,   /*    SDL_SCANCODE_AGAIN = 121, */
+  0,   /*    SDL_SCANCODE_UNDO = 122, */
+  0,   /*    SDL_SCANCODE_CUT = 123, */
+  0,   /*    SDL_SCANCODE_COPY = 124, */
+  0,   /*    SDL_SCANCODE_PASTE = 125, */
+  0,   /*    SDL_SCANCODE_FIND = 126, */
+  173, /*    SDL_SCANCODE_MUTE = 127, */
+  175, /*    SDL_SCANCODE_VOLUMEUP = 128, */
+  174, /*    SDL_SCANCODE_VOLUMEDOWN = 129, */
+  0,   /*    SDL_SCANCODE_LOCKINGCAPSLOCK = 130,  */
+  0,   /*    SDL_SCANCODE_LOCKINGNUMLOCK = 131, */
+  0,   /*    SDL_SCANCODE_LOCKINGSCROLLLOCK = 132, */
+  0,   /*    SDL_SCANCODE_KP_COMMA = 133, */
+  0,   /*    SDL_SCANCODE_KP_EQUALSAS400 = 134, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL1 = 135, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL2 = 136, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL3 = 137, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL4 = 138, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL5 = 139, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL6 = 140, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL7 = 141, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL8 = 142, */
+  0,   /*    SDL_SCANCODE_INTERNATIONAL9 = 143, */
+  0,   /*    SDL_SCANCODE_LANG1 = 144, */
+  0,   /*    SDL_SCANCODE_LANG2 = 145, */
+  0,   /*    SDL_SCANCODE_LANG3 = 146, */
+  0,   /*    SDL_SCANCODE_LANG4 = 147, */
+  0,   /*    SDL_SCANCODE_LANG5 = 148, */
+  0,   /*    SDL_SCANCODE_LANG6 = 149, */
+  0,   /*    SDL_SCANCODE_LANG7 = 150, */
+  0,   /*    SDL_SCANCODE_LANG8 = 151, */
+  0,   /*    SDL_SCANCODE_LANG9 = 152, */
+  0,   /*    SDL_SCANCODE_ALTERASE = 153, */
+  0,   /*    SDL_SCANCODE_SYSREQ = 154, */
+  0,   /*    SDL_SCANCODE_CANCEL = 155, */
+  12,  /*    SDL_SCANCODE_CLEAR = 156, */
+  0,   /*    SDL_SCANCODE_PRIOR = 157, */
+  0,   /*    SDL_SCANCODE_RETURN2 = 158, */
+  0,   /*    SDL_SCANCODE_SEPARATOR = 159, */
+  0,   /*    SDL_SCANCODE_OUT = 160, */
+  0,   /*    SDL_SCANCODE_OPER = 161, */
+  0,   /*    SDL_SCANCODE_CLEARAGAIN = 162, */
+  0,   /*    SDL_SCANCODE_CRSEL = 163, */
+  0,   /*    SDL_SCANCODE_EXSEL = 164, */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 165,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 166,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 167,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 168,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 169,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 170,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 171,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 172,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 173,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 174,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 175,  */
+  0,   /*    SDL_SCANCODE_KP_00 = 176, */
+  0,   /*    SDL_SCANCODE_KP_000 = 177, */
+  0,   /*    SDL_SCANCODE_THOUSANDSSEPARATOR = 178, */
+  0,   /*    SDL_SCANCODE_DECIMALSEPARATOR = 179, */
+  0,   /*    SDL_SCANCODE_CURRENCYUNIT = 180, */
+  0,   /*    SDL_SCANCODE_CURRENCYSUBUNIT = 181, */
+  0,   /*    SDL_SCANCODE_KP_LEFTPAREN = 182, */
+  0,   /*    SDL_SCANCODE_KP_RIGHTPAREN = 183, */
+  0,   /*    SDL_SCANCODE_KP_LEFTBRACE = 184, */
+  0,   /*    SDL_SCANCODE_KP_RIGHTBRACE = 185, */
+  0,   /*    SDL_SCANCODE_KP_TAB = 186, */
+  0,   /*    SDL_SCANCODE_KP_BACKSPACE = 187, */
+  0,   /*    SDL_SCANCODE_KP_A = 188, */
+  0,   /*    SDL_SCANCODE_KP_B = 189, */
+  0,   /*    SDL_SCANCODE_KP_C = 190, */
+  0,   /*    SDL_SCANCODE_KP_D = 191, */
+  0,   /*    SDL_SCANCODE_KP_E = 192, */
+  0,   /*    SDL_SCANCODE_KP_F = 193, */
+  0,   /*    SDL_SCANCODE_KP_XOR = 194, */
+  0,   /*    SDL_SCANCODE_KP_POWER = 195, */
+  0,   /*    SDL_SCANCODE_KP_PERCENT = 196, */
+  0,   /*    SDL_SCANCODE_KP_LESS = 197, */
+  0,   /*    SDL_SCANCODE_KP_GREATER = 198, */
+  0,   /*    SDL_SCANCODE_KP_AMPERSAND = 199, */
+  0,   /*    SDL_SCANCODE_KP_DBLAMPERSAND = 200, */
+  0,   /*    SDL_SCANCODE_KP_VERTICALBAR = 201, */
+  0,   /*    SDL_SCANCODE_KP_DBLVERTICALBAR = 202, */
+  0,   /*    SDL_SCANCODE_KP_COLON = 203, */
+  0,   /*    SDL_SCANCODE_KP_HASH = 204, */
+  0,   /*    SDL_SCANCODE_KP_SPACE = 205, */
+  0,   /*    SDL_SCANCODE_KP_AT = 206, */
+  0,   /*    SDL_SCANCODE_KP_EXCLAM = 207, */
+  0,   /*    SDL_SCANCODE_KP_MEMSTORE = 208, */
+  0,   /*    SDL_SCANCODE_KP_MEMRECALL = 209, */
+  0,   /*    SDL_SCANCODE_KP_MEMCLEAR = 210, */
+  0,   /*    SDL_SCANCODE_KP_MEMADD = 211, */
+  0,   /*    SDL_SCANCODE_KP_MEMSUBTRACT = 212, */
+  0,   /*    SDL_SCANCODE_KP_MEMMULTIPLY = 213, */
+  0,   /*    SDL_SCANCODE_KP_MEMDIVIDE = 214, */
+  0,   /*    SDL_SCANCODE_KP_PLUSMINUS = 215, */
+  0,   /*    SDL_SCANCODE_KP_CLEAR = 216, */
+  0,   /*    SDL_SCANCODE_KP_CLEARENTRY = 217, */
+  0,   /*    SDL_SCANCODE_KP_BINARY = 218, */
+  0,   /*    SDL_SCANCODE_KP_OCTAL = 219, */
+  0,   /*    SDL_SCANCODE_KP_DECIMAL = 220, */
+  0,   /*    SDL_SCANCODE_KP_HEXADECIMAL = 221, */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 222, */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 223,  */
+  162, /*    SDL_SCANCODE_LCTRL = 224, */
+  160, /*    SDL_SCANCODE_LSHIFT = 225, */
+  164, /*    SDL_SCANCODE_LALT = 226, */
+  91,  /*    SDL_SCANCODE_LGUI = 227, */
+  163, /*    SDL_SCANCODE_RCTRL = 228, */
+  161, /*    SDL_SCANCODE_RSHIFT = 229, */
+  0,   /*    SDL_SCANCODE_RALT = 230, */
+  0,   /*    SDL_SCANCODE_RGUI = 231, */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 232,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 233,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 234,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 235,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 236,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 237,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 238,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 239,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 240,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 241,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 242,  */
+  0,   /*    SDL_SCANCODE_UNKNOWN = 243,  */
+  0   /*    SDL_SCANCODE_UNKNOWN = 244,  */
+};
+
+static const guint gdk_to_sdl[245] = {
+  0,   /*  0   */
+  0,   /*  1   */
+  0,   /*  2   */
+  0,   /*  3   */
+  0,   /*  4   */
+  0,   /*  5   */
+  0,   /*  6   */
+  0,   /*  7   */
+  42,  /*  8   BACK*/
+  43,  /*  9   TAB*/
+  0,   /*  10  */
+  0,   /*  11  */
+  156, /*  12  CLEAR*/
+  40,  /*  13  RETURN*/
+  0,   /*  14  */
+  0,   /*  15  */
+  225, /*  16  SHIFT*/
+  224, /*  17  CONTROL*/
+  226, /*  18  ALT*/
+  72,  /*  19  PAUSE*/
+  57,  /*  20  CAPSLOCKS*/
+  0,   /*  21  */
+  0,   /*  22  */
+  0,   /*  23  */
+  0,   /*  24  */
+  0,   /*  25  */
+  0,   /*  26  */
+  41,  /*  27  ESCAPE*/
+  0,   /*  28  */
+  0,   /*  29  */
+  0,   /*  30  */
+  0,   /*  31  */
+  44,  /*  32  SPACE*/
+  75,  /*  33  PAGE UP*/
+  78,  /*  34  PAGE DOWN*/
+  77,  /*  35  END*/
+  74,  /*  36  HOME*/
+  80,  /*  37  LEFT*/
+  82,  /*  38  UP*/
+  79,  /*  39  RIGHT*/
+  81,  /*  40  */
+  0,   /*  41  */
+  0,   /*  42  */
+  0,   /*  43  */
+  70,  /*  44  PRINTSCREEN*/
+  73,  /*  45  INSERT*/
+  76,  /*  46  DELETE */
+  0,   /*  47  */
+  39,  /*  48  1*/
+  30,  /*  49  2*/
+  31,  /*  50  3*/
+  32,  /*  51  4*/
+  33,  /*  52  5*/
+  34,  /*  53  6*/
+  35,  /*  54  7*/
+  36,  /*  55  8*/
+  37,  /*  56  9*/
+  38,  /*  57  0*/
+  0,   /*  58   */
+  0,   /*  59   */
+  0,   /*  60   */
+  0,   /*  61   */
+  0,   /*  62   */
+  0,   /*  63   */
+  0,   /*  64   */
+  4,   /*  65   A*/
+  5,   /*  66   B*/
+  6,   /*  67   C*/
+  7,   /*  68   D*/
+  8,   /*  69   E*/
+  9,   /*  70   F*/
+  10,  /*  71   G*/
+  11,  /*  72   H*/
+  12,  /*  73   I*/
+  13,  /*  74   J*/
+  14,  /*  75   K*/
+  15,  /*  76   L*/
+  16,  /*  77   M*/
+  17,  /*  78   N*/
+  18,  /*  79   O*/
+  19,  /*  80   P*/
+  20,  /*  81   Q*/
+  21,  /*  82   R*/
+  22,  /*  83   S*/
+  23,  /*  84   T*/
+  24,  /*  85   U*/
+  25,  /*  86   V*/
+  26,  /*  87   W*/
+  27,  /*  88   X*/
+  28,  /*  89   Y*/
+  29,  /*  90   Z*/
+  227, /*  91   LEFT WIN*/
+  231, /*  92   RIGHT WIN*/
+  101, /*  93   APPLICATION*/
+  0,   /*  94   */
+  0,   /*  95   */
+  98,  /*  96   KP_0*/
+  89,  /*  97   KP_1*/
+  90,  /*  98   KP_2*/
+  91,  /*  99   KP_3*/
+  92,  /*  100  KP_4*/
+  93,  /*  101  KP_5*/
+  94,  /*  102  KP_6*/
+  95,  /*  103  KP_7*/
+  96,  /*  104  KP_8*/
+  97,  /*  105  KP_9*/
+  85,  /*  106  KP_MULTIPLY*/
+  87,  /*  107  KP_PLUS*/
+  0,   /*  108  */
+  86,  /*  109  KP_MINUS*/
+  99,  /*  110  KP_PERIOD*/
+  84,  /*  111  KP_DIVIDE*/
+  58,  /*  112  F1*/
+  59,  /*  113  F2*/
+  60,  /*  114  F3*/
+  61,  /*  115  F4*/
+  62,  /*  116  F5*/
+  63,  /*  117  F6*/
+  64,  /*  118  F7*/
+  65,  /*  119  F8*/
+  66,  /*  120  F9*/
+  67,  /*  121  F10*/
+  68,  /*  122  F11*/
+  69,  /*  123  F12*/
+  104, /*  124  F13*/
+  105, /*  125  F14*/
+  106, /*  126  F15*/
+  107, /*  127  F16*/
+  108, /*  128  F17*/
+  109, /*  129  F18*/
+  110, /*  130  F19*/
+  111, /*  131  F20*/
+  112, /*  132  F21*/
+  113, /*  133  F22*/
+  114, /*  134  F23*/
+  115, /*  135  F24*/
+  0,   /*  136  */
+  0,   /*  137  */
+  0,   /*  138  */
+  0,   /*  139  */
+  0,   /*  140  */
+  0,   /*  141  */
+  0,   /*  142  */
+  0,   /*  143  */
+  83,  /*  144  NUM LOCK*/
+  71,  /*  145  SCROLL LOCK*/
+  0,   /*  146  */
+  0,   /*  147  */
+  0,   /*  148  */
+  0,   /*  149  */
+  0,   /*  150  */
+  0,   /*  151  */
+  0,   /*  152  */
+  0,   /*  153  */
+  0,   /*  154  */
+  0,   /*  155  */
+  0,   /*  156  */
+  0,   /*  157  */
+  0,   /*  158  */
+  0,   /*  159  */
+  225, /*  160  LEFT SHIFT*/
+  229, /*  161  RIGHT SHIFT*/
+  224, /*  162  LEFT CONTROL*/
+  228, /*  163  RIGHT CONTROL*/
+  226, /*  164  LEFT ALT*/
+  230, /*  165  RIGHT ALT*/
+  0,   /*  166  */
+  0,   /*  167  */
+  0,   /*  168  */
+  0,   /*  169  */
+  0,   /*  170  */
+  0,   /*  171  */
+  0,   /*  172  */
+  127, /*  173  VOLUME MUTE*/
+  129, /*  174  VOLUME DOWN*/
+  128, /*  175  VOLUME UP*/
+  0,   /*  176  */
+  0,   /*  177  */
+  0,   /*  178  */
+  0,   /*  179  */
+  0,   /*  180  */
+  0,   /*  181  */
+  0,   /*  182  */
+  0,   /*  183  */
+  0,   /*  184  */
+  0,   /*  185  */
+  51,  /*  186  SEMICOLON*/
+  46,  /*  187  EQUALS*/
+  54,  /*  188  COMMA*/
+  45,  /*  189  MINUS*/
+  55,  /*  190  PERIOD*/
+  56,  /*  191  SLASH*/
+  53,  /*  192  GRAVE*/
+  0,   /*  193  */
+  0,   /*  194  */
+  0,   /*  195  */
+  0,   /*  196  */
+  0,   /*  197  */
+  0,   /*  198  */
+  0,   /*  199  */
+  0,   /*  200  */
+  0,   /*  201  */
+  0,   /*  202  */
+  0,   /*  203  */
+  0,   /*  204  */
+  0,   /*  205  */
+  0,   /*  206  */
+  0,   /*  207  */
+  0,   /*  208  */
+  0,   /*  209  */
+  0,   /*  210  */
+  0,   /*  211  */
+  0,   /*  212  */
+  0,   /*  213  */
+  0,   /*  214  */
+  0,   /*  215  */
+  0,   /*  216  */
+  0,   /*  217  */
+  0,   /*  218  */
+  47,  /*  219  LEFTBRACKET*/
+  49,  /*  220  BACKSLASH*/
+  48,  /*  221  RIGHTBRACKET*/
+  52,  /*  222  APOSTROPHE*/
+  0,   /*  223  */
+  0,   /*  224  */
+  0,   /*  225  */
+  100, /*  226  NONUSBACKSLASH*/
+  0,   /*  227  */
+  0,   /*  228  */
+  0,   /*  229  */
+  0,   /*  230  */
+  0,   /*  231  */
+  0,   /*  232  */
+  0,   /*  233  */
+  0,   /*  234  */
+  0,   /*  235  */
+  0,   /*  236  */
+  0,   /*  237  */
+  0,   /*  238  */
+  0,   /*  239  */
+  0,   /*  240  */
+  0,   /*  241  */
+  0,   /*  242  */
+  0,   /*  243  */
+  0    /*  244  */
+};
+#endif
 
 #endif /* INPUT_H */
