@@ -1,3 +1,13 @@
+#### 25 / Mar / 2018
+
+Mednaffe 0.8.7 is released with the following changes:
+
+- Update to work with 1.xx.x versions of mednafen emulator.
+  (This release drops support for 0.9.xx versions).
+- Now Pce GE CD bios can be setted (Thanks to Pcegames for reporting).
+- Honor environment CFLAGS in configure script (Thanks to akien-mga for patch).
+- Support compilation under *BSD OS'es. (Thanks to PaddyMac for report and testing).
+
 #### 29 / Jul / 2017
 
 Mednaffe 0.8.6 is released with the following changes:
