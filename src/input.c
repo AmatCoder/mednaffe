@@ -63,8 +63,8 @@ void close_channels(guidata *gui)
     {
       g_io_channel_unref(gui->joy[a].channel);
     }
-  }
 #endif
+  }
 
 #ifdef G_OS_WIN32
 int i;
@@ -389,7 +389,7 @@ void read_input(guidata *gui)
               if (value[0] == 'a')
               {
                 int ll = g_ascii_strtoll(pch, NULL, 10);
-                if (0 % 2)
+                if (ll % 2)
                 {
                   if (g_strrstr(value, "+")) value2 = g_strdup_printf("Axis %i Down", ll);
                   else value2 = g_strdup_printf("Axis %i Up", ll);

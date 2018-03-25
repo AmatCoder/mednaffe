@@ -113,7 +113,6 @@ static gchar* FindSysFSInputDeviceByJSDev(const gchar* jsdev_name)
 guint64 GetBVPV(const gchar* jsdev_name)
 {
   guint64 ret = 0;
-  FILE *fp;
   char *lb = NULL;
   size_t len = 0;
 
@@ -127,7 +126,7 @@ guint64 GetBVPV(const gchar* jsdev_name)
     static const gchar* fns[4] = { "/id/bustype", "/id/vendor", "/id/product", "/id/version" };
     gchar* idpath = g_strconcat(sysfs_input_dev_path, fns[i], NULL);
 
-    fp = fopen(idpath, "r");
+    FILE *fp = fopen(idpath, "r");
 
     if (fp == NULL)
       return 0;

@@ -315,7 +315,7 @@ void set_values(GtkBuilder *builder, guidata *gui)
       /*g_signal_connect(GTK_WIDGET(iterator->data), "focus-out-event",
        *                              G_CALLBACK(adj_focus_out), gui);*/
 #ifdef GTK3_ENABLED
-      if GTK_IS_SPIN_BUTTON(iterator->data)
+      if (GTK_IS_SPIN_BUTTON(iterator->data))
         gtk_widget_set_size_request(GTK_WIDGET(iterator->data), 150, -1);
 #endif
     }

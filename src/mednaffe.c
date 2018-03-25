@@ -211,7 +211,7 @@ void game_selected(GtkTreeSelection *treeselection, guidata *gui)
 
   if (gtk_tree_selection_get_selected(treeselection, &model, &iter))
   {
-    gchar *selected = NULL;
+    gchar *selected;
 
     g_free(gui->rom);
     g_free(gui->fullpath);
