@@ -164,6 +164,7 @@ gint GetJoy(guint js, guidata *gui)
  unsigned char tmp;
 
  gui->joy[js].channel= NULL;
+ memset(gui->joy[js].name, 0, sizeof(gui->joy[js].name));
  gui->joy[js].name[0]= '\0';
  gui->joy[js].id = NULL;
  gui->joy[js].ev_fd = -1;
