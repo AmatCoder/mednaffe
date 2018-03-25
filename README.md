@@ -8,12 +8,11 @@ Its main features are:
  * The only dependency (on Linux) is GTK+2 (or GTK+3).
  * GPLv3 licensed.
 
-#### Downloads - Version 0.8.6
- * You can download Mednaffe [here](https://sites.google.com/site/amatcoder/mednaffe/downloads/ "Downloads").
- * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
+#### Downloads - Version 0.8.7
+ * You can download Mednaffe [here](https://github.com/AmatCoder/mednaffe/releases/latest "Downloads").
+ * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/0.8.x-UNSTABLE/ChangeLog "ChangeLog").
 
-*Note: Mednaffe only works with 0.9.41 or higher versions of mednafen emulator.*
-##### *Warning: Actual version (0.8.6) is not compatible with 1.xx.x versions of mednafen emulator.*
+*Note: Mednaffe only works with 1.21.1 or higher versions of mednafen emulator.*
 
 #### Screenshots
 
