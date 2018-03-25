@@ -50,7 +50,6 @@
 
 void close_channels(guidata *gui)
 {
-#ifdef G_OS_UNIX
   int a;
   for (a=0;a<9;a++)
   {
@@ -59,6 +58,7 @@ void close_channels(guidata *gui)
       g_free(gui->joy[a].id);
     }
 
+#ifdef G_OS_UNIX
     if (gui->joy[a].channel != NULL)
     {
       g_io_channel_unref(gui->joy[a].channel);
