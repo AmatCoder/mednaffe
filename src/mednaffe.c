@@ -557,7 +557,7 @@ want to select the file manually?\n", &gui);
   if (!check_version(stout, &gui))
    {
     show_error(
-    "Error: Mednafen version is not compatible.\nYou need 0.9.41 \
+    "Error: Mednafen version is not compatible.\nYou need 1.21.1 \
 version or above.\n");
     return 1; /* Items are not freed here */
   }
