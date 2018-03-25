@@ -105,8 +105,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am__mednaffe_SOURCES_DIST = mednaffe.c about.c active.c command.c \
 	list.c toggles.c input.c gui.c prefs.c log.c resource.c \
 	common.h mednaffe_glade.h settings_glade.h system_glade.h \
-	toggles.h prefs.h input.h log.h md5.h resource.h \
-	joystick_linux.c joystick_linux.h
+	toggles.h prefs.h input.h log.h resource.h joystick_linux.c \
+	joystick_linux.h
 @LINUX_TRUE@am__objects_1 = joystick_linux.$(OBJEXT)
 am_mednaffe_OBJECTS = mednaffe.$(OBJEXT) about.$(OBJEXT) \
 	active.$(OBJEXT) command.$(OBJEXT) list.$(OBJEXT) \
@@ -274,7 +274,7 @@ top_srcdir = @top_srcdir@
 mednaffe_SOURCES = mednaffe.c about.c active.c command.c list.c \
 	toggles.c input.c gui.c prefs.c log.c resource.c common.h \
 	mednaffe_glade.h settings_glade.h system_glade.h toggles.h \
-	prefs.h input.h log.h md5.h resource.h $(am__append_1)
+	prefs.h input.h log.h resource.h $(am__append_1)
 AM_CPPFLAGS = @GTK_CFLAGS@ $(GTK_DEFINES)
 LDADD = @GTK_LIBS@
 CLEANFILES = *~
