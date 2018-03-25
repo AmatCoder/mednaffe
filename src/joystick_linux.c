@@ -148,9 +148,11 @@ guint64 GetBVPV(const gchar* jsdev_name)
     ret <<= 16;
     ret |= t;
 
+    g_free(idpath);
     fclose(fp);
  }
  g_free(sysfs_input_dev_path);
+ free(lb);
 
  return ret;
 }
@@ -175,6 +177,7 @@ gint GetJoy(guint js, guidata *gui)
  
  if(gui->joy[js].js_fd == -1)
  {
+  g_free(number);
   return 0;
  }
  
