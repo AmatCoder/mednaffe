@@ -345,7 +345,7 @@ gchar* get_cfg(const gchar *home, guidata *gui)
   #ifdef G_OS_WIN32
     cfg_path = g_strconcat(home, "\\mednafen-09x.cfg", NULL);
   #else
-    cfg_path = g_strconcat(home, "/.mednafen/mednafen-09x.cfg", NULL);
+    cfg_path = g_strconcat(home, "/mednafen-09x.cfg", NULL);
   #endif
 
   if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
@@ -357,7 +357,7 @@ Mednafen 09x configuration file found.\n", FE, gui);
   #ifdef G_OS_WIN32
     cfg_path = g_strconcat(home, "\\mednafen.cfg", NULL);
   #else
-    cfg_path = g_strconcat(home, "/.mednafen/mednafen.cfg", NULL);
+    cfg_path = g_strconcat(home, /mednafen.cfg", NULL);
   #endif
     if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
       printf(" Mednafen 08x configuration file found\n");
@@ -410,7 +410,7 @@ gboolean check_version(gchar *stout, guidata *gui)
     GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
     gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, aline[0]);
 
-    gchar *tooltip = g_strconcat("Mednafen version detected: ",aline[0], "\nPath: ", gui->binpath, NULL);    
+    gchar *tooltip = g_strconcat("Mednafen version detected: ",aline[0], "\nPath: ", gui->binpath, NULL);
     gtk_widget_set_tooltip_text(GTK_WIDGET(sbversion), tooltip);
     g_free(tooltip);
 

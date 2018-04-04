@@ -638,8 +638,21 @@ want to select the file manually?\n", &gui);
   #ifdef G_OS_WIN32
     home = g_path_get_dirname(gui.binpath);
   #else
-    home = g_getenv ("HOME");
-    if (!home) home = g_get_home_dir();
+    /*
+     * If MEDNAFEN_HOME is set, then mednafen uses this
+     * location as root directory.
+     */
+    home = g_getenv ("MEDNAFEN_HOME");
+    if (!home)
+    {
+        /* g_get_home_dir() checks the value of HOME variable and,
+         * if needed, uses the value from the passwd database. */
+        const gchar *aux = NULL;
+        aux = g_get_home_dir();
+        /* Now append '/.mednafen' to get the default root location
+         * of mednafen. */
+        if (aux) home = g_strconcat(aux, "/.mednafen", NULL);
+    }
   #endif
     if (!home)
     {
