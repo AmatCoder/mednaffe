@@ -356,7 +356,13 @@ gchar* get_cfg(const gchar *home, guidata *gui)
   #ifdef G_OS_WIN32
     cfg_path = g_strconcat(home, "\\mednafen.cfg", NULL);
   #else
-    cfg_path = g_strconcat(home, "/.mednafen/mednafen.cfg", NULL);
+    /* Check if MEDNAFEN_HOME is set; if it is, then we use the path
+     * given as mednafen root directory. */
+    const gchar *mednafen_home =  g_getenv ("MEDNAFEN_HOME");
+    if (mednafen_home)
+        cfg_path = g_strconcat(mednafen_home, "/mednafen.cfg", NULL);
+    else
+        cfg_path = g_strconcat(home, "/.mednafen/mednafen.cfg", NULL);
   #endif
 
   if (g_file_test (cfg_path, G_FILE_TEST_IS_REGULAR))
