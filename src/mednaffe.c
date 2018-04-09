@@ -516,8 +516,7 @@ want to select the file manually?\n", &gui);
   #ifdef G_OS_WIN32
     home = g_path_get_dirname(gui.binpath);
   #else
-    home = g_getenv ("HOME");
-    if (!home) home = g_get_home_dir();
+    home = g_get_home_dir();
   #endif
     if (!home)
     {
