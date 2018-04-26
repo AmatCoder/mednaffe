@@ -589,7 +589,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
     {
       on = g_strdup_printf("Axis %i Up", b+2);
       b =b+2;
-      joyc = g_strdup_printf("joystick %s abs_%u+", gui->joy[a].id, b);
+      joyc = g_strdup_printf("joystick %s abs_%u-", gui->joy[a].id, b);
     }
     else if(event.jhat.value == SDL_HAT_DOWN)
     {
@@ -601,7 +601,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
     {
       on = g_strdup_printf("Axis %i Right", b+1);
       b=b+1;
-      joyc = g_strdup_printf("joystick %s abs_%u-", gui->joy[a].id, b);
+      joyc = g_strdup_printf("joystick %s abs_%u+", gui->joy[a].id, b);
     }
     else if(event.jhat.value == SDL_HAT_LEFT)
     {
