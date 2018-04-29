@@ -393,10 +393,7 @@ gboolean check_version(gchar *stout, guidata *gui)
 
     print_log("Mednafen version detected: ", FE, gui);
     print_log(aline[1], FE, gui);
-    #ifdef G_OS_UNIX
-      print_log("\n", FE, gui);
-    #endif
-    print_log("----\n", FE, gui);
+    print_log("\n----\n", FE, gui);
 
     GtkStatusbar *sbversion = GTK_STATUSBAR(gtk_builder_get_object(gui->builder, "sbversion"));
     gtk_statusbar_push(GTK_STATUSBAR(sbversion), 1, aline[1]);
