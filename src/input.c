@@ -240,8 +240,6 @@ gboolean joy_watch( GIOChannel *channel, GIOCondition cond, guidata *gui)
   }
   else
   if (e.type == JS_EVENT_AXIS) {
-    //printf("%i\n", e.value);
-
     if (e.number % 2)
     {
       if (e.value<0) on = g_strdup_printf("Axis %i Up", e.number);
@@ -681,9 +679,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
           c = '+';
       }
     }
-
     joyc = g_strdup_printf("joystick %s abs_%u%c", gui->joy[a].id, b, c);
-    printf("Axis Event: %s\n", joyc);
     }
    }
   }
@@ -800,7 +796,6 @@ void on_input_clicked (GtkButton *button, guidata *gui)
 
     if(!gui->joy[i].sdljoy)
     {
-      //printf("Couldn't open Joystick %i\n", i);
       gui->joy[i].sdl_id = 0;
       gui->joy[i].name = NULL;
     }
@@ -813,17 +808,18 @@ void on_input_clicked (GtkButton *button, guidata *gui)
        char pszGUID[32];
        SDL_JoystickGetGUIDString(guid, (char *)pszGUID, 33);
 
-       /*printf("GUID: %s\n", pszGUID);*/
+       /*printf("GUID: %s\n", pszGUID);
 
-       /*if ((guid.data[0]=='x') &&
+         if ((guid.data[0]=='x') &&
           (guid.data[1]=='i') &&
           (guid.data[2]=='n') &&
           (guid.data[3]=='p') &&
           (guid.data[4]=='u') &&
           (guid.data[5]=='t'))*/
+
        if (g_strcmp0(pszGUID, "00000000000000000000000000000000")==0)
        {
-         int type =  SDL_JoystickDevType(gui->joy[i].sdljoy);      // Those functions does not exist in SDL
+         int type =  SDL_JoystickDevType(gui->joy[i].sdljoy);      // Those functions do not exist in SDL
          int subtype = SDL_JoystickDevSubType(gui->joy[i].sdljoy); // I patched it to expose XINPUT_CAPABILITIES
          int flags =  SDL_JoystickCapsFlags(gui->joy[i].sdljoy);
          int wButtons = SDL_JoystickCapsGamepadwButtons(gui->joy[i].sdljoy);
@@ -857,36 +853,6 @@ void on_input_clicked (GtkButton *button, guidata *gui)
       g_free(id);
     }
   }
-
-   /* gchar *string;
-
-      gchar *dir = g_win32_get_package_installation_directory_of_module(NULL);
-      gchar *path =g_strconcat(dir, "\\stdout.txt", NULL);
-
-      if (g_file_get_contents(path, &string, NULL, NULL))
-      {
-        gchar **aline = g_strsplit(string, "\n", 0);
-        gint num = g_strv_length(aline);
-        gint l;
-        for(l=0;l<num-1;l++)
-        {
-          if (aline[l][2]=='J')
-          {
-             gint ii = g_ascii_digit_value(aline[l][11]);
-             printf ("\n%i\n",ii);
-             gchar *id = g_strrstr(aline[l],"ID:");
-             gui->joy[ii].id = g_strndup(id+=4,16);
-             //id = g_strrstr(aline[l],"Joystick ");
-             //gui->joy[ii].name = g_strndup(id+=13,(strlen(aline[l])-45));
-             printf (gui->joy[ii].id);
-             //printf (gui->joy[ii].name);
-          }
-        }
-        g_free(string);
-        g_strfreev(aline);
-      }
-      g_free(dir);
-      g_free(path); */
 
   #endif
 
@@ -1053,7 +1019,6 @@ else
 #ifdef G_OS_WIN32
 void thread_watch(GPid pid, gint status, guidata *gui)
 {
-   //printf("Exiting from thread\n");
    g_mutex_lock (&mutex);
 
    if ((joyc != NULL) && (on != NULL) && (!gui->inputedited))
