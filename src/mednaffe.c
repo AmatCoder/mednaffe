@@ -538,8 +538,10 @@ want to select the file manually?\n", &gui);
     g_free(qbin);
 
   #else
+    gchar *sterr = NULL;
     gchar *command = g_shell_quote (gui.binpath);
-    g_spawn_command_line_sync(command, &stout, NULL, NULL, NULL);
+    g_spawn_command_line_sync(command, &stout, &sterr, NULL, NULL);
+    g_free(sterr);
     g_free(command);
     //sleep (1); /* race condition? */
   #endif
