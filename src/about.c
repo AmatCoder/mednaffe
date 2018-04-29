@@ -1,7 +1,7 @@
 /*
  * about.c
  *
- * Copyright 2013-2015 AmatCoder
+ * Copyright 2013-2018 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -50,7 +50,7 @@ gtk_show_about_dialog(
 #ifdef STATIC_ENABLED
   "copyright", "See NOTICE file for license details.",
 #else
-  "copyright", "Copyright \xc2\xa9 2010-2017 AmatCoder",
+  "copyright", "Copyright \xc2\xa9 2010-2018 AmatCoder",
 #endif
   "comments", "A front-end (GUI) for Mednafen emulator",
   "license", gpl3,
