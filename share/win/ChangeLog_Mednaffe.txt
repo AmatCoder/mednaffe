@@ -1,3 +1,13 @@
+#### 30 / Apr / 2018
+
+Mednaffe 0.8.8 is released with the following changes:
+
+- [Windows] Fix to accept up/right D-Pad inputs in controller setup on
+  some conditions (Thanks to SatoXa for report and testing).
+- [Linux] Use the 'MEDNAFEN_HOME' environment variable when
+  it is set (Patch by denisfa).
+- Some minor fixes.
+
 #### 25 / Mar / 2018
 
 Mednaffe 0.8.7 is released with the following changes:

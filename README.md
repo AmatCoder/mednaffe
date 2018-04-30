@@ -8,7 +8,7 @@ Its main features are:
  * The only dependency (on Linux) is GTK+2 (or GTK+3).
  * GPLv3 licensed.
 
-#### Downloads - Version 0.8.7
+#### Downloads - Version 0.8.8
  * You can download Mednaffe [here](https://sites.google.com/site/amatcoder/mednaffe/downloads/ "Downloads").
  * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
 

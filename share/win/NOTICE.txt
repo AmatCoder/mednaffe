@@ -101,10 +101,6 @@ Libraries used (with their respectives licenses) are:
   See: /licenses/zlib-1.2.8/README
 
 
-Mednaffe includes modified code of MD5 implementation by Christophe Devine,
-licensed under the GNU GENERAL PUBLIC LICENSE version 2 (or later).
-
-
 Mednaffe includes modified code from mednafen <http://mednafen.sourceforge.net/>
 licensed under the GNU GENERAL PUBLIC LICENSE version 2 (or later).
 
