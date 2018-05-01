@@ -633,12 +633,7 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
 
       if (gui->joy[a].xinput == TRUE)
       {
-        if (event.jaxis.axis == 4)
-        {
-          g_free(on);
-          on = g_strdup("Trigger Left");
-        }
-        else if (event.jaxis.axis == 5)
+        if (event.jaxis.axis == 5)
         {
           g_free(on);
           on = g_strdup("Trigger Right");
@@ -658,10 +653,11 @@ DWORD WINAPI joy_thread(LPVOID lpParam)
         on = g_strdup_printf("Axis %i Right", event.jaxis.axis);
       }
 
-      if (gui->joy[a].xinput==TRUE)
+      if (gui->joy[a].xinput == TRUE)
       {
-        if (event.jaxis.axis==4)
+        if (event.jaxis.axis == 4)
         {
+          c = '+';
           g_free(on);
           on = g_strdup("Trigger Left");
         }
