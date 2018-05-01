@@ -9,8 +9,8 @@ Its main features are:
  * GPLv3 licensed.
 
 #### Downloads - Version 0.8.8
- * You can download Mednaffe [here](https://sites.google.com/site/amatcoder/mednaffe/downloads/ "Downloads").
- * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
+ * You can download Mednaffe [here](https://github.com/AmatCoder/mednaffe/releases/latest "Downloads").
+ * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/0.8.x-UNSTABLE/ChangeLog "ChangeLog").
 
 *Note: Mednaffe only works with 1.21.1 or higher versions of mednafen emulator.*
 
