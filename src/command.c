@@ -52,12 +52,10 @@ gchar *build_command_win(guidata *gui)
   }
   g_list_free(list);
 
-  command2 = g_strconcat(command, " -psx.dbg_level \"0\"", NULL );
+  command2 = g_strconcat(command, " \"", gui->fullpath, "\"", NULL );
   g_free(command);
-  command = g_strconcat(command2, " \"", gui->fullpath, "\"", NULL );
-  g_free(command2);
 
-  return command;
+  return command2;
 }
 
 #else
@@ -65,15 +63,13 @@ gchar *build_command_win(guidata *gui)
 gchar **build_command(guidata *gui)
 {
   gchar **command;
-  gint num = 3;
+  gint num = 1;
   GList *list = NULL;
   GList *iterator = NULL;
 
   list = g_hash_table_get_keys(gui->clist);
   command = g_new(gchar *, ((g_list_length(list))*2)+5);
   command[0] = g_strdup(gui->binpath);
-  command[1] = g_strdup("-psx.dbg_level");
-  command[2] = g_strdup("0");
   for (iterator = list; iterator; iterator = iterator->next)
   {
     command[num] = g_strdup(iterator->data);
