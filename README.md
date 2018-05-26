@@ -1,3 +1,5 @@
+**Warning: Master branch is deprecated and only compatible with 0.9.xx versions of mednafen emulator.**
+
 ## Mednaffe
 Mednaffe is a front-end (GUI) for [mednafen emulator](https://mednafen.github.io/ "mednafen emulator")
 
