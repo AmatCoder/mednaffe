@@ -1,13 +1,41 @@
 bin_PROGRAMS=mednaffe
-mednaffe_SOURCES=mednaffe.c about.c active.c command.c list.c toggles.c input.c gui.c prefs.c log.c bios.c md5.c resource.c common.h mednaffe_glade.h settings_glade.h  system_glade.h toggles.h prefs.h input.h log.h md5.h resource.h
+mednaffe_SOURCES=about.c about.h\
+bios.c bios.h\
+logbook.c logbook.h\
+mainwindow.c mainwindow.h\
+manager.c manager.h\
+mednaffe.c \
+medprocess.c medprocess.h\
+panedimage.c panedimage.h\
+panedlist.c panedlist.h\
+pathcombobox.c pathcombobox.h\
+preferences.c preferences.h\
+resources.c \
+setup.c setup.h\
+widgets/marshallers.c widgets/marshallers.h\
+widgets/medbiosentry.c widgets/medbiosentry.h \
+widgets/medcheckbutton.c widgets/medcheckbutton.h \
+widgets/medcolorentry.c widgets/medcolorentry.h \
+widgets/medcombobox.c widgets/medcombobox.h \
+widgets/meddialogentry.c widgets/meddialogentry.h \
+widgets/medentry.c widgets/medentry.h \
+widgets/medinput.c widgets/medinput.h \
+widgets/medirange.c widgets/medirange.h \
+widgets/medjoy.c widgets/medjoy.h \
+widgets/medlistjoy.c widgets/medlistjoy.h \
+widgets/medrange.c widgets/medrange.h \
+widgets/medscale.c widgets/medscale.h \
+widgets/medspin.c widgets/medspin.h \
+widgets/medwidget.c widgets/medwidget.h \
+widgets/menuinput.c widgets/menuinput.h
 
 if LINUX
-  mednaffe_SOURCES+= joystick_linux.c joystick_linux.h
+  mednaffe_SOURCES+= widgets/joystick_linux.c widgets/joystick_linux.h
 endif
 
 override CFLAGS +=-std=c99 -Wall -Wl,-export-dynamic
 
-AM_CPPFLAGS        = @GTK_CFLAGS@ $(GTK_DEFINES)
+AM_CPPFLAGS        = @GTK_CFLAGS@
 LDADD           = @GTK_LIBS@
 CLEANFILES      = *~
 DISTCLEANFILES  = .deps/*.P

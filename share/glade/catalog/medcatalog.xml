@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog name="medwidgets" library="medwidgets" depends="gtk+">
+  <glade-widget-classes>
+
+    <glade-widget-class name="MedCheckButton" generic-name="medcheckbutton" title="MedCheckButton">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="MedComboBox" generic-name="medcombobox" title="MedComboBox">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+        <property id="label" name="Label">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="label-width" name="Label width">
+            <parameter-spec>
+              <type>GParamInt</type>
+            </parameter-spec>
+        </property>
+	<property id="values" name="Values" translatable="False">
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GStrv</value-type>
+	  </parameter-spec>
+	</property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="MedRange" generic-name="medrange" title="MedRange">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+        <property id="label" name="Label">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="label-width" name="Label width">
+            <parameter-spec>
+              <type>GParamInt</type>
+            </parameter-spec>
+        </property>
+        <property id="values" name="Values">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+            <tooltip>values - lower, upper, step_increment, digits</tooltip>
+        </property>
+        <property id="is_scale" name="Is scale">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="MedEntry" generic-name="medentry" title="MedEntry">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+        <property id="label" name="Label">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="label-width" name="Label width">
+            <parameter-spec>
+              <type>GParamInt</type>
+            </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="MedDialogEntry" generic-name="meddialogentry" title="MedDialogEntry">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+        <property id="label" name="Label">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="is_folder" name="Is a folder">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="MedBiosEntry" generic-name="medbiosentry" title="MedBiosEntry">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+        <property id="label" name="Label">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="sha256" name="Sha256">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="is_folder" name="Is a folder" disabled="true">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="MedColorEntry" generic-name="medcolorentry" title="MedColorEntry">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+        <property id="label" name="Label">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="has_alpha" name="Has alpha">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="MedInput" generic-name="medinput" title="MedInput">
+      <properties>
+        <property id="command" name="Command">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="updated" name="Updated">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+        <property id="label" name="Label">
+            <parameter-spec>
+              <type>GParamString</type>
+            </parameter-spec>
+        </property>
+        <property id="label-width" name="Label width">
+            <parameter-spec>
+              <type>GParamInt</type>
+            </parameter-spec>
+        </property>
+        <property id="modifier_keys" name="Allow modifier keys">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+  </glade-widget-classes>
+
+  <glade-widget-group title="MedWidgets" name="medwidgets">
+
+    <glade-widget-class-ref name="MedCheckButton"/>
+    <glade-widget-class-ref name="MedComboBox"/>
+    <glade-widget-class-ref name="MedRange"/>
+    <glade-widget-class-ref name="MedEntry"/>
+    <glade-widget-class-ref name="MedDialogEntry"/>
+    <glade-widget-class-ref name="MedBiosEntry"/>
+    <glade-widget-class-ref name="MedColorEntry"/>
+    <glade-widget-class-ref name="MedInput"/>
+
+  </glade-widget-group>
+
+</glade-catalog>

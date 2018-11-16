@@ -6,7 +6,8 @@ EXTRA_DIST = \
   icons/hicolor/48x48/apps/mednaffe.png \
   icons/hicolor/64x64/apps/mednaffe.png \
   icons/hicolor/128x128/apps/mednaffe.png \
-  icons/hicolor/scalable/apps/mednaffe.svg 
+  icons/hicolor/scalable/apps/mednaffe.svg \
+  glade
 
 # Desktop file
 desktopdir = $(datadir)/applications

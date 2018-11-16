@@ -1,3 +1,25 @@
+#### 30 / Apr / 2018
+
+Mednaffe 0.8.8 is released with the following changes:
+
+- [Windows] Fixed left trigger not working using XInput controllers
+  (Thanks to Pcegames for report and testing).
+- [Windows] Fix to accept up/right D-Pad inputs in controller setup on
+  some conditions (Thanks to SatoXa for report and testing).
+- [Linux] Use the 'MEDNAFEN_HOME' environment variable when
+  it is set (Patch by denisfa).
+- Some minor fixes.
+
+#### 25 / Mar / 2018
+
+Mednaffe 0.8.7 is released with the following changes:
+
+- Update to work with 1.xx.x versions of mednafen emulator.
+  (This release drops support for 0.9.xx versions).
+- Now Pce GE CD bios can be setted (Thanks to Pcegames for reporting).
+- Honor environment CFLAGS in configure script (Thanks to akien-mga for patch).
+- Support compilation under *BSD OS'es. (Thanks to PaddyMac for report and testing).
+
 #### 29 / Jul / 2017
 
 Mednaffe 0.8.6 is released with the following changes:
