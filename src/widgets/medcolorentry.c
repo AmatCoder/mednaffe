@@ -36,6 +36,7 @@ struct _MedColorEntryClass {
 struct _MedColorEntryPrivate {
   GtkColorButton* colorbutton;
   gboolean _has_alpha;
+  gboolean editing;
 };
 
 
@@ -87,11 +88,15 @@ med_color_entry_text_to_rgb (const gchar* text)
   g[1] = text[p+5];
   b[0] = text[p+6];
   b[1] = text[p+7];
-  
-  return g_strdup_printf ("rgba(%lu,%lu,%lu,%f)",
-                          g_ascii_strtoull(r, NULL, 16),
-                          g_ascii_strtoull(g, NULL, 16),
-                          g_ascii_strtoull(b, NULL, 16),
+
+  guint nr = g_ascii_strtoull(r, NULL, 16);
+  guint ng = g_ascii_strtoull(g, NULL, 16);
+  guint nb = g_ascii_strtoull(b, NULL, 16);
+
+  return g_strdup_printf ("rgba(%u,%u,%u,%f)",
+                          nr,
+                          ng,
+                          nb,
                           med_color_entry_value_to_alpha (a));
 }
 
@@ -108,6 +113,8 @@ med_color_entry_real_entry_changed (MedEntry* base)
 
   MED_ENTRY_CLASS (med_color_entry_parent_class)->entry_changed (G_TYPE_CHECK_INSTANCE_CAST (self, med_entry_get_type (), MedEntry));
 
+  if (priv->editing) return;
+
   text = gtk_entry_get_text (((MedEntry*) self)->entry);
 
   if ((text[0] == '0') && ((text[1] == 'x') || (text[1] == 'X')))
@@ -118,6 +125,7 @@ med_color_entry_real_entry_changed (MedEntry* base)
   gdk_rgba_parse (&rgba, color);
 
   g_free (color);
+
 
   gtk_color_chooser_set_rgba ((GtkColorChooser *) priv->colorbutton, &rgba);
 }
@@ -147,14 +155,16 @@ med_color_entry_colorbutton_clicked (GtkColorButton* sender,
   if (priv->_has_alpha)
     text = g_strdup_printf ("0x%02x%02x%02x%02x", (guint)(rgba->alpha * 255),
                                                   (guint)(rgba->red * 255),
-                                                  (guint)(rgba->blue * 255),
-                                                  (guint)(rgba->green * 255));
+                                                  (guint)(rgba->green * 255),
+                                                  (guint)(rgba->blue * 255));
   else
     text = g_strdup_printf ("0x%02x%02x%02x", (guint)(rgba->red * 255),
-                                              (guint)(rgba->blue * 255),
-                                              (guint)(rgba->green * 255));
+                                              (guint)(rgba->green * 255),
+                                              (guint)(rgba->blue * 255));
 
+  priv->editing = TRUE;
   gtk_entry_set_text (((MedEntry*) self)->entry, text);
+  priv->editing = FALSE;
 
   g_free (text);
 }
@@ -213,6 +223,7 @@ med_color_entry_init (MedColorEntry * self)
 {
   MedColorEntryPrivate* priv = med_color_entry_get_instance_private (self);
   priv->_has_alpha = FALSE;
+  priv->editing = FALSE;
 }
 
 

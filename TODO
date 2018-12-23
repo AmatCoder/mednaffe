@@ -1,8 +1,5 @@
 ####  KNOW ISSUES
 
-## GtkColorChooserWidget is buggy
-It fails sometimes when you choose a color from dialog (it seems a gtk3 bug because worked fine on gtk2).
-
 ## gtk_paned_set_position does not work on init
 It works fine afterthat.
 
@@ -28,4 +25,3 @@ And to put a link on Help.
 ### TO BE THINKING
 
 ## pce_fast & snes_faust
-
