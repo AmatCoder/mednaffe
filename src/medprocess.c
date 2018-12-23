@@ -26,6 +26,10 @@
 #include "widgets/marshallers.h"
 #include "medprocess.h"
 
+#ifdef G_OS_WIN32
+  #include <windows.h>
+#endif
+
 
 typedef struct _MedProcessClass MedProcessClass;
 typedef struct _MedProcessPrivate MedProcessPrivate;
@@ -51,48 +55,26 @@ enum  {
 static guint med_process_signals[MED_PROCESS_NUM_SIGNALS] = {0};
 
 
-static gboolean
-med_process_process_line (MedProcess* self,
-                          GIOChannel* channel,
-                          GIOCondition condition,
-                          const gchar* stream_name)
-{
-  if (condition == G_IO_HUP)
-    return FALSE;
-
-  gchar c[1] = {0};
-  gsize pos;
-  MedProcessPrivate* priv = med_process_get_instance_private (self);
-
-  g_io_channel_read_chars (channel, c, 1, &pos, NULL);
-  g_string_append_c (priv->buffer, c[0]);
-
-  if (c[0] == '\n')
-  {
-    if (g_utf8_validate (priv->buffer->str, -1, NULL))
-      g_signal_emit (self, med_process_signals[MED_PROCESS_EXEC_OUTPUT_SIGNAL], 0, priv->buffer->str, stream_name);
-
-    g_string_erase (priv->buffer, 0, -1);
-  }
-
-  return TRUE;
-}
-
 void
 med_process_read_conf (MedProcess* self)
 {
   GFile* file;
-  const gchar* mh;
   gchar* home;
 
   g_return_if_fail (self != NULL);
 
-  mh = g_getenv ("MEDNAFEN_HOME");
+#ifdef G_OS_WIN32
+  gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
+  home = g_strconcat (dir, "\\mednafen.cfg\\", NULL);
+  g_free(dir);
+#else
+  const gchar* mh = g_getenv ("MEDNAFEN_HOME");
 
   if (mh == NULL)
     home = g_strconcat (g_get_home_dir (), "/.mednafen/mednafen.cfg", NULL);
   else
     home = g_strconcat (mh, "/mednafen.cfg", NULL);
+#endif
 
   file = g_file_new_for_path (home);
   g_free (home);
@@ -155,6 +137,36 @@ med_process_read_conf (MedProcess* self)
 }
 
 
+#ifdef G_OS_UNIX
+
+static gboolean
+med_process_process_line (MedProcess* self,
+                          GIOChannel* channel,
+                          GIOCondition condition,
+                          const gchar* stream_name)
+{
+  if (condition == G_IO_HUP)
+    return FALSE;
+
+  gchar c[1] = {0};
+  gsize pos;
+  MedProcessPrivate* priv = med_process_get_instance_private (self);
+
+  g_io_channel_read_chars (channel, c, 1, &pos, NULL);
+  g_string_append_c (priv->buffer, c[0]);
+
+  if (c[0] == '\n')
+  {
+    if (g_utf8_validate (priv->buffer->str, -1, NULL))
+      g_signal_emit (self, med_process_signals[MED_PROCESS_EXEC_OUTPUT_SIGNAL], 0, priv->buffer->str, stream_name);
+
+    g_string_erase (priv->buffer, 0, -1);
+  }
+
+  return TRUE;
+}
+
+
 static gboolean
 io_func (GIOChannel* channel,
          GIOCondition condition,
@@ -165,6 +177,7 @@ io_func (GIOChannel* channel,
   return med_process_process_line ((MedProcess*)self, channel, condition, "stdout");
 }
 
+#endif
 
 static void
 child_watch_func (GPid pid,
@@ -186,6 +199,26 @@ med_process_exec_emu (MedProcess* self,
 {
   g_return_if_fail (self != NULL);
   g_return_if_fail (command != NULL);
+
+
+#ifdef G_OS_WIN32
+
+  STARTUPINFO si;
+  PROCESS_INFORMATION pi;
+
+  ZeroMemory(&si, sizeof(STARTUPINFO));
+  si.cb = sizeof(STARTUPINFO);
+  ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
+
+  gchar* command_win = g_strjoinv(" ", command);
+
+  CreateProcess(NULL, command_win, NULL, NULL, FALSE, CREATE_NO_WINDOW,
+                      NULL, NULL, &si, &pi);
+
+  g_child_watch_add (pi.hProcess, (GChildWatchFunc)child_watch_func, self);
+  CloseHandle(pi.hThread);
+
+#else
 
   GPid child_pid;
   gint standard_output;
@@ -212,6 +245,8 @@ med_process_exec_emu (MedProcess* self,
   g_child_watch_add_full (G_PRIORITY_DEFAULT_IDLE, child_pid, child_watch_func, self, NULL);
 
   g_io_channel_unref (output);
+
+#endif
 }
 
 
@@ -220,10 +255,19 @@ med_process_new (void)
 {
   MedProcess *self = (MedProcess*) g_object_new (med_process_get_type (), NULL);
 
+#ifdef G_OS_WIN32
+  self->MedPath = g_find_program_in_path ("mednafen.exe");
+#else
   self->MedPath = g_find_program_in_path ("mednafen");
+#endif
 
   if (self->MedPath != NULL)
   {
+#ifdef G_OS_WIN32
+    gchar *qbin = g_strconcat("\"", self->MedPath, "\" --help", NULL);
+    gboolean b =  WinExec(qbin, SW_HIDE);;
+    g_free(qbin);
+#else
     gchar* stdout;
     gchar* stderr;
 
@@ -233,6 +277,7 @@ med_process_new (void)
     g_free (stdout);
     g_free (stderr);
     g_free (cl);
+#endif
 
     if (!b)
     {

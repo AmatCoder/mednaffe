@@ -38,6 +38,8 @@
 #include "widgets/medlistjoy.h"
 #include "widgets/medinput.h"
 
+#include "widgets/dialogs.h"
+
 #include "preferences.h"
 #include "bios.h"
 
@@ -95,7 +97,6 @@ main_window_update_bios (MainWindow* self,
   gchar* mh;
   const gchar* text;
   const gchar* firmware;
-  const gchar* home;
 
   g_return_if_fail (self != NULL);
   g_return_if_fail (entry != NULL);
@@ -105,23 +106,27 @@ main_window_update_bios (MainWindow* self,
   text = med_widget_get_value ((MedWidget*) entry);
   firmware= med_widget_get_value ((MedWidget*) priv->path_firmware);
 
-  home = g_getenv ("MEDNAFEN_HOME");
+#ifdef G_OS_WIN32
+  mh = g_win32_get_package_installation_directory_of_module (NULL);
+#else
+  const gchar* home = g_getenv ("MEDNAFEN_HOME");
 
   if (home == NULL)
-    mh = g_strconcat (g_get_home_dir (), "/.mednafen/", NULL);
+    mh = g_strconcat (g_get_home_dir (), "/.mednafen", NULL);
   else
     mh = g_strconcat (home, "/", NULL);
+#endif
 
   if (!g_path_is_absolute (text))
   {
     if (!g_path_is_absolute (firmware))
     {
-      path = g_strconcat (mh, firmware, G_DIR_SEPARATOR_S, text, NULL);
+      path = g_strconcat (mh, G_DIR_SEPARATOR_S, firmware, G_DIR_SEPARATOR_S, text, NULL);
 
       if (!g_file_test (path, G_FILE_TEST_IS_REGULAR))
       {
         gchar* tmp;
-        tmp = g_strconcat (mh, text, NULL);
+        tmp = g_strconcat (mh, G_DIR_SEPARATOR_S, text, NULL);
         g_free (path);
         path = tmp;
       }
@@ -313,7 +318,12 @@ main_window_paned_list_launched (PanedList* _sender,
 
     logbook_delete_log (priv->logbook, LOGBOOK_LOG_TAB_EMU);
 
+#ifdef G_OS_WIN32
+    gchar* selection2 = g_strconcat("\"", selection, "\"", NULL);
+    const gchar** command = main_window_build_command (mw, selection2);
+#else
     const gchar** command = main_window_build_command (mw, selection);
+#endif
 
     med_process_exec_emu (priv->med_process, (gchar**) command);
 
@@ -321,10 +331,14 @@ main_window_paned_list_launched (PanedList* _sender,
     g_free (command);
 
     gchar* f_command = g_strconcat ("Launching mednafen with command line:\n  \"", tmp, "\"\n", NULL);
-    g_free(tmp);
+    g_free (tmp);
 
     logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_FRONTEND, f_command);
-    g_free(f_command);
+    g_free (f_command);
+
+#ifdef G_OS_WIN32
+    g_free (selection2);
+#endif
   }
 }
 
@@ -483,7 +497,11 @@ main_window_process_exec_emu_ended (MedProcess* sender,
 
     last_line = logbook_get_last_line (priv->logbook);
     err_msg = g_strconcat ("Mednafen error:\n  ", last_line, NULL);
+#ifdef G_OS_WIN32
+  //TODO
+#else
     main_window_show_error (mw, err_msg);
+#endif
 
     g_free (err_msg);
     g_free (last_line);
@@ -650,12 +668,8 @@ main_window_menu_quit (GtkMenuItem* sender,
   g_return_if_fail (self != NULL);
 
   MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  if (gtk_widget_get_sensitive (((GtkWidget*) priv->launch_button)))
-    gtk_window_close ((GtkWindow*) mw);
-  else
-    main_window_show_error (mw, "Error: Close mednafen emulator to be able to exit\n");
+  gtk_window_close ((GtkWindow*) mw);
 }
 
 
@@ -718,10 +732,14 @@ main_window_save_settings (MainWindow* self)
   g_slist_foreach (priv->preferences->list, (GFunc) save_preflist_func, key);
   g_slist_foreach (priv->list, (GFunc) save_list_func, key);
 
-  gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe/", NULL);
+#ifdef G_OS_WIN32
+  gchar* conf_path = g_win32_get_package_installation_directory_of_module (NULL);
+#else
+  gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe", NULL);
   mkdir (conf_path, S_IRWXU);
+#endif
 
-  gchar* conf_path_full = g_strconcat (conf_path, "mednaffe.conf", NULL);
+  gchar* conf_path_full = g_strconcat (conf_path, G_DIR_SEPARATOR_S, "mednaffe.conf", NULL);
   g_free (conf_path);
 
   gboolean valid = g_key_file_save_to_file (key, conf_path_full, NULL);
@@ -746,19 +764,9 @@ main_window_quit (GtkWidget* sender,
   g_return_val_if_fail (self != NULL, FALSE);
 
   MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  if (gtk_widget_get_sensitive (((GtkWidget*) priv->launch_button)))
-  {
-    main_window_save_settings (mw);
-    return FALSE;
-  }
-  else
-  {
-    main_window_show_error (mw, "Error: Close mednafen emulator to be able to exit\n");
-    return TRUE;
-  }
-
+  main_window_save_settings (mw);
+  return FALSE;
 }
 
 
@@ -793,28 +801,13 @@ main_window_menu_open_rom (GtkMenuItem* sender,
   g_return_if_fail (self != NULL);
 
   MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  if (gtk_widget_get_sensitive ((GtkWidget*) priv->launch_button))
+  gchar* filename = select_path ((GtkWidget*) mw, FALSE);
+
+  if (filename)
   {
-
-    GtkWidget* chooser = gtk_file_chooser_dialog_new ("Select your ROM",
-                                                      (GtkWindow*) mw,
-                                                      GTK_FILE_CHOOSER_ACTION_OPEN,
-                                                      "Cancel",
-                                                      GTK_RESPONSE_CANCEL,
-                                                      "Open",
-                                                      GTK_RESPONSE_ACCEPT,
-                                                      NULL);
-
-    if (gtk_dialog_run ((GtkDialog*) chooser) == GTK_RESPONSE_ACCEPT)
-    {
-      gchar* filename = gtk_file_chooser_get_filename ((GtkFileChooser*) chooser);
-      main_window_paned_list_launched (NULL, filename, mw);
-      g_free (filename);
-    }
-
-    gtk_widget_destroy (chooser);
+    main_window_paned_list_launched (NULL, filename, mw);
+    g_free (filename);
   }
 }
 
@@ -870,7 +863,13 @@ main_window_load_settings (MainWindow* self)
 
   GKeyFile *key = g_key_file_new ();
 
+ #ifdef G_OS_WIN32
+  gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
+  gchar* conf_path = g_strconcat (dir, "\\mednaffe.conf", NULL);
+  g_free(dir);
+#else
   gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe/mednaffe.conf", NULL);
+#endif
   gboolean valid = g_key_file_load_from_file (key, conf_path, G_KEY_FILE_NONE, NULL);
   g_free (conf_path);
 

@@ -90,6 +90,8 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = mednaffe$(EXEEXT)
 @LINUX_TRUE@am__append_1 = widgets/joystick_linux.c widgets/joystick_linux.h
+@LINUX_FALSE@@WINDOWS_TRUE@am__append_2 = widgets/joystick_windows.c widgets/joystick_windows.h
+@LINUX_FALSE@@WINDOWS_FALSE@am__append_3 = widgets/joystick_windows.c widgets/joystick_windows.h
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -107,27 +109,31 @@ am__mednaffe_SOURCES_DIST = about.c about.h bios.c bios.h logbook.c \
 	mednaffe.c medprocess.c medprocess.h panedimage.c panedimage.h \
 	panedlist.c panedlist.h pathcombobox.c pathcombobox.h \
 	preferences.c preferences.h resources.c setup.c setup.h \
-	widgets/marshallers.c widgets/marshallers.h \
-	widgets/medbiosentry.c widgets/medbiosentry.h \
-	widgets/medcheckbutton.c widgets/medcheckbutton.h \
-	widgets/medcolorentry.c widgets/medcolorentry.h \
-	widgets/medcombobox.c widgets/medcombobox.h \
-	widgets/meddialogentry.c widgets/meddialogentry.h \
-	widgets/medentry.c widgets/medentry.h widgets/medinput.c \
-	widgets/medinput.h widgets/medirange.c widgets/medirange.h \
-	widgets/medjoy.c widgets/medjoy.h widgets/medlistjoy.c \
-	widgets/medlistjoy.h widgets/medrange.c widgets/medrange.h \
-	widgets/medscale.c widgets/medscale.h widgets/medspin.c \
-	widgets/medspin.h widgets/medwidget.c widgets/medwidget.h \
-	widgets/menuinput.c widgets/menuinput.h \
-	widgets/joystick_linux.c widgets/joystick_linux.h
+	widgets/dialogs.c widgets/dialogs.h widgets/marshallers.c \
+	widgets/marshallers.h widgets/medbiosentry.c \
+	widgets/medbiosentry.h widgets/medcheckbutton.c \
+	widgets/medcheckbutton.h widgets/medcolorentry.c \
+	widgets/medcolorentry.h widgets/medcombobox.c \
+	widgets/medcombobox.h widgets/meddialogentry.c \
+	widgets/meddialogentry.h widgets/medentry.c widgets/medentry.h \
+	widgets/medinput.c widgets/medinput.h widgets/medirange.c \
+	widgets/medirange.h widgets/medjoy.c widgets/medjoy.h \
+	widgets/medlistjoy.c widgets/medlistjoy.h widgets/medrange.c \
+	widgets/medrange.h widgets/medscale.c widgets/medscale.h \
+	widgets/medspin.c widgets/medspin.h widgets/medwidget.c \
+	widgets/medwidget.h widgets/menuinput.c widgets/menuinput.h \
+	widgets/joystick_linux.c widgets/joystick_linux.h \
+	widgets/joystick_windows.c widgets/joystick_windows.h
 am__dirstamp = $(am__leading_dot)dirstamp
 @LINUX_TRUE@am__objects_1 = widgets/joystick_linux.$(OBJEXT)
+@LINUX_FALSE@@WINDOWS_TRUE@am__objects_2 =  \
+@LINUX_FALSE@@WINDOWS_TRUE@	widgets/joystick_windows.$(OBJEXT)
+@LINUX_FALSE@@WINDOWS_FALSE@am__objects_3 = widgets/joystick_windows.$(OBJEXT)
 am_mednaffe_OBJECTS = about.$(OBJEXT) bios.$(OBJEXT) logbook.$(OBJEXT) \
 	mainwindow.$(OBJEXT) manager.$(OBJEXT) mednaffe.$(OBJEXT) \
 	medprocess.$(OBJEXT) panedimage.$(OBJEXT) panedlist.$(OBJEXT) \
 	pathcombobox.$(OBJEXT) preferences.$(OBJEXT) \
-	resources.$(OBJEXT) setup.$(OBJEXT) \
+	resources.$(OBJEXT) setup.$(OBJEXT) widgets/dialogs.$(OBJEXT) \
 	widgets/marshallers.$(OBJEXT) widgets/medbiosentry.$(OBJEXT) \
 	widgets/medcheckbutton.$(OBJEXT) \
 	widgets/medcolorentry.$(OBJEXT) widgets/medcombobox.$(OBJEXT) \
@@ -136,7 +142,8 @@ am_mednaffe_OBJECTS = about.$(OBJEXT) bios.$(OBJEXT) logbook.$(OBJEXT) \
 	widgets/medjoy.$(OBJEXT) widgets/medlistjoy.$(OBJEXT) \
 	widgets/medrange.$(OBJEXT) widgets/medscale.$(OBJEXT) \
 	widgets/medspin.$(OBJEXT) widgets/medwidget.$(OBJEXT) \
-	widgets/menuinput.$(OBJEXT) $(am__objects_1)
+	widgets/menuinput.$(OBJEXT) $(am__objects_1) $(am__objects_2) \
+	$(am__objects_3)
 mednaffe_OBJECTS = $(am_mednaffe_OBJECTS)
 mednaffe_LDADD = $(LDADD)
 mednaffe_DEPENDENCIES =
@@ -161,7 +168,9 @@ am__depfiles_remade = ./$(DEPDIR)/about.Po ./$(DEPDIR)/bios.Po \
 	./$(DEPDIR)/medprocess.Po ./$(DEPDIR)/panedimage.Po \
 	./$(DEPDIR)/panedlist.Po ./$(DEPDIR)/pathcombobox.Po \
 	./$(DEPDIR)/preferences.Po ./$(DEPDIR)/resources.Po \
-	./$(DEPDIR)/setup.Po widgets/$(DEPDIR)/joystick_linux.Po \
+	./$(DEPDIR)/setup.Po widgets/$(DEPDIR)/dialogs.Po \
+	widgets/$(DEPDIR)/joystick_linux.Po \
+	widgets/$(DEPDIR)/joystick_windows.Po \
 	widgets/$(DEPDIR)/marshallers.Po \
 	widgets/$(DEPDIR)/medbiosentry.Po \
 	widgets/$(DEPDIR)/medcheckbutton.Po \
@@ -320,19 +329,20 @@ mednaffe_SOURCES = about.c about.h bios.c bios.h logbook.c logbook.h \
 	medprocess.c medprocess.h panedimage.c panedimage.h \
 	panedlist.c panedlist.h pathcombobox.c pathcombobox.h \
 	preferences.c preferences.h resources.c setup.c setup.h \
-	widgets/marshallers.c widgets/marshallers.h \
-	widgets/medbiosentry.c widgets/medbiosentry.h \
-	widgets/medcheckbutton.c widgets/medcheckbutton.h \
-	widgets/medcolorentry.c widgets/medcolorentry.h \
-	widgets/medcombobox.c widgets/medcombobox.h \
-	widgets/meddialogentry.c widgets/meddialogentry.h \
-	widgets/medentry.c widgets/medentry.h widgets/medinput.c \
-	widgets/medinput.h widgets/medirange.c widgets/medirange.h \
-	widgets/medjoy.c widgets/medjoy.h widgets/medlistjoy.c \
-	widgets/medlistjoy.h widgets/medrange.c widgets/medrange.h \
-	widgets/medscale.c widgets/medscale.h widgets/medspin.c \
-	widgets/medspin.h widgets/medwidget.c widgets/medwidget.h \
-	widgets/menuinput.c widgets/menuinput.h $(am__append_1)
+	widgets/dialogs.c widgets/dialogs.h widgets/marshallers.c \
+	widgets/marshallers.h widgets/medbiosentry.c \
+	widgets/medbiosentry.h widgets/medcheckbutton.c \
+	widgets/medcheckbutton.h widgets/medcolorentry.c \
+	widgets/medcolorentry.h widgets/medcombobox.c \
+	widgets/medcombobox.h widgets/meddialogentry.c \
+	widgets/meddialogentry.h widgets/medentry.c widgets/medentry.h \
+	widgets/medinput.c widgets/medinput.h widgets/medirange.c \
+	widgets/medirange.h widgets/medjoy.c widgets/medjoy.h \
+	widgets/medlistjoy.c widgets/medlistjoy.h widgets/medrange.c \
+	widgets/medrange.h widgets/medscale.c widgets/medscale.h \
+	widgets/medspin.c widgets/medspin.h widgets/medwidget.c \
+	widgets/medwidget.h widgets/menuinput.c widgets/menuinput.h \
+	$(am__append_1) $(am__append_2) $(am__append_3)
 AM_CPPFLAGS = @GTK_CFLAGS@
 LDADD = @GTK_LIBS@
 CLEANFILES = *~
@@ -418,6 +428,8 @@ widgets/$(am__dirstamp):
 widgets/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) widgets/$(DEPDIR)
 	@: > widgets/$(DEPDIR)/$(am__dirstamp)
+widgets/dialogs.$(OBJEXT): widgets/$(am__dirstamp) \
+	widgets/$(DEPDIR)/$(am__dirstamp)
 widgets/marshallers.$(OBJEXT): widgets/$(am__dirstamp) \
 	widgets/$(DEPDIR)/$(am__dirstamp)
 widgets/medbiosentry.$(OBJEXT): widgets/$(am__dirstamp) \
@@ -452,6 +464,8 @@ widgets/menuinput.$(OBJEXT): widgets/$(am__dirstamp) \
 	widgets/$(DEPDIR)/$(am__dirstamp)
 widgets/joystick_linux.$(OBJEXT): widgets/$(am__dirstamp) \
 	widgets/$(DEPDIR)/$(am__dirstamp)
+widgets/joystick_windows.$(OBJEXT): widgets/$(am__dirstamp) \
+	widgets/$(DEPDIR)/$(am__dirstamp)
 
 mednaffe$(EXEEXT): $(mednaffe_OBJECTS) $(mednaffe_DEPENDENCIES) $(EXTRA_mednaffe_DEPENDENCIES) 
 	@rm -f mednaffe$(EXEEXT)
@@ -477,7 +491,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/preferences.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resources.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/setup.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/dialogs.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/joystick_linux.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/joystick_windows.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/marshallers.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/medbiosentry.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/medcheckbutton.Po@am__quote@ # am--include-marker
@@ -661,7 +677,9 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/preferences.Po
 	-rm -f ./$(DEPDIR)/resources.Po
 	-rm -f ./$(DEPDIR)/setup.Po
+	-rm -f widgets/$(DEPDIR)/dialogs.Po
 	-rm -f widgets/$(DEPDIR)/joystick_linux.Po
+	-rm -f widgets/$(DEPDIR)/joystick_windows.Po
 	-rm -f widgets/$(DEPDIR)/marshallers.Po
 	-rm -f widgets/$(DEPDIR)/medbiosentry.Po
 	-rm -f widgets/$(DEPDIR)/medcheckbutton.Po
@@ -736,7 +754,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/preferences.Po
 	-rm -f ./$(DEPDIR)/resources.Po
 	-rm -f ./$(DEPDIR)/setup.Po
+	-rm -f widgets/$(DEPDIR)/dialogs.Po
 	-rm -f widgets/$(DEPDIR)/joystick_linux.Po
+	-rm -f widgets/$(DEPDIR)/joystick_windows.Po
 	-rm -f widgets/$(DEPDIR)/marshallers.Po
 	-rm -f widgets/$(DEPDIR)/medbiosentry.Po
 	-rm -f widgets/$(DEPDIR)/medcheckbutton.Po
@@ -789,7 +809,10 @@ uninstall-am: uninstall-binPROGRAMS
 .PRECIOUS: Makefile
 
 
-override CFLAGS +=-std=c99 -Wall -Wl,-export-dynamic
+override CFLAGS +=-std=c99 -Wall
+@LINUX_TRUE@  override CFLAGS +=-Wl,-export-dynamic
+@LINUX_FALSE@@WINDOWS_TRUE@  override CFLAGS +=-mwindows
+@LINUX_FALSE@@WINDOWS_FALSE@  override CFLAGS +=-Wl,-export-dynamic
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

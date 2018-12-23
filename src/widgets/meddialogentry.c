@@ -23,6 +23,7 @@
 
 
 #include "meddialogentry.h"
+#include "widgets/dialogs.h"
 
 
 typedef struct _MedDialogEntryPrivate MedDialogEntryPrivate;
@@ -89,42 +90,20 @@ static void
 med_dialog_entry_button_clicked (GtkButton* sender,
                                  gpointer self)
 {
-  GtkFileChooserAction action;
-  gchar* title;
-  GtkFileChooserNative* chooser;
-
   g_return_if_fail (self != NULL);
 
   MedDialogEntry* de = self;
   MedDialogEntryPrivate* priv = med_dialog_entry_get_instance_private (de);
 
-  if (priv->_is_folder)
-  {
-    action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
-    title = g_strdup ("Select a folder");
-  }
-  else
-  {
-    action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    title = g_strdup ("Select a file");
-  }
-
   GtkWidget* parent = gtk_widget_get_toplevel ((GtkWidget*) de);
 
-  chooser = gtk_file_chooser_native_new (title, (GtkWindow*) parent, action, "_Open", "_Cancel");
+  gchar* file = select_path (parent, priv->_is_folder);
 
-  if (gtk_native_dialog_run ((GtkNativeDialog*) chooser) == GTK_RESPONSE_ACCEPT)
+  if (file)
   {
-    gchar* file = gtk_file_chooser_get_filename ((GtkFileChooser*) chooser);
-
-    if (file != NULL)
-      gtk_entry_set_text (((MedEntry*) de)->entry, file);
-
+    gtk_entry_set_text (((MedEntry*) de)->entry, file);
     g_free (file);
   }
-
-  g_object_unref (chooser);
-  g_free (title);
 }
 
 

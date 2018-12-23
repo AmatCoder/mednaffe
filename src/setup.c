@@ -23,6 +23,8 @@
 
 
 #include "setup.h"
+#include "widgets/dialogs.h"
+
 
 typedef struct _SetupWindowClass SetupWindowClass;
 typedef struct _SetupWindowPrivate SetupWindowPrivate;
@@ -126,22 +128,14 @@ static void
 setup_window_entry_button_clicked (GtkButton* sender,
                                    gpointer self)
 {
-  GtkFileChooserNative* chooser;
   GtkWidget* parent = gtk_widget_get_toplevel ((GtkWidget*) sender);
+  gchar* filename = select_path (parent, TRUE);
 
-  chooser = gtk_file_chooser_native_new ("Select a folder", (GtkWindow*) parent, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, "_Open", "_Cancel");
-
-  if (gtk_native_dialog_run ((GtkNativeDialog*) chooser) == GTK_RESPONSE_ACCEPT)
+  if (filename != NULL)
   {
-    gchar* file = gtk_file_chooser_get_filename ((GtkFileChooser*) chooser);
-
-    if (file != NULL)
-      gtk_entry_set_text ((GtkEntry*) self, file);
-
-    g_free (file);
+    gtk_entry_set_text ((GtkEntry*) self, filename);
+    g_free (filename);
   }
-
-  g_object_unref (chooser);
 }
 
 

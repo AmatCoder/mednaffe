@@ -632,6 +632,8 @@ have_pkg_config
 EGREP
 GREP
 CPP
+WINDOWS_FALSE
+WINDOWS_TRUE
 LINUX_FALSE
 LINUX_TRUE
 host_os
@@ -3961,8 +3963,54 @@ else
   LINUX_FALSE=
 fi
 
+          if false; then
+  WINDOWS_TRUE=
+  WINDOWS_FALSE='#'
+else
+  WINDOWS_TRUE='#'
+  WINDOWS_FALSE=
+fi
 
-         # Checks for header files.
+         ;;
+  cygwin*|mingw*)
+          if false; then
+  LINUX_TRUE=
+  LINUX_FALSE='#'
+else
+  LINUX_TRUE='#'
+  LINUX_FALSE=
+fi
+
+          if true; then
+  WINDOWS_TRUE=
+  WINDOWS_FALSE='#'
+else
+  WINDOWS_TRUE='#'
+  WINDOWS_FALSE=
+fi
+
+         ;;
+  *)
+          if false; then
+  LINUX_TRUE=
+  LINUX_FALSE='#'
+else
+  LINUX_TRUE='#'
+  LINUX_FALSE=
+fi
+
+          if false; then
+  WINDOWS_TRUE=
+  WINDOWS_FALSE='#'
+else
+  WINDOWS_TRUE='#'
+  WINDOWS_FALSE=
+fi
+
+         ;;
+esac
+
+# Checks for header files.
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -4375,8 +4423,8 @@ fi
 done
 
 
-         # Checks for typedefs, structures, and compiler characteristics.
-         ac_fn_c_check_type "$LINENO" "size_t" "ac_cv_type_size_t" "$ac_includes_default"
+# Checks for typedefs, structures, and compiler characteristics.
+ac_fn_c_check_type "$LINENO" "size_t" "ac_cv_type_size_t" "$ac_includes_default"
 if test "x$ac_cv_type_size_t" = xyes; then :
 
 else
@@ -4387,7 +4435,7 @@ _ACEOF
 
 fi
 
-         ac_fn_c_check_type "$LINENO" "ssize_t" "ac_cv_type_ssize_t" "$ac_includes_default"
+ac_fn_c_check_type "$LINENO" "ssize_t" "ac_cv_type_ssize_t" "$ac_includes_default"
 if test "x$ac_cv_type_ssize_t" = xyes; then :
 
 else
@@ -4399,8 +4447,8 @@ _ACEOF
 fi
 
 
-         # Checks for library functions.
-         for ac_func in memset realpath strrchr
+# Checks for library functions.
+for ac_func in atexit memset mkdir realpath strrchr
 do :
   as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
 ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
@@ -4412,18 +4460,6 @@ _ACEOF
 fi
 done
 
-         ;;
-         *)
-          if false; then
-  LINUX_TRUE=
-  LINUX_FALSE='#'
-else
-  LINUX_TRUE='#'
-  LINUX_FALSE=
-fi
-
-         ;;
-esac
 
 # Checks for libraries.
 # Extract the first word of "pkg-config", so it can be a program name with args.
@@ -4662,20 +4698,6 @@ $as_echo "yes" >&6; }
 $as_echo "$as_me: Checking for GTK+ 3 development libraries" >&6;}
 fi
 
-# Checks for library functions.
-for ac_func in atexit mkdir
-do :
-  as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
-ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
-if eval test \"x\$"$as_ac_var"\" = x"yes"; then :
-  cat >>confdefs.h <<_ACEOF
-#define `$as_echo "HAVE_$ac_func" | $as_tr_cpp` 1
-_ACEOF
-
-fi
-done
-
-
 ac_config_files="$ac_config_files Makefile share/Makefile src/Makefile"
 
 cat >confcache <<\_ACEOF
@@ -4815,8 +4837,24 @@ if test -z "${LINUX_TRUE}" && test -z "${LINUX_FALSE}"; then
   as_fn_error $? "conditional \"LINUX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
+if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
+  as_fn_error $? "conditional \"WINDOWS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
 if test -z "${LINUX_TRUE}" && test -z "${LINUX_FALSE}"; then
   as_fn_error $? "conditional \"LINUX\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
+  as_fn_error $? "conditional \"WINDOWS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${LINUX_TRUE}" && test -z "${LINUX_FALSE}"; then
+  as_fn_error $? "conditional \"LINUX\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
+  as_fn_error $? "conditional \"WINDOWS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

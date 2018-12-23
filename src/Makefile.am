@@ -12,7 +12,8 @@ pathcombobox.c pathcombobox.h\
 preferences.c preferences.h\
 resources.c \
 setup.c setup.h\
-widgets/marshallers.c widgets/marshallers.h\
+widgets/dialogs.c widgets/dialogs.h \
+widgets/marshallers.c widgets/marshallers.h \
 widgets/medbiosentry.c widgets/medbiosentry.h \
 widgets/medcheckbutton.c widgets/medcheckbutton.h \
 widgets/medcolorentry.c widgets/medcolorentry.h \
@@ -29,11 +30,22 @@ widgets/medspin.c widgets/medspin.h \
 widgets/medwidget.c widgets/medwidget.h \
 widgets/menuinput.c widgets/menuinput.h
 
+
+override CFLAGS +=-std=c99 -Wall
+
 if LINUX
   mednaffe_SOURCES+= widgets/joystick_linux.c widgets/joystick_linux.h
+  override CFLAGS +=-Wl,-export-dynamic
+else
+if WINDOWS
+  mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
+  override CFLAGS +=-mwindows
+else
+  mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
+  override CFLAGS +=-Wl,-export-dynamic
+endif
 endif
 
-override CFLAGS +=-std=c99 -Wall -Wl,-export-dynamic
 
 AM_CPPFLAGS        = @GTK_CFLAGS@
 LDADD           = @GTK_LIBS@

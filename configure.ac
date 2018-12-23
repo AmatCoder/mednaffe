@@ -17,21 +17,27 @@ AC_CANONICAL_HOST
 case $host_os in
   linux*)
          AM_CONDITIONAL([LINUX], [true])
-
-         # Checks for header files.
-         AC_CHECK_HEADERS([fcntl.h stdlib.h string.h unistd.h])
-        
-         # Checks for typedefs, structures, and compiler characteristics.
-         AC_TYPE_SIZE_T
-         AC_TYPE_SSIZE_T
-
-         # Checks for library functions.
-         AC_CHECK_FUNCS([memset realpath strrchr])
+         AM_CONDITIONAL([WINDOWS], [false])
          ;;
-         *)
+  cygwin*|mingw*)
          AM_CONDITIONAL([LINUX], [false])
+         AM_CONDITIONAL([WINDOWS], [true])
+         ;;
+  *)
+         AM_CONDITIONAL([LINUX], [false])
+         AM_CONDITIONAL([WINDOWS], [false])
          ;;
 esac
+
+# Checks for header files.
+AC_CHECK_HEADERS([fcntl.h stdlib.h string.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+
+# Checks for library functions.
+AC_CHECK_FUNCS([atexit memset mkdir realpath strrchr])
 
 # Checks for libraries.
 AC_CHECK_PROG(have_pkg_config, pkg-config, yes, no)
@@ -42,9 +48,6 @@ else
 fi
 
 PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.10 glib-2.0 >= 2.40 gthread-2.0], AC_MSG_NOTICE([Checking for GTK+ 3 development libraries]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.10 development libraries))
-
-# Checks for library functions.
-AC_CHECK_FUNCS([atexit mkdir])
 
 AC_CONFIG_FILES([Makefile share/Makefile src/Makefile])
 AC_OUTPUT

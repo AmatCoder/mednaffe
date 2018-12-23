@@ -23,6 +23,7 @@
 
 
 #include "pathcombobox.h"
+#include "widgets/dialogs.h"
 
 
 typedef struct _PathComboBoxClass PathComboBoxClass;
@@ -63,26 +64,16 @@ static void
 path_combo_box_add_clicked (GtkButton* sender,
                             gpointer self)
 {
-  GtkFileChooserNative* native;
-  GtkWidget* toplevel;
-
   g_return_if_fail (self != NULL);
 
-  toplevel = gtk_widget_get_toplevel ((GtkWidget*) self);
-  native = gtk_file_chooser_native_new ("Open File",
-                                        (GtkWindow*) toplevel,
-                                        GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-                                        "_Open",
-                                        "_Cancel");
+  GtkWidget* toplevel = gtk_widget_get_toplevel ((GtkWidget*) self);
+  gchar* filename = select_path (toplevel, TRUE);
 
-  if (gtk_native_dialog_run ((GtkNativeDialog*) native) == ((gint) GTK_RESPONSE_ACCEPT))
+  if (filename)
   {
-    gchar* filename = gtk_file_chooser_get_filename ((GtkFileChooser*) native);
     path_combo_box_add_to_combo (self, filename);
     g_free (filename);
   }
-
-  g_object_unref (native);
 }
 
 
@@ -226,6 +217,9 @@ path_combo_box_set_dirs (PathComboBox* self,
 
         gchar** values = g_strsplit (st[i], ",", -1);
 
+        gint a = g_ascii_strtoll (values[6], NULL, 0);
+        gint b = g_ascii_strtoll (values[7], NULL, 0);
+
         gtk_list_store_append (self->path_store, &iter);
 
         gtk_list_store_set (self->path_store, &iter, 0, values[0],
@@ -234,8 +228,8 @@ path_combo_box_set_dirs (PathComboBox* self,
                                                      3, values[3],
                                                      4, values[4],
                                                      5, values[5],
-                                                     6, g_ascii_strtoll (values[6], NULL, 0),
-                                                     7, g_ascii_strtoll (values[7], NULL, 0),
+                                                     6, a,
+                                                     7, b,
                                                      -1);
 
         g_strfreev (values);
