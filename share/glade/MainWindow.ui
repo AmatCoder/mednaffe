@@ -4470,28 +4470,225 @@ slenderman</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkScrolledWindow">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkViewport">
+                              <object class="GtkStackSwitcher">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="halign">center</property>
+                                <property name="stack">lynx_stack</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkStack" id="lynx_stack">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">18</property>
+                                <property name="margin_right">18</property>
+                                <property name="margin_top">18</property>
+                                <property name="margin_bottom">18</property>
                                 <child>
                                   <object class="GtkBox">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="margin_left">18</property>
-                                    <property name="margin_right">18</property>
-                                    <property name="margin_top">18</property>
-                                    <property name="margin_bottom">18</property>
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <object class="GtkStackSwitcher">
+                                      <object class="MedCheckButton">
+                                        <property name="label" translatable="yes">Virtually rotate the D-pad when the screen is rotated</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="halign">center</property>
-                                        <property name="stack">lynx_stack</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <property name="command">-lynx.rotateinput</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page0</property>
+                                    <property name="title" translatable="yes">System</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">18</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.up</property>
+                                            <property name="label">Up</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.down</property>
+                                            <property name="label">Down</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.left</property>
+                                            <property name="label">Left</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.right</property>
+                                            <property name="label">Right</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.a</property>
+                                            <property name="label">Button A</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">4</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.b</property>
+                                            <property name="label">Button B</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">5</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.pause</property>
+                                            <property name="label">Pause</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">6</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.option_1</property>
+                                            <property name="label">Option 1</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">7</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-lynx.input.builtin.gamepad.option_2</property>
+                                            <property name="label">Option 2</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">8</property>
+                                          </packing>
+                                        </child>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -4500,202 +4697,24 @@ slenderman</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkStack" id="lynx_stack">
+                                      <object class="GtkExpander">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_left">18</property>
-                                        <property name="margin_right">18</property>
-                                        <property name="margin_top">18</property>
-                                        <property name="margin_bottom">18</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="expanded">True</property>
                                         <child>
                                           <object class="GtkBox">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="orientation">vertical</property>
                                             <child>
-                                              <object class="MedCheckButton">
-                                                <property name="label" translatable="yes">Virtually rotate the D-pad when the screen is rotated</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="draw_indicator">True</property>
-                                                <property name="command">-lynx.rotateinput</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
-                                              </packing>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="name">page0</property>
-                                            <property name="title" translatable="yes">System</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkBox">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="orientation">vertical</property>
-                                            <property name="spacing">18</property>
-                                            <child>
-                                              <object class="GtkBox">
+                                              <object class="MedInput">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="orientation">vertical</property>
+                                                <property name="command">-lynx.input.builtin.gamepad.rapid_a</property>
+                                                <property name="label">Rapid A</property>
+                                                <property name="label_width">100</property>
                                                 <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.up</property>
-                                                    <property name="label">Up</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.down</property>
-                                                    <property name="label">Down</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.left</property>
-                                                    <property name="label">Left</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">2</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.right</property>
-                                                    <property name="label">Right</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">3</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.a</property>
-                                                    <property name="label">Button A</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">4</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.b</property>
-                                                    <property name="label">Button B</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">5</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.pause</property>
-                                                    <property name="label">Pause</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">6</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.option_1</property>
-                                                    <property name="label">Option 1</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">7</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <object class="MedInput">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="command">-lynx.input.builtin.gamepad.option_2</property>
-                                                    <property name="label">Option 2</property>
-                                                    <property name="label_width">100</property>
-                                                    <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                  </object>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">8</property>
-                                                  </packing>
+                                                  <placeholder/>
                                                 </child>
                                               </object>
                                               <packing>
@@ -4705,94 +4724,14 @@ slenderman</property>
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkExpander">
+                                              <object class="MedInput">
                                                 <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="expanded">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-lynx.input.builtin.gamepad.rapid_b</property>
+                                                <property name="label">Rapid B</property>
+                                                <property name="label_width">100</property>
                                                 <child>
-                                                  <object class="GtkBox">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="orientation">vertical</property>
-                                                    <child>
-                                                      <object class="MedInput">
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">False</property>
-                                                        <property name="command">-lynx.input.builtin.gamepad.rapid_a</property>
-                                                        <property name="label">Rapid A</property>
-                                                        <property name="label_width">100</property>
-                                                        <child>
-                                                          <placeholder/>
-                                                        </child>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">True</property>
-                                                        <property name="position">0</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="MedInput">
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">False</property>
-                                                        <property name="command">-lynx.input.builtin.gamepad.rapid_b</property>
-                                                        <property name="label">Rapid B</property>
-                                                        <property name="label_width">100</property>
-                                                        <child>
-                                                          <placeholder/>
-                                                        </child>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">True</property>
-                                                        <property name="position">1</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="MedInput">
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">False</property>
-                                                        <property name="command">-lynx.input.builtin.gamepad.rapid_option_1</property>
-                                                        <property name="label">Rapid Option 1</property>
-                                                        <property name="label_width">100</property>
-                                                        <child>
-                                                          <placeholder/>
-                                                        </child>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">True</property>
-                                                        <property name="position">2</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="MedInput">
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">False</property>
-                                                        <property name="command">-lynx.input.builtin.gamepad.rapid_option_2</property>
-                                                        <property name="label">Rapid Option 2</property>
-                                                        <property name="label_width">100</property>
-                                                        <child>
-                                                          <placeholder/>
-                                                        </child>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">True</property>
-                                                        <property name="position">3</property>
-                                                      </packing>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child type="label">
-                                                  <object class="GtkLabel">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="label" translatable="yes">Autofire</property>
-                                                    <attributes>
-                                                      <attribute name="weight" value="bold"/>
-                                                    </attributes>
-                                                  </object>
+                                                  <placeholder/>
                                                 </child>
                                               </object>
                                               <packing>
@@ -4801,23 +4740,72 @@ slenderman</property>
                                                 <property name="position">1</property>
                                               </packing>
                                             </child>
+                                            <child>
+                                              <object class="MedInput">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-lynx.input.builtin.gamepad.rapid_option_1</property>
+                                                <property name="label">Rapid Option 1</property>
+                                                <property name="label_width">100</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">2</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedInput">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-lynx.input.builtin.gamepad.rapid_option_2</property>
+                                                <property name="label">Rapid Option 2</property>
+                                                <property name="label_width">100</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">3</property>
+                                              </packing>
+                                            </child>
                                           </object>
-                                          <packing>
-                                            <property name="name">port1</property>
-                                            <property name="title" translatable="yes">Port 1</property>
-                                            <property name="position">1</property>
-                                          </packing>
+                                        </child>
+                                        <child type="label">
+                                          <object class="GtkLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Autofire</property>
+                                            <attributes>
+                                              <attribute name="weight" value="bold"/>
+                                            </attributes>
+                                          </object>
                                         </child>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">True</property>
-                                        <property name="position">2</property>
+                                        <property name="position">1</property>
                                       </packing>
                                     </child>
                                   </object>
+                                  <packing>
+                                    <property name="name">port1</property>
+                                    <property name="title" translatable="yes">Port 1</property>
+                                    <property name="position">1</property>
+                                  </packing>
                                 </child>
                               </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -4853,7 +4841,7 @@ slenderman</property>
                             <property name="margin_top">18</property>
                             <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
-                            <property name="spacing">6</property>
+                            <property name="spacing">12</property>
                             <child>
                               <object class="MedCheckButton">
                                 <property name="label" translatable="yes">Enable automatic usage of this module</property>
@@ -5317,6 +5305,8 @@ goat</property>
                                       <object class="GtkFrame">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="margin_left">18</property>
+                                        <property name="margin_right">18</property>
                                         <property name="margin_top">18</property>
                                         <property name="margin_bottom">18</property>
                                         <property name="label_xalign">0</property>
@@ -5325,6 +5315,8 @@ goat</property>
                                           <object class="GtkBox">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="margin_left">18</property>
+                                            <property name="margin_right">18</property>
                                             <property name="margin_top">18</property>
                                             <property name="margin_bottom">18</property>
                                             <property name="orientation">vertical</property>
@@ -5903,15 +5895,39 @@ slenderman</property>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
                             <child>
-                              <placeholder/>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Enable automatic usage of this module</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">-gba.enable</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="MedDialogEntry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">-gba.bios</property>
+                                <property name="label">Optional GBA BIOS ROM image</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                         </child>
@@ -5929,15 +5945,644 @@ slenderman</property>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <placeholder/>
+                              <object class="GtkStackSwitcher">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">center</property>
+                                <property name="stack">gba_video_stack</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="GtkStack" id="gba_video_stack">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">18</property>
+                                <property name="margin_right">18</property>
+                                <property name="margin_top">18</property>
+                                <property name="margin_bottom">18</property>
+                                <property name="transition_type">slide-left-right</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">-gba.xscale</property>
+                                        <property name="label">Scaling factor for the X axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">-gba.yscale</property>
+                                        <property name="label">Scaling factor for the Y axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page0</property>
+                                    <property name="title" translatable="yes">Windowed</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                                        <property name="command">-gba.xres</property>
+                                        <property name="label">Horizontal resolution</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0,65536,1,0</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                                        <property name="command">-gba.yres</property>
+                                        <property name="label">Vertical resolution</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0,65536,1,0</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">0 - Disabled
+
+full - Full
+Full-screen stretch, disregarding aspect ratio.
+
+aspect - Aspect Preserve
+Full-screen stretch as far as the aspect ratio(in this sense, the equivalent xscalefs == yscalefs) can be maintained.
+
+aspect_int - Aspect Preserve + Integer Scale
+Full-screen stretch, same as "aspect" except that the equivalent xscalefs and yscalefs are rounded down to the nearest integer.
+
+aspect_mult2 - Aspect Preserve + Integer Multiple-of-2 Scale
+Full-screen stretch, same as "aspect_int", but rounds down to the nearest multiple of 2.</property>
+                                        <property name="command">-gba.stretch</property>
+                                        <property name="label">Stretch to fill screen</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0
+full
+aspect
+aspect_int
+aspect_mult2</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">12</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                                        <property name="command">-gba.xscalefs</property>
+                                        <property name="label">Scaling factor for the X axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">3</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                                        <property name="command">-gba.yscalefs</property>
+                                        <property name="label">Scaling factor for the Y axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">4</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page1</property>
+                                    <property name="title" translatable="yes">Fullscreen</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Enable (bi)linear interpolation.
+
+    0 - Disabled
+
+    1 - Bilinear
+
+    x - Linear (X)
+    Interpolation only on the X axis.
+
+    y - Linear (Y)
+    Interpolation only on the Y axis.</property>
+                                        <property name="command">-gba.videoip</property>
+                                        <property name="label">Interpolation</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0
+1
+x
+y</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">The destination rectangle is NOT altered by this setting, so if you have xscale and yscale set to "2", and try to use a 3x scaling filter like hq3x, the image is not going to look that great. The nearest-neighbor scalers are intended for use with bilinear interpolation enabled, at high resolutions(such as 1280x1024; nn2x(or nny2x) + bilinear interpolation + fullscreen stretching at this resolution looks quite nice).
+
+    none - None/Disabled
+
+    hq2x - hq2x
+
+    hq3x - hq3x
+
+    hq4x - hq4x
+
+    scale2x - scale2x
+
+    scale3x - scale3x
+
+    scale4x - scale4x
+
+    2xsai - 2xSaI
+
+    super2xsai - Super 2xSaI
+
+    supereagle - Super Eagle
+
+    nn2x - Nearest-neighbor 2x
+
+    nn3x - Nearest-neighbor 3x
+
+    nn4x - Nearest-neighbor 4x
+
+    nny2x - Nearest-neighbor 2x, y axis only
+
+    nny3x - Nearest-neighbor 3x, y axis only
+
+    nny4x - Nearest-neighbor 4x, y axis only</property>
+                                        <property name="command">-gba.special</property>
+                                        <property name="label">Special video scaler</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">none
+hq2x
+hq3x
+hq4x
+scale2x
+scale3x
+scale4x
+2xsai
+super2xsai
+supereagle
+nn2x
+nn3x
+nn4x
+nny2x
+nny3x
+nny4x</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">6</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Opacity is specified in %; IE a value of "100" will give entirely black scanlines.
+
+Negative values are the same as positive values for non-interlaced video, but for interlaced video will cause the scanlines to be overlaid over the previous(if the video.deinterlacer setting is set to "weave", the default) field's lines.</property>
+                                        <property name="command">-gba.scanlines</property>
+                                        <property name="label">Scanlines with specified opacity</property>
+                                        <property name="values">-100,100,1,0</property>
+                                        <property name="is_scale">True</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">12</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page2</property>
+                                    <property name="title" translatable="yes">Scaler/Filter</property>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Obviously, this will only work with the OpenGL "video.driver" setting, and only on cards and OpenGL implementations that support shaders, otherwise you will get a black screen, or Mednafen may display an error message when starting up. When a shader is enabled, the ".videoip" setting is ignored.
+
+none - None/Disabled
+
+autoip - Auto Interpolation
+Will automatically interpolate on each axis if the corresponding effective scaling factor is not an integer.
+
+autoipsharper - Sharper Auto Interpolation
+Same as "autoip", but when interpolation is done, it is done in a manner that will reduce blurriness if possible.
+
+scale2x - Scale2x
+
+sabr - SABR v3.0
+GPU-intensive.
+
+ipsharper - Sharper bilinear interpolation.
+
+ipxnoty - Linear interpolation on X axis only.
+
+ipynotx - Linear interpolation on Y axis only.
+
+ipxnotysharper - Sharper version of "ipxnoty".
+
+ipynotxsharper - Sharper version of "ipynotx".
+
+goat - Simple approximation of a color TV CRT look.
+Intended for fullscreen modes with a vertical resolution of around 1000 to 1500 pixels. Doesn't simulate halation and electron beam energy distribution nuances.</property>
+                                        <property name="command">-gba.shader</property>
+                                        <property name="label">OpenGL shader</property>
+                                        <property name="label_width">125</property>
+                                        <property name="values">none
+autoip
+autoipsharper
+scale2x
+sabr
+ipsharper
+ipxnoty
+ipynotx
+ipxnotysharper
+ipynotxsharper
+goat</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkFrame">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="margin_left">18</property>
+                                        <property name="margin_right">18</property>
+                                        <property name="margin_top">18</property>
+                                        <property name="margin_bottom">18</property>
+                                        <property name="label_xalign">0</property>
+                                        <property name="shadow_type">in</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="margin_left">18</property>
+                                            <property name="margin_right">18</property>
+                                            <property name="margin_top">18</property>
+                                            <property name="margin_bottom">18</property>
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="MedCheckButton">
+                                                <property name="label" translatable="yes">Enable scanlines effect</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">False</property>
+                                                <property name="draw_indicator">True</property>
+                                                <property name="command">-gba.shader.goat.slen</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedCheckButton">
+                                                <property name="label" translatable="yes">Force interlaced video to be treated as progressive</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">False</property>
+                                                <property name="tooltip_text" translatable="yes">When disabled, the default, the "video.deinterlacer" setting is effectively ignored with respect to what appears on the screen. When enabled, it may be prudent to disable the scanlines effect controlled by the *.goat.slen setting, or else the scanline effect may look objectionable.</property>
+                                                <property name="draw_indicator">True</property>
+                                                <property name="command">-gba.shader.goat.fprog</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedComboBox">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="tooltip_text" translatable="yes">goatron - Goatron
+Brightest.
+
+borg - Borg
+Darkest.
+
+slenderman - Slenderman
+Spookiest?</property>
+                                                <property name="command">-gba.shader.goat.pat</property>
+                                                <property name="label">Mask pattern</property>
+                                                <property name="label_width">110</property>
+                                                <property name="values">goatron
+borg
+slenderman</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="padding">18</property>
+                                                <property name="position">2</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedRange">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-gba.shader.goat.tp</property>
+                                                <property name="label">Transparency of mask areas</property>
+                                                <property name="label_width">250</property>
+                                                <property name="values">0.00,1.00,0.01,2</property>
+                                                <property name="is_scale">True</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">3</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="orientation">vertical</property>
+                                                <property name="spacing">6</property>
+                                                <child>
+                                                  <object class="MedRange">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="command">-gba.shader.goat.hdiv</property>
+                                                    <property name="label">Constant RGB horizontal divergence</property>
+                                                    <property name="label_width">250</property>
+                                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                                    <property name="is_scale">True</property>
+                                                    <child>
+                                                      <placeholder/>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="MedRange">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="command">-gba.shader.goat.vdiv</property>
+                                                    <property name="label">Constant RGB vertical divergence</property>
+                                                    <property name="label_width">250</property>
+                                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                                    <property name="is_scale">True</property>
+                                                    <child>
+                                                      <placeholder/>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="padding">18</property>
+                                                <property name="position">4</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child type="label">
+                                          <object class="GtkLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Goat Options</property>
+                                            <attributes>
+                                              <attribute name="weight" value="bold"/>
+                                            </attributes>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page3</property>
+                                    <property name="title" translatable="yes">Shader</property>
+                                    <property name="position">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedCheckButton">
+                                        <property name="label" translatable="yes">Enable video temporal blur</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <property name="command">-gba.tblur</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedCheckButton">
+                                        <property name="label" translatable="yes">Accumulate color data rather than discarding it</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <property name="command">-gba.tblur.accum</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Specified in percentage of accumulation buffer to mix with the current frame</property>
+                                        <property name="command">-gba.tblur.accum.amount</property>
+                                        <property name="label">Blur amount in accumulation mode</property>
+                                        <property name="values">0,100,1,0</property>
+                                        <property name="is_scale">True</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">18</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page4</property>
+                                    <property name="title" translatable="yes">Blur</property>
+                                    <property name="position">4</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">18</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -5959,15 +6604,25 @@ slenderman</property>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Force monophonic sound output</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">-gba.forcemono</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -5989,15 +6644,295 @@ slenderman</property>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <placeholder/>
+                              <object class="GtkStackSwitcher">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">center</property>
+                                <property name="stack">gba_stack</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="GtkStack" id="gba_stack">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">18</property>
+                                <property name="margin_right">18</property>
+                                <property name="margin_top">18</property>
+                                <property name="margin_bottom">18</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">18</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.up</property>
+                                            <property name="label">Up</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.down</property>
+                                            <property name="label">Down</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.left</property>
+                                            <property name="label">Left</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.right</property>
+                                            <property name="label">Right</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.a</property>
+                                            <property name="label">Button A</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">4</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.b</property>
+                                            <property name="label">Button B</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">5</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.shoulder_l</property>
+                                            <property name="label">Shoulder L</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">6</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.shoulder_r</property>
+                                            <property name="label">Shoulder R</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">7</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.select</property>
+                                            <property name="label">Select</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">8</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-gba.input.builtin.gamepad.start</property>
+                                            <property name="label">Start</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">9</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkExpander">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="expanded">True</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="MedInput">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-gba.input.builtin.gamepad.rapid_a</property>
+                                                <property name="label">Rapid A</property>
+                                                <property name="label_width">100</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedInput">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-gba.input.builtin.gamepad.rapid_b</property>
+                                                <property name="label">Rapid B</property>
+                                                <property name="label_width">100</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child type="label">
+                                          <object class="GtkLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Autofire</property>
+                                            <attributes>
+                                              <attribute name="weight" value="bold"/>
+                                            </attributes>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">port1</property>
+                                    <property name="title" translatable="yes">Port 1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -6031,15 +6966,44 @@ slenderman</property>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
                             <child>
-                              <placeholder/>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Enable automatic usage of this module</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">-ngp.enable</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="MedComboBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">-ngp.language</property>
+                                <property name="label">Language games should display text in</property>
+                                <property name="values">japanese
+english</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                         </child>
@@ -6057,15 +7021,644 @@ slenderman</property>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <placeholder/>
+                              <object class="GtkStackSwitcher">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">center</property>
+                                <property name="stack">ngp_video_stack</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="GtkStack" id="ngp_video_stack">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">18</property>
+                                <property name="margin_right">18</property>
+                                <property name="margin_top">18</property>
+                                <property name="margin_bottom">18</property>
+                                <property name="transition_type">slide-left-right</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">-ngp.xscale</property>
+                                        <property name="label">Scaling factor for the X axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">-ngp.yscale</property>
+                                        <property name="label">Scaling factor for the Y axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page0</property>
+                                    <property name="title" translatable="yes">Windowed</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                                        <property name="command">-ngp.xres</property>
+                                        <property name="label">Horizontal resolution</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0,65536,1,0</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                                        <property name="command">-ngp.yres</property>
+                                        <property name="label">Vertical resolution</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0,65536,1,0</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">0 - Disabled
+
+full - Full
+Full-screen stretch, disregarding aspect ratio.
+
+aspect - Aspect Preserve
+Full-screen stretch as far as the aspect ratio(in this sense, the equivalent xscalefs == yscalefs) can be maintained.
+
+aspect_int - Aspect Preserve + Integer Scale
+Full-screen stretch, same as "aspect" except that the equivalent xscalefs and yscalefs are rounded down to the nearest integer.
+
+aspect_mult2 - Aspect Preserve + Integer Multiple-of-2 Scale
+Full-screen stretch, same as "aspect_int", but rounds down to the nearest multiple of 2.</property>
+                                        <property name="command">-ngp.stretch</property>
+                                        <property name="label">Stretch to fill screen</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0
+full
+aspect
+aspect_int
+aspect_mult2</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">12</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                                        <property name="command">-ngp.xscalefs</property>
+                                        <property name="label">Scaling factor for the X axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">3</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                                        <property name="command">-ngp.yscalefs</property>
+                                        <property name="label">Scaling factor for the Y axis</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0.01,256,0.01,6</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">4</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page1</property>
+                                    <property name="title" translatable="yes">Fullscreen</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Enable (bi)linear interpolation.
+
+    0 - Disabled
+
+    1 - Bilinear
+
+    x - Linear (X)
+    Interpolation only on the X axis.
+
+    y - Linear (Y)
+    Interpolation only on the Y axis.</property>
+                                        <property name="command">-ngp.videoip</property>
+                                        <property name="label">Interpolation</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">0
+1
+x
+y</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">The destination rectangle is NOT altered by this setting, so if you have xscale and yscale set to "2", and try to use a 3x scaling filter like hq3x, the image is not going to look that great. The nearest-neighbor scalers are intended for use with bilinear interpolation enabled, at high resolutions(such as 1280x1024; nn2x(or nny2x) + bilinear interpolation + fullscreen stretching at this resolution looks quite nice).
+
+    none - None/Disabled
+
+    hq2x - hq2x
+
+    hq3x - hq3x
+
+    hq4x - hq4x
+
+    scale2x - scale2x
+
+    scale3x - scale3x
+
+    scale4x - scale4x
+
+    2xsai - 2xSaI
+
+    super2xsai - Super 2xSaI
+
+    supereagle - Super Eagle
+
+    nn2x - Nearest-neighbor 2x
+
+    nn3x - Nearest-neighbor 3x
+
+    nn4x - Nearest-neighbor 4x
+
+    nny2x - Nearest-neighbor 2x, y axis only
+
+    nny3x - Nearest-neighbor 3x, y axis only
+
+    nny4x - Nearest-neighbor 4x, y axis only</property>
+                                        <property name="command">-ngp.special</property>
+                                        <property name="label">Special video scaler</property>
+                                        <property name="label_width">200</property>
+                                        <property name="values">none
+hq2x
+hq3x
+hq4x
+scale2x
+scale3x
+scale4x
+2xsai
+super2xsai
+supereagle
+nn2x
+nn3x
+nn4x
+nny2x
+nny3x
+nny4x</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">6</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Opacity is specified in %; IE a value of "100" will give entirely black scanlines.
+
+Negative values are the same as positive values for non-interlaced video, but for interlaced video will cause the scanlines to be overlaid over the previous(if the video.deinterlacer setting is set to "weave", the default) field's lines.</property>
+                                        <property name="command">-ngp.scanlines</property>
+                                        <property name="label">Scanlines with specified opacity</property>
+                                        <property name="values">-100,100,1,0</property>
+                                        <property name="is_scale">True</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">12</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page2</property>
+                                    <property name="title" translatable="yes">Scaler/Filter</property>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedComboBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Obviously, this will only work with the OpenGL "video.driver" setting, and only on cards and OpenGL implementations that support shaders, otherwise you will get a black screen, or Mednafen may display an error message when starting up. When a shader is enabled, the ".videoip" setting is ignored.
+
+none - None/Disabled
+
+autoip - Auto Interpolation
+Will automatically interpolate on each axis if the corresponding effective scaling factor is not an integer.
+
+autoipsharper - Sharper Auto Interpolation
+Same as "autoip", but when interpolation is done, it is done in a manner that will reduce blurriness if possible.
+
+scale2x - Scale2x
+
+sabr - SABR v3.0
+GPU-intensive.
+
+ipsharper - Sharper bilinear interpolation.
+
+ipxnoty - Linear interpolation on X axis only.
+
+ipynotx - Linear interpolation on Y axis only.
+
+ipxnotysharper - Sharper version of "ipxnoty".
+
+ipynotxsharper - Sharper version of "ipynotx".
+
+goat - Simple approximation of a color TV CRT look.
+Intended for fullscreen modes with a vertical resolution of around 1000 to 1500 pixels. Doesn't simulate halation and electron beam energy distribution nuances.</property>
+                                        <property name="command">-ngp.shader</property>
+                                        <property name="label">OpenGL shader</property>
+                                        <property name="label_width">125</property>
+                                        <property name="values">none
+autoip
+autoipsharper
+scale2x
+sabr
+ipsharper
+ipxnoty
+ipynotx
+ipxnotysharper
+ipynotxsharper
+goat</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkFrame">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="margin_left">18</property>
+                                        <property name="margin_right">18</property>
+                                        <property name="margin_top">18</property>
+                                        <property name="margin_bottom">18</property>
+                                        <property name="label_xalign">0</property>
+                                        <property name="shadow_type">in</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="margin_left">18</property>
+                                            <property name="margin_right">18</property>
+                                            <property name="margin_top">18</property>
+                                            <property name="margin_bottom">18</property>
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="MedCheckButton">
+                                                <property name="label" translatable="yes">Enable scanlines effect</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">False</property>
+                                                <property name="draw_indicator">True</property>
+                                                <property name="command">-ngp.shader.goat.slen</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedCheckButton">
+                                                <property name="label" translatable="yes">Force interlaced video to be treated as progressive</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">False</property>
+                                                <property name="tooltip_text" translatable="yes">When disabled, the default, the "video.deinterlacer" setting is effectively ignored with respect to what appears on the screen. When enabled, it may be prudent to disable the scanlines effect controlled by the *.goat.slen setting, or else the scanline effect may look objectionable.</property>
+                                                <property name="draw_indicator">True</property>
+                                                <property name="command">-ngp.shader.goat.fprog</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedComboBox">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="tooltip_text" translatable="yes">goatron - Goatron
+Brightest.
+
+borg - Borg
+Darkest.
+
+slenderman - Slenderman
+Spookiest?</property>
+                                                <property name="command">-ngp.shader.goat.pat</property>
+                                                <property name="label">Mask pattern</property>
+                                                <property name="label_width">110</property>
+                                                <property name="values">goatron
+borg
+slenderman</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="padding">18</property>
+                                                <property name="position">2</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedRange">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-ngp.shader.goat.tp</property>
+                                                <property name="label">Transparency of mask areas</property>
+                                                <property name="label_width">250</property>
+                                                <property name="values">0.00,1.00,0.01,2</property>
+                                                <property name="is_scale">True</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">3</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="orientation">vertical</property>
+                                                <property name="spacing">6</property>
+                                                <child>
+                                                  <object class="MedRange">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="command">-ngp.shader.goat.hdiv</property>
+                                                    <property name="label">Constant RGB horizontal divergence</property>
+                                                    <property name="label_width">250</property>
+                                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                                    <property name="is_scale">True</property>
+                                                    <child>
+                                                      <placeholder/>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="MedRange">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="command">-ngp.shader.goat.vdiv</property>
+                                                    <property name="label">Constant RGB vertical divergence</property>
+                                                    <property name="label_width">250</property>
+                                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                                    <property name="is_scale">True</property>
+                                                    <child>
+                                                      <placeholder/>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="padding">18</property>
+                                                <property name="position">4</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child type="label">
+                                          <object class="GtkLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Goat Options</property>
+                                            <attributes>
+                                              <attribute name="weight" value="bold"/>
+                                            </attributes>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page3</property>
+                                    <property name="title" translatable="yes">Shader</property>
+                                    <property name="position">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedCheckButton">
+                                        <property name="label" translatable="yes">Enable video temporal blur</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <property name="command">-ngp.tblur</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedCheckButton">
+                                        <property name="label" translatable="yes">Accumulate color data rather than discarding it</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <property name="command">-ngp.tblur.accum</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedRange">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Specified in percentage of accumulation buffer to mix with the current frame</property>
+                                        <property name="command">-ngp.tblur.accum.amount</property>
+                                        <property name="label">Blur amount in accumulation mode</property>
+                                        <property name="values">0,100,1,0</property>
+                                        <property name="is_scale">True</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="padding">18</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page4</property>
+                                    <property name="title" translatable="yes">Blur</property>
+                                    <property name="position">4</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">18</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -6089,13 +7682,23 @@ slenderman</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Force monophonic sound output</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="margin_left">18</property>
+                                <property name="margin_right">18</property>
+                                <property name="margin_top">18</property>
+                                <property name="margin_bottom">18</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">-ngp.forcemono</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -6117,15 +7720,244 @@ slenderman</property>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="margin_left">18</property>
+                            <property name="margin_right">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <placeholder/>
+                              <object class="GtkStackSwitcher">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">center</property>
+                                <property name="stack">ngp_stack</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
+                              <object class="GtkStack" id="ngp_stack">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">18</property>
+                                <property name="margin_right">18</property>
+                                <property name="margin_top">18</property>
+                                <property name="margin_bottom">18</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">18</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-ngp.input.builtin.gamepad.up</property>
+                                            <property name="label">Up</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-ngp.input.builtin.gamepad.down</property>
+                                            <property name="label">Down</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-ngp.input.builtin.gamepad.left</property>
+                                            <property name="label">Left</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-ngp.input.builtin.gamepad.right</property>
+                                            <property name="label">Right</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-ngp.input.builtin.gamepad.a</property>
+                                            <property name="label">Button A</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">4</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-ngp.input.builtin.gamepad.b</property>
+                                            <property name="label">Button B</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">5</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">-ngp.input.builtin.gamepad.option</property>
+                                            <property name="label">Option</property>
+                                            <property name="label_width">100</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">6</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkExpander">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="expanded">True</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="MedInput">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-ngp.input.builtin.gamepad.rapid_a</property>
+                                                <property name="label">Rapid A</property>
+                                                <property name="label_width">100</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="MedInput">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="command">-ngp.input.builtin.gamepad.rapid_b</property>
+                                                <property name="label">Rapid B</property>
+                                                <property name="label_width">100</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child type="label">
+                                          <object class="GtkLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Autofire</property>
+                                            <attributes>
+                                              <attribute name="weight" value="bold"/>
+                                            </attributes>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">port1</property>
+                                    <property name="title" translatable="yes">Port 1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -8097,7 +9929,7 @@ slenderman</property>
                                 <property name="can_focus">False</property>
                                 <property name="tooltip_text" translatable="yes">0 is lowest quality and CPU usage, 10 is highest quality and CPU usage. The resampler that this setting refers to is used for converting from 44.1KHz to the sampling rate of the host audio device Mednafen is using. Changing Mednafen's output rate, via the "sound.rate" setting, to "44100" may bypass the resampler, which can decrease CPU usage by Mednafen, and can increase or decrease audio quality, depending on various operating system and hardware factors.</property>
                                 <property name="command">-psx.spu.resamp_quality</property>
-                                <property name="label">SPU output resampler quality:</property>
+                                <property name="label">SPU output resampler quality</property>
                                 <property name="values">0,10,1,0</property>
                                 <property name="is_scale">True</property>
                                 <child>
@@ -8248,7 +10080,7 @@ NOTE: Enabling multitap in games that don't fully support it may cause deleterio
 0x4000=x
 0x8000=□</property>
                                                     <property name="command">-psx.input.analog_mode_ct.compare</property>
-                                                    <property name="label">Compare value:</property>
+                                                    <property name="label">Compare value</property>
                                                     <property name="label_width">200</property>
                                                     <child>
                                                       <placeholder/>
@@ -8274,7 +10106,7 @@ NOTE: Enabling multitap in games that don't fully support it may cause deleterio
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="command">-psx.input.mouse_sensitivity</property>
-                                                <property name="label">Emulated mouse sensitivity:</property>
+                                                <property name="label">Emulated mouse sensitivity</property>
                                                 <property name="label_width">200</property>
                                                 <property name="values">0.00,9.99,0.01,2</property>
                                                 <child>
