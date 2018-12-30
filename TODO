@@ -9,8 +9,9 @@ It works if it grows. *preserve_aspect_ratio* is hardcored to TRUE because this.
 
 ####  TODO
 
-## Finish all systems
-At present only Lynx and Playstation systems are fully developed.
+## Finish systems options
+Finished: lynx, gb, gba, ngp, gg, sms, psx and wswan.
+To do: nes, pce, pcfx, md, ss, snes, vboy.
 
 ## Windows support
 Just started.
