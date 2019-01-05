@@ -10,8 +10,8 @@ It works if it grows. *preserve_aspect_ratio* is hardcored to TRUE because this.
 ####  TODO
 
 ## Finish systems options
-Finished: lynx, gb, gba, ngp, gg, sms, psx, vboy and wswan.
-To do: nes, pce, pcfx, md, ss and snes.
+Finished: lynx, gb, gba, ngp, gg, sms, psx, snes, vboy and wswan.
+To do: nes, pce, pcfx, md, and ss.
 
 ## Windows support
 Just started.
