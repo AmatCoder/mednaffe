@@ -271,14 +271,14 @@ med_input_convert_to_text (MedInput* self,
 
       if (items[2][last] ==  '+')
       {
-        if (number != 0)
+        if ((number % 2) != 0)
           t = g_strdup ("Down");
         else
           t = g_strdup ("Right");
       }
       else //if(items[2][last] ==  '-')
       {
-        if (number != 0)
+        if ((number % 2) != 0)
           t = g_strdup ("Up");
         else
           t = g_strdup ("Left");
