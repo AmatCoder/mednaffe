@@ -140,9 +140,12 @@ paned_list_scan_dir (PanedList* self,
 
   PanedListPrivate* priv = paned_list_get_instance_private(self);
 
-  gint i = 0;
-
   GDir* dir = g_dir_open (path, 0, NULL);
+
+  if (dir == NULL)
+    return;
+
+  gint i = 0;
 
   while (TRUE)
   {
