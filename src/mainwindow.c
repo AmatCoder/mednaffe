@@ -526,7 +526,13 @@ main_window_enable_ports_toggle (GtkToggleButton *toggle,
   }
   else
   {
-    if (gtk_widget_is_visible (gtk_stack_get_child_by_name (stack, "port8") ))
+    gboolean visible = FALSE;
+    GtkWidget* port8 = gtk_stack_get_child_by_name (stack, "port8");
+
+    if (port8 != NULL)
+      visible = gtk_widget_is_visible (port8);
+
+    if (visible)
       show_stack (stack, 3);
     else
       show_stack (stack, 0);
