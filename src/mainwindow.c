@@ -1,7 +1,7 @@
 /*
  * mainwindow.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2019 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -437,106 +437,6 @@ main_window_show_error (MainWindow* self,
 
   gtk_dialog_run ((GtkDialog*) dialog);
   gtk_widget_destroy (dialog);
-}
-
-
-static void
-main_window_enable_buddy_toggle (GtkToggleButton *toggle,
-                                 gpointer *buddy)
-{
-  gtk_widget_set_sensitive ((GtkWidget *)buddy, gtk_toggle_button_get_active (toggle));
-}
-
-
-static void
-main_window_enable_buddy_combo_opengl (MedComboBox *combo,
-                                       const gchar* value,
-                                       gpointer *buddy)
-{
-  gboolean goat = (g_strcmp0 (value, "goat") == 0);
-
-  gboolean ogl = (g_strcmp0 (value, "default") == 0) ||
-                 (g_strcmp0 (value, "opengl") == 0);
-
-  if ( goat || ogl )
-    gtk_widget_set_sensitive ((GtkWidget *)buddy, TRUE);
-  else
-    gtk_widget_set_sensitive ((GtkWidget *)buddy, FALSE);
-}
-
-
-static void
-show_stack (GtkStack *stack, guint n)
-{
-  GtkWidget* ports[] = {
-    gtk_stack_get_child_by_name (stack, "port3"),
-    gtk_stack_get_child_by_name (stack, "port4"),
-    gtk_stack_get_child_by_name (stack, "port5"),
-    gtk_stack_get_child_by_name (stack, "port6"),
-    gtk_stack_get_child_by_name (stack, "port7"),
-    gtk_stack_get_child_by_name (stack, "port8"),
-    NULL
-  };
-
-  guint i = 0;
-
-  while (ports[i] != NULL)
-  {
-    if (i < n)
-      gtk_widget_show (ports[i]);
-    else
-      gtk_widget_hide (ports[i]);
-
-    i++;
-  }
-}
-
-
-static void
-main_window_enable_ports_combo (MedComboBox *combo,
-                                const gchar* value,
-                                GtkStack *stack)
-{
-  if (gtk_stack_get_child_by_name (stack, "global_md") != NULL)
-  {
-    if (g_strcmp0 (value, "none") == 0)
-      show_stack(stack, 0);
-    else if (g_strcmp0 (value, "tp1") == 0)
-      show_stack(stack, 3);
-    else if (g_strcmp0 (value, "tp2") == 0)
-      show_stack(stack, 3);
-    else if (g_strcmp0 (value, "tpd") == 0)
-      show_stack(stack, 6);
-    else if (g_strcmp0 (value, "4way") == 0)
-      show_stack(stack, 2);
-  }
-}
-
-
-static void
-main_window_enable_ports_toggle (GtkToggleButton *toggle,
-                                 GtkStack *stack)
-{
-  if (gtk_toggle_button_get_active (toggle))
-  {
-    if (gtk_widget_is_visible (gtk_stack_get_child_by_name (stack, "port3") ))
-      show_stack (stack, 6);
-    else
-      show_stack (stack, 3);
-  }
-  else
-  {
-    gboolean visible = FALSE;
-    GtkWidget* port8 = gtk_stack_get_child_by_name (stack, "port8");
-
-    if (port8 != NULL)
-      visible = gtk_widget_is_visible (port8);
-
-    if (visible)
-      show_stack (stack, 3);
-    else
-      show_stack (stack, 0);
-  }
 }
 
 
@@ -1258,20 +1158,4 @@ main_window_class_init (MainWindowClass * klass)
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "medcombo_changed",
                                                 G_CALLBACK (main_window_medcombo_changed));
-
-  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "enable_ports_toggle",
-                                                G_CALLBACK (main_window_enable_ports_toggle));
-
-  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "enable_ports_combo",
-                                                G_CALLBACK (main_window_enable_ports_combo));
-
-  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "enable_buddy_toggle",
-                                                G_CALLBACK (main_window_enable_buddy_toggle));
-
-  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "enable_buddy_combo_opengl",
-                                                G_CALLBACK (main_window_enable_buddy_combo_opengl));
 }

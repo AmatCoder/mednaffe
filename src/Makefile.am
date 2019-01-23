@@ -11,7 +11,8 @@ panedlist.c panedlist.h\
 pathcombobox.c pathcombobox.h\
 preferences.c preferences.h\
 resources.c \
-setup.c setup.h\
+setup.c setup.h \
+signals.c \
 widgets/dialogs.c widgets/dialogs.h \
 widgets/marshallers.c widgets/marshallers.h \
 widgets/medbiosentry.c widgets/medbiosentry.h \
