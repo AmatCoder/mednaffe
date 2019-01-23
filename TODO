@@ -1,4 +1,4 @@
-####  KNOW ISSUES
+####  KNOWN ISSUES
 
 ## gtk_paned_set_position does not work on init
 It works fine afterthat.
@@ -8,10 +8,6 @@ It works if it grows. *preserve_aspect_ratio* is hardcored to TRUE because this.
 
 
 ####  TODO
-
-## Finish systems options
-Finished: lynx, gb, gba, ngp, nes, pce, pcfx, gg, md, sms, psx, snes, vboy and wswan.
-To do: ss
 
 ## Windows support
 Just started.
