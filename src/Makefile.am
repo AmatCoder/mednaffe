@@ -42,8 +42,12 @@ if WINDOWS
   mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
   override CFLAGS +=-mwindows
 else
+if MAC
+  mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
+else
   mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
   override CFLAGS +=-Wl,-export-dynamic
+endif
 endif
 endif
 
