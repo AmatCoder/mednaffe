@@ -18,14 +18,22 @@ case $host_os in
   linux*)
          AM_CONDITIONAL([LINUX], [true])
          AM_CONDITIONAL([WINDOWS], [false])
+         AM_CONDITIONAL([MAC], [false])
          ;;
   cygwin*|mingw*)
          AM_CONDITIONAL([LINUX], [false])
          AM_CONDITIONAL([WINDOWS], [true])
+         AM_CONDITIONAL([MAC], [false])
+         ;;
+  darwin*)
+         AM_CONDITIONAL([MAC], [true])
+         AM_CONDITIONAL([LINUX], [false])
+         AM_CONDITIONAL([WINDOWS], [false])
          ;;
   *)
          AM_CONDITIONAL([LINUX], [false])
          AM_CONDITIONAL([WINDOWS], [false])
+         AM_CONDITIONAL([MAC], [false])
          ;;
 esac
 
@@ -41,7 +49,7 @@ AC_CHECK_FUNCS([atexit memset mkdir realpath strrchr])
 
 # Checks for libraries.
 AC_CHECK_PROG(have_pkg_config, pkg-config, yes, no)
-if test "x$have_pkg_config" = xno; then 
+if test "x$have_pkg_config" = xno; then
   AC_MSG_ERROR('pkg-config' is required to compile Mednaffe)
 else
   PKG_PROG_PKG_CONFIG
