@@ -111,10 +111,8 @@ bios_window_set_labels (BiosWindow* self,
                         GtkLabel* label2,
                         GtkImage* image)
 {
-  const gchar* value;
   gchar* tooltip;
   gchar* icon;
-  gchar* value_ft;
 
   g_return_if_fail (self != NULL);
   g_return_if_fail (medwid != NULL);
@@ -122,18 +120,10 @@ bios_window_set_labels (BiosWindow* self,
   g_return_if_fail (label2 != NULL);
   g_return_if_fail (image != NULL);
 
-  value = med_widget_get_value (medwid);
-  value_ft = g_strconcat ("\n\"", value, "\"", NULL);
-  gtk_label_set_label (label1, value_ft);
-
-  g_free (value_ft);
-
   tooltip = med_bios_entry_get_tooltip ((MedBiosEntry*) medwid);
-  value_ft = g_strconcat (tooltip, "\n", NULL);
-  gtk_label_set_label (label2, value_ft);
+  gtk_label_set_label (label2, tooltip);
 
   g_free (tooltip);
-  g_free (value_ft);
 
   icon = med_bios_entry_get_icon ((MedBiosEntry*) medwid);
   gtk_image_set_from_icon_name (image, icon, (GtkIconSize) GTK_ICON_SIZE_LARGE_TOOLBAR);
@@ -255,11 +245,7 @@ bios_window_new (GtkWindow* parent)
 
   BiosWindow * self = (BiosWindow*) g_object_new (bios_window_get_type (), NULL);
 
-  gtk_window_set_destroy_with_parent ((GtkWindow*) self, TRUE);
   gtk_window_set_transient_for ((GtkWindow*) self, parent);
-  gtk_window_set_modal ((GtkWindow*) self, TRUE);
-  gtk_window_set_position ((GtkWindow*) self, GTK_WIN_POS_CENTER_ON_PARENT);
-  gtk_window_set_title ((GtkWindow*) self, "Bios check");
 
   return self;
 }
@@ -408,8 +394,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              "icon_psx_bios_eu",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, icon_psx_bios_eu));
-
-
 
 
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),

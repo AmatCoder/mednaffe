@@ -75,9 +75,7 @@ setup_window_setup_show (SetupWindow* self,
   priv->iter = *iter;
   gtk_tree_model_get (priv->model, &priv->iter, 0, &dir, 1, &scan, 2, &hide, 3, &filters, 4, &sa, 5, &sb, -1);
 
-  gchar* tmp = g_strconcat ("Directory: ", dir, NULL);
-  gtk_label_set_text (priv->dir, tmp);
-  g_free (tmp);
+  gtk_label_set_text (priv->dir, dir);
 
   gtk_toggle_button_set_active ((GtkToggleButton*) priv->scan, scan);
   gtk_toggle_button_set_active ((GtkToggleButton*) priv->hide_ext, hide);
@@ -172,12 +170,7 @@ setup_window_new (GtkWindow* parent,
   SetupWindow * self = (SetupWindow*) g_object_new (setup_window_get_type (), NULL);
   SetupWindowPrivate* priv = setup_window_get_instance_private (self);
 
-  gtk_window_set_destroy_with_parent ((GtkWindow*) self, TRUE);
   gtk_window_set_transient_for ((GtkWindow*) self, parent);
-  gtk_window_set_modal ((GtkWindow*) self, TRUE);
-  gtk_window_set_position ((GtkWindow*) self, GTK_WIN_POS_CENTER_ON_PARENT);
-  gtk_window_set_title ((GtkWindow*) self, "Setup directory");
-  gtk_window_set_default_size ((GtkWindow*) self, 720, 240);
 
   priv->model = model;
 

@@ -91,7 +91,7 @@ G_DEFINE_TYPE_WITH_CODE (MedInput, med_input, GTK_TYPE_BOX,
 const guint sdl_to_gdk[245] = {
 0,  0,  0,  0,  38,  56,  54,  40,  26,
 41,  42,  43,  31,  44,  45,  46,  58,  57,  32,  33,  24,  27,  39,
-28,  30,  55,  25,  53,  29,  53,  10,  11,  12,  13,  14,  15,  16,
+28,  30,  55,  25,  53,  29,  52,  10,  11,  12,  13,  14,  15,  16,
 17,  18,  19,  36,  9,  22,  23,  65,  20,  21,  34,  35,  51,  0,  47,
 48,  49,  59,  60,  61,  66,  67,  68,  69,  70,  71,  72,  73,  74,
 75,  76,  95,  96,  107,  78,  127,  118,  110,  112,  119,  115,  117,
@@ -718,7 +718,7 @@ med_input_set_label_width (MedInput* self,
 {
   g_return_if_fail (self != NULL);
   MedInputPrivate* priv = med_input_get_instance_private (self);
-  g_object_set ((GtkWidget*) priv->entry_label, "width-request", value, NULL);
+  g_object_set ((GtkWidget*) priv->entry_label, "width-chars", value, NULL);
 }
 
 
@@ -749,7 +749,7 @@ med_input_set_modifier_keys (MedInput* self,
 
 static gboolean
 med_input_entry_focus_out (GtkWidget* sender,
-                           GdkEventFocus* event,
+                           GdkEvent* event,
                            gpointer self)
 {
   g_return_val_if_fail (self != NULL, FALSE);
@@ -830,6 +830,8 @@ med_input_entry_mouse_clicked (GtkWidget* sender,
       if (priv->is_active)
       {
         input_set_text(mi, "Button left (Mouse)", "mouse 0x0 button_left");
+        gtk_toggle_button_set_active ((GtkToggleButton*) sender, FALSE);
+        return TRUE;
       }
       else
       {
@@ -917,6 +919,7 @@ med_input_constructor (GType type,
   MedInputPrivate* priv = med_input_get_instance_private (self);
 
   priv->entry = (GtkButton*) gtk_toggle_button_new ();
+  gtk_button_set_alignment (priv->entry, 0.0, 0.5);
   //gtk_button_set_relief ((GtkButton*) priv->entry, GTK_RELIEF_NONE);
 
   priv->entry_label = (GtkLabel*) gtk_label_new (priv->_label);
@@ -929,7 +932,7 @@ med_input_constructor (GType type,
   gtk_widget_show ((GtkWidget*) priv->entry_label);
   gtk_widget_show ((GtkWidget*) priv->entry);
 
-  g_signal_connect_object ((GtkWidget*) priv->entry, "focus-out-event", (GCallback) med_input_entry_focus_out, self, 0);
+  g_signal_connect_object ((GtkWidget*) priv->entry, "leave-notify-event", (GCallback) med_input_entry_focus_out, self, 0);
   g_signal_connect_object ((GtkWidget*) priv->entry, "button-press-event", (GCallback) med_input_entry_mouse_clicked, self, 0);
 
   priv->is_active = FALSE;

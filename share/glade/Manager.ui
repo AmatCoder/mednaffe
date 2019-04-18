@@ -29,7 +29,14 @@ Author: AmatCoder
   <!-- interface-copyright 2013-2018 -->
   <!-- interface-authors AmatCoder -->
   <template class="ManagerWindow" parent="GtkWindow">
+    <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Manage Folders</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="default_width">1024</property>
+    <property name="default_height">768</property>
+    <property name="destroy_with_parent">True</property>
     <signal name="delete-event" handler="on_close_x" swapped="no"/>
     <signal name="show" handler="on_show" swapped="no"/>
     <child type="titlebar">
@@ -39,6 +46,7 @@ Author: AmatCoder
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="border_width">6</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame">
@@ -145,6 +153,7 @@ Author: AmatCoder
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
+            <property name="padding">6</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -189,21 +198,6 @@ Author: AmatCoder
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="setup_button">
-                    <property name="label" translatable="yes">Setup</property>
-                    <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <signal name="clicked" handler="show_setup" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkButton" id="delete_button">
                     <property name="label">gtk-delete</property>
                     <property name="visible">True</property>
@@ -212,6 +206,21 @@ Author: AmatCoder
                     <property name="receives_default">True</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="delete_row" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="setup_button">
+                    <property name="label" translatable="yes">Setup</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="show_setup" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

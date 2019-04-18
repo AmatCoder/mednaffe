@@ -86,12 +86,8 @@ med_bios_entry_update_check (MedBiosEntry* self,
 
   if (file == NULL)
   {
-    gchar* info;
-
     gtk_entry_set_icon_from_icon_name (entry, GTK_ENTRY_ICON_SECONDARY, "gtk-cancel");
-    info = g_strconcat ("Bios file not found!\n\nPath: ", real_path, NULL);
-    gtk_widget_set_tooltip_text ((GtkWidget*) entry, info);
-    g_free (info);
+    gtk_widget_set_tooltip_text ((GtkWidget*) entry, "Bios file not found!\n");
     return;
   }
 

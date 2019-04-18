@@ -229,11 +229,6 @@ manager_window_new (GtkWindow* parent,
   ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
 
 	gtk_window_set_transient_for ((GtkWindow*) self, parent);
-	gtk_window_set_destroy_with_parent ((GtkWindow*) self, TRUE);
-	gtk_window_set_modal ((GtkWindow*) self, TRUE);
-	gtk_window_set_position ((GtkWindow*) self, GTK_WIN_POS_CENTER_ON_PARENT);
-	gtk_window_set_title ((GtkWindow*) self, "Manage directories");
-	gtk_window_set_default_size ((GtkWindow*) self, 800, 400);
 
 	priv->combo = combo;
 
@@ -242,9 +237,9 @@ manager_window_new (GtkWindow* parent,
 
   priv->setup = setup_window_new ((GtkWindow*) self, model);
 
-	manager_window_on_show (NULL, self);
-
 	g_signal_connect_object (priv->setup, "row-has-changed", (GCallback) manager_window_row_changed, self, 0);
+
+  gtk_widget_hide ((GtkWidget *)self);
 
 	return self;
 }

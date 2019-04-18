@@ -200,7 +200,7 @@ med_combo_box_set_label_width (MedComboBox* self,
 {
   g_return_if_fail (self != NULL);
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
-  g_object_set ((GtkWidget*) priv->combo_label, "width-request", value, NULL);
+  g_object_set ((GtkWidget*) priv->combo_label, "width-chars", value, NULL);
 }
 
 

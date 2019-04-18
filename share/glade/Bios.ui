@@ -61,7 +61,11 @@ Author: AmatCoder
   <template class="BiosWindow" parent="GtkDialog">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Bios Check</property>
+    <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <property name="default_width">1024</property>
+    <property name="default_height">768</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="on_close_x" swapped="no"/>
     <child>
@@ -145,19 +149,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_lynx_bios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -193,7 +198,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -237,19 +242,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_pccdbios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -285,7 +291,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -333,19 +339,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_pcfx_bios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -381,7 +388,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -430,19 +437,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_ss_bios_jp">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -452,7 +460,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="position">-1</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -478,7 +486,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -505,19 +513,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_ss_bios_na_eu">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -553,7 +562,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -602,19 +611,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_psx_bios_jp">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -650,7 +660,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -677,19 +687,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_psx_bios_na">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -725,7 +736,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -752,19 +763,20 @@ Author: AmatCoder
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label_xalign">2.2351741291171123e-10</property>
+                        <property name="label_xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">4</property>
                             <property name="margin_right">4</property>
+                            <property name="margin_top">4</property>
+                            <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label_psx_bios_eu">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                                 <attributes>
@@ -800,7 +812,7 @@ Author: AmatCoder
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">4</property>
+                                <property name="padding">6</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -841,7 +853,7 @@ Author: AmatCoder
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="padding">12</property>
                 <property name="position">1</property>

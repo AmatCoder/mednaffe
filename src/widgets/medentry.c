@@ -167,7 +167,7 @@ med_entry_set_label_width (MedEntry* self,
 {
   g_return_if_fail (self != NULL);
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
-  g_object_set ((GtkWidget*) priv->entry_label, "width-request", value, NULL);
+  g_object_set ((GtkWidget*) priv->entry_label, "width-chars", value, NULL);
 }
 
 
@@ -223,7 +223,8 @@ med_entry_constructor (GType type,
 
   self->entry = (GtkEntry*) gtk_entry_new ();
 
-  priv->entry_label = (GtkLabel*) gtk_label_new (priv->_label);
+  priv->entry_label = (GtkLabel*) gtk_label_new (NULL);
+  gtk_label_set_markup (priv->entry_label, priv->_label);
   //gtk_label_set_xalign(priv->entry_label,1.00);                    // This needs GTK 3.16
   gtk_misc_set_alignment ((GtkMisc*) priv->entry_label, 1.00, 0.50); // so I am using this deprecated one.
 

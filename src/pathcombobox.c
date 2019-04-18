@@ -266,7 +266,7 @@ path_combo_box_new (void)
   gtk_cell_layout_add_attribute ((GtkCellLayout*) self->combo, (GtkCellRenderer*) renderer, "text", 0);
 
   button = (GtkButton*) gtk_button_new_from_icon_name ("list-add", (GtkIconSize) GTK_ICON_SIZE_BUTTON);
-  gtk_button_set_label (button, "Add");
+  gtk_button_set_label (button, "Add Folder");
 
   gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) self->combo, TRUE, TRUE, 0);
   gtk_box_pack_end ((GtkBox*) self, (GtkWidget*) button, FALSE, TRUE, 0);
