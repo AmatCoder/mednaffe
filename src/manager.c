@@ -193,7 +193,7 @@ manager_window_delete_row (GtkButton* sender,
 	valid = gtk_tree_model_get_iter_first (model, &iter);
 
 	gtk_widget_set_sensitive ((GtkWidget*) priv->setup_button, valid);
-	gtk_widget_set_sensitive ((GtkWidget*) priv->setup_button, valid);
+	gtk_widget_set_sensitive ((GtkWidget*) priv->delete_button, valid);
 }
 
 
