@@ -145,7 +145,7 @@ med_process_process_line (MedProcess* self,
                           GIOCondition condition,
                           const gchar* stream_name)
 {
-  if (condition == G_IO_HUP)
+  if (condition != G_IO_IN)
     return FALSE;
 
   gchar c[1] = {0};
