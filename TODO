@@ -11,7 +11,7 @@ It works if it grows. *preserve_aspect_ratio* is hardcored to TRUE because this.
 
 ## Windows support
 Just started.
-Keyboard and joysticks still are unsupported.
+Joysticks still are unsupported.
 Native theme is pending to be developed.
 
 ## Find out a way to send some special options
