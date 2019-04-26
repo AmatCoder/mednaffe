@@ -91,7 +91,8 @@ host_triplet = @host@
 bin_PROGRAMS = mednaffe$(EXEEXT)
 @LINUX_TRUE@am__append_1 = widgets/joystick_linux.c widgets/joystick_linux.h
 @LINUX_FALSE@@WINDOWS_TRUE@am__append_2 = widgets/joystick_windows.c widgets/joystick_windows.h
-@LINUX_FALSE@@WINDOWS_FALSE@am__append_3 = widgets/joystick_windows.c widgets/joystick_windows.h
+@LINUX_FALSE@@MAC_TRUE@@WINDOWS_FALSE@am__append_3 = widgets/joystick_windows.c widgets/joystick_windows.h
+@LINUX_FALSE@@MAC_FALSE@@WINDOWS_FALSE@am__append_4 = widgets/joystick_windows.c widgets/joystick_windows.h
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -129,7 +130,8 @@ am__dirstamp = $(am__leading_dot)dirstamp
 @LINUX_TRUE@am__objects_1 = widgets/joystick_linux.$(OBJEXT)
 @LINUX_FALSE@@WINDOWS_TRUE@am__objects_2 =  \
 @LINUX_FALSE@@WINDOWS_TRUE@	widgets/joystick_windows.$(OBJEXT)
-@LINUX_FALSE@@WINDOWS_FALSE@am__objects_3 = widgets/joystick_windows.$(OBJEXT)
+@LINUX_FALSE@@MAC_TRUE@@WINDOWS_FALSE@am__objects_3 = widgets/joystick_windows.$(OBJEXT)
+@LINUX_FALSE@@MAC_FALSE@@WINDOWS_FALSE@am__objects_4 = widgets/joystick_windows.$(OBJEXT)
 am_mednaffe_OBJECTS = about.$(OBJEXT) bios.$(OBJEXT) logbook.$(OBJEXT) \
 	mainwindow.$(OBJEXT) manager.$(OBJEXT) mednaffe.$(OBJEXT) \
 	medprocess.$(OBJEXT) panedimage.$(OBJEXT) panedlist.$(OBJEXT) \
@@ -145,7 +147,7 @@ am_mednaffe_OBJECTS = about.$(OBJEXT) bios.$(OBJEXT) logbook.$(OBJEXT) \
 	widgets/medrange.$(OBJEXT) widgets/medscale.$(OBJEXT) \
 	widgets/medspin.$(OBJEXT) widgets/medwidget.$(OBJEXT) \
 	widgets/menuinput.$(OBJEXT) $(am__objects_1) $(am__objects_2) \
-	$(am__objects_3)
+	$(am__objects_3) $(am__objects_4)
 mednaffe_OBJECTS = $(am_mednaffe_OBJECTS)
 mednaffe_LDADD = $(LDADD)
 mednaffe_DEPENDENCIES =
@@ -346,7 +348,7 @@ mednaffe_SOURCES = about.c about.h bios.c bios.h logbook.c logbook.h \
 	widgets/medscale.c widgets/medscale.h widgets/medspin.c \
 	widgets/medspin.h widgets/medwidget.c widgets/medwidget.h \
 	widgets/menuinput.c widgets/menuinput.h $(am__append_1) \
-	$(am__append_2) $(am__append_3)
+	$(am__append_2) $(am__append_3) $(am__append_4)
 AM_CPPFLAGS = @GTK_CFLAGS@
 LDADD = @GTK_LIBS@
 CLEANFILES = *~
@@ -819,7 +821,7 @@ uninstall-am: uninstall-binPROGRAMS
 override CFLAGS +=-std=c99 -Wall
 @LINUX_TRUE@  override CFLAGS +=-Wl,-export-dynamic
 @LINUX_FALSE@@WINDOWS_TRUE@  override CFLAGS +=-mwindows
-@LINUX_FALSE@@WINDOWS_FALSE@  override CFLAGS +=-Wl,-export-dynamic
+@LINUX_FALSE@@MAC_FALSE@@WINDOWS_FALSE@  override CFLAGS +=-Wl,-export-dynamic
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

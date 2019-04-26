@@ -632,6 +632,8 @@ have_pkg_config
 EGREP
 GREP
 CPP
+MAC_FALSE
+MAC_TRUE
 WINDOWS_FALSE
 WINDOWS_TRUE
 LINUX_FALSE
@@ -3971,6 +3973,14 @@ else
   WINDOWS_FALSE=
 fi
 
+          if false; then
+  MAC_TRUE=
+  MAC_FALSE='#'
+else
+  MAC_TRUE='#'
+  MAC_FALSE=
+fi
+
          ;;
   cygwin*|mingw*)
           if false; then
@@ -3982,6 +3992,40 @@ else
 fi
 
           if true; then
+  WINDOWS_TRUE=
+  WINDOWS_FALSE='#'
+else
+  WINDOWS_TRUE='#'
+  WINDOWS_FALSE=
+fi
+
+          if false; then
+  MAC_TRUE=
+  MAC_FALSE='#'
+else
+  MAC_TRUE='#'
+  MAC_FALSE=
+fi
+
+         ;;
+  darwin*)
+          if true; then
+  MAC_TRUE=
+  MAC_FALSE='#'
+else
+  MAC_TRUE='#'
+  MAC_FALSE=
+fi
+
+          if false; then
+  LINUX_TRUE=
+  LINUX_FALSE='#'
+else
+  LINUX_TRUE='#'
+  LINUX_FALSE=
+fi
+
+          if false; then
   WINDOWS_TRUE=
   WINDOWS_FALSE='#'
 else
@@ -4005,6 +4049,14 @@ fi
 else
   WINDOWS_TRUE='#'
   WINDOWS_FALSE=
+fi
+
+          if false; then
+  MAC_TRUE=
+  MAC_FALSE='#'
+else
+  MAC_TRUE='#'
+  MAC_FALSE=
 fi
 
          ;;
@@ -4841,6 +4893,26 @@ if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
   as_fn_error $? "conditional \"WINDOWS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
+if test -z "${MAC_TRUE}" && test -z "${MAC_FALSE}"; then
+  as_fn_error $? "conditional \"MAC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${LINUX_TRUE}" && test -z "${LINUX_FALSE}"; then
+  as_fn_error $? "conditional \"LINUX\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
+  as_fn_error $? "conditional \"WINDOWS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${MAC_TRUE}" && test -z "${MAC_FALSE}"; then
+  as_fn_error $? "conditional \"MAC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${MAC_TRUE}" && test -z "${MAC_FALSE}"; then
+  as_fn_error $? "conditional \"MAC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
 if test -z "${LINUX_TRUE}" && test -z "${LINUX_FALSE}"; then
   as_fn_error $? "conditional \"LINUX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
@@ -4855,6 +4927,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
   as_fn_error $? "conditional \"WINDOWS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${MAC_TRUE}" && test -z "${MAC_FALSE}"; then
+  as_fn_error $? "conditional \"MAC\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
