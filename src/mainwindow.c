@@ -898,6 +898,8 @@ main_window_load_settings (MainWindow* self)
     gtk_window_move ((GtkWindow*) self, width, height);
   }
 
+  gtk_widget_show ((GtkWidget*) self);
+
   gsize size;
   gchar** dirs = g_key_file_get_string_list (key, "GUI", "Dirs", &size, NULL);
   path_combo_box_set_dirs (priv->pathbox, dirs, size);

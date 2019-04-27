@@ -56,12 +56,17 @@ paned_image_set_pixbuf (PanedImage* self,
 {
   PanedImagePrivate* priv = paned_image_get_instance_private (self);
 
-  GdkPixbuf* pix = gdk_pixbuf_new_from_file_at_scale (path, priv->width, priv->height, priv->preserve_aspect_ratio, NULL);
+  if ((priv->width > 0) && (priv->height > 0))
+  {
+    GdkPixbuf* pix = gdk_pixbuf_new_from_file_at_scale (path, priv->width, priv->height, priv->preserve_aspect_ratio, NULL);
 
-  if (pix != NULL)
-    gtk_image_set_from_pixbuf (image, pix);
+    if (pix != NULL)
+    {
+      gtk_image_set_from_pixbuf (image, pix);
+      g_object_unref (pix);
+    }
 
-  g_object_unref (pix);
+  }
 }
 
 
@@ -158,8 +163,8 @@ paned_image_scale_images (GtkWidget* sender,
   PanedImage* pi = self;
   PanedImagePrivate* priv = paned_image_get_instance_private (pi);
 
-  priv->width = allocation->width;
-  priv->height = allocation->height / 2;
+  priv->width = (allocation->width - 2);
+  priv->height = ((allocation->height / 2) - 2);
 
   gboolean visible = gtk_widget_get_visible ((GtkWidget*) pi);
   if (visible)

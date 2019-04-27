@@ -57,7 +57,6 @@ static void
 mednaffe_app_real_activate (GApplication* base)
 {
   MainWindow* main_window = main_window_new ((GtkApplication*) base);
-  gtk_widget_show ((GtkWidget*) main_window);
   main_window_start (main_window);
 }
 

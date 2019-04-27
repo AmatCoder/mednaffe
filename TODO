@@ -1,10 +1,6 @@
 ####  KNOWN ISSUES
 
-## gtk_paned_set_position does not work on init
-It works fine afterthat.
-
-## Image does not scale to smaller
-It works if it grows. *preserve_aspect_ratio* is hardcored to TRUE because this.
+## Images does not scale to smaller if *preserve_aspect_ratio* is FALSE.
 
 
 ####  TODO
