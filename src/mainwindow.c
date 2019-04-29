@@ -53,6 +53,7 @@ struct _MainWindowClass {
 
 struct _MainWindowPrivate {
   GSList* list;
+  GSList* map_list;
   MedProcess* med_process;
   AboutWindow* about_window;
   BiosWindow* bios_window;
@@ -224,8 +225,7 @@ main_window_paned_list_item_selected (PanedList* sender,
 
 
 static void
-main_window_medwid_set_sensitive (MainWindow* self,
-                                  gboolean b)
+main_window_medwid_update_all (MainWindow* self)
 {
   g_return_if_fail (self != NULL);
 
@@ -235,7 +235,9 @@ main_window_medwid_set_sensitive (MainWindow* self,
 
   for(it = priv->list; it != NULL; it = it->next)
   {
-    gtk_widget_set_sensitive ((GtkWidget*) it->data, b);
+    med_widget_set_modified ((MedWidget*) it->data, FALSE);
+    med_widget_set_updated ((MedWidget*) it->data, FALSE);
+    gtk_widget_set_sensitive ((GtkWidget*) it->data, FALSE);
   }
 }
 
@@ -256,7 +258,7 @@ main_window_build_command (MainWindow* self, const gchar* game_path)
 
   for(it = priv->list; it != NULL; it = it->next)
   {
-    if (med_widget_get_updated (it->data))
+    if (med_widget_get_modified (it->data))
     {
       command = g_renew(const gchar*, command, i+5);
 
@@ -298,7 +300,6 @@ main_window_paned_list_launched (PanedList* _sender,
   {
     med_list_joy_enable_all(priv->listjoy, FALSE);
     gtk_widget_set_sensitive (((GtkWidget*) priv->launch_button), FALSE);
-    main_window_medwid_set_sensitive (mw, FALSE);
 
     const gchar *action = med_widget_get_value ((MedWidget*) priv->preferences->action_launch);
 
@@ -330,6 +331,8 @@ main_window_paned_list_launched (PanedList* _sender,
 #ifdef G_OS_WIN32
     g_free (selection2);
 #endif
+
+    main_window_medwid_update_all (mw);
   }
 }
 
@@ -457,7 +460,7 @@ main_window_set_values (MainWindow* self)
   g_return_if_fail (self != NULL);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
-  for(it = priv->list; it != NULL; it = it->next)
+  for(it = priv->map_list; it != NULL; it = it->next)
   {
     const gchar* command;
     const gchar* tmp = NULL;
@@ -473,7 +476,8 @@ main_window_set_values (MainWindow* self)
     if (tmp != NULL)
     {
       med_widget_set_value (it->data, tmp);
-      med_widget_set_updated (it->data, FALSE);
+      med_widget_set_modified (it->data, FALSE);
+      med_widget_set_updated (it->data, TRUE);
       gtk_widget_set_sensitive (((GtkWidget*) it->data), TRUE);
     }
   }
@@ -515,6 +519,7 @@ main_window_process_exec_emu_ended (MedProcess* sender,
     gtk_widget_show ((GtkWidget*) mw);
 
   gtk_widget_set_sensitive (((GtkWidget*) priv->launch_button), TRUE);
+
   med_list_joy_enable_all(priv->listjoy, TRUE);
 
   med_process_read_conf (priv->med_process);
@@ -553,6 +558,47 @@ main_window_bios_entry_emit_change (MedDialogEntry* sender,
 
 
 static void
+main_window_medwid_map (GtkWidget* sender, gpointer self)
+{
+  MainWindowPrivate* priv = main_window_get_instance_private (self);
+  const gchar* command;
+  const gchar* tmp = NULL;
+
+  command = med_widget_get_command ((MedWidget*) sender);
+
+  if (command)
+  {
+    command++;
+    tmp = g_hash_table_lookup (priv->med_process->table, command);
+  }
+
+  if (tmp != NULL)
+  {
+    priv->map_list = g_slist_prepend (priv->map_list, sender);
+
+    if (med_widget_get_updated ((MedWidget*)sender) == FALSE)
+    {
+      med_widget_set_value ((MedWidget*) sender, tmp);
+      med_widget_set_modified ((MedWidget*) sender, FALSE);
+      med_widget_set_updated ((MedWidget*) sender, TRUE);
+      gtk_widget_set_sensitive (sender, TRUE);
+    }
+  }
+  else
+    gtk_widget_set_sensitive (sender, FALSE);
+}
+
+
+static void
+main_window_medwid_unmap (GtkWidget* sender, gpointer self)
+{
+  MainWindowPrivate* priv = main_window_get_instance_private (self);
+
+  priv->map_list = g_slist_remove (priv->map_list, sender);
+}
+
+
+static void
 main_window_get_widgets (MainWindow* self,
                          GtkWidget* wid)
 {
@@ -569,6 +615,9 @@ main_window_get_widgets (MainWindow* self,
     if (IS_MED_WIDGET(it->data))
     {
       priv->list = g_slist_append (priv->list, it->data);
+
+      g_signal_connect_object ((GtkWidget*) it->data, "map", (GCallback) main_window_medwid_map, self, 0);
+      g_signal_connect_object ((GtkWidget*) it->data, "unmap", (GCallback) main_window_medwid_unmap, self, 0);
 
       if (IS_MED_BIOS_ENTRY(it->data))
         g_signal_connect_object ((MedDialogEntry*) it->data, "emit-change", (GCallback) main_window_bios_entry_emit_change, self, 0);
@@ -674,7 +723,7 @@ main_window_menu_quit (GtkMenuItem* sender,
 static void
 save_list_func (gconstpointer data, gpointer self)
 {
-  if (med_widget_get_updated((MedWidget*)data))
+  if (med_widget_get_modified ((MedWidget*)data))
   {
     const gchar* command = med_widget_get_command ((MedWidget*)data);
     const gchar* value = med_widget_get_value ((MedWidget*)data);
@@ -958,7 +1007,6 @@ main_window_start (MainWindow* self)
   g_object_set_data ((GObject*) self, "listjoy", priv->listjoy);
 
   main_window_get_widgets (self, (GtkWidget*) self);
-  main_window_set_values (self);
   main_window_load_settings (self);
 }
 
@@ -973,6 +1021,7 @@ main_window_finalize (GObject * obj)
   g_object_unref (priv->listjoy);
 
   g_slist_free (priv->list);
+  g_slist_free (priv->map_list);
 
   G_OBJECT_CLASS (main_window_parent_class)->finalize (obj);
 }
@@ -1001,7 +1050,7 @@ main_window_new (GtkApplication* app)
   g_signal_connect_object (priv->path_firmware, "emit-change", (GCallback) main_window_firmware_entry_emit_change, self, 0);
 
   med_widget_set_value ((MedWidget*) priv->lynx_bios, "lynxboot.img");
-  med_widget_set_updated ((MedWidget*) priv->lynx_bios, FALSE);
+  med_widget_set_modified ((MedWidget*) priv->lynx_bios, FALSE);
   gtk_widget_set_visible ((GtkWidget*) priv->lynx_bios, FALSE);
 
   priv->pathbox = path_combo_box_new();
@@ -1043,6 +1092,7 @@ main_window_init (MainWindow * self)
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
   priv->list = NULL;
+  priv->map_list = NULL;
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

@@ -41,6 +41,7 @@ struct _MedInputPrivate {
   MenuInput* menu;
   gchar* _command;
   gboolean _updated;
+  gboolean _modified;
   gchar* _label;
   gboolean _modifier_keys;
   //GtkCssProvider* css_normal;
@@ -58,7 +59,6 @@ struct _MedInputPrivate {
 enum  {
   MED_INPUT_0_PROPERTY,
   MED_INPUT_COMMAND_PROPERTY,
-  MED_INPUT_UPDATED_PROPERTY,
   MED_INPUT_LABEL_PROPERTY,
   MED_INPUT_LABELWIDTH_PROPERTY,
   MED_INPUT_MODIFIER_KEYS_PROPERTY,
@@ -1340,7 +1340,7 @@ med_input_real_set_value (MedWidget* base,
   g_free (text);
   g_free (p);
 
-  med_widget_set_updated (base, TRUE);
+  med_widget_set_modified (base, TRUE);
 }
 
 
@@ -1410,7 +1410,7 @@ input_set_text (MedInput* mi, const gchar* text, const gchar* value)
 
     gtk_toggle_button_set_active ((GtkToggleButton *) priv->entry, FALSE);
     med_input_close_input (mi);
-    med_widget_set_updated ((MedWidget*) mi, TRUE);
+    med_widget_set_modified ((MedWidget*) mi, TRUE);
   }
 }
 
@@ -1632,11 +1632,28 @@ med_input_real_set_updated (MedWidget* base,
   MedInput* self = (MedInput*) base;
   MedInputPrivate* priv = med_input_get_instance_private (self);
 
-  if (med_input_real_get_updated (base) != value)
-  {
-    priv->_updated = value;
-    g_object_notify_by_pspec ((GObject *) self, med_input_properties[MED_INPUT_UPDATED_PROPERTY]);
-  }
+  priv->_updated = value;
+}
+
+
+static gboolean
+med_input_real_get_modified (MedWidget* base)
+{
+  MedInput* self = (MedInput*) base;
+  MedInputPrivate* priv = med_input_get_instance_private (self);
+
+  return priv->_modified;
+}
+
+
+static void
+med_input_real_set_modified (MedWidget* base,
+                            gboolean value)
+{
+  MedInput* self = (MedInput*) base;
+  MedInputPrivate* priv = med_input_get_instance_private (self);
+
+  priv->_modified = value;
 }
 
 
@@ -1748,7 +1765,7 @@ med_input_menu_event (GtkMenuItem* sender,
     g_free (priv->internal_value);
     priv->internal_value = g_strdup ("");
 
-    med_widget_set_updated ((MedWidget*) mi, TRUE);
+    med_widget_set_modified ((MedWidget*) mi, TRUE);
 
     return;
   }
@@ -1914,9 +1931,6 @@ med_input_get_property (GObject * object,
     case MED_INPUT_COMMAND_PROPERTY:
       g_value_set_string (value, med_widget_get_command ((MedWidget*) self));
     break;
-    case MED_INPUT_UPDATED_PROPERTY:
-      g_value_set_boolean (value, med_widget_get_updated ((MedWidget*) self));
-    break;
     case MED_INPUT_LABEL_PROPERTY:
       g_value_set_string (value, med_input_get_label (self));
     break;
@@ -1942,9 +1956,6 @@ med_input_set_property (GObject * object,
 {
     case MED_INPUT_COMMAND_PROPERTY:
       med_widget_set_command ((MedWidget*) self, g_value_get_string (value));
-    break;
-    case MED_INPUT_UPDATED_PROPERTY:
-      med_widget_set_updated ((MedWidget*) self, g_value_get_boolean (value));
     break;
     case MED_INPUT_LABEL_PROPERTY:
       med_input_set_label (self, g_value_get_string (value));
@@ -1978,17 +1989,6 @@ med_input_class_init (MedInputClass * klass)
                                      "command",
                                      "command",
                                      NULL,
-                                     G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE
-                                   ));
-
-  g_object_class_install_property (G_OBJECT_CLASS (klass),
-                                   MED_INPUT_UPDATED_PROPERTY,
-                                   med_input_properties[MED_INPUT_UPDATED_PROPERTY] = g_param_spec_boolean
-                                   (
-                                     "updated",
-                                     "updated",
-                                     "updated",
-                                     FALSE,
                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE
                                    ));
 
@@ -2033,8 +2033,12 @@ med_input_med_widget_interface_init (MedWidgetInterface * iface)
   iface->set_value = (void (*) (MedWidget *, const gchar*)) med_input_real_set_value;
   iface->get_value = (const gchar* (*) (MedWidget *)) med_input_real_get_value;
 
+  iface->set_modified = (void (*) (MedWidget *, gboolean)) med_input_real_set_modified;
+  iface->get_modified = (gboolean (*) (MedWidget *)) med_input_real_get_modified;
+
+  iface->set_updated = (void (*) (MedWidget *, gboolean)) med_input_real_set_updated;
+  iface->get_updated = (gboolean (*) (MedWidget *)) med_input_real_get_updated;
+
   iface->get_command = med_input_real_get_command;
   iface->set_command = med_input_real_set_command;
-  iface->get_updated = med_input_real_get_updated;
-  iface->set_updated = med_input_real_set_updated;
 }

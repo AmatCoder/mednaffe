@@ -53,7 +53,8 @@ med_widget_real_init (MedWidget* self,
                       GtkWidget* widget)
 {
   g_return_if_fail (widget != NULL);
-  gtk_widget_set_sensitive (widget, FALSE);
+  med_widget_set_modified ((MedWidget*) widget, FALSE);
+  med_widget_set_updated ((MedWidget*) widget, FALSE);
 }
 
 
@@ -99,6 +100,22 @@ med_widget_set_updated (MedWidget* self,
   MED_WIDGET_GET_INTERFACE (self)->set_updated (self, value);
 }
 
+gboolean
+med_widget_get_modified (MedWidget* self)
+{
+  g_return_val_if_fail (self != NULL, FALSE);
+  return MED_WIDGET_GET_INTERFACE (self)->get_modified (self);
+}
+
+
+void
+med_widget_set_modified (MedWidget* self,
+                        gboolean value)
+{
+  g_return_if_fail (self != NULL);
+  MED_WIDGET_GET_INTERFACE (self)->set_modified (self, value);
+}
+
 
 static void
 med_widget_default_init (MedWidgetInterface * iface)
@@ -108,12 +125,6 @@ med_widget_default_init (MedWidgetInterface * iface)
                                                                    "command",
                                                                    NULL,
                                                                    G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE));
-
-  g_object_interface_install_property (iface, g_param_spec_boolean ("updated",
-                                                                    "updated",
-                                                                    "updated",
-                                                                    FALSE,
-                                                                    G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE));
 
   iface->init = med_widget_real_init;
 }

@@ -31,6 +31,7 @@ struct _MedEntryPrivate {
   GtkLabel* entry_label;
   gchar* _command;
   gboolean _updated;
+  gboolean _modified;
   gchar* _label;
 };
 
@@ -38,7 +39,6 @@ struct _MedEntryPrivate {
 enum  {
   MED_ENTRY_0_PROPERTY,
   MED_ENTRY_COMMAND_PROPERTY,
-  MED_ENTRY_UPDATED_PROPERTY,
   MED_ENTRY_LABEL_PROPERTY,
   MED_ENTRY_LABELWIDTH_PROPERTY,
   MED_ENTRY_NUM_PROPERTIES
@@ -77,7 +77,7 @@ med_entry_real_get_value (MedWidget* base)
 static void
 med_entry_real_entry_changed (MedEntry* self)
 {
-  med_widget_set_updated ((MedWidget*) self, TRUE);
+  med_widget_set_modified ((MedWidget*) self, TRUE);
 }
 
 
@@ -126,11 +126,28 @@ med_entry_real_set_updated (MedWidget* base,
   MedEntry* self = (MedEntry*) base;
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
 
-  if (med_entry_real_get_updated (base) != value)
-  {
-    priv->_updated = value;
-    g_object_notify_by_pspec ((GObject *) self, med_entry_properties[MED_ENTRY_UPDATED_PROPERTY]);
-  }
+  priv->_updated = value;
+}
+
+
+static gboolean
+med_entry_real_get_modified (MedWidget* base)
+{
+  MedEntry* self = (MedEntry*) base;
+  MedEntryPrivate* priv = med_entry_get_instance_private (self);
+
+  return priv->_modified;
+}
+
+
+static void
+med_entry_real_set_modified (MedWidget* base,
+                            gboolean value)
+{
+  MedEntry* self = (MedEntry*) base;
+  MedEntryPrivate* priv = med_entry_get_instance_private (self);
+
+  priv->_modified = value;
 }
 
 
@@ -265,9 +282,6 @@ med_entry_get_property (GObject * object,
     case MED_ENTRY_COMMAND_PROPERTY:
       g_value_set_string (value, med_widget_get_command ((MedWidget*) self));
     break;
-    case MED_ENTRY_UPDATED_PROPERTY:
-      g_value_set_boolean (value, med_widget_get_updated ((MedWidget*) self));
-    break;
     case MED_ENTRY_LABEL_PROPERTY:
       g_value_set_string (value, med_entry_get_label (self));
     break;
@@ -290,9 +304,6 @@ med_entry_set_property (GObject * object,
   {
     case MED_ENTRY_COMMAND_PROPERTY:
       med_widget_set_command ((MedWidget*) self, g_value_get_string (value));
-    break;
-    case MED_ENTRY_UPDATED_PROPERTY:
-      med_widget_set_updated ((MedWidget*) self, g_value_get_boolean (value));
     break;
     case MED_ENTRY_LABEL_PROPERTY:
       med_entry_set_label (self, g_value_get_string (value));
@@ -329,17 +340,6 @@ med_entry_class_init (MedEntryClass * klass)
                                    ));
 
   g_object_class_install_property (G_OBJECT_CLASS (klass),
-                                   MED_ENTRY_UPDATED_PROPERTY,
-                                   med_entry_properties[MED_ENTRY_UPDATED_PROPERTY] = g_param_spec_boolean
-                                   (
-                                     "updated",
-                                     "updated",
-                                     "updated",
-                                     FALSE,
-                                     G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE
-                                   ));
-
-  g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    MED_ENTRY_LABEL_PROPERTY,
                                    med_entry_properties[MED_ENTRY_LABEL_PROPERTY] = g_param_spec_string
                                    (
@@ -368,8 +368,12 @@ med_entry_med_widget_interface_init (MedWidgetInterface * iface)
   iface->set_value = (void (*) (MedWidget *, const gchar*)) med_entry_real_set_value;
   iface->get_value = (const gchar* (*) (MedWidget *)) med_entry_real_get_value;
 
+  iface->set_modified = (void (*) (MedWidget *, gboolean)) med_entry_real_set_modified;
+  iface->get_modified = (gboolean (*) (MedWidget *)) med_entry_real_get_modified;
+
+  iface->set_updated = (void (*) (MedWidget *, gboolean)) med_entry_real_set_updated;
+  iface->get_updated = (gboolean (*) (MedWidget *)) med_entry_real_get_updated;
+
   iface->get_command = med_entry_real_get_command;
   iface->set_command = med_entry_real_set_command;
-  iface->get_updated = med_entry_real_get_updated;
-  iface->set_updated = med_entry_real_set_updated;
 }

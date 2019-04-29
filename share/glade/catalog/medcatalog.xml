@@ -9,11 +9,6 @@
               <type>GParamString</type>
             </parameter-spec>
         </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
-            </parameter-spec>
-        </property>
       </properties>
     </glade-widget-class>
 
@@ -22,11 +17,6 @@
         <property id="command" name="Command">
             <parameter-spec>
               <type>GParamString</type>
-            </parameter-spec>
-        </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
             </parameter-spec>
         </property>
         <property id="label" name="Label">
@@ -53,11 +43,6 @@
         <property id="command" name="Command">
             <parameter-spec>
               <type>GParamString</type>
-            </parameter-spec>
-        </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
             </parameter-spec>
         </property>
         <property id="label" name="Label">
@@ -91,11 +76,6 @@
               <type>GParamString</type>
             </parameter-spec>
         </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
-            </parameter-spec>
-        </property>
         <property id="label" name="Label">
             <parameter-spec>
               <type>GParamString</type>
@@ -116,11 +96,6 @@
               <type>GParamString</type>
             </parameter-spec>
         </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
-            </parameter-spec>
-        </property>
         <property id="label" name="Label">
             <parameter-spec>
               <type>GParamString</type>
@@ -139,11 +114,6 @@
         <property id="command" name="Command">
             <parameter-spec>
               <type>GParamString</type>
-            </parameter-spec>
-        </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
             </parameter-spec>
         </property>
         <property id="label" name="Label">
@@ -171,11 +141,6 @@
               <type>GParamString</type>
             </parameter-spec>
         </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
-            </parameter-spec>
-        </property>
         <property id="label" name="Label">
             <parameter-spec>
               <type>GParamString</type>
@@ -194,11 +159,6 @@
         <property id="command" name="Command">
             <parameter-spec>
               <type>GParamString</type>
-            </parameter-spec>
-        </property>
-        <property id="updated" name="Updated">
-            <parameter-spec>
-              <type>GParamBoolean</type>
             </parameter-spec>
         </property>
         <property id="label" name="Label">

@@ -47,6 +47,8 @@ struct _MedWidgetInterface {
   void (*set_command) (MedWidget* self, const gchar* value);
   gboolean (*get_updated) (MedWidget* self);
   void (*set_updated) (MedWidget* self, gboolean value);
+  gboolean (*get_modified) (MedWidget* self);
+  void (*set_modified) (MedWidget* self, gboolean value);
 };
 
 
@@ -59,6 +61,8 @@ const gchar* med_widget_get_command (MedWidget* self);
 void med_widget_set_command (MedWidget* self, const gchar* value);
 gboolean med_widget_get_updated (MedWidget* self);
 void med_widget_set_updated (MedWidget* self, gboolean value);
+gboolean med_widget_get_modified (MedWidget* self);
+void med_widget_set_modified (MedWidget* self, gboolean value);
 
 
 G_END_DECLS

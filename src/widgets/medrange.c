@@ -40,6 +40,7 @@ struct _MedRangePrivate {
   GtkLabel* s_label;
   gchar* _command;
   gboolean _updated;
+  gboolean _modified;
   gchar* _label;
   gchar* _values;
   gboolean _is_scale;
@@ -50,7 +51,6 @@ struct _MedRangePrivate {
 enum  {
   MED_RANGE_0_PROPERTY,
   MED_RANGE_COMMAND_PROPERTY,
-  MED_RANGE_UPDATED_PROPERTY,
   MED_RANGE_LABEL_PROPERTY,
   MED_RANGE_LABELWIDTH_PROPERTY,
   MED_RANGE_VALUES_PROPERTY,
@@ -95,7 +95,7 @@ static void
 med_range_range_changed (MedRange* self)
 {
   g_return_if_fail (self != NULL);
-  med_widget_set_updated ((MedWidget*) self, TRUE);
+  med_widget_set_modified ((MedWidget*) self, TRUE);
 }
 
 
@@ -143,11 +143,28 @@ med_range_real_set_updated (MedWidget* base,
   MedRange* self = (MedRange*) base;
   MedRangePrivate* priv = med_range_get_instance_private (self);
 
-  if (med_range_real_get_updated (base) != value)
-  {
-    priv->_updated = value;
-    g_object_notify_by_pspec ((GObject *) self, med_range_properties[MED_RANGE_UPDATED_PROPERTY]);
-  }
+  priv->_updated = value;
+}
+
+
+static gboolean
+med_range_real_get_modified (MedWidget* base)
+{
+  MedRange* self = (MedRange*) base;
+  MedRangePrivate* priv = med_range_get_instance_private (self);
+
+  return priv->_modified;
+}
+
+
+static void
+med_range_real_set_modified (MedWidget* base,
+                            gboolean value)
+{
+  MedRange* self = (MedRange*) base;
+  MedRangePrivate* priv = med_range_get_instance_private (self);
+
+  priv->_modified = value;
 }
 
 
@@ -367,9 +384,6 @@ med_range_get_property (GObject * object,
     case MED_RANGE_COMMAND_PROPERTY:
       g_value_set_string (value, med_widget_get_command ((MedWidget*) self));
     break;
-    case MED_RANGE_UPDATED_PROPERTY:
-      g_value_set_boolean (value, med_widget_get_updated ((MedWidget*) self));
-    break;
     case MED_RANGE_LABEL_PROPERTY:
       g_value_set_string (value, med_range_get_label (self));
     break;
@@ -398,9 +412,6 @@ med_range_set_property (GObject * object,
   {
     case MED_RANGE_COMMAND_PROPERTY:
       med_widget_set_command ((MedWidget*) self, g_value_get_string (value));
-    break;
-    case MED_RANGE_UPDATED_PROPERTY:
-      med_widget_set_updated ((MedWidget*) self, g_value_get_boolean (value));
     break;
     case MED_RANGE_LABEL_PROPERTY:
       med_range_set_label (self, g_value_get_string (value));
@@ -437,17 +448,6 @@ med_range_class_init (MedRangeClass * klass)
                                      "command",
                                      "command",
                                      NULL,
-                                     G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE
-                                   ));
-
-  g_object_class_install_property (G_OBJECT_CLASS (klass),
-                                   MED_RANGE_UPDATED_PROPERTY,
-                                   med_range_properties[MED_RANGE_UPDATED_PROPERTY] = g_param_spec_boolean
-                                   (
-                                     "updated",
-                                     "updated",
-                                     "updated",
-                                     FALSE,
                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE
                                    ));
 
@@ -504,8 +504,12 @@ med_range_med_widget_interface_init (MedWidgetInterface * iface)
   iface->set_value = (void (*) (MedWidget *, const gchar*)) med_range_real_set_value;
   iface->get_value = (const gchar* (*) (MedWidget *)) med_range_real_get_value;
 
+  iface->set_modified = (void (*) (MedWidget *, gboolean)) med_range_real_set_modified;
+  iface->get_modified = (gboolean (*) (MedWidget *)) med_range_real_get_modified;
+
+  iface->set_updated = (void (*) (MedWidget *, gboolean)) med_range_real_set_updated;
+  iface->get_updated = (gboolean (*) (MedWidget *)) med_range_real_get_updated;
+
   iface->get_command = med_range_real_get_command;
   iface->set_command = med_range_real_set_command;
-  iface->get_updated = med_range_real_get_updated;
-  iface->set_updated = med_range_real_set_updated;
 }
