@@ -56,6 +56,7 @@ show_stack (GtkStack *stack, guint n)
 }
 
 
+G_MODULE_EXPORT
 void
 enable_buddy_toggle (GtkToggleButton *toggle,
                      gpointer *buddy)
@@ -64,6 +65,7 @@ enable_buddy_toggle (GtkToggleButton *toggle,
 }
 
 
+G_MODULE_EXPORT
 void
 enable_buddy_combo_opengl (GtkComboBox *combo,
                            const gchar* value,
@@ -81,6 +83,7 @@ enable_buddy_combo_opengl (GtkComboBox *combo,
 }
 
 
+G_MODULE_EXPORT
 void
 enable_ports_combo (GtkComboBox *combo,
                     const gchar* value,
@@ -102,6 +105,7 @@ enable_ports_combo (GtkComboBox *combo,
 }
 
 
+G_MODULE_EXPORT
 void
 enable_ports_toggle_saturn (GtkToggleButton *toggle,
                             GtkStack *stack)
@@ -129,6 +133,7 @@ enable_ports_toggle_saturn (GtkToggleButton *toggle,
 }
 
 
+G_MODULE_EXPORT
 void
 enable_ports_toggle_nes (GtkToggleButton *toggle,
                          GtkStack *stack)
@@ -149,6 +154,7 @@ enable_ports_toggle_nes (GtkToggleButton *toggle,
 }
 
 
+G_MODULE_EXPORT
 void
 enable_ports_toggle (GtkToggleButton *toggle,
                      GtkStack *stack)
