@@ -33,6 +33,7 @@ struct _MedEntryPrivate {
   gboolean _updated;
   gboolean _modified;
   gchar* _label;
+  gchar* internal_value;
 };
 
 
@@ -69,8 +70,17 @@ static const gchar*
 med_entry_real_get_value (MedWidget* base)
 {
   MedEntry * self = (MedEntry*) base;
+  MedEntryPrivate* priv = med_entry_get_instance_private (self);
 
-  return gtk_entry_get_text (self->entry);
+  g_free (priv->internal_value);
+
+#ifdef G_OS_WIN32
+  priv->internal_value = g_strconcat ("\"", gtk_entry_get_text (self->entry), "\"", NULL);
+#else
+  priv->internal_value = g_strdup (gtk_entry_get_text (self->entry));
+#endif
+
+  return priv->internal_value;
 }
 
 
@@ -207,6 +217,7 @@ med_entry_finalize (GObject * obj)
 
   g_free (priv->_command);
   g_free (priv->_label);
+  g_free (priv->internal_value);
 
   G_OBJECT_CLASS (med_entry_parent_class)->finalize (obj);
 }
@@ -266,6 +277,9 @@ med_entry_constructor (GType type,
 static void
 med_entry_init (MedEntry * self)
 {
+  MedEntryPrivate* priv = med_entry_get_instance_private (self);
+
+  priv->internal_value = g_strdup (" ");
 }
 
 

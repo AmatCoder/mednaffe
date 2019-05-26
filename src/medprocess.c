@@ -256,7 +256,9 @@ med_process_new (void)
   MedProcess *self = (MedProcess*) g_object_new (med_process_get_type (), NULL);
 
 #ifdef G_OS_WIN32
-  self->MedPath = g_find_program_in_path ("mednafen.exe");
+  gchar *bin =  g_find_program_in_path ("mednafen.exe");
+  self->MedPath = g_strconcat("\"", bin, "\"", NULL);
+  g_free(bin);
 #else
   self->MedPath = g_find_program_in_path ("mednafen");
 #endif
@@ -264,9 +266,9 @@ med_process_new (void)
   if (self->MedPath != NULL)
   {
 #ifdef G_OS_WIN32
-    gchar *qbin = g_strconcat("\"", self->MedPath, "\" --help", NULL);
-    gboolean b =  WinExec(qbin, SW_HIDE);;
-    g_free(qbin);
+    bin = g_strconcat(self->MedPath, " --help", NULL);
+    gboolean b =  WinExec(bin, SW_HIDE);
+    g_free(bin);
 #else
     gchar* stdout;
     gchar* stderr;
