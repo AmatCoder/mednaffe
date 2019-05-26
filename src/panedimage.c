@@ -163,8 +163,8 @@ paned_image_scale_images (GtkWidget* sender,
   PanedImage* pi = self;
   PanedImagePrivate* priv = paned_image_get_instance_private (pi);
 
-  priv->width = (allocation->width - 2);
-  priv->height = ((allocation->height / 2) - 2);
+  priv->width = (allocation->width - 8);
+  priv->height = ((allocation->height / 2) - 8);
 
   gboolean visible = gtk_widget_get_visible ((GtkWidget*) pi);
   if (visible)
