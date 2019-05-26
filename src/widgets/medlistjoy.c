@@ -1,7 +1,7 @@
 /*
  * medlistjoy.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2019 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -22,8 +22,9 @@
  */
 
 
+#include "joystick.h"
+
 #include "marshallers.h"
-#include "medjoy.h"
 #include "medlistjoy.h"
 
 
@@ -36,17 +37,8 @@ struct _MedListJoyClass {
 
 struct _MedListJoyPrivate {
   GSList* list;
-  gint num_of_items;
 };
 
-
-enum  {
-  MED_LIST_JOY_0_PROPERTY,
-  MED_LIST_JOY_NUM_OF_JOYS_PROPERTY,
-  MED_LIST_JOY_NUM_PROPERTIES
-};
-
-static GParamSpec* med_list_joy_properties[MED_LIST_JOY_NUM_PROPERTIES];
 
 enum  {
   MED_LIST_JOY_JOY_FOUND_SIGNAL,
@@ -60,55 +52,61 @@ static guint med_list_joy_signals[MED_LIST_JOY_NUM_SIGNALS] = {0};
 G_DEFINE_TYPE_WITH_PRIVATE (MedListJoy, med_list_joy, G_TYPE_OBJECT);
 
 
-static void
-med_list_joy_pressed (MedJoy* sender,
-                      const gchar* name,
-                      const gchar* id,
-                      gint type,
-                      gint value,
-                      gint number,
-                      gpointer self)
+static gboolean
+med_list_joy_watch (gpointer self)
 {
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (name != NULL);
-  g_return_if_fail (id != NULL);
+  MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
 
-  g_signal_emit ((MedListJoy*) self, med_list_joy_signals[MED_LIST_JOY_JOY_EVENT_SIGNAL], 0, name, id, type, value, number);
+  gchar* value = read_joys (priv->list);
+
+  if (value)
+  {
+    gchar *text = value_to_text (priv->list, value);
+    g_signal_emit (self, med_list_joy_signals[MED_LIST_JOY_JOY_EVENT_SIGNAL], 0, text, value);
+    g_free (text);
+    g_free (value);
+  }
+
+  return TRUE;
+}
+
+
+void
+med_list_joy_enable_all (MedListJoy* self, gboolean enable)
+{
+  if (enable)
+  {
+    MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
+    discard_read (priv->list);
+    g_timeout_add (50, med_list_joy_watch, self);
+  }
+  else
+    g_source_remove_by_user_data (self);
 }
 
 
 static void
-med_list_joy_check_duplicates (MedListJoy* self,
-                               MedJoy* joy)
+check_duplicates (MedListJoy* self, joy_s *joy)
 {
   g_return_if_fail (self != NULL);
   g_return_if_fail (joy != NULL);
 
   MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
-  GSList* it = NULL;
 
+  GSList* it = NULL;
   for (it = priv->list; it != NULL; it = it->next)
   {
-    MedJoy* mj = it->data;
+    joy_s *joy2 = it->data;
 
-    if (g_strcmp0 (joy->id, mj->id) == 0)
+    if (joy->num == joy2->num)
+      break;
+
+    if (g_strcmp0 (joy->id, joy2->id) == 0)
     {
-      joy->id[33]++; //FIXME: This does not support more than 9 joys.
-      med_list_joy_check_duplicates (self, joy);
+      joy->id[33]++; //FIXME: This does not support more than 10 joysticks.
+      check_duplicates (self, joy);
+      break;
     }
-  }
-}
-
-void
-med_list_joy_enable_all (MedListJoy* self, gboolean enable)
-{
-  MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
-  GSList* it = NULL;
-
-  for (it = priv->list; it != NULL; it = it->next)
-  {
-    MedJoy* mj = it->data;
-    med_joy_enable_joy(mj, enable);
   }
 }
 
@@ -116,75 +114,32 @@ med_list_joy_enable_all (MedListJoy* self, gboolean enable)
 void
 med_list_joy_init_list_joy (MedListJoy* self)
 {
-  gint fd = 0;
-  gint i = 0;
-
   g_return_if_fail (self != NULL);
 
   MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
 
-  g_slist_free_full (priv->list, (GDestroyNotify) g_object_unref);
-  priv->list = NULL;
+  priv->list = init_joys ();
 
-  while (fd > -1)
-  {
-    MedJoy* joy = med_joy_new ();
-    fd = med_joy_init_joy (joy, i);
-
-    if (fd > -1)
-    {
-      med_list_joy_check_duplicates (self, joy);
-
-      g_object_ref (joy);
-      priv->list = g_slist_append (priv->list, joy);
-
-      g_signal_emit (self, med_list_joy_signals[MED_LIST_JOY_JOY_FOUND_SIGNAL], 0, joy->name, joy->id);
-
-      g_signal_connect_object (joy, "joy-event", (GCallback) med_list_joy_pressed, self, 0);
-
-      priv->num_of_items++;
-    }
-
-    i++;
-    g_object_unref (joy);
-  }
-}
-
-
-const gchar*
-med_list_joy_get_name_from_id (MedListJoy* self,
-                               const gchar* id)
-{
-  g_return_val_if_fail (self != NULL, NULL);
-  g_return_val_if_fail (id != NULL, NULL);
-
-  MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
-
-  gchar* name = "Unknown";
   GSList* it = NULL;
-
   for (it = priv->list; it != NULL; it = it->next)
   {
-    MedJoy* mj = it->data;
-
-    if (g_strcmp0 (id, mj->id) == 0)
-    {
-      name = mj->name;
-      break;
-    }
+    joy_s *joy = it->data;
+    check_duplicates (self, joy);
+    g_signal_emit (self, med_list_joy_signals[MED_LIST_JOY_JOY_FOUND_SIGNAL], 0, joy->name, joy->id);
   }
-
-  return name;
 }
 
 
-gint
-med_list_joy_get_num_of_joys (MedListJoy* self)
+gchar*
+med_list_joy_value_to_text (MedListJoy* self,
+                            const gchar* value)
 {
-  g_return_val_if_fail (self != NULL, 0);
+  g_return_val_if_fail (self != NULL, NULL);
+  g_return_val_if_fail (value != NULL, NULL);
 
   MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
-  return priv->num_of_items;
+
+  return value_to_text (priv->list, value);
 }
 
 
@@ -199,8 +154,6 @@ med_list_joy_new (void)
 static void
 med_list_joy_init (MedListJoy * self)
 {
-  MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
-  priv->num_of_items = 0;
 }
 
 
@@ -210,50 +163,18 @@ med_list_joy_finalize (GObject * obj)
   MedListJoy * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_list_joy_get_type (), MedListJoy);
   MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
 
-  g_slist_free_full (priv->list, (GDestroyNotify) g_object_unref);
+  g_source_remove_by_user_data (self);
+  close_joys (priv->list);
+  g_slist_free (priv->list);
 
   G_OBJECT_CLASS (med_list_joy_parent_class)->finalize (obj);
 }
 
 
 static void
-med_list_joy_get_property (GObject * object,
-                           guint property_id,
-                           GValue * value,
-                           GParamSpec * pspec)
-{
-  MedListJoy * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_list_joy_get_type (), MedListJoy);
-
-  switch (property_id)
-  {
-    case MED_LIST_JOY_NUM_OF_JOYS_PROPERTY:
-      g_value_set_int (value, med_list_joy_get_num_of_joys (self));
-    break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    break;
-  }
-}
-
-
-static void
 med_list_joy_class_init (MedListJoyClass * klass)
 {
-  G_OBJECT_CLASS (klass)->get_property = med_list_joy_get_property;
   G_OBJECT_CLASS (klass)->finalize = med_list_joy_finalize;
-
-  g_object_class_install_property (G_OBJECT_CLASS (klass),
-                                   MED_LIST_JOY_NUM_OF_JOYS_PROPERTY,
-                                   med_list_joy_properties[MED_LIST_JOY_NUM_OF_JOYS_PROPERTY] = g_param_spec_int
-                                   (
-                                     "num-of-joys",
-                                     "num-of-joys",
-                                     "num-of-joys",
-                                      G_MININT,
-                                      G_MAXINT,
-                                      0,
-                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE
-                                   ));
 
   med_list_joy_signals[MED_LIST_JOY_JOY_FOUND_SIGNAL] = g_signal_new ("joy-found",
                                                                       med_list_joy_get_type (),
@@ -273,12 +194,9 @@ med_list_joy_class_init (MedListJoyClass * klass)
                                                                       0,
                                                                       NULL,
                                                                       NULL,
-                                                                      g_cclosure_user_marshal_VOID__STRING_STRING_INT_INT_INT,
+                                                                      g_cclosure_user_marshal_VOID__STRING_STRING,
                                                                       G_TYPE_NONE,
-                                                                      5,
+                                                                      2,
                                                                       G_TYPE_STRING,
-                                                                      G_TYPE_STRING,
-                                                                      G_TYPE_INT,
-                                                                      G_TYPE_INT,
-                                                                      G_TYPE_INT);
+                                                                      G_TYPE_STRING);
 }

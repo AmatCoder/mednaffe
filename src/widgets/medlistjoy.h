@@ -44,8 +44,7 @@ MedListJoy* med_list_joy_new (void);
 
 void med_list_joy_init_list_joy (MedListJoy* self);
 void med_list_joy_enable_all (MedListJoy* self, gboolean enable);
-const gchar* med_list_joy_get_name_from_id (MedListJoy* self, const gchar* id);
-gint med_list_joy_get_num_of_joys (MedListJoy* self);
+gchar* med_list_joy_value_to_text (MedListJoy* self, const gchar* value);
 
 
 G_END_DECLS

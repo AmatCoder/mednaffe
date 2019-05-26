@@ -37,17 +37,12 @@ struct _MedInputClass {
 struct _MedInputPrivate {
   GtkButton* entry;
   GtkLabel* entry_label;
-  //GtkWidget* eventbox;
   MenuInput* menu;
   gchar* _command;
   gboolean _updated;
   gboolean _modified;
   gchar* _label;
   gboolean _modifier_keys;
-  //GtkCssProvider* css_normal;
-  //GtkCssProvider* css_active;
-  //GtkCssProvider* css_disabled;
-  //GtkStyleContext* stylecontext;
   gboolean is_active;
   gchar* old_text;
   gchar* internal_value;
@@ -75,11 +70,8 @@ static gboolean med_input_entry_key_press (GtkWidget* sender,
                                            gpointer self);
 
 static void med_input_joy_event (MedListJoy* sender,
-                                 const gchar* name,
-                                 const gchar* id,
-                                 gint type,
-                                 gint value,
-                                 gint number,
+                                 const gchar* text,
+                                 const gchar* value,
                                  gpointer self);
 
 
@@ -1207,49 +1199,13 @@ med_input_convert_to_text (MedInput* self,
   }
   else if (v[0] == 'j')
   {
-    GtkWidget* parent = gtk_widget_get_toplevel ((GtkWidget*) self);
-    priv->listjoy = g_object_get_data ((GObject*) parent, "listjoy");
-
-    if (items[2][0] == 'b')
+    if (priv->listjoy == NULL)
     {
-      text = g_strconcat ("Button ", string_offset (items[2], 7),
-                          " (", med_list_joy_get_name_from_id (priv->listjoy, items[1]),
-                          ")",  NULL);
-
+      GtkWidget *parent = gtk_widget_get_toplevel ((GtkWidget*) self);
+      priv->listjoy = g_object_get_data ((GObject*) parent, "listjoy");
     }
-    else if (items[2][0] == 'a')
-    {
-      gchar* t = NULL;
-      gint last = strlen (items[2]) - 1;
-      gint number = items[2][last - 1];
 
-      if (items[2][last] ==  '+')
-      {
-        if ((number % 2) != 0)
-          t = g_strdup ("Down");
-        else
-          t = g_strdup ("Right");
-      }
-      else //if(items[2][last] ==  '-')
-      {
-        if ((number % 2) != 0)
-          t = g_strdup ("Up");
-        else
-          t = g_strdup ("Left");
-      }
-
-      gchar* tmp = g_strdup(items[2]);
-
-      tmp[last] = ' ';
-      if ((tmp[last-1] == '+') || (tmp[last-1] == '-'))
-        tmp[last-1] = ' ';
-
-      const gchar* name = med_list_joy_get_name_from_id (priv->listjoy, items[1]);
-      text = g_strconcat ("Axis ", string_offset (tmp, 4), t, " (", name, ")", NULL);
-
-      g_free (tmp);
-      g_free (t);
-    }
+    text = med_list_joy_value_to_text (priv->listjoy, v);
     *p = g_strdup (items[3]);
   }
   else if (v[0] == 'm')
@@ -1351,7 +1307,13 @@ med_input_real_get_value (MedWidget* base)
   MedInputPrivate* priv = med_input_get_instance_private (self);
 
   g_free(priv->value);
+
+#ifdef G_OS_WIN32
+  priv->value = g_strconcat ("\"", priv->internal_value, "\"", NULL);
+#else
   priv->value = g_strdup (priv->internal_value);
+#endif
+
   return priv->value;
 }
 
@@ -1375,6 +1337,8 @@ med_input_close_input (MedInput* self)
                                         (GCallback) med_input_joy_event,
                                         self);
 
+  med_list_joy_enable_all(priv->listjoy, FALSE);
+
   g_signal_parse_name ("key-press-event", gtk_widget_get_type (), &id2, NULL, FALSE);
 
   g_signal_handlers_disconnect_matched ((GtkWidget*) priv->entry,
@@ -1385,9 +1349,8 @@ med_input_close_input (MedInput* self)
                                         (GCallback) med_input_entry_key_press,
                                         self);
 
-  //gtk_style_context_add_provider (priv->stylecontext, (GtkStyleProvider*) priv->css_normal, 800);
-
   priv->is_active = FALSE;
+  gtk_toggle_button_set_active ((GtkToggleButton *) priv->entry, FALSE);
 }
 
 
@@ -1417,66 +1380,17 @@ input_set_text (MedInput* mi, const gchar* text, const gchar* value)
 
 static void
 med_input_joy_event (MedListJoy* sender,
-                     const gchar* name,
-                     const gchar* id,
-                     gint type,
-                     gint value,
-                     gint number,
+                     const gchar* text,
+                     const gchar* value,
                      gpointer self)
 {
   g_return_if_fail (self != NULL);
-  g_return_if_fail (name != NULL);
-  g_return_if_fail (id != NULL);
+  g_return_if_fail (text != NULL);
+  g_return_if_fail (value != NULL);
 
   MedInput* mi = self;
-  gchar* n = g_strdup_printf ("%i", number);
 
-  if (type == 1)
-  {
-    gchar* text = g_strconcat ("Button ", n, " (", name, ")", NULL);
-    gchar* value = g_strconcat ("joystick ", id, " button_", n, NULL);
-
-    input_set_text(mi, text, value);
-
-    g_free(text);
-    g_free(value);
-  }
-  else if (type == 2)
-  {
-    gchar* t;
-    gchar* s;
-
-    if (value > 0)
-    {
-      s = g_strdup ("+");
-
-      if ((number % 2) != 0)
-        t = g_strdup (" Down");
-      else
-        t = g_strdup (" Right");
-    }
-    else
-    {
-      s = g_strdup ("-");
-
-      if ((number % 2) != 0)
-        t = g_strdup (" Up");
-      else
-        t = g_strdup (" Left");
-    }
-
-    gchar* text = g_strconcat ("Axis ", n, t, " (", name, ")", NULL);
-    gchar* value = g_strconcat ("joystick ", id, " abs_", n, s, NULL);
-
-    g_free (s);
-    g_free (t);
-
-    input_set_text(mi, text, value);
-
-    g_free(text);
-    g_free(value);
-  }
-  g_free(n);
+  input_set_text(mi, text, value);
 }
 
 
@@ -1573,8 +1487,6 @@ med_input_entry_key_press (GtkWidget* sender,
 static void
 med_input_open_input (MedInput* self)
 {
-  GtkWidget* parent;
-
   g_return_if_fail (self != NULL);
   MedInputPrivate* priv = med_input_get_instance_private (self);
 
@@ -1582,10 +1494,14 @@ med_input_open_input (MedInput* self)
 
   g_signal_connect_object ((GtkWidget*) priv->entry, "key-press-event", (GCallback) med_input_entry_key_press, self, 0);
 
-  parent = gtk_widget_get_toplevel ((GtkWidget*) self);
-  priv->listjoy = g_object_get_data ((GObject*) parent, "listjoy");
+  if (priv->listjoy == NULL)
+  {
+    GtkWidget* parent = gtk_widget_get_toplevel ((GtkWidget*) self);
+    priv->listjoy = g_object_get_data ((GObject*) parent, "listjoy");
+  }
 
   g_signal_connect_object (priv->listjoy, "joy-event", (GCallback) med_input_joy_event, self, 0);
+  med_list_joy_enable_all (priv->listjoy, TRUE);
 }
 
 
@@ -1732,7 +1648,6 @@ med_input_entry_focus_out (GtkWidget* sender,
   if (priv->is_active)
   {
     gtk_button_set_label (priv->entry, priv->old_text);
-    gtk_toggle_button_set_active ((GtkToggleButton *) priv->entry, FALSE);
     med_input_close_input (mi);
   }
 
@@ -1763,7 +1678,7 @@ med_input_menu_event (GtkMenuItem* sender,
     gtk_button_set_label (priv->entry, "");
 
     g_free (priv->internal_value);
-    priv->internal_value = g_strdup ("");
+    priv->internal_value = g_strdup (" ");
 
     med_widget_set_modified ((MedWidget*) mi, TRUE);
 
@@ -1910,8 +1825,9 @@ med_input_constructor (GType type,
 
   priv->old_text = g_strdup ("");
   priv->internal_value = g_strdup ("");
-
   priv->value = g_strdup("");
+
+  priv->listjoy = NULL;
 
   med_widget_init ((MedWidget*) self, (GtkWidget*) self);
 

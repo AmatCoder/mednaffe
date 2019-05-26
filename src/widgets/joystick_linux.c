@@ -1,7 +1,7 @@
 /*
  * joystick_linux.c
  * 
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2019 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -32,9 +32,9 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/stat.h>
-
 #include <linux/joystick.h>
-#include "joystick_linux.h"
+
+#include "joystick.h"
 
 
 static const char*
@@ -151,123 +151,188 @@ GetBVPV (const gchar* jsdev_name)
 
 
 void
-close_fd (gint fd)
+close_joys (GSList *list)
 {
-  if (fd > -1)
-    close (fd);
+  GSList* it = NULL;
+  for (it = list; it != NULL; it = it->next)
+  {
+    joy_s *joy = it->data;
+    close (GPOINTER_TO_INT (joy->data1));
+    g_free (joy->name);
+    g_free (joy->id);
+  }
+}
+
+
+GSList*
+init_joys ()
+{
+  GSList *joy_list = NULL;
+  gint js = 0;
+
+  while (1)
+  {
+    gchar *number = g_strdup_printf ("js%i", js);
+    gchar *path = g_strconcat ("/dev/input/", number, NULL);
+
+    gint fd = open (path, O_RDONLY);
+
+    g_free (path);
+
+    if (fd == -1)
+      break;
+
+    if (fcntl(fd, F_SETFL, fcntl (fd, F_GETFL) | O_NONBLOCK) == -1)
+      printf ("WARNING: Failed to enable O_NONBLOCK flag\n");
+
+    unsigned char tmp;
+    unsigned num_buttons = 0;
+    unsigned num_axes = 0;
+    char aname[128];
+
+   if(ioctl(fd, JSIOCGBUTTONS, &tmp) == -1)
+     printf("Failed to get number of axes");
+   else
+     num_buttons = tmp;
+
+   if(ioctl(fd, JSIOCGAXES, &tmp) == -1)
+     printf("Failed to get number of axes");
+   else
+     num_axes = tmp;
+
+    memset(aname, 0, sizeof (aname));
+    ioctl(fd, JSIOCGNAME(sizeof (aname) - 1), aname);
+
+    joy_s *joy = g_new0 (joy_s, 1);
+    joy->num = js;
+    joy->type = 1;
+    joy->name = g_strndup(aname, strlen (aname));
+    joy->id = g_strdup_printf ("0x%016lx%04x%04x%08x", GetBVPV (number), num_axes, num_buttons, 0);
+    joy->data1 = GINT_TO_POINTER(fd);
+
+    g_free(number);
+
+    joy_list = g_slist_append (joy_list, joy);
+
+    js++;
+  }
+
+  return joy_list;
+}
+
+
+static const gchar*
+get_name_from_id (GSList* list,
+                  const gchar* id)
+{
+  g_return_val_if_fail (id != NULL, NULL);
+
+  const gchar* name = "Unknown Device";
+
+  GSList* it = NULL;
+  for (it = list; it != NULL; it = it->next)
+  {
+    joy_s *joy = it->data;
+    const gchar* joy_id = joy->id;
+
+    if (g_strcmp0 (id, joy_id) == 0)
+    {
+      name = joy->name;
+      break;
+    }
+  }
+
+  return name;
 }
 
 
 gchar*
-get_id (guint js,
-        guint num_axes,
-        guint num_buttons)
+value_to_text (GSList* listjoy,
+               const gchar* value)
 {
-  gchar *number = g_strdup_printf ("js%i", js);
-  gchar* id = g_strdup_printf ("0x%016lx%04x%04x%08x", GetBVPV (number), num_axes, num_buttons, 0);
-  g_free(number);
-  return id;
-}
+  gchar* text = NULL;
+  gchar** items = g_strsplit (value, " ", 4);
 
+  if (items[2][0] == 'b')
+  {
+    text = g_strconcat ("Button ", (items[2] + 7),
+                        " (", get_name_from_id (listjoy, items[1]),
+                        ")",  NULL);
+  }
+  else if (items[2][0] == 'a')
+  {
+    const gchar* name = get_name_from_id (listjoy, items[1]);
+    text = g_strconcat ("Axis ", (items[2] + 4), " (", name, ")", NULL);
+  }
 
-gchar*
-get_name (gint fd)
-{
-  char name[128];
+  g_strfreev(items);
 
-  memset(name, 0, sizeof (name));
-  ioctl(fd, JSIOCGNAME(sizeof (name) - 1), name);
-
-  return g_strndup(name, strlen (name));
-}
-
-
-guint
-get_num_axes (gint fd)
-{
-  unsigned num_axes = 0;
-  unsigned char tmp;
-
- if(ioctl(fd, JSIOCGAXES, &tmp) == -1)
-   printf("Failed to get number of axes");
- else
-   num_axes = tmp;
-
-  return num_axes;
-}
-
-
-guint
-get_num_buttons (gint fd)
-{
-  unsigned num_buttons = 0;
-  unsigned char tmp;
-
- if(ioctl(fd, JSIOCGBUTTONS, &tmp) == -1)
-   printf("Failed to get number of axes");
- else
-   num_buttons = tmp;
-
-  return num_buttons;
-}
-
-
-gint
-get_joy_fd (guint js)
-{
-  gchar *number = g_strdup_printf ("js%i", js);
-
-  gchar *path = g_strconcat ("/dev/input/", number, NULL);
- 
-  gint fd = open (path, O_RDONLY);
-
-  g_free (path); 
-  g_free (number);
-
-  if (fd == -1)
-    return -1;
- 
-  if (fcntl(fd, F_SETFL, fcntl (fd, F_GETFL) | O_NONBLOCK) == -1)
-    printf ("WARNING: Failed to enable O_NONBLOCK flag\n");
-
-  return fd;
+  return text;
 }
 
 
 void
-discard_read (gint fd)
+discard_read (GSList *list)
 {
-  struct js_event e;
-  ssize_t s = 1;
-
-  while (s > 0)
+  GSList* it = NULL;
+  for (it = list; it != NULL; it = it->next)
   {
-    s = read (fd, &e, sizeof(e));
+    joy_s *joy = it->data;
+    struct js_event e;
+    ssize_t s = 1;
+
+    while (s > 0)
+    {
+      s = read (GPOINTER_TO_INT (joy->data1), &e, sizeof(e));
+    }
   }
 }
 
 
-ssize_t
-read_joy (gint fd,
-          gint *type,
-          gint *value,
-          gint *number)
+gchar*
+read_joys (GSList *list)
 {
-  struct js_event e;
-  ssize_t s = read (fd, &e, sizeof(e));
+  gchar* value = NULL;
 
-  if (s == -1) return s;
-  if (e.value == 0) return -1;
-
-  if ((e.type == JS_EVENT_BUTTON) ||
-     ((e.type == JS_EVENT_AXIS) &&
-     ((e.value < -16384) || (e.value > 16384))))
+  GSList* it = NULL;
+  for (it = list; it != NULL; it = it->next)
   {
-    *type = e.type;
-    *value = e.value;
-    *number = e.number;
-  }
-  else return -1;
+    joy_s *joy = it->data;
+    struct js_event e;
+    ssize_t st = read (GPOINTER_TO_INT (joy->data1), &e, sizeof(e));
 
-  return s;
+    if ( (st == -1) || (e.value == 0) ) continue;
+
+    if ((e.type == JS_EVENT_BUTTON) ||
+       ((e.type == JS_EVENT_AXIS) &&
+       ((e.value < -16384) || (e.value > 16384))))
+    {
+      if (e.type == 1)
+      {
+        gchar* n = g_strdup_printf ("%i", e.number);
+        value = g_strconcat ("joystick ", joy->id, " button_", n, NULL);
+        g_free(n);
+
+        return value;
+      }
+      else if (e.type == 2)
+      {
+        gchar* s;
+
+        if (e.value > 0)
+          s = g_strdup ("+");
+        else
+          s = g_strdup ("-");
+
+        gchar* n = g_strdup_printf ("%i", e.number);
+        value = g_strconcat ("joystick ", joy->id, " abs_", n, s, NULL);
+        g_free (s);
+        g_free(n);
+
+        return value;
+      }
+    }
+  }
+
+  return value;
 }

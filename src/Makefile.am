@@ -23,7 +23,6 @@ widgets/meddialogentry.c widgets/meddialogentry.h \
 widgets/medentry.c widgets/medentry.h \
 widgets/medinput.c widgets/medinput.h \
 widgets/medirange.c widgets/medirange.h \
-widgets/medjoy.c widgets/medjoy.h \
 widgets/medlistjoy.c widgets/medlistjoy.h \
 widgets/medrange.c widgets/medrange.h \
 widgets/medscale.c widgets/medscale.h \
@@ -35,17 +34,18 @@ widgets/menuinput.c widgets/menuinput.h
 override CFLAGS +=-std=c99 -Wall
 
 if LINUX
-  mednaffe_SOURCES+= widgets/joystick_linux.c widgets/joystick_linux.h
+  mednaffe_SOURCES+= widgets/joystick_linux.c
   override CFLAGS +=-Wl,-export-dynamic
 else
 if WINDOWS
-  mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
+  mednaffe_SOURCES+= widgets/joystick_windows.c
   override CFLAGS +=-mwindows
+  LIBS +=-ldxguid -ldinput
 else
 if MAC
-  mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
+  mednaffe_SOURCES+= widgets/joystick_dummy.c
 else
-  mednaffe_SOURCES+= widgets/joystick_windows.c widgets/joystick_windows.h
+  mednaffe_SOURCES+= widgets/joystick_dummy.c
   override CFLAGS +=-Wl,-export-dynamic
 endif
 endif

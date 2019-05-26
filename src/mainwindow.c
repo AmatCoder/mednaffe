@@ -298,7 +298,6 @@ main_window_paned_list_launched (PanedList* _sender,
 
   if ((selection != NULL) || (gtk_widget_get_sensitive ((GtkWidget*) priv->launch_button)))
   {
-    med_list_joy_enable_all(priv->listjoy, FALSE);
     gtk_widget_set_sensitive (((GtkWidget*) priv->launch_button), FALSE);
 
     const gchar *action = med_widget_get_value ((MedWidget*) priv->preferences->action_launch);
@@ -520,8 +519,6 @@ main_window_process_exec_emu_ended (MedProcess* sender,
 
   gtk_widget_set_sensitive (((GtkWidget*) priv->launch_button), TRUE);
 
-  med_list_joy_enable_all(priv->listjoy, TRUE);
-
   med_process_read_conf (priv->med_process);
   main_window_set_values (mw);
 
@@ -576,7 +573,7 @@ main_window_medwid_map (GtkWidget* sender, gpointer self)
   {
     priv->map_list = g_slist_prepend (priv->map_list, sender);
 
-    if (med_widget_get_updated ((MedWidget*)sender) == FALSE)
+    if (!med_widget_get_updated ((MedWidget*) sender))
     {
       med_widget_set_value ((MedWidget*) sender, tmp);
       med_widget_set_modified ((MedWidget*) sender, FALSE);
