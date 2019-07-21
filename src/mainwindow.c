@@ -918,7 +918,10 @@ main_window_load_settings (MainWindow* self)
   g_free (conf_path);
 
   if (!valid)
+  {
+    gtk_widget_show ((GtkWidget*) self);
     return;
+  }
 
   g_slist_foreach (priv->preferences->list, (GFunc)load_preflist_func, key);
 
