@@ -1440,35 +1440,38 @@ med_input_entry_key_press (GtkWidget* sender,
 
   if (priv->_modifier_keys)
   {
+    gchar* tmp1;
+    gchar* tmp2;
+
     if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK)
     {
-      gchar* tmp = g_strconcat (mods, "Ctrl+", NULL);
+      tmp1 = g_strconcat (mods, "Ctrl+", NULL);
       g_free (mods);
-      mods = tmp;
+      mods = tmp1;
 
-      gchar* tmp2 = g_strconcat (value, "+ctrl", NULL);
+      tmp2 = g_strconcat (value, "+ctrl", NULL);
       g_free (value);
       value = tmp2;
     }
 
     if ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK)
     {
-      gchar* tmp = g_strconcat (mods, "Alt+", NULL);
+      tmp1 = g_strconcat (mods, "Alt+", NULL);
       g_free (mods);
-      mods = tmp;
+      mods = tmp1;
 
-      gchar* tmp2 = g_strconcat (value, "+alt", NULL);
+      tmp2 = g_strconcat (value, "+alt", NULL);
       g_free (value);
       value = tmp2;
     }
 
     if ((event->state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK)
     {
-      gchar* tmp = g_strconcat (mods, "Shift+", NULL);
+      tmp1 = g_strconcat (mods, "Shift+", NULL);
       g_free (mods);
-      mods = tmp;
+      mods = tmp1;
 
-      gchar* tmp2 = g_strconcat (value, "+shift", NULL);
+      tmp2 = g_strconcat (value, "+shift", NULL);
       g_free (value);
       value = tmp2;
     }
