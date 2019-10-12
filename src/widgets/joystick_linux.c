@@ -253,16 +253,25 @@ value_to_text (GSList* listjoy,
   gchar* text = NULL;
   gchar** items = g_strsplit (value, " ", 4);
 
+  if (g_strv_length (items) < 3)
+    return text;
+
   if (items[2][0] == 'b')
   {
-    text = g_strconcat ("Button ", (items[2] + 7),
-                        " (", get_name_from_id (listjoy, items[1]),
-                        ")",  NULL);
+    if (strlen (items[2]) > 7)
+    {
+      text = g_strconcat ("Button ", (items[2] + 7),
+                          " (", get_name_from_id (listjoy, items[1]),
+                          ")",  NULL);
+    }
   }
   else if (items[2][0] == 'a')
   {
-    const gchar* name = get_name_from_id (listjoy, items[1]);
-    text = g_strconcat ("Axis ", (items[2] + 4), " (", name, ")", NULL);
+    if (strlen (items[2]) > 4)
+    {
+      const gchar* name = get_name_from_id (listjoy, items[1]);
+      text = g_strconcat ("Axis ", (items[2] + 4), " (", name, ")", NULL);
+    }
   }
 
   g_strfreev(items);

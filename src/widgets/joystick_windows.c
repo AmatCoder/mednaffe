@@ -368,30 +368,38 @@ value_to_text (GSList* listjoy, const gchar* value)
   gchar* text = NULL;
   gchar** items = g_strsplit (value, " ", 4);
 
+  if (g_strv_length (items) < 3)
+    return text;
+
   if (items[2][0] == 'b')
     {
-      /*
-      gint type = get_type_from_id (listjoy, items[1]);
-
-      if (type == 3)
+      if (strlen (items[2]) > 7)
       {
-        gint b = g_ascii_strtoull ((items[2] + 7), NULL, 10);
-        gchar* button = xinput_map (b);
-        text = g_strconcat (button,
-                            " (", get_name_from_id (listjoy, items[1]),
-                            ")",  NULL);
-        g_free (button);
-      }
-      else  */
-        text = g_strconcat ("Button ", (items[2] + 7),
-                            " (", get_name_from_id (listjoy, items[1]),
-                            ")",  NULL);
+        /*
+        gint type = get_type_from_id (listjoy, items[1]);
 
+        if (type == 3)
+        {
+          gint b = g_ascii_strtoull ((items[2] + 7), NULL, 10);
+          gchar* button = xinput_map (b);
+          text = g_strconcat (button,
+                              " (", get_name_from_id (listjoy, items[1]),
+                              ")",  NULL);
+          g_free (button);
+        }
+        else  */
+          text = g_strconcat ("Button ", (items[2] + 7),
+                              " (", get_name_from_id (listjoy, items[1]),
+                              ")",  NULL);
+      }
     }
     else if (items[2][0] == 'a')
     {
-      const gchar* name = get_name_from_id (listjoy, items[1]);
-      text = g_strconcat ("Axis ", (items[2] + 4), " (", name, ")", NULL);
+      if (strlen (items[2]) > 4)
+      {
+        const gchar* name = get_name_from_id (listjoy, items[1]);
+        text = g_strconcat ("Axis ", (items[2] + 4), " (", name, ")", NULL);
+      }
     }
 
   g_strfreev(items);

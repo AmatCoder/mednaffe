@@ -1172,6 +1172,9 @@ med_input_convert_to_text (MedInput* self,
   gchar* text = NULL;
   gchar** items = g_strsplit (v, " ", 4);
 
+  if (g_strv_length (items) < 3)
+    return text;
+
   if (v[0] ==  'k')
   {
     if (g_strcmp0 (items[1], "0x0") == 0)
