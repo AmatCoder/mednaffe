@@ -47,8 +47,6 @@ close_joys (GSList *list)
   for (it = list; it != NULL; it = it->next)
   {
     joy_s *joy = it->data;
-    g_free (joy->name);
-    g_free (joy->id);
 
     if (joy->type == 4)
     {
@@ -60,6 +58,10 @@ close_joys (GSList *list)
         dev->lpVtbl->Release(dev);
       }
     }
+
+    g_free (joy->name);
+    g_free (joy->id);
+    g_free (joy);
   }
 
     if (x_dll_handle != NULL)

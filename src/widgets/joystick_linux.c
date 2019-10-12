@@ -160,6 +160,7 @@ close_joys (GSList *list)
     close (GPOINTER_TO_INT (joy->data1));
     g_free (joy->name);
     g_free (joy->id);
+    g_free (joy);
   }
 }
 
@@ -180,7 +181,10 @@ init_joys ()
     g_free (path);
 
     if (fd == -1)
+    {
+      g_free(number);
       break;
+    }
 
     if (fcntl(fd, F_SETFL, fcntl (fd, F_GETFL) | O_NONBLOCK) == -1)
       printf ("WARNING: Failed to enable O_NONBLOCK flag\n");
