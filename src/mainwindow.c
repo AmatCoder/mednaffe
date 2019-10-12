@@ -578,8 +578,8 @@ main_window_medwid_map (GtkWidget* sender, gpointer self)
       med_widget_set_value ((MedWidget*) sender, tmp);
       med_widget_set_modified ((MedWidget*) sender, FALSE);
       med_widget_set_updated ((MedWidget*) sender, TRUE);
-      gtk_widget_set_sensitive (sender, TRUE);
     }
+    gtk_widget_set_sensitive (sender, gtk_widget_get_sensitive ((GtkWidget*) priv->launch_button));
   }
   else
     gtk_widget_set_sensitive (sender, FALSE);
