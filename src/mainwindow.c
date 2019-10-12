@@ -876,7 +876,10 @@ load_list_func (gconstpointer data, gpointer self)
 
   gchar* value = g_key_file_get_string((GKeyFile*)self, "EMU", command, NULL);
   if (value)
+  {
     med_widget_set_value ((MedWidget*)data, value);
+    med_widget_set_updated ((MedWidget*)data, TRUE);
+  }
 
   g_free(value);
 }
