@@ -38,7 +38,7 @@
 
 
 static const char*
-FindSysFSInputBase()
+FindSysFSInputBase (void)
 {
   static const char* p[] = { "/sys/subsystem/input", "/sys/bus/input", "/sys/block/input", "/sys/class/input" };
   struct stat stat_buf;
@@ -166,7 +166,7 @@ close_joys (GSList *list)
 
 
 GSList*
-init_joys ()
+init_joys (void)
 {
   GSList *joy_list = NULL;
   gint js = 0;

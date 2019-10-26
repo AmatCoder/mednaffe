@@ -40,7 +40,7 @@ typedef struct{
 }joy_s;
 
 
-GSList* init_joys ();
+GSList* init_joys (void);
 void discard_read (GSList *list);
 gchar* read_joys (GSList *list);
 void close_joys (GSList *list);
