@@ -319,6 +319,10 @@ paned_list_fill_list (PanedList* self,
 
   GtkAllocation alloc;
   gtk_widget_get_allocation ((GtkWidget*) self, &alloc);
+
+  if ((vpos == 0) && ((path_img_a[0] != '\0') || (path_img_b[0] != '\0')))
+    vpos = alloc.width / 2;
+
   gtk_paned_set_position ((GtkPaned*) self, (alloc.width - vpos));
   //gtk_paned_set_position ((GtkPaned*) priv->panedimage, (alloc.height - hpos)); /* FIXME: This does not work (gtk bug?) */
 
