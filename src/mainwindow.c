@@ -81,6 +81,30 @@ struct _MainWindowPrivate {
 G_DEFINE_TYPE_WITH_PRIVATE (MainWindow, main_window, GTK_TYPE_APPLICATION_WINDOW);
 
 
+static const gchar*
+main_window_get_table_value (GHashTable* table, MedWidget* wid)
+{
+  const gchar* text = "";
+
+  if ( (med_widget_get_modified (wid)) || (!gtk_widget_get_visible ((GtkWidget*) wid)) )
+  {
+    text = med_widget_get_value (wid);
+  }
+  else
+  {
+    const gchar* command = med_widget_get_command (wid);
+
+    if (command)
+    {
+      command++;
+      text = g_hash_table_lookup (table, command);
+    }
+  }
+
+  return text;
+}
+
+
 static void
 main_window_update_bios (MainWindow* self,
                          MedBiosEntry* entry)
@@ -95,8 +119,8 @@ main_window_update_bios (MainWindow* self,
 
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
-  text = med_widget_get_value ((MedWidget*) entry);
-  firmware= med_widget_get_value ((MedWidget*) priv->path_firmware);
+  text = main_window_get_table_value (priv->med_process->table, (MedWidget*) entry);
+  firmware = main_window_get_table_value (priv->med_process->table, (MedWidget*) priv->path_firmware);
 
 #ifdef G_OS_WIN32
   mh = g_win32_get_package_installation_directory_of_module (NULL);
