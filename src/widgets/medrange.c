@@ -342,15 +342,10 @@ med_range_constructor (GType type,
 
   gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) priv->s_label, FALSE, FALSE, 0);
 
-#ifdef G_OS_WIN32
-  g_object_set ((GtkWidget*) priv->s, "valign", GTK_ALIGN_CENTER, NULL);
-  //gtk_box_pack_start ((GtkBox*) self, priv->s, FALSE, FALSE, 12);
-#else
   if (priv->_is_scale)
     gtk_box_pack_start ((GtkBox*) self, priv->s, FALSE, FALSE, 0);
   else
     gtk_box_pack_start ((GtkBox*) self, priv->s, FALSE, FALSE, 12);
-#endif
 
   gtk_widget_show ((GtkWidget*) priv->s_label);
   gtk_widget_show (priv->s);
