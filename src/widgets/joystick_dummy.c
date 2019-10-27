@@ -39,7 +39,7 @@ value_to_text (GSList* listjoy, const gchar* value)
 
 
 GSList*
-init_joys ()
+init_joys (void)
 {
   return NULL;
 }

@@ -251,7 +251,7 @@ get_joy_dinput (GSList* list)
 
 
 GSList*
-init_joys ()
+init_joys (void)
 {
   if (x_dll_handle == NULL)
   {
