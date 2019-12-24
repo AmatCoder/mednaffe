@@ -22,6 +22,7 @@
  */
 
 
+#include <string.h>
 #include "widgets/marshallers.h"
 #include "panedlist.h"
 #include "panedimage.h"
