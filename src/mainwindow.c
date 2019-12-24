@@ -517,6 +517,20 @@ main_window_process_exec_emu_ended (MedProcess* sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
+#ifdef G_OS_WIN32
+  gchar* string = NULL;
+  gchar* wpath = g_win32_get_package_installation_directory_of_module (NULL);
+  gchar* txt = g_strconcat (wpath, "\\stdout.txt", NULL);
+
+  if (g_file_get_contents(txt, &string, NULL, NULL))
+  {
+    logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_EMU, string);
+    g_free (string);
+  }
+
+  g_free (txt);
+  g_free (wpath);
+#else
   if (status != 0)
   {
     gchar* last_line;
@@ -524,15 +538,12 @@ main_window_process_exec_emu_ended (MedProcess* sender,
 
     last_line = logbook_get_last_line (priv->logbook);
     err_msg = g_strconcat ("Mednafen error:\n  ", last_line, NULL);
-#ifdef G_OS_WIN32
-  //TODO
-#else
     main_window_show_error (mw, err_msg);
-#endif
 
     g_free (err_msg);
     g_free (last_line);
   }
+#endif
 
   const gchar* action = med_widget_get_value ((MedWidget*) priv->preferences->action_launch);
 
