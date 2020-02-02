@@ -395,6 +395,23 @@ main_window_preferences_show_filters (PreferencesWindow* sender,
 
 
 static void
+main_window_preferences_change_theme (PreferencesWindow* sender, gint t, gpointer self)
+{
+#ifdef G_OS_WIN32
+  GtkSettings *settings = gtk_settings_get_default();
+
+  if (t == 0)
+    g_object_set(settings, "gtk-theme-name", "Windows10", NULL);
+  else if (t == 1)
+    g_object_set(settings, "gtk-theme-name", "win32", NULL);
+  else if (t == 2)
+    g_object_set(settings, "gtk-theme-name", "Adwaita", NULL);
+
+#endif
+}
+
+
+static void
 main_window_preferences_show_systems (PreferencesWindow* sender,
                                       gint i,
                                       gboolean b,
@@ -812,6 +829,9 @@ main_window_save_settings (MainWindow* self)
   g_slist_foreach (priv->list, (GFunc) save_list_func, key);
 
 #ifdef G_OS_WIN32
+  gint theme = gtk_combo_box_get_active (GTK_COMBO_BOX(priv->preferences->change_theme));
+  g_key_file_set_integer (key, "GUI", "Theme", theme);
+
   gchar* conf_path = g_win32_get_package_installation_directory_of_module (NULL);
 #else
   gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe", NULL);
@@ -945,7 +965,7 @@ main_window_load_settings (MainWindow* self)
 
   GKeyFile *key = g_key_file_new ();
 
- #ifdef G_OS_WIN32
+#ifdef G_OS_WIN32
   gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
   gchar* conf_path = g_strconcat (dir, "\\mednaffe.conf", NULL);
   g_free(dir);
@@ -986,6 +1006,12 @@ main_window_load_settings (MainWindow* self)
   }
 
   gtk_widget_show ((GtkWidget*) self);
+
+#ifdef G_OS_WIN32
+  gint t = g_key_file_get_integer (key, "GUI", "Theme", NULL);
+  gtk_combo_box_set_active (GTK_COMBO_BOX(priv->preferences->change_theme), t);
+  main_window_preferences_change_theme (NULL, t, NULL);
+#endif
 
   gsize size;
   gchar** dirs = g_key_file_get_string_list (key, "GUI", "Dirs", &size, NULL);
@@ -1112,6 +1138,7 @@ main_window_new (GtkApplication* app)
 
   gtk_tree_model_filter_set_visible_column (priv->systems_filter, 2);
   g_signal_connect_object (priv->preferences, "on-show-systems", (GCallback) main_window_preferences_show_systems, self, 0);
+  g_signal_connect_object (priv->preferences, "on-change-theme", (GCallback) main_window_preferences_change_theme, self, 0);
 
   GdkPixbuf* icon = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe.png", NULL);
   gtk_window_set_icon ((GtkWindow*) self, icon);

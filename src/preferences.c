@@ -38,6 +38,7 @@ enum  {
   PREFERENCES_WINDOW_ON_SHOW_TIPS_SIGNAL,
   PREFERENCES_WINDOW_ON_SHOW_FILTERS_SIGNAL,
   PREFERENCES_WINDOW_ON_SHOW_SYSTEMS_SIGNAL,
+  PREFERENCES_WINDOW_ON_CHANGE_THEME_SIGNAL,
   PREFERENCES_WINDOW_NUM_SIGNALS
 };
 
@@ -137,6 +138,16 @@ preferences_window_on_system_toggled (GtkToggleButton* sender,
 
 
 static void
+preferences_window_on_change_theme (GtkComboBox* sender,
+                                    gpointer self)
+{
+  PreferencesWindow* pw = self;
+  gint t = gtk_combo_box_get_active (sender);
+  g_signal_emit (pw, preferences_window_signals[PREFERENCES_WINDOW_ON_CHANGE_THEME_SIGNAL], 0, t);
+}
+
+
+static void
 preferences_window_set_list (PreferencesWindow* self,
                              GtkWidget* wid)
 {
@@ -211,6 +222,10 @@ preferences_window_new (GtkWindow* parent)
 
   preferences_window_set_list (self, (GtkWidget*) self);
 
+#ifndef G_OS_WIN32
+  gtk_combo_box_text_remove_all (self->change_theme);
+#endif
+
   return self;
 }
 
@@ -266,6 +281,16 @@ preferences_window_class_init (PreferencesWindowClass * klass)
                                                                                         G_TYPE_INT,
                                                                                         G_TYPE_BOOLEAN);
 
+  preferences_window_signals[PREFERENCES_WINDOW_ON_CHANGE_THEME_SIGNAL] = g_signal_new ("on-change-theme",
+                                                                                     preferences_window_get_type (),
+                                                                                     G_SIGNAL_RUN_LAST,
+                                                                                     0,
+                                                                                     NULL,
+                                                                                     NULL,
+                                                                                     g_cclosure_marshal_VOID__INT,
+                                                                                     G_TYPE_NONE,
+                                                                                     1,
+                                                                                     G_TYPE_INT);
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "win_size",
@@ -282,6 +307,11 @@ preferences_window_class_init (PreferencesWindowClass * klass)
                                              FALSE,
                                              G_STRUCT_OFFSET (PreferencesWindow, action_launch));
 
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+                                             "change_theme",
+                                             FALSE,
+                                             G_STRUCT_OFFSET (PreferencesWindow, change_theme));
+
 
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "on_system_toggled",
@@ -294,4 +324,8 @@ preferences_window_class_init (PreferencesWindowClass * klass)
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "on_close",
                                                 G_CALLBACK(preferences_window_on_close));
+
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+                                                "on_change_theme",
+                                                G_CALLBACK(preferences_window_on_change_theme));
 }

@@ -22,7 +22,7 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.12"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
@@ -63,8 +63,8 @@ Author: AmatCoder
     <property name="title" translatable="yes">Bios Check</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
-    <property name="default_width">1024</property>
-    <property name="default_height">768</property>
+    <property name="default_width">800</property>
+    <property name="default_height">600</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="on_close_x" swapped="no"/>
@@ -139,7 +139,6 @@ Author: AmatCoder
                 <property name="can_focus">True</property>
                 <property name="tab_pos">left</property>
                 <property name="show_tabs">False</property>
-                <property name="show_border">False</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
@@ -150,6 +149,7 @@ Author: AmatCoder
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -221,6 +221,17 @@ Author: AmatCoder
                         <property name="position">0</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                 </child>
                 <child type="tab">
@@ -243,6 +254,7 @@ Author: AmatCoder
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -314,6 +326,17 @@ Author: AmatCoder
                         <property name="position">0</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -340,6 +363,7 @@ Author: AmatCoder
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -411,6 +435,17 @@ Author: AmatCoder
                         <property name="position">0</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="position">2</property>
@@ -438,6 +473,7 @@ Author: AmatCoder
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -510,10 +546,22 @@ Author: AmatCoder
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -582,7 +630,18 @@ Author: AmatCoder
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                   </object>
@@ -612,6 +671,7 @@ Author: AmatCoder
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -684,10 +744,22 @@ Author: AmatCoder
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkFrame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -756,7 +828,18 @@ Author: AmatCoder
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                     <child>
@@ -764,6 +847,7 @@ Author: AmatCoder
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0.5</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -832,7 +916,18 @@ Author: AmatCoder
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">2</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">5</property>
                       </packing>
                     </child>
                   </object>
@@ -855,13 +950,12 @@ Author: AmatCoder
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="padding">12</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="padding">6</property>
             <property name="position">1</property>

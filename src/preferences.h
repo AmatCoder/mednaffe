@@ -43,6 +43,7 @@ struct _PreferencesWindow {
   MedCheckButton* win_size;
   MedCheckButton* win_pos;
   MedComboBox* action_launch;
+  GtkComboBoxText *change_theme;
 };
 
 
