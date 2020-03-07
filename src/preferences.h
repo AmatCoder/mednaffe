@@ -44,6 +44,7 @@ struct _PreferencesWindow {
   MedCheckButton* win_pos;
   MedComboBox* action_launch;
   GtkComboBoxText *change_theme;
+  GtkNotebook *notebook;
 };
 
 

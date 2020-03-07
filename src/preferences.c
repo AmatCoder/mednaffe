@@ -223,7 +223,7 @@ preferences_window_new (GtkWindow* parent)
   preferences_window_set_list (self, (GtkWidget*) self);
 
 #ifndef G_OS_WIN32
-  gtk_combo_box_text_remove_all (self->change_theme);
+  gtk_notebook_remove_page (self->notebook, 2);
 #endif
 
   return self;
@@ -311,6 +311,11 @@ preferences_window_class_init (PreferencesWindowClass * klass)
                                              "change_theme",
                                              FALSE,
                                              G_STRUCT_OFFSET (PreferencesWindow, change_theme));
+
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+                                             "notebook",
+                                             FALSE,
+                                             G_STRUCT_OFFSET (PreferencesWindow, notebook));
 
 
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
