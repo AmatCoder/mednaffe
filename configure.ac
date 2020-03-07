@@ -24,7 +24,7 @@ case $host_os in
          AM_CONDITIONAL([LINUX], [false])
          AM_CONDITIONAL([WINDOWS], [true])
          AM_CONDITIONAL([MAC], [false])
-         ;;
+	;;
   darwin*)
          AM_CONDITIONAL([MAC], [true])
          AM_CONDITIONAL([LINUX], [false])
@@ -34,6 +34,15 @@ case $host_os in
          AM_CONDITIONAL([LINUX], [false])
          AM_CONDITIONAL([WINDOWS], [false])
          AM_CONDITIONAL([MAC], [false])
+         ;;
+esac
+
+case $host in
+  *-mingw32.static)
+	DEFINES="-DSTATIC_BUILD"
+         ;;
+  *)
+        DEFINES="" 
          ;;
 esac
 
@@ -56,6 +65,8 @@ else
 fi
 
 PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.12 glib-2.0 >= 2.40 gthread-2.0], AC_MSG_NOTICE([Checking for GTK+ 3 development libraries]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.12 development libraries))
+
+AC_SUBST(DEFINES)
 
 AC_CONFIG_FILES([Makefile share/Makefile src/Makefile])
 AC_OUTPUT

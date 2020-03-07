@@ -221,8 +221,7 @@ preferences_window_new (GtkWindow* parent)
   med_widget_set_value ((MedWidget*) self->action_launch, "do nothing");
 
   preferences_window_set_list (self, (GtkWidget*) self);
-
-#ifndef G_OS_WIN32
+#ifndef STATIC_BUILD
   gtk_notebook_remove_page (self->notebook, 2);
 #endif
 

@@ -31,7 +31,7 @@ widgets/medwidget.c widgets/medwidget.h \
 widgets/menuinput.c widgets/menuinput.h
 
 
-override CFLAGS +=-std=c99 -Wall
+override CFLAGS +=-std=c99 -Wall $(DEFINES)
 
 if LINUX
   mednaffe_SOURCES+= widgets/joystick_linux.c

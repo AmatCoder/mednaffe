@@ -242,6 +242,7 @@ CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DEFINES = @DEFINES@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
@@ -819,7 +820,7 @@ uninstall-am: uninstall-binPROGRAMS
 .PRECIOUS: Makefile
 
 
-override CFLAGS +=-std=c99 -Wall
+override CFLAGS +=-std=c99 -Wall $(DEFINES)
 @LINUX_TRUE@  override CFLAGS +=-Wl,-export-dynamic
 @LINUX_FALSE@@WINDOWS_TRUE@  override CFLAGS +=-mwindows
 @LINUX_FALSE@@MAC_FALSE@@WINDOWS_FALSE@  override CFLAGS +=-Wl,-export-dynamic

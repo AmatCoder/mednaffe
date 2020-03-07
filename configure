@@ -623,6 +623,7 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+DEFINES
 GTK_LIBS
 GTK_CFLAGS
 PKG_CONFIG_LIBDIR
@@ -4007,7 +4008,7 @@ else
   MAC_FALSE=
 fi
 
-         ;;
+	;;
   darwin*)
           if true; then
   MAC_TRUE=
@@ -4059,6 +4060,15 @@ else
   MAC_FALSE=
 fi
 
+         ;;
+esac
+
+case $host in
+  *-mingw32.static)
+	DEFINES="-DSTATIC_BUILD"
+         ;;
+  *)
+        DEFINES=""
          ;;
 esac
 
@@ -4749,6 +4759,8 @@ $as_echo "yes" >&6; }
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: Checking for GTK+ 3 development libraries" >&5
 $as_echo "$as_me: Checking for GTK+ 3 development libraries" >&6;}
 fi
+
+
 
 ac_config_files="$ac_config_files Makefile share/Makefile src/Makefile"
 
