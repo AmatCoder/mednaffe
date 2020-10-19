@@ -44,6 +44,7 @@ struct _MedInputPrivate {
   gchar* _label;
   gboolean _modifier_keys;
   gboolean is_active;
+  gboolean is_mouse;
   gchar* old_text;
   gchar* internal_value;
   gchar* value;
@@ -1087,9 +1088,9 @@ med_input_get_sdl_key (MedInput* self,
   g_return_val_if_fail (str != NULL, NULL);
 
   items = g_strsplit (str, "+", 0);
-  result =g_strdup (items[0]);
+  result = g_strdup (items[0]);
 
-  g_strfreev(items);
+  g_strfreev (items);
 
   return result;
 }
@@ -1108,7 +1109,7 @@ med_input_check_mods (MedInput* self,
 
   mods = g_strdup ("");
   items = g_strsplit (str, "+", 0);
-  len = g_strv_length(items);
+  len = g_strv_length (items);
 
   if (len > 1)
   {
@@ -1145,7 +1146,7 @@ med_input_check_mods (MedInput* self,
     }
   }
 
-  g_strfreev(items);
+  g_strfreev (items);
   return mods;
 }
 
@@ -1185,12 +1186,17 @@ med_input_convert_to_text (MedInput* self,
       guint keyval;
       gchar* key;
       gchar* mods;
+      guint64 a;
 
       key = med_input_get_sdl_key (self, items[2]);
       mods = med_input_check_mods (self, items[2]);
 
+      a = g_ascii_strtoull (key, NULL, 10);
+      if (a > 244)
+        a = 0;
+
       GdkKeymap* keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
-      gdk_keymap_translate_keyboard_state (keymap, sdl_to_gdk[atoi (key)], 0, 0, &keyval, NULL, NULL, NULL);
+      gdk_keymap_translate_keyboard_state (keymap, sdl_to_gdk[a], 0, 0, &keyval, NULL, NULL, NULL);
 
       text = g_strconcat (mods, gdk_keyval_name (gdk_keyval_to_upper (keyval)), " (Keyboard)", NULL);
 
@@ -1224,9 +1230,15 @@ med_input_convert_to_text (MedInput* self,
       if (tmp[0] == 'b')
         text = g_strconcat ("Button ", string_offset (tmp, 7), " (Mouse)", NULL);
       else if (tmp[0] == 'r')
+      {
         text = g_strconcat ("Relative ", string_offset (tmp, 4), " (Mouse)", NULL);
+        priv->is_mouse = TRUE;
+      }
       else if (tmp[0] == 'c')
+      {
         text = g_strconcat ("Cursor ", string_offset (tmp, 7), " (Mouse)", NULL);
+        priv->is_mouse = TRUE;
+      }
 
       g_free (tmp);
 
@@ -1716,6 +1728,9 @@ med_input_entry_mouse_clicked (GtkWidget* sender,
   MedInput* mi = self;
   MedInputPrivate* priv = med_input_get_instance_private (mi);
 
+  if (priv->is_mouse)
+    return TRUE;
+
   if (event->type == GDK_BUTTON_PRESS)
   {
     if (event->button == 1)
@@ -1828,6 +1843,7 @@ med_input_constructor (GType type,
   g_signal_connect_object ((GtkWidget*) priv->entry, "button-press-event", (GCallback) med_input_entry_mouse_clicked, self, 0);
 
   priv->is_active = FALSE;
+  priv->is_mouse = FALSE;
 
   priv->old_text = g_strdup ("");
   priv->internal_value = g_strdup ("");
