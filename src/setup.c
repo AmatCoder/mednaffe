@@ -1,7 +1,7 @@
 /*
  * setup.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -144,7 +144,7 @@ setup_window_on_close_x (GtkWidget* _sender,
 {
   g_return_val_if_fail (self != NULL, FALSE);
 
-  gtk_widget_set_visible ((GtkWidget*) self, FALSE);
+  gtk_widget_destroy ((GtkWidget*) self);
 
   return TRUE;
 }
@@ -156,7 +156,7 @@ setup_window_on_close (GtkButton* sender,
 {
   g_return_if_fail (self != NULL);
 
-  gtk_widget_set_visible ((GtkWidget*) self, FALSE);
+  gtk_widget_destroy ((GtkWidget*) self);
 }
 
 

@@ -47,7 +47,6 @@ FindSysFSInputBase (void)
   {
     if(!stat (p[i], &stat_buf))
     {
-      //printf ("%s\n", p[i]);
       return p[i];
     }
     else if (errno != ENOENT && errno != ENOTDIR)
@@ -124,11 +123,21 @@ GetBVPV (const gchar* jsdev_name)
     if (fp == NULL)
       return 0;
 
-    getline (&lb, &len, fp);
+    if (getline (&lb, &len, fp) == -1)
+    {
+      printf ("Fail to read a line in \"%s\".", idpath);
+      fclose (fp);
+      g_free (idpath);
+      g_free (sysfs_input_dev_path);
+      return 0;
+    }
 
     if (sscanf (lb, "%x", &t) != 1)
     {
       printf ("Bad data in \"%s\".", idpath);
+      fclose (fp);
+      g_free (idpath);
+      g_free (sysfs_input_dev_path);
       return 0;
     }
 
@@ -182,7 +191,7 @@ init_joys (void)
 
     if (fd == -1)
     {
-      g_free(number);
+      g_free (number);
       break;
     }
 
@@ -258,7 +267,10 @@ value_to_text (GSList* listjoy,
   gchar** items = g_strsplit (value, " ", 4);
 
   if (g_strv_length (items) < 3)
+  {
+    g_strfreev (items);
     return text;
+  }
 
   if (items[2][0] == 'b')
   {
@@ -278,7 +290,7 @@ value_to_text (GSList* listjoy,
     }
   }
 
-  g_strfreev(items);
+  g_strfreev (items);
 
   return text;
 }

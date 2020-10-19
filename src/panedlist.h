@@ -44,6 +44,7 @@ PanedList* paned_list_new (void);
 
 void paned_list_fill_list (PanedList* self, GtkListStore* store, GtkTreeIter* iter);
 void paned_list_show_filters (PanedList* self, gboolean b);
+void paned_list_show_screens (PanedList* self, gboolean b);
 
 
 G_END_DECLS

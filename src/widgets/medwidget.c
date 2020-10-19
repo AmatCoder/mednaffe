@@ -1,7 +1,7 @@
 /*
  * medwidget.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -53,8 +53,40 @@ med_widget_real_init (MedWidget* self,
                       GtkWidget* widget)
 {
   g_return_if_fail (widget != NULL);
+  med_widget_set_updated ((MedWidget*) widget, TRUE);
   med_widget_set_modified ((MedWidget*) widget, FALSE);
-  med_widget_set_updated ((MedWidget*) widget, FALSE);
+}
+
+
+static void
+med_widget_realize (GtkWidget *widget, gpointer data)
+{
+  GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
+  if (toplevel)
+  {
+    GHashTable* table = g_object_get_data ((GObject*)toplevel, "table");
+    if (table)
+    {
+      gchar* value;
+      const gchar* command = med_widget_get_command ((MedWidget*)widget);
+      gchar* command2 = g_strconcat ("-", command, NULL);
+
+      if (g_hash_table_contains (table, command2))
+        value = g_hash_table_lookup (table, command2);
+      else
+        value = g_hash_table_lookup (table, command);
+
+      g_free (command2);
+
+      if (value)
+      {
+        med_widget_set_value ((MedWidget*)widget, value);
+        med_widget_set_updated ((MedWidget*) widget, FALSE);
+      }
+      else
+        gtk_widget_set_sensitive (widget, FALSE);
+    }
+  }
 }
 
 
@@ -64,6 +96,7 @@ med_widget_init (MedWidget* self,
 {
   g_return_if_fail (self != NULL);
   MED_WIDGET_GET_INTERFACE (self)->init (self, widget);
+  g_signal_connect_object ((GtkWidget*) self, "realize", (GCallback) med_widget_realize, self, 0);
 }
 
 
@@ -114,6 +147,21 @@ med_widget_set_modified (MedWidget* self,
 {
   g_return_if_fail (self != NULL);
   MED_WIDGET_GET_INTERFACE (self)->set_modified (self, value);
+
+  if (med_widget_get_updated(self))
+    return;
+
+  GtkWidget *toplevel = gtk_widget_get_toplevel ((GtkWidget*)self);
+  if (toplevel)
+  {
+    GHashTable* table = g_object_get_data ((GObject*)toplevel, "table");
+
+    if (table)
+    {
+      gchar* key = g_strconcat("-", med_widget_get_command (self), NULL);
+      g_hash_table_insert (table, key, g_strdup(med_widget_get_value (self)));
+    }
+  }
 }
 
 

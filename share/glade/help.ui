@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 
+
+Copyright (C) 2013-2020 AmatCoder
+
+This file is part of Mednaffe.
+
+Mednaffe is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mednaffe is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: AmatCoder
+
+-->
+<interface>
+  <requires lib="gtk+" version="3.16"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name Mednaffe -->
+  <!-- interface-description A front-end (GUI) for mednafen emulator -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
+  <!-- interface-authors AmatCoder -->
+  <object class="GtkBox" id="globbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_start">18</property>
+    <property name="margin_end">18</property>
+    <property name="margin_top">18</property>
+    <property name="margin_bottom">18</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label_xalign">0.5</property>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkViewport">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_start">18</property>
+                    <property name="margin_end">18</property>
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">6</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Introduction&lt;/b&gt;
+This is a summary of the official documentation. Click on the link above to read it in full.
+
+
+&lt;b&gt;Base Directory&lt;/b&gt;
+Mednafen's "base directory" is the directory under which Mednafen stores its data and looks for various auxiliary data by default. If the "HOME" environment variable is set, it will be suffixed with "/.mednafen" and used as the base directory (in other words ~/.mednafen, or $HOME/.mednafen). If the "MEDNAFEN_HOME" environment variable is set, it will be used as the base directory. If neither the "HOME" nor "MEDNAFEN_HOME" environment variable is set, and the current user has an entry in the password file, the corresponding home directory will be used as if it were the "HOME" environment variable.
+
+On Microsoft Windows, these conditions are typically not met, in which case the directory the Mednafen executable ("mednafen.exe") is in will be used as the base directory.
+
+
+&lt;b&gt;Firmware/BIOS&lt;/b&gt;
+Some emulation modules require firmware/BIOS images to function. If a firmware path is non-absolute (doesn't begin with C:\ or / or similar), Mednafen will try to load the file relative to the "firmware" directory under the Mednafen base directory. If it doesn't find it there, it will be loaded relative to the Mednafen base directory itself. Of course, if the "Firmware" setting is set to a custom value, the firmware files will be searched relative to that path.
+
+
+&lt;b&gt;CD Emulation&lt;/b&gt;
+Mednafen can load CD-ROM games from a dumped copy of the disc, such as CUE+BIN. Physical CD support was removed in version 0.9.38.
+
+
+&lt;b&gt;Compact Disc Images&lt;/b&gt;
+Mednafen supports "CUE" sheets, CloneCD "CCD/IMG/SUB", and cdrdao "TOC" files; though only a very limited subset of the latter's full capabilities is supported. Mednafen supports raw, simple storage formats supported by libsndfile (MS WAV, AIFF/AIFC, AU/SND, etc.), and Ogg Vorbis and Musepack audio files referenced by CUE sheets. MP3 is not supported, and will not be supported.
+
+
+&lt;b&gt;Multiple-CD Games&lt;/b&gt;
+To play a game that consists of more than one CD, you will need to create an M3U file (plain-text, ".m3u" extension), and enter the filenames of the CUE/TOC/CCD files, one per line. Load the M3U file with Mednafen instead of the CUE/TOC/CCD files, and use the F6 and F8 keys to switch among the various discs available.
+Note: Preferably, your M3U file(s) should reference CUE/TOC/CCD files that are in the same directory as the M3U file.
+
+
+&lt;b&gt;Security Issues&lt;/b&gt;
+It is hypothetically possible to overflow some buffers on some emulated systems by clever manipulation of saved timekeeping variables. In combination with custom emulated machine code and state, it may therefore be possible to run arbitrary host code, compromising the host system. &lt;b&gt;Therefore, loading save states from parties you have reason to distrust, or not trust, is advised against.&lt;/b&gt;
+
+CUE and TOC, and PSF (PSF1, GSF, etc.) files can reference arbitrary files for inclusion and parsing. Inclusion of device files may cause odd system behavior, particularly if you are running Mednafen as root (which you shouldn't be!) on a UN*X system, or cause Mednafen to lockup or abort. &lt;b&gt;In combination with save states, this file inclusion presents the possibility of leaking of private local information.&lt;/b&gt;
+
+Mednafen's network play automatically utilizes save states to synchronize state among newly connected players, and thereafter at connected players command. Hence, any security issues relating to save states apply to network play as well.
+
+
+&lt;b&gt;Input Grabbing&lt;/b&gt;
+Keyboard and mouse input can be grabbed (from the OS/window manager) by pressing CTRL+SHIFT+Menu (default mapping), and disabled by pressing the same again.
+
+Emulated keyboards will only function when input grabbing is enabled. This disables hotkeys/command keys (unless the user has mapped them to a non-keyboard device), and the keyboard mappings of any non-keyboard emulated devices.
+
+Emulated mice mapped to the system mouse will only function properly when input grabbing is enabled or when in a fullscreen video mode, the debugger is inactive, and no other emulated input devices that rely on absolute mouse coordinates(e.g. lightguns) are active and mapped to the system mouse.
+
+
+&lt;b&gt;Configuration Files&lt;/b&gt;
+Mednafen loads/saves its settings from/to a primary configuration file, named "mednafen.cfg", under the Mednafen base directory. This file is created and written to when Mednafen shuts down.
+
+Mednafen loads override settings from optional per-module override configuration files, also located directly under the Mednafen base directory. The general pattern for the naming of these user-created files is "system.cfg"; e.g. "nes.cfg", "pce.cfg", "gba.cfg", "psx.cfg", etc. This allows for overriding global settings on a per-module basis.
+
+Per-game override configuration files are also supported. They should be placed in the pgconfig directory under the Mednafen base directory. Name these files like "FileBase.system.cfg"; e.g. "Lieutenant Spoon's Sing-a-Tune (USA).psx.cfg".
+
+The aforementioned per-module and per-game configuration override files will NOT be written to by Mednafen, and they will generally not alter the contents of the primary configuration file.
+
+
+&lt;b&gt;Custom Palettes&lt;/b&gt;
+Custom palettes for a system should generally be named "system.pal", IE "snes.pal", "pce.pal", etc., and placed in the "palettes" directory beneath the Mednafen base directory.
+
+Per-game custom palettes are also supported, and should be named as "FileBase.pal" or "FileBase.MD5 Hash.pal", IE "Mega Man 4.pal" or "Mega Man 4.db45eb9413964295adb8d1da961807cc.pal".
+
+Each entry in a custom palette file consists of 3 8-bit color components; Red, Green, Blue, in that order.
+
+Not all emulated systems support custom palettes.
+
+
+&lt;b&gt;Automatic IPS Patching&lt;/b&gt;
+Place the IPS file in the same directory as the file to load, and name it "FullFileName.ips".
+
+        Examples:       Boat.nes - Boat.nes.ips
+                                Boat.zip - Boat.zip.ips
+                                Boat.nes.gz - Boat.nes.gz.ips
+                                Boat     - Boat.ips</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="xalign">0</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLinkButton">
+            <property name="label" translatable="yes">Mednafen Documentation</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="uri">https://mednafen.github.io/documentation</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="padding">8</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </object>
+</interface>

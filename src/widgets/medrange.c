@@ -1,7 +1,7 @@
 /*
  * medrange.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -337,8 +337,7 @@ med_range_constructor (GType type,
   }
 
   priv->s_label = (GtkLabel*) gtk_label_new (priv->_label);
-  //gtk_label_set_xalign(priv->s_label,1.00);                    // This needs GTK 3.16
-  gtk_misc_set_alignment ((GtkMisc*) priv->s_label, 1.00, 0.50); // so I am using this deprecated one.
+  gtk_label_set_xalign (priv->s_label, 1.00);
 
   gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) priv->s_label, FALSE, FALSE, 0);
 

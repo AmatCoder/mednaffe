@@ -1,7 +1,7 @@
 /*
  * manager.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -41,26 +41,10 @@ struct _ManagerWindowPrivate {
 	GtkButton* setup_button;
 	GtkButton* delete_button;
 	GtkComboBox* combo;
-	SetupWindow* setup;
 };
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (ManagerWindow, manager_window, GTK_TYPE_WINDOW);
-
-
-static void
-manager_window_show_setup (GtkButton* sender,
-                           gpointer self)
-{
-	GtkTreeIter iter;
-
-  ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
-
-	gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
-
-	if (valid)
-		setup_window_setup_show (priv->setup, &iter);
-}
 
 
 static gboolean
@@ -130,8 +114,8 @@ manager_window_row_changed (SetupWindow* sender,
 
 
 static void
-manager_window_on_show (GtkWidget* sender,
-                        gpointer self)
+manager_window_on_realize (GtkWidget* sender,
+                           gpointer self)
 {
 	GtkTreeIter iter;
   ManagerWindow* mw = self;
@@ -142,8 +126,11 @@ manager_window_on_show (GtkWidget* sender,
 	if (valid)
   {
 		gtk_tree_selection_select_iter (priv->path_selection, &iter);
+    gtk_widget_grab_focus ((GtkWidget*) priv->treeview);
 		manager_window_set_buttons (self, &iter);
 	}
+
+  g_signal_connect_object (priv->path_selection, "changed", (GCallback) manager_window_selection_changed, self, 0);
 }
 
 
@@ -175,6 +162,21 @@ manager_window_up_down_clicked (GtkButton* sender,
 }
 
 
+static gint
+manager_window_show_confirmation (gpointer* self)
+{
+  GtkWidget* dialog = gtk_message_dialog_new (gtk_window_get_transient_for((GtkWindow*) self),
+                                              GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
+                                              "Are you sure?");
+
+  gint result = gtk_dialog_run ((GtkDialog*) dialog);
+
+  gtk_widget_destroy (dialog);
+
+  return result;
+}
+
+
 static void
 manager_window_delete_row (GtkButton* sender,
                            gpointer self)
@@ -187,7 +189,7 @@ manager_window_delete_row (GtkButton* sender,
 
 	gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
 
-	if (valid)
+	if ( (valid) && (manager_window_show_confirmation (self) == GTK_RESPONSE_YES ) )
 		gtk_list_store_remove ((GtkListStore*) model, &iter);
 
 	valid = gtk_tree_model_get_iter_first (model, &iter);
@@ -203,7 +205,7 @@ manager_window_on_close_x (GtkWidget* sender,
                            gpointer self)
 {
 	g_return_val_if_fail (self != NULL, FALSE);
-	gtk_widget_set_visible ((GtkWidget*) self, FALSE);
+	gtk_widget_destroy ((GtkWidget*) self);
 
 	return TRUE;
 }
@@ -214,7 +216,28 @@ manager_window_on_close (GtkButton* sender,
                           gpointer self)
 {
 	g_return_if_fail (self != NULL);
-	gtk_widget_set_visible ((GtkWidget*) self, FALSE);
+	gtk_widget_destroy ((GtkWidget*) self);
+}
+
+
+static void
+manager_window_show_setup (GtkButton* sender,
+                           gpointer self)
+{
+	GtkTreeIter iter;
+
+  ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
+
+	gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
+
+	if (valid)
+  {
+    GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
+    SetupWindow* setup = setup_window_new (self, model);
+
+	  g_signal_connect_object (setup, "row-has-changed", (GCallback) manager_window_row_changed, self, 0);
+		setup_window_setup_show (setup, &iter);
+  }
 }
 
 
@@ -235,11 +258,10 @@ manager_window_new (GtkWindow* parent,
 	GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
 	gtk_tree_view_set_model (priv->treeview, model);
 
-  priv->setup = setup_window_new ((GtkWindow*) self, model);
-
-	g_signal_connect_object (priv->setup, "row-has-changed", (GCallback) manager_window_row_changed, self, 0);
-
-  gtk_widget_hide ((GtkWidget *)self);
+  gtk_button_set_image (priv->up_button, gtk_image_new_from_icon_name ("go-up", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
+  gtk_button_set_image (priv->down_button, gtk_image_new_from_icon_name ("go-down", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
+  gtk_button_set_image (priv->delete_button, gtk_image_new_from_icon_name ("edit-delete", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
+  gtk_button_set_image (priv->setup_button, gtk_image_new_from_icon_name ("document-page-setup", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
 
 	return self;
 }
@@ -290,12 +312,8 @@ manager_window_class_init (ManagerWindowClass * klass)
 
 
 	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "on_show",
-                                                G_CALLBACK(manager_window_on_show));
-
-	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "selection_changed",
-                                                G_CALLBACK(manager_window_selection_changed));
+                                                "on_realize",
+                                                G_CALLBACK(manager_window_on_realize));
 
 	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "up_down_clicked",

@@ -1,7 +1,7 @@
 /*
  * about.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -42,7 +42,7 @@ dialog_response (GtkDialog* sender,
                  gpointer user_data)
 {
   if (response_id == -4)
-    gtk_widget_hide ((GtkWidget*) sender);
+    gtk_widget_destroy ((GtkWidget*) sender);
 }
 
 
@@ -55,21 +55,22 @@ about_window_new (GtkWindow* parent)
   gtk_window_set_destroy_with_parent ((GtkWindow*) self, TRUE);
   gtk_window_set_modal ((GtkWindow*) self, TRUE);
 
-  gtk_about_dialog_set_logo ((GtkAboutDialog*) self, gtk_window_get_icon (parent));
+  GObject *app = (GObject*) gtk_window_get_application (parent);
+
+  gtk_about_dialog_set_logo ((GtkAboutDialog*) self, g_object_get_data (app, "icon"));
 
   const char *authors[2] = { "AmatCoder", NULL };
   gtk_about_dialog_set_authors ((GtkAboutDialog*) self, authors);
 
-  gtk_about_dialog_set_program_name ((GtkAboutDialog*) self, "Mednaffe");
-  gtk_about_dialog_set_comments ((GtkAboutDialog*) self, "A front-end (GUI) for mednafen emulator");
-  gtk_about_dialog_set_copyright ((GtkAboutDialog*) self, "Copyright © 2013-2018 AmatCoder");
-  gtk_about_dialog_set_version ((GtkAboutDialog*) self, "0.9.0~beta");
-  gtk_about_dialog_set_website ((GtkAboutDialog*) self, "https://github.com/AmatCoder/mednaffe");
-  gtk_about_dialog_set_website_label ((GtkAboutDialog*) self, "https://github.com/AmatCoder/mednaffe");
+  gtk_about_dialog_set_program_name ((GtkAboutDialog*) self, g_object_get_data (app, "name"));
+  gtk_about_dialog_set_comments ((GtkAboutDialog*) self, g_object_get_data (app, "desc"));
+  gtk_about_dialog_set_copyright ((GtkAboutDialog*) self, g_object_get_data (app, "copyright"));
+  gtk_about_dialog_set_version ((GtkAboutDialog*) self, g_object_get_data (app, "version"));
+  gtk_about_dialog_set_website ((GtkAboutDialog*) self, g_object_get_data (app, "url"));
+  gtk_about_dialog_set_website_label ((GtkAboutDialog*) self, g_object_get_data (app, "url"));
   gtk_about_dialog_set_license_type ((GtkAboutDialog*) self, GTK_LICENSE_GPL_3_0);
   gtk_about_dialog_set_wrap_license ((GtkAboutDialog*) self, TRUE);
 
-  g_signal_connect((GtkWidget*) self, "delete_event", G_CALLBACK (gtk_widget_hide_on_delete), NULL);
   g_signal_connect((GtkDialog*) self, "response", G_CALLBACK (dialog_response), NULL);
 
   return self;

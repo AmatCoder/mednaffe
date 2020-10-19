@@ -1,7 +1,7 @@
 /*
  * medcombobox.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -309,8 +309,7 @@ med_combo_box_constructor (GType type,
   g_object_set ((GtkWidget*) priv->combo, "width-request", 168, NULL);
 
   priv->combo_label = (GtkLabel*) gtk_label_new (priv->_label);
-  //gtk_label_set_xalign(priv->combo_label,1.00);                    // This needs GTK 3.16
-  gtk_misc_set_alignment ((GtkMisc*) priv->combo_label, 1.00, 0.50); // so I am using this deprecated one.
+  gtk_label_set_xalign (priv->combo_label, 1.00);
 
   gchar** collection = med_combo_box_get_values (self);
 

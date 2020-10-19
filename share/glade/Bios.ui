@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 
+<!-- Generated with glade 3.36.0 
 
-Copyright (C) 2013-2018
+Copyright (C) 2013-2020 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,11 +22,11 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.16"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2018 -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkListStore" id="liststore1">
     <columns>
@@ -63,33 +63,30 @@ Author: AmatCoder
     <property name="title" translatable="yes">Bios Check</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
-    <property name="default_width">800</property>
-    <property name="default_height">600</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="on_close_x" swapped="no"/>
-    <child>
-      <placeholder/>
-    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
+        <property name="margin_start">8</property>
+        <property name="margin_end">8</property>
+        <property name="margin_top">8</property>
+        <property name="margin_bottom">8</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
             <property name="can_focus">False</property>
             <child>
               <object class="GtkButton">
-                <property name="label">gtk-close</property>
+                <property name="label">Close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_close" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
@@ -154,20 +151,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_lynx_bios">
+                              <object class="GtkImage" id="icon_lynx_bios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -176,30 +169,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_lynx_bios">
+                              <object class="GtkLabel" id="label_lynx_bios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_lynx_bios">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -259,20 +238,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_pccdbios">
+                              <object class="GtkImage" id="icon_pccdbios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -281,30 +256,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_pccdbios">
+                              <object class="GtkLabel" id="label_pccdbios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_pccdbios">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -368,20 +329,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_pcfx_bios">
+                              <object class="GtkImage" id="icon_pcfx_bios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -390,30 +347,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_pcfx_bios">
+                              <object class="GtkLabel" id="label_pcfx_bios">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_pcfx_bios">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -478,20 +421,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_ss_bios_jp">
+                              <object class="GtkImage" id="icon_ss_bios_jp">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -500,30 +439,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_ss_bios_jp">
+                              <object class="GtkLabel" id="label_ss_bios_jp">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_ss_bios_jp">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -566,20 +491,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_ss_bios_na_eu">
+                              <object class="GtkImage" id="icon_ss_bios_na_eu">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -588,30 +509,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_ss_bios_na_eu">
+                              <object class="GtkLabel" id="label_ss_bios_na_eu">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_ss_bios_na_eu">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -676,20 +583,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_psx_bios_jp">
+                              <object class="GtkImage" id="icon_psx_bios_jp">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -698,30 +601,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_psx_bios_jp">
+                              <object class="GtkLabel" id="label_psx_bios_jp">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_psx_bios_jp">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -764,20 +653,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_psx_bios_na">
+                              <object class="GtkImage" id="icon_psx_bios_na">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -786,30 +671,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_psx_bios_na">
+                              <object class="GtkLabel" id="label_psx_bios_na">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_psx_bios_na">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -852,20 +723,16 @@ Author: AmatCoder
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="margin_left">4</property>
-                            <property name="margin_right">4</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_end">4</property>
                             <property name="margin_top">4</property>
                             <property name="margin_bottom">4</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="GtkLabel" id="label_psx_bios_eu">
+                              <object class="GtkImage" id="icon_psx_bios_eu">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="justify">center</property>
-                                <property name="selectable">True</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -874,30 +741,16 @@ Author: AmatCoder
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage" id="icon_psx_bios_eu">
+                              <object class="GtkLabel" id="label_psx_bios_eu">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2_psx_bios_eu">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">label</property>
                                 <property name="justify">center</property>
                                 <property name="selectable">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="padding">6</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -962,6 +815,9 @@ Author: AmatCoder
           </packing>
         </child>
       </object>
+    </child>
+    <child type="titlebar">
+      <placeholder/>
     </child>
   </template>
 </interface>

@@ -1,7 +1,7 @@
 /*
  * mednaffe.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -57,6 +57,10 @@ static void
 mednaffe_app_real_activate (GApplication* base)
 {
   MainWindow* main_window = main_window_new ((GtkApplication*) base);
+
+  GdkPixbuf* icon = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe.png", NULL);
+  g_object_set_data_full ((GObject*)base, "icon", icon, g_object_unref);
+
   main_window_start (main_window);
 }
 
@@ -79,6 +83,13 @@ main (int argc,
       char ** argv)
 {
   MednaffeApp* mednaffe_app = mednaffe_app_new ();
+
+  g_object_set_data_full ((GObject*)mednaffe_app, "name", g_strdup("Mednaffe"), g_free);
+  g_object_set_data_full ((GObject*)mednaffe_app, "desc", g_strdup("A front-end (GUI) for mednafen emulator"), g_free);
+  g_object_set_data_full ((GObject*)mednaffe_app, "copyright", g_strdup("Copyright © 2013-2020 AmatCoder"), g_free);
+  g_object_set_data_full ((GObject*)mednaffe_app, "url", g_strdup("https://github.com/AmatCoder/mednaffe"), g_free);
+  g_object_set_data_full ((GObject*)mednaffe_app, "version", g_strdup("0.9.0"), g_free);
+
   gint result = g_application_run ((GApplication*) mednaffe_app, argc, argv);
   g_object_unref (mednaffe_app);
 

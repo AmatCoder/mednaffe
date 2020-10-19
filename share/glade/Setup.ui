@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 
+<!-- Generated with glade 3.36.0 
 
-Copyright (C) 2013-2018
+Copyright (C) 2013-2020
 
 This file is part of Mednaffe.
 
@@ -22,11 +22,11 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.16"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2018 -->
+  <!-- interface-copyright 2013-2020 -->
   <!-- interface-authors AmatCoder -->
   <template class="SetupWindow" parent="GtkDialog">
     <property name="can_focus">False</property>
@@ -38,9 +38,6 @@ Author: AmatCoder
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="on_close_x" swapped="no"/>
-    <child>
-      <placeholder/>
-    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -52,11 +49,10 @@ Author: AmatCoder
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton">
-                <property name="label">gtk-cancel</property>
+                <property name="label">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_close" swapped="no"/>
               </object>
               <packing>
@@ -67,11 +63,10 @@ Author: AmatCoder
             </child>
             <child>
               <object class="GtkButton">
-                <property name="label">gtk-apply</property>
+                <property name="label">Apply</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
                 <signal name="clicked" handler="apply_clicked" swapped="no"/>
               </object>
               <packing>
@@ -204,11 +199,10 @@ Author: AmatCoder
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="label">gtk-open</property>
+                    <property name="label">Open</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_entry_button_clicked" object="screen_a" swapped="no"/>
                   </object>
                   <packing>
@@ -255,11 +249,10 @@ Author: AmatCoder
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="label">gtk-open</property>
+                    <property name="label">Open</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_entry_button_clicked" object="screen_b" swapped="no"/>
                   </object>
                   <packing>
@@ -283,6 +276,9 @@ Author: AmatCoder
           </packing>
         </child>
       </object>
+    </child>
+    <child type="titlebar">
+      <placeholder/>
     </child>
   </template>
 </interface>

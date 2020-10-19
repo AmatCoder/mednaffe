@@ -64,7 +64,7 @@ else
   PKG_PROG_PKG_CONFIG
 fi
 
-PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.12 glib-2.0 >= 2.40 gthread-2.0], AC_MSG_NOTICE([Checking for GTK+ 3 development libraries]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.12 development libraries))
+PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.16 glib-2.0 >= 2.42], AC_MSG_NOTICE([Checking for GTK+ 3 development libraries]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.16 development libraries))
 
 AC_SUBST(DEFINES)
 

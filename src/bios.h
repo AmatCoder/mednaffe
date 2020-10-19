@@ -1,7 +1,7 @@
 /*
  * bios.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -45,8 +45,7 @@ GType bios_window_get_type (void) G_GNUC_CONST;
 BiosWindow* bios_window_new (GtkWindow* parent);
 
 
-void bios_window_update (BiosWindow* self, GSList* list);
-
+void bios_window_update (BiosWindow* self, GHashTable* table);
 
 G_END_DECLS
 

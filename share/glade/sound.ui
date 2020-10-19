@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 
+
+Copyright (C) 2013-2020 AmatCoder
+
+This file is part of Mednaffe.
+
+Mednaffe is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mednaffe is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: AmatCoder
+
+-->
+<interface>
+  <requires lib="gtk+" version="3.16"/>
+  <requires lib="medwidgets" version="0.0"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name Mednaffe -->
+  <!-- interface-description A front-end (GUI) for mednafen emulator -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
+  <!-- interface-authors AmatCoder -->
+  <object class="GtkBox" id="globbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_start">18</property>
+    <property name="margin_end">18</property>
+    <property name="margin_top">18</property>
+    <property name="margin_bottom">18</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="MedCheckButton">
+        <property name="label" translatable="yes">Enable sound output</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="draw_indicator">True</property>
+        <property name="command">sound</property>
+        <signal name="toggled" handler="enable_buddy_toggle" object="sound_grid" swapped="no"/>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkGrid" id="sound_grid">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="row_spacing">6</property>
+        <child>
+          <object class="MedRange">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Specifies the sound playback rate, in sound frames per second("Hz")</property>
+            <property name="command">sound.rate</property>
+            <property name="label">Playback rate</property>
+            <property name="label_width">15</property>
+            <property name="values">22050,192000,1,0</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MedRange">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Desired buffer size in milliseconds(ms).
+
+The default value of 0 enables automatic buffer size selection.</property>
+            <property name="command">sound.buffer_time</property>
+            <property name="label">Buffer time</property>
+            <property name="label_width">15</property>
+            <property name="values">0,1000,1,0</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MedRange">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Desired period size in microseconds(μs).
+
+Currently only affects OSS, ALSA, WASAPI(exclusive mode), and SDL output. A value of 0 defers to the default in the driver code in SexyAL.
+
+Note: This is not the "sound buffer size" setting, that would be "sound.buffer_time".</property>
+            <property name="command">sound.period_time</property>
+            <property name="label">Period size</property>
+            <property name="label_width">15</property>
+            <property name="values">0,100000,1,0</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MedComboBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">The following choices are possible, sorted by preference, high to low, when "default" driver is used, but dependent on being compiled in.
+
+default - Default
+Selects the default sound driver.
+
+alsa - ALSA
+The default for Linux (if available).
+
+openbsd - OpenBSD Audio
+The default for OpenBSD.
+
+oss - Open Sound System
+The default for non-Linux UN*X/POSIX/BSD (other than OpenBSD) systems, or anywhere ALSA is unavailable. If the ALSA driver gives you problems, you can try using this one instead.
+
+If you are using OSSv4 or newer, you should edit "/usr/lib/oss/conf/osscore.conf", uncomment the max_intrate= line, and change the value from 100 (default) to 1000 (or higher if you know what you're doing), and restart OSS. Otherwise, performance will be poor, and the sound buffer size in Mednafen will be orders of magnitude larger than specified.
+
+If the sound buffer size is still excessively larger than what is specified via the "Buffer time" setting, you can try setting "Period time" to 2666, and as a last resort, 5333, to work around a design flaw/limitation/choice in the OSS API and OSS implementation.
+
+sdl - Simple Directmedia Layer
+This driver is not recommended, but it serves as a backup driver if the others aren't available. Its performance is generally sub-par, requiring higher latency or faster CPUs/SMP for glitch-free playback, except where the OS provides a sound callback API itself, such as with Mac OS X and BeOS.
+
+jack - JACK
+The latency reported during startup is for the local sound buffer only and does not include server-side latency. Please note that video card drivers (in the kernel or X), and hardware-accelerated OpenGL, may interfere with jackd's ability to effectively run with realtime response.</property>
+            <property name="command">sound.driver</property>
+            <property name="label">Driver</property>
+            <property name="label_width">10</property>
+            <property name="values">default
+alsa
+openbsd
+oss
+sdl
+jack</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MedEntry">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">When using ALSA sound output under Linux, the "sound.device" setting "default" is Mednafen's default, IE "hw:0", not ALSA's "default". If you want to use ALSA's "default", use "sexyal-literal-default".</property>
+            <property name="command">sound.device</property>
+            <property name="label">Device</property>
+            <property name="label_width">10</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MedRange">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Sound volume level, in percent.
+
+Setting this volume control higher than the default of "100" may severely distort the sound.</property>
+            <property name="command">sound.volume</property>
+            <property name="label">Volume</property>
+            <property name="label_width">10</property>
+            <property name="values">0,150,1,0</property>
+            <property name="is_scale">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="padding">18</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+</interface>

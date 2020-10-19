@@ -15,6 +15,7 @@ setup.c setup.h \
 signals.c \
 widgets/dialogs.c widgets/dialogs.h \
 widgets/marshallers.c widgets/marshallers.h \
+widgets/bios_helper.c widgets/bios_helper.h \
 widgets/medbiosentry.c widgets/medbiosentry.h \
 widgets/medcheckbutton.c widgets/medcheckbutton.h \
 widgets/medcolorentry.c widgets/medcolorentry.h \

@@ -1,7 +1,7 @@
 /*
  * mainwindow.c
  *
- * Copyright 2013-2019 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -21,8 +21,6 @@
  *
  */
 
-
-#include <sys/stat.h>
 
 #include "mainwindow.h"
 
@@ -52,130 +50,31 @@ struct _MainWindowClass {
 };
 
 struct _MainWindowPrivate {
-  GSList* list;
-  GSList* map_list;
   MedProcess* med_process;
-  AboutWindow* about_window;
-  BiosWindow* bios_window;
   PathComboBox* pathbox;
   PanedList* panedlist;
   Logbook* logbook;
-  ManagerWindow* manager;
   PreferencesWindow* preferences;
   MedListJoy* listjoy;
-  GtkBox* main_box;
-  GtkBox* log_box;
+  GtkCheckMenuItem* custom_menu;
+  GtkEntry* custom_entry;
+  GtkButton* launch_button;
   GtkLabel* status_num;
   GtkLabel* status_name;
   GtkLabel* status_version;
-  GtkNotebook* global_notebook;
-  GtkNotebook* system_notebook;
   GtkTreeModelFilter* systems_filter;
-  GtkButton* launch_button;
-  GtkEntry* custom_entry;
-  MedDialogEntry* path_firmware;
-  MedBiosEntry* lynx_bios;
+  GtkBox* main_box;
+  GtkBox* log_box;
+  GtkBox* emb_sys;
+  GtkBuilder *sysui;
+  GtkBox* emb_glob;
+  GtkBuilder *globui;
+  gboolean show_tooltips;
+  gboolean sensitive;
 };
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (MainWindow, main_window, GTK_TYPE_APPLICATION_WINDOW);
-
-
-static const gchar*
-main_window_get_table_value (GHashTable* table, MedWidget* wid)
-{
-  const gchar* text = "";
-
-  if ( (med_widget_get_modified (wid)) || (!gtk_widget_get_visible ((GtkWidget*) wid)) )
-  {
-    text = med_widget_get_value (wid);
-  }
-  else
-  {
-    const gchar* command = med_widget_get_command (wid);
-
-    if (command)
-    {
-      command++;
-      text = g_hash_table_lookup (table, command);
-    }
-  }
-
-  return text;
-}
-
-
-static void
-main_window_update_bios (MainWindow* self,
-                         MedBiosEntry* entry)
-{
-  gchar* path;
-  gchar* mh;
-  const gchar* text;
-  const gchar* firmware;
-
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (entry != NULL);
-
-  MainWindowPrivate* priv = main_window_get_instance_private (self);
-
-  text = main_window_get_table_value (priv->med_process->table, (MedWidget*) entry);
-  firmware = main_window_get_table_value (priv->med_process->table, (MedWidget*) priv->path_firmware);
-
-#ifdef G_OS_WIN32
-  mh = g_win32_get_package_installation_directory_of_module (NULL);
-#else
-  const gchar* home = g_getenv ("MEDNAFEN_HOME");
-
-  if (home == NULL)
-    mh = g_strconcat (g_get_home_dir (), "/.mednafen", NULL);
-  else
-    mh = g_strconcat (home, "/", NULL);
-#endif
-
-  if (!g_path_is_absolute (text))
-  {
-    if (!g_path_is_absolute (firmware))
-    {
-      path = g_strconcat (mh, G_DIR_SEPARATOR_S, firmware, G_DIR_SEPARATOR_S, text, NULL);
-
-      if (!g_file_test (path, G_FILE_TEST_IS_REGULAR))
-      {
-        gchar* tmp;
-        tmp = g_strconcat (mh, G_DIR_SEPARATOR_S, text, NULL);
-        g_free (path);
-        path = tmp;
-      }
-
-    }
-    else path = g_strconcat (firmware, G_DIR_SEPARATOR_S, text, NULL);
-
-  }
-  else path = g_strdup (text);
-
-  med_bios_entry_update_check (entry, path);
-
-  g_free (mh);
-  g_free (path);
-}
-
-
-static void
-main_window_firmware_entry_emit_change (MedDialogEntry* sender,
-                                        gpointer self)
-{
-  GSList* it = NULL;
-
-  g_return_if_fail (self != NULL);
-  MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
-
-  for(it = priv->list; it != NULL; it = it->next)
-  {
-    if (IS_MED_BIOS_ENTRY (it->data))
-      main_window_update_bios (self, (MedBiosEntry*) it->data);
-  }
-}
 
 
 static void
@@ -248,59 +147,131 @@ main_window_paned_list_item_selected (PanedList* sender,
 }
 
 
+static GSList*
+get_all_medwidgets (GtkWidget* wid)
+{
+  g_return_val_if_fail (wid != NULL, NULL);
+
+  GList* children = gtk_container_get_children ((GtkContainer*) wid);
+  GSList* list = NULL;
+  GList* it = NULL;
+  for (it = children; it != NULL; it = it->next)
+  {
+    if (IS_MED_WIDGET(it->data))
+    {
+      list = g_slist_append (list, it->data);
+    }
+    else if (GTK_IS_CONTAINER(it->data))
+      list = g_slist_concat(list, get_all_medwidgets ((GtkWidget*) it->data));
+  }
+  g_list_free (children);
+  return list;
+}
+
+
 static void
-main_window_medwid_update_all (MainWindow* self)
+main_window_set_all_values (MainWindow* self, GtkWidget* topwidget)
+{
+  g_return_if_fail (self != NULL);
+  MainWindowPrivate* priv = main_window_get_instance_private (self);
+
+  GSList *visible_list = get_all_medwidgets (topwidget);
+
+  GSList* it = NULL;
+  for(it = visible_list; it != NULL; it = it->next)
+  {
+    const gchar* command;
+    const gchar* tmp = NULL;
+
+    command = med_widget_get_command (it->data);
+
+    if (command)
+      tmp = g_hash_table_lookup (priv->med_process->table, command);
+
+    if (tmp)
+      med_widget_set_value (it->data, tmp);
+  }
+  g_slist_free (visible_list);
+}
+
+
+static void
+main_window_set_all_sensitive (MainWindow* self, gboolean b, gboolean c)
 {
   g_return_if_fail (self != NULL);
 
-  MainWindowPrivate* priv = main_window_get_instance_private (self);
+  MainWindow* mw = self;
+  MainWindowPrivate* priv = main_window_get_instance_private (mw);
+
+  GSList *visible_list = get_all_medwidgets ((GtkWidget*)self);
 
   GSList* it = NULL;
-
-  for(it = priv->list; it != NULL; it = it->next)
+  for(it = visible_list; it != NULL; it = it->next)
   {
-    med_widget_set_modified ((MedWidget*) it->data, FALSE);
-    med_widget_set_updated ((MedWidget*) it->data, FALSE);
-    gtk_widget_set_sensitive ((GtkWidget*) it->data, FALSE);
+    if (!med_widget_get_updated (it->data))
+      gtk_widget_set_sensitive ((GtkWidget*) it->data, b);
+
+    gtk_widget_set_has_tooltip ((GtkWidget*) it->data, c);
   }
+
+  g_slist_free (visible_list);
+
+  gtk_widget_set_sensitive (((GtkWidget*) priv->launch_button), b);
+
+  priv->sensitive = b;
+  priv->show_tooltips = c;
 }
 
 
 static const gchar**
 main_window_build_command (MainWindow* self, const gchar* game_path)
 {
-  const gchar** command;
-  gint i = 1;
-
   g_return_val_if_fail (self != NULL, NULL);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
-  command = g_new(const gchar*, 4);
-  command[0] = priv->med_process->MedPath;
+  const gchar** command;
+  command = g_new0 (const gchar*, 3);
+  command[0] = priv->med_process->MedExePath;
 
-  GSList* it = NULL;
+  GHashTableIter iter;
+  gpointer key, value;
+  gint i = 1;
 
-  for(it = priv->list; it != NULL; it = it->next)
+  g_hash_table_iter_init (&iter, priv->med_process->table);
+  while (g_hash_table_iter_next (&iter, &key, &value))
   {
-    if (med_widget_get_modified (it->data))
+    gchar* k = (gchar*)key;
+    gchar* v = (gchar*)value;
+    if (k[0] == '-')
     {
-      command = g_renew(const gchar*, command, i+5);
+      command = g_renew (const gchar*, command, i+2+2);
 
-      command[i] = med_widget_get_command (it->data);
+      command[i] = k;
       i++;
-      command[i] = med_widget_get_value (it->data);
+      command[i] = v;
       i++;
     }
   }
 
-  //const gchar* custom = gtk_entry_get_text (priv->custom_entry);
+  gchar* custom = g_strdup (gtk_entry_get_text (priv->custom_entry));
+  g_strstrip(custom);
 
-  //if (g_strcmp0 (custom, "") != 0)
-  //{
-  //  command = g_renew(gchar*, command, i+1);
-  //  command[i] = custom;
-  //  i++;
-  //}
+  if ( (gtk_widget_is_visible ((GtkWidget*)priv->custom_entry)) && (g_strcmp0 (custom, "") != 0) )
+  {
+    gchar** pch = g_strsplit (custom, " ", 0);
+    guint n = g_strv_length (pch);
+    command = g_renew (const gchar*, command, i+n+2);
+    gint j = 0;
+    while (pch[j])
+    {
+      command[i] = pch[j];
+      i++;
+      j++;
+    }
+    g_free (pch);
+  }
+
+  g_free (custom);
 
   command[i] = game_path;
   i++;
@@ -320,9 +291,9 @@ main_window_paned_list_launched (PanedList* _sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  if ((selection != NULL) || (gtk_widget_get_sensitive ((GtkWidget*) priv->launch_button)))
+  if ((selection != NULL) || (priv->sensitive))
   {
-    gtk_widget_set_sensitive (((GtkWidget*) priv->launch_button), FALSE);
+    main_window_set_all_sensitive (mw, FALSE, priv->show_tooltips);
 
     const gchar *action = med_widget_get_value ((MedWidget*) priv->preferences->action_launch);
 
@@ -354,94 +325,6 @@ main_window_paned_list_launched (PanedList* _sender,
 #ifdef G_OS_WIN32
     g_free (selection2);
 #endif
-
-    main_window_medwid_update_all (mw);
-  }
-}
-
-
-static void
-main_window_preferences_show_tooltips (PreferencesWindow* sender,
-                                       gboolean b,
-                                       gpointer self)
-{
-  GSList* it = NULL;
-
-  g_return_if_fail (self != NULL);
-
-  MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
-
-  for(it = priv->list; it != NULL; it = it->next)
-  {
-    gtk_widget_set_has_tooltip ((GtkWidget*) it->data, b);
-  }
-}
-
-
-static void
-main_window_preferences_show_filters (PreferencesWindow* sender,
-                                      gboolean b,
-                                      gpointer self)
-{
-  g_return_if_fail (self != NULL);
-
-  MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
-
-  priv->panedlist->filters_header = b;
-  paned_list_show_filters (priv->panedlist, b);
-}
-
-
-static void
-main_window_preferences_change_theme (PreferencesWindow* sender, gint t, gpointer self)
-{
-#ifdef G_OS_WIN32
-  GtkSettings *settings = gtk_settings_get_default();
-
-  if (t == 0)
-    g_object_set(settings, "gtk-theme-name", "Windows10", NULL);
-  else if (t == 1)
-    g_object_set(settings, "gtk-theme-name", "win32", NULL);
-  else if (t == 2)
-    g_object_set(settings, "gtk-theme-name", "Adwaita", NULL);
-
-#endif
-}
-
-
-static void
-main_window_preferences_show_systems (PreferencesWindow* sender,
-                                      gint i,
-                                      gboolean b,
-                                      gpointer self)
-{
-  gint j;
-  GtkTreeIter iter;
-  GtkTreeModel* model;
-
-  g_return_if_fail (self != NULL);
-
-  MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
-
-  model = gtk_tree_model_filter_get_model (priv->systems_filter);
-
-  gtk_tree_model_get_iter_first (model, &iter);
-
-  while (TRUE)
-  {
-    gtk_tree_model_get (model, &iter, 1, &j, -1);
-
-    if (j == i)
-    {
-      gtk_list_store_set ((GtkListStore*) model, &iter, 2, b, -1);
-      break;
-    }
-
-    if (!gtk_tree_model_iter_next (model, &iter))
-      break;
   }
 }
 
@@ -480,47 +363,6 @@ main_window_show_error (MainWindow* self,
 
   gtk_dialog_run ((GtkDialog*) dialog);
   gtk_widget_destroy (dialog);
-}
-
-
-static void
-main_window_medcombo_changed (MedComboBox* combo,
-                              const gchar* value,
-                              gpointer stack)
-{
-  gtk_stack_set_visible_child_name ((GtkStack*) stack, value);
-}
-
-
-static void
-main_window_set_values (MainWindow* self)
-{
-  GSList* it = NULL;
-
-  g_return_if_fail (self != NULL);
-  MainWindowPrivate* priv = main_window_get_instance_private (self);
-
-  for(it = priv->map_list; it != NULL; it = it->next)
-  {
-    const gchar* command;
-    const gchar* tmp = NULL;
-
-    command = med_widget_get_command (it->data);
-
-    if (command)
-    {
-      command++;
-      tmp = g_hash_table_lookup (priv->med_process->table, command);
-    }
-
-    if (tmp != NULL)
-    {
-      med_widget_set_value (it->data, tmp);
-      med_widget_set_modified (it->data, FALSE);
-      med_widget_set_updated (it->data, TRUE);
-      gtk_widget_set_sensitive (((GtkWidget*) it->data), TRUE);
-    }
-  }
 }
 
 
@@ -569,12 +411,95 @@ main_window_process_exec_emu_ended (MedProcess* sender,
   else if (g_strcmp0 (action, "hide") == 0)
     gtk_widget_show ((GtkWidget*) mw);
 
-  gtk_widget_set_sensitive (((GtkWidget*) priv->launch_button), TRUE);
+  main_window_set_all_sensitive (mw, TRUE, priv->show_tooltips);
 
   med_process_read_conf (priv->med_process);
-  main_window_set_values (mw);
+  main_window_set_all_values (mw, (GtkWidget*)mw);
 
   logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_FRONTEND, "End of execution catched\n");
+}
+
+
+static void
+main_window_preferences_show_tooltips (PreferencesWindow* sender,
+                                       gboolean b,
+                                       gpointer self)
+{
+  g_return_if_fail (self != NULL);
+
+  MainWindow* mw = self;
+  MainWindowPrivate* priv = main_window_get_instance_private (mw);
+
+  main_window_set_all_sensitive (mw, priv->sensitive, b);
+
+  priv->show_tooltips = b;
+}
+
+
+static void
+main_window_preferences_show_filters (PreferencesWindow* sender,
+                                      gboolean b,
+                                      gpointer self)
+{
+  g_return_if_fail (self != NULL);
+
+  MainWindow* mw = self;
+  MainWindowPrivate* priv = main_window_get_instance_private (mw);
+
+  priv->panedlist->filters_header = b;
+  paned_list_show_filters (priv->panedlist, b);
+}
+
+
+static void
+main_window_preferences_change_theme (PreferencesWindow* sender, gint t, gpointer self)
+{
+#ifdef STATIC_BUILD
+  GtkSettings *settings = gtk_settings_get_default();
+
+  if (t == 0)
+    g_object_set(settings, "gtk-theme-name", "Windows10", NULL);
+  else if (t == 1)
+    g_object_set(settings, "gtk-theme-name", "win32", NULL);
+  else if (t == 2)
+    g_object_set(settings, "gtk-theme-name", "Adwaita", NULL);
+
+#endif
+}
+
+
+static void
+main_window_preferences_show_systems (PreferencesWindow* sender,
+                                      gint i,
+                                      gboolean b,
+                                      gpointer self)
+{
+  gint j;
+  GtkTreeIter iter;
+  GtkTreeModel* model;
+
+  g_return_if_fail (self != NULL);
+
+  MainWindow* mw = self;
+  MainWindowPrivate* priv = main_window_get_instance_private (mw);
+
+  model = gtk_tree_model_filter_get_model (priv->systems_filter);
+
+  gtk_tree_model_get_iter_first (model, &iter);
+
+  while (TRUE)
+  {
+    gtk_tree_model_get (model, &iter, 2, &j, -1);
+
+    if (j == i)
+    {
+      gtk_list_store_set ((GtkListStore*) model, &iter, 3, b, -1);
+      break;
+    }
+
+    if (!gtk_tree_model_iter_next (model, &iter))
+      break;
+  }
 }
 
 
@@ -599,133 +524,81 @@ main_window_joy_found (MedListJoy* _sender,
 
 
 static void
-main_window_bios_entry_emit_change (MedDialogEntry* sender,
-                                    gpointer self)
+main_window_selection_changed (GtkTreeSelection* sender, gpointer self)
 {
-  main_window_update_bios ((MainWindow*) self, (MedBiosEntry*) sender);
-}
-
-
-static void
-main_window_medwid_map (GtkWidget* sender, gpointer self)
-{
-  MainWindowPrivate* priv = main_window_get_instance_private (self);
-  const gchar* command;
-  const gchar* tmp = NULL;
-
-  command = med_widget_get_command ((MedWidget*) sender);
-
-  if (command)
-  {
-    command++;
-    tmp = g_hash_table_lookup (priv->med_process->table, command);
-  }
-
-  if (tmp != NULL)
-  {
-    priv->map_list = g_slist_prepend (priv->map_list, sender);
-
-    if (!med_widget_get_updated ((MedWidget*) sender))
-    {
-      med_widget_set_value ((MedWidget*) sender, tmp);
-      med_widget_set_modified ((MedWidget*) sender, FALSE);
-      med_widget_set_updated ((MedWidget*) sender, TRUE);
-    }
-    gtk_widget_set_sensitive (sender, gtk_widget_get_sensitive ((GtkWidget*) priv->launch_button));
-  }
-  else
-    gtk_widget_set_sensitive (sender, FALSE);
-}
-
-
-static void
-main_window_medwid_unmap (GtkWidget* sender, gpointer self)
-{
-  MainWindowPrivate* priv = main_window_get_instance_private (self);
-
-  priv->map_list = g_slist_remove (priv->map_list, sender);
-}
-
-
-static void
-main_window_get_widgets (MainWindow* self,
-                         GtkWidget* wid)
-{
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (wid != NULL);
-
-  MainWindowPrivate* priv = main_window_get_instance_private (self);
-
-  GList* children = gtk_container_get_children ((GtkContainer*) wid);
-  GList* it = NULL;
-
-  for (it = children; it != NULL; it = it->next)
-  {
-    if (IS_MED_WIDGET(it->data))
-    {
-      priv->list = g_slist_append (priv->list, it->data);
-
-      g_signal_connect_object ((GtkWidget*) it->data, "map", (GCallback) main_window_medwid_map, self, 0);
-      g_signal_connect_object ((GtkWidget*) it->data, "unmap", (GCallback) main_window_medwid_unmap, self, 0);
-
-      if (IS_MED_BIOS_ENTRY(it->data))
-        g_signal_connect_object ((MedDialogEntry*) it->data, "emit-change", (GCallback) main_window_bios_entry_emit_change, self, 0);
-
-    }
-    else if (GTK_IS_CONTAINER(it->data))
-      main_window_get_widgets (self, (GtkWidget*) it->data);
-  }
-  g_list_free (children);
-}
-
-
-static void
-main_window_global_selection_changed (GtkTreeSelection* sender,
-                                      gpointer self)
-{
-  GtkTreeModel* model;
-  GtkTreeIter iter;
-  gboolean valid;
-
   g_return_if_fail (self != NULL);
   g_return_if_fail (sender != NULL);
 
-  valid = gtk_tree_selection_get_selected (sender, &model, &iter);
+  GtkTreeModel* model;
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_selection_get_selected (sender, &model, &iter);
 
   if (valid)
   {
-    gint num;
     MainWindow* mw = self;
     MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-    gtk_tree_model_get (model, &iter, 1, &num, -1);
-    gtk_notebook_set_current_page (priv->global_notebook, num);
+    gchar* item;
+    gchar* uipath;
+    GtkBox* emb;
+    GtkWidget* old = NULL;
+
+    gtk_tree_model_get (model, &iter, 1, &item, -1);
+    uipath = g_strconcat ("/com/github/mednaffe/", item, ".ui", NULL);
+    GtkBuilder *ui = gtk_builder_new_from_resource (uipath);
+    gtk_builder_connect_signals (ui, NULL);
+
+    GtkWidget* new = (GtkWidget*)gtk_builder_get_object (ui, "globbox");
+
+    if (!new)
+    {
+      new = (GtkWidget*)gtk_builder_get_object (ui, "sysbox");
+      emb = priv->emb_sys;
+
+      if (priv->sysui)
+      {
+        old = (GtkWidget*)gtk_builder_get_object (priv->sysui, "sysbox");
+        g_object_unref (priv->sysui);
+      }
+
+      priv->sysui = ui;
+    }
+    else
+    {
+      emb = priv->emb_glob;
+
+      if (priv->globui)
+      {
+        old = (GtkWidget*)gtk_builder_get_object (priv->globui, "globbox");
+        g_object_unref (priv->globui);
+      }
+
+      priv->globui = ui;
+    }
+
+    if (old)
+      gtk_widget_destroy (old);
+
+    if (new)
+      gtk_box_pack_start (emb, new, TRUE, TRUE, 0);
+
+    g_free (uipath);
+    g_free (item);
+
+   main_window_set_all_sensitive (mw, priv->sensitive, priv->show_tooltips);
   }
 }
 
 
 static void
-main_window_system_selection_changed (GtkTreeSelection* sender,
-                                      gpointer self)
+main_window_menu_hide_screens (GtkCheckMenuItem *checkmenuitem, gpointer self)
 {
-  GtkTreeModel* model;
-  GtkTreeIter iter;
-  gboolean valid;
-
   g_return_if_fail (self != NULL);
-  g_return_if_fail (sender != NULL);
 
-  valid = gtk_tree_selection_get_selected (sender, &model, &iter);
+  MainWindow* mw = self;
+  MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  if (valid)
-  {
-    gint num;
-    MainWindow* mw = self;
-    MainWindowPrivate* priv = main_window_get_instance_private (mw);
-
-    gtk_tree_model_get (model, &iter, 1, &num, -1);
-    gtk_notebook_set_current_page (priv->system_notebook, num);
-  }
+  paned_list_show_screens (priv->panedlist, gtk_check_menu_item_get_active (checkmenuitem));
 }
 
 
@@ -738,9 +611,9 @@ main_window_menu_show_bios (GtkMenuItem* sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  main_window_firmware_entry_emit_change (NULL, mw);
-  bios_window_update (priv->bios_window, priv->list);
-  gtk_window_present ((GtkWindow*) priv->bios_window);
+  BiosWindow* bios_window = bios_window_new ((GtkWindow*) self);
+  bios_window_update (bios_window, priv->med_process->table);
+  gtk_widget_show ((GtkWidget*) bios_window);
 }
 
 
@@ -750,10 +623,11 @@ main_window_menu_show_about (GtkMenuItem* sender,
 {
   g_return_if_fail (self != NULL);
 
-  MainWindow* mw = self;
-  MainWindowPrivate* priv = main_window_get_instance_private (mw);
+  GObject *app = (GObject*) gtk_window_get_application (self);
+  AboutWindow* about_window = about_window_new ((GtkWindow*) self);
 
-  gtk_window_present ((GtkWindow*) priv->about_window);
+  gtk_window_set_title ((GtkWindow*) self, g_object_get_data (app, "name"));
+  gtk_widget_show ((GtkWidget*) about_window);
 }
 
 
@@ -770,13 +644,17 @@ main_window_menu_quit (GtkMenuItem* sender,
 
 
 static void
-save_list_func (gconstpointer data, gpointer self)
+save_mods (GKeyFile *key, GHashTable* tab)
 {
-  if (med_widget_get_modified ((MedWidget*)data))
+  GHashTableIter iter;
+  gpointer command, value;
+
+  g_hash_table_iter_init (&iter, tab);
+  while (g_hash_table_iter_next (&iter, &command, &value))
   {
-    const gchar* command = med_widget_get_command ((MedWidget*)data);
-    const gchar* value = med_widget_get_value ((MedWidget*)data);
-    g_key_file_set_string((GKeyFile*)self, "EMU", command, value);
+    gchar* com = (gchar*)command;
+    if (com[0] == '-')
+      g_key_file_set_string(key, "EMU", (gchar*)command, (gchar*)value);
   }
 }
 
@@ -802,7 +680,9 @@ main_window_save_settings (MainWindow* self)
 
   GKeyFile *key = g_key_file_new ();
 
-  gchar* comment = g_strconcat ("Version ", gtk_about_dialog_get_version ((GtkAboutDialog*) priv->about_window), "\nDo not modify this file!", NULL);
+  GObject *app = (GObject*) gtk_window_get_application ((GtkWindow*)self);
+
+  gchar* comment = g_strconcat ("Version ", g_object_get_data (app, "version"), "\nDo not modify this file!", NULL);
   g_key_file_set_comment (key, NULL, NULL, comment, NULL);
   g_free (comment);
 
@@ -825,8 +705,11 @@ main_window_save_settings (MainWindow* self)
   g_key_file_set_integer (key, "GUI", "PosX", width);
   g_key_file_set_integer (key, "GUI", "PosY", height);
 
+  g_key_file_set_boolean (key, "GUI", "AdditionalCommandActivated", gtk_widget_is_visible ((GtkWidget*)priv->custom_entry));
+  g_key_file_set_string (key, "GUI", "AdditionalCommand", gtk_entry_get_text (priv->custom_entry));
+
   g_slist_foreach (priv->preferences->list, (GFunc) save_preflist_func, key);
-  g_slist_foreach (priv->list, (GFunc) save_list_func, key);
+  save_mods (key, priv->med_process->table);
 
 #ifdef G_OS_WIN32
   gint theme = gtk_combo_box_get_active (GTK_COMBO_BOX(priv->preferences->change_theme));
@@ -835,20 +718,36 @@ main_window_save_settings (MainWindow* self)
   gchar* conf_path = g_win32_get_package_installation_directory_of_module (NULL);
 #else
   gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe", NULL);
-  mkdir (conf_path, S_IRWXU);
+
+  if (!g_file_test (conf_path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR))
+  {
+    if (g_mkdir_with_parents (conf_path, 0700) == -1)
+    {
+      main_window_show_error (self, "Configuration directory can not be created!\n");
+      g_free (conf_path);
+      g_key_file_free (key);
+      return;
+    }
+  }
 #endif
 
   gchar* conf_path_full = g_strconcat (conf_path, G_DIR_SEPARATOR_S, "mednaffe.conf", NULL);
   g_free (conf_path);
 
-  gboolean valid = g_key_file_save_to_file (key, conf_path_full, NULL);
+  GError *err = NULL;
+  gboolean valid = g_key_file_save_to_file (key, conf_path_full, &err);
   g_free (conf_path_full);
 
   if (valid)
   {
-    gchar* bye = g_strconcat ("Exiting ", gtk_about_dialog_get_program_name ((GtkAboutDialog*) priv->about_window), "\n", NULL);
+    gchar* bye = g_strconcat ("Exiting ", g_object_get_data (app, "name"), "\n", NULL);
     logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_FRONTEND, bye);
     g_free (bye);
+  }
+  else if (err != NULL)
+  {
+    main_window_show_error (self, err->message);
+    g_error_free (err);
   }
 
   g_key_file_free (key);
@@ -876,7 +775,8 @@ main_window_menu_show_manager (GtkMenuItem* sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  gtk_window_present ((GtkWindow*) priv->manager);
+  ManagerWindow* manager = manager_window_new ((GtkWindow*) self, priv->pathbox->combo);
+  gtk_widget_show ((GtkWidget*) manager);
 }
 
 
@@ -925,18 +825,19 @@ main_window_menu_show_preferences (GtkMenuItem* sender,
 
 
 static void
-load_list_func (gconstpointer data, gpointer self)
+load_mods (GKeyFile *key, GHashTable* tab)
 {
-  const gchar* command = med_widget_get_command ((MedWidget*)data);
+  gchar** commands = g_key_file_get_keys (key, "EMU", NULL, NULL);
+  gint i = 0;
 
-  gchar* value = g_key_file_get_string((GKeyFile*)self, "EMU", command, NULL);
-  if (value)
+  while (commands[i])
   {
-    med_widget_set_value ((MedWidget*)data, value);
-    med_widget_set_updated ((MedWidget*)data, TRUE);
+    gchar* value = g_key_file_get_string (key, "EMU", commands[i], NULL);
+    g_hash_table_insert (tab, commands[i], value);
+    i++;
   }
 
-  g_free(value);
+  g_free (commands);
 }
 
 
@@ -984,7 +885,7 @@ main_window_load_settings (MainWindow* self)
   g_slist_foreach (priv->preferences->list, (GFunc)load_preflist_func, key);
 
   if (g_key_file_has_group (key, "EMU"))
-    g_slist_foreach (priv->list, (GFunc)load_list_func, key);  //TODO: slow
+    load_mods(key, priv->med_process->table);
 
   if (gtk_toggle_button_get_active ((GtkToggleButton*) priv->preferences->win_size))
   {
@@ -1004,6 +905,14 @@ main_window_load_settings (MainWindow* self)
 
     gtk_window_move ((GtkWindow*) self, width, height);
   }
+
+  gtk_check_menu_item_set_active (priv->custom_menu, g_key_file_get_boolean (key, "GUI", "AdditionalCommandActivated", NULL));
+  gchar* cc = g_key_file_get_string (key, "GUI", "AdditionalCommand", NULL);
+
+  if (cc)
+    gtk_entry_set_text (priv->custom_entry, cc);
+
+  g_free (cc);
 
   gtk_widget_show ((GtkWidget*) self);
 
@@ -1031,25 +940,28 @@ main_window_start (MainWindow* self)
   g_return_if_fail (self != NULL);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
+  GObject *app = (GObject*) gtk_window_get_application ((GtkWindow*)self);
+
+  gtk_window_set_title ((GtkWindow*) self, g_object_get_data (app, "name"));
   gchar* welcome = g_strconcat ("Starting ",
-                                gtk_about_dialog_get_program_name ((GtkAboutDialog*) priv->about_window),
+                                g_object_get_data (app, "name"),
                                 " ",
-                                gtk_about_dialog_get_version ((GtkAboutDialog*) priv->about_window),
+                                g_object_get_data (app, "version"),
                                 "\n",
                                 NULL);
+
 
   logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_FRONTEND, welcome);
   g_free (welcome);
 
+
   priv->med_process = med_process_new ();
 
-  if (priv->med_process->MedPath == NULL)
+  if (priv->med_process->MedExePath == NULL)
   {
     main_window_show_error (self, "Mednafen executable not found!\n");
-    gtk_widget_set_sensitive ((GtkWidget*) priv->launch_button, FALSE);
+    main_window_set_all_sensitive (self, FALSE, priv->show_tooltips);
   }
-  else
-    gtk_widget_set_tooltip_text ((GtkWidget*) priv->status_version, priv->med_process->MedPath);
 
   med_process_read_conf (priv->med_process);
 
@@ -1058,11 +970,19 @@ main_window_start (MainWindow* self)
   else
   {
     gtk_label_set_label (priv->status_version, priv->med_process->MedVersion);
-    gtk_widget_set_tooltip_text ((GtkWidget*) priv->status_version, priv->med_process->MedPath);
+    if (priv->med_process->MedExePath)
+    {
+      gchar *tooltip = g_strconcat ("Executable: ", priv->med_process->MedExePath, "\nConfiguration: ", priv->med_process->MedConfPath, NULL);
+      gtk_widget_set_tooltip_text ((GtkWidget*) priv->status_version, tooltip);
+      g_free (tooltip);
+    }
   }
 
   g_signal_connect_object (priv->med_process, "exec-output", (GCallback) main_window_process_write_emu_log, self, 0);
   g_signal_connect_object (priv->med_process, "exec-emu-ended", (GCallback) main_window_process_exec_emu_ended, self, 0);
+
+  g_object_set_data ((GObject*) self, "table", priv->med_process->table);
+
 
   priv->listjoy = med_list_joy_new ();
   g_signal_connect_object (priv->listjoy , "joy-found", (GCallback) main_window_joy_found, self, 0);
@@ -1070,7 +990,8 @@ main_window_start (MainWindow* self)
 
   g_object_set_data ((GObject*) self, "listjoy", priv->listjoy);
 
-  main_window_get_widgets (self, (GtkWidget*) self);
+  gtk_window_set_icon ((GtkWindow*) self, g_object_get_data (app, "icon"));
+
   main_window_load_settings (self);
 }
 
@@ -1084,8 +1005,10 @@ main_window_finalize (GObject * obj)
   g_object_unref (priv->med_process);
   g_object_unref (priv->listjoy);
 
-  g_slist_free (priv->list);
-  g_slist_free (priv->map_list);
+  if (priv->sysui)
+    g_object_unref (priv->sysui);
+  if (priv->globui)
+    g_object_unref (priv->globui);
 
   G_OBJECT_CLASS (main_window_parent_class)->finalize (obj);
 }
@@ -1111,12 +1034,6 @@ main_window_new (GtkApplication* app)
   priv->logbook = logbook_new ();
   gtk_box_pack_start (priv->log_box, (GtkWidget*) priv->logbook, TRUE, TRUE, 0);
 
-  g_signal_connect_object (priv->path_firmware, "emit-change", (GCallback) main_window_firmware_entry_emit_change, self, 0);
-
-  med_widget_set_value ((MedWidget*) priv->lynx_bios, "lynxboot.img");
-  med_widget_set_modified ((MedWidget*) priv->lynx_bios, FALSE);
-  gtk_widget_set_visible ((GtkWidget*) priv->lynx_bios, FALSE);
-
   priv->pathbox = path_combo_box_new();
   g_signal_connect_object (priv->pathbox, "selected", (GCallback) main_window_path_combo_box_selected, self, 0);
   gtk_box_pack_start (priv->main_box, (GtkWidget*) priv->pathbox, FALSE, FALSE, 0);
@@ -1128,24 +1045,14 @@ main_window_new (GtkApplication* app)
   g_signal_connect_object (priv->panedlist, "launched", (GCallback) main_window_paned_list_launched, self, 0);
   gtk_box_pack_start (priv->main_box, (GtkWidget*) priv->panedlist, TRUE, TRUE, 0);
 
-  priv->bios_window = bios_window_new ((GtkWindow*) self);
-
-  priv->manager = manager_window_new ((GtkWindow*) self, priv->pathbox->combo);
-
   priv->preferences = preferences_window_new ((GtkWindow*) self);
   g_signal_connect_object (priv->preferences, "on-show-tips", (GCallback) main_window_preferences_show_tooltips, self, 0);
   g_signal_connect_object (priv->preferences, "on-show-filters", (GCallback) main_window_preferences_show_filters, self, 0);
-
-  gtk_tree_model_filter_set_visible_column (priv->systems_filter, 2);
-  g_signal_connect_object (priv->preferences, "on-show-systems", (GCallback) main_window_preferences_show_systems, self, 0);
   g_signal_connect_object (priv->preferences, "on-change-theme", (GCallback) main_window_preferences_change_theme, self, 0);
 
-  GdkPixbuf* icon = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe.png", NULL);
-  gtk_window_set_icon ((GtkWindow*) self, icon);
-  g_object_unref (icon);
-
-  priv->about_window = about_window_new ((GtkWindow*) self);
-  gtk_window_set_title ((GtkWindow*) self, gtk_about_dialog_get_program_name ((GtkAboutDialog*) priv->about_window));
+  gtk_tree_model_filter_set_visible_column (priv->systems_filter, 3);
+  gtk_tree_model_filter_refilter (priv->systems_filter);
+  g_signal_connect_object (priv->preferences, "on-show-systems", (GCallback) main_window_preferences_show_systems, self, 0); 
 
   return self;
 }
@@ -1156,8 +1063,10 @@ main_window_init (MainWindow * self)
 {
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
-  priv->list = NULL;
-  priv->map_list = NULL;
+  priv->globui = NULL;
+  priv->sysui = NULL;
+  priv->sensitive = TRUE;
+  priv->show_tooltips = TRUE;
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }
@@ -1197,14 +1106,14 @@ main_window_class_init (MainWindowClass * klass)
                                              MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, status_version));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "global_notebook",
+                                             "emb_sys",
                                              FALSE,
-                                             MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, global_notebook));
+                                             MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, emb_sys));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "system_notebook",
+                                             "emb_glob",
                                              FALSE,
-                                             MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, system_notebook));
+                                             MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, emb_glob));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "systems_filter",
@@ -1222,23 +1131,14 @@ main_window_class_init (MainWindowClass * klass)
                                              MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, custom_entry));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "path_firmware",
+                                             "custom_menu",
                                              FALSE,
-                                             MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, path_firmware));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "lynx_bios",
-                                             FALSE,
-                                             MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, lynx_bios));
+                                             MainWindow_private_offset + G_STRUCT_OFFSET (MainWindowPrivate, custom_menu));
 
 
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "global_selection_changed",
-                                                G_CALLBACK (main_window_global_selection_changed));
-
-  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "system_selection_changed",
-                                                G_CALLBACK (main_window_system_selection_changed));
+                                                "selection_changed",
+                                                G_CALLBACK (main_window_selection_changed));
 
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "show_bios_dialog",
@@ -1261,6 +1161,10 @@ main_window_class_init (MainWindowClass * klass)
                                                 G_CALLBACK (main_window_menu_show_manager));
 
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+                                                "hide_screens",
+                                                G_CALLBACK (main_window_menu_hide_screens));
+
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "launch_selected",
                                                 G_CALLBACK (main_window_launch_clicked));
 
@@ -1271,8 +1175,4 @@ main_window_class_init (MainWindowClass * klass)
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "show_preferences",
                                                 G_CALLBACK (main_window_menu_show_preferences));
-
-  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "medcombo_changed",
-                                                G_CALLBACK (main_window_medcombo_changed));
 }

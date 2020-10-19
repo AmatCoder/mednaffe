@@ -1,0 +1,1158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 
+
+Copyright (C) 2013-2020 AmatCoder
+
+This file is part of Mednaffe.
+
+Mednaffe is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mednaffe is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: AmatCoder
+
+-->
+<interface>
+  <requires lib="gtk+" version="3.16"/>
+  <requires lib="medwidgets" version="0.0"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name Mednaffe -->
+  <!-- interface-description A front-end (GUI) for mednafen emulator -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
+  <!-- interface-authors AmatCoder -->
+  <object class="GtkBox" id="sysbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkNotebook">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="MedCheckButton">
+                <property name="label" translatable="yes">Enable automatic usage of this module</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
+                <property name="command">gg.enable</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Emulation</property>
+          </object>
+          <packing>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkStackSwitcher">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="stack">gg_video_stack</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="gg_video_stack">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="margin_start">18</property>
+                <property name="margin_end">18</property>
+                <property name="margin_top">18</property>
+                <property name="margin_bottom">18</property>
+                <property name="transition_type">slide-left-right</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">gg.xscale</property>
+                        <property name="label">Scaling factor for the X axis</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0.01,256,0.01,6</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">gg.yscale</property>
+                        <property name="label">Scaling factor for the Y axis</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0.01,256,0.01,6</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">Windowed</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                        <property name="command">gg.xres</property>
+                        <property name="label">Horizontal resolution</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0,65536,1,0</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                        <property name="command">gg.yres</property>
+                        <property name="label">Vertical resolution</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0,65536,1,0</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">0 - Disabled
+
+full - Full
+Full-screen stretch, disregarding aspect ratio.
+
+aspect - Aspect Preserve
+Full-screen stretch as far as the aspect ratio(in this sense, the equivalent xscalefs == yscalefs) can be maintained.
+
+aspect_int - Aspect Preserve + Integer Scale
+Full-screen stretch, same as "aspect" except that the equivalent xscalefs and yscalefs are rounded down to the nearest integer.
+
+aspect_mult2 - Aspect Preserve + Integer Multiple-of-2 Scale
+Full-screen stretch, same as "aspect_int", but rounds down to the nearest multiple of 2.</property>
+                        <property name="command">gg.stretch</property>
+                        <property name="label">Stretch to fill screen</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0
+full
+aspect
+aspect_int
+aspect_mult2</property>
+                        <signal name="medcombo-changed" handler="enable_buddy_combo_opengl" object="gg_scale" swapped="no"/>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">12</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="gg_scale">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="MedRange">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                            <property name="command">gg.xscalefs</property>
+                            <property name="label">Scaling factor for the X axis</property>
+                            <property name="label_width">30</property>
+                            <property name="values">0.01,256,0.01,6</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedRange">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                            <property name="command">gg.yscalefs</property>
+                            <property name="label">Scaling factor for the Y axis</property>
+                            <property name="label_width">30</property>
+                            <property name="values">0.01,256,0.01,6</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page1</property>
+                    <property name="title" translatable="yes">Fullscreen</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Enable (bi)linear interpolation.
+
+    0 - Disabled
+
+    1 - Bilinear
+
+    x - Linear (X)
+    Interpolation only on the X axis.
+
+    y - Linear (Y)
+    Interpolation only on the Y axis.</property>
+                        <property name="command">gg.videoip</property>
+                        <property name="label">Interpolation</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0
+1
+x
+y</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">The destination rectangle is NOT altered by this setting, so if you have xscale and yscale set to "2", and try to use a 3x scaling filter like hq3x, the image is not going to look that great. The nearest-neighbor scalers are intended for use with bilinear interpolation enabled, at high resolutions(such as 1280x1024; nn2x(or nny2x) + bilinear interpolation + fullscreen stretching at this resolution looks quite nice).
+
+    none - None/Disabled
+
+    hq2x - hq2x
+
+    hq3x - hq3x
+
+    hq4x - hq4x
+
+    scale2x - scale2x
+
+    scale3x - scale3x
+
+    scale4x - scale4x
+
+    2xsai - 2xSaI
+
+    super2xsai - Super 2xSaI
+
+    supereagle - Super Eagle
+
+    nn2x - Nearest-neighbor 2x
+
+    nn3x - Nearest-neighbor 3x
+
+    nn4x - Nearest-neighbor 4x
+
+    nny2x - Nearest-neighbor 2x, y axis only
+
+    nny3x - Nearest-neighbor 3x, y axis only
+
+    nny4x - Nearest-neighbor 4x, y axis only</property>
+                        <property name="command">gg.special</property>
+                        <property name="label">Special video scaler</property>
+                        <property name="label_width">30</property>
+                        <property name="values">none
+hq2x
+hq3x
+hq4x
+scale2x
+scale3x
+scale4x
+2xsai
+super2xsai
+supereagle
+nn2x
+nn3x
+nn4x
+nny2x
+nny3x
+nny4x</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">6</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Opacity is specified in %; IE a value of "100" will give entirely black scanlines.
+
+Negative values are the same as positive values for non-interlaced video, but for interlaced video will cause the scanlines to be overlaid over the previous(if the video.deinterlacer setting is set to "weave", the default) field's lines.</property>
+                        <property name="command">gg.scanlines</property>
+                        <property name="label">Scanlines with specified opacity</property>
+                        <property name="label_width">30</property>
+                        <property name="values">-100,100,1,0</property>
+                        <property name="is_scale">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">12</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page2</property>
+                    <property name="title" translatable="yes">Scaler/Filter</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Obviously, this will only work with the OpenGL "video.driver" setting, and only on cards and OpenGL implementations that support shaders, otherwise you will get a black screen, or Mednafen may display an error message when starting up. When a shader is enabled, the ".videoip" setting is ignored.
+
+none - None/Disabled
+
+autoip - Auto Interpolation
+Will automatically interpolate on each axis if the corresponding effective scaling factor is not an integer.
+
+autoipsharper - Sharper Auto Interpolation
+Same as "autoip", but when interpolation is done, it is done in a manner that will reduce blurriness if possible.
+
+scale2x - Scale2x
+
+sabr - SABR v3.0
+GPU-intensive.
+
+ipsharper - Sharper bilinear interpolation.
+
+ipxnoty - Linear interpolation on X axis only.
+
+ipynotx - Linear interpolation on Y axis only.
+
+ipxnotysharper - Sharper version of "ipxnoty".
+
+ipynotxsharper - Sharper version of "ipynotx".
+
+goat - Simple approximation of a color TV CRT look.
+Intended for fullscreen modes with a vertical resolution of around 1000 to 1500 pixels. Doesn't simulate halation and electron beam energy distribution nuances.</property>
+                        <property name="command">gg.shader</property>
+                        <property name="label">OpenGL shader</property>
+                        <property name="label_width">30</property>
+                        <property name="values">none
+autoip
+autoipsharper
+scale2x
+sabr
+ipsharper
+ipxnoty
+ipynotx
+ipxnotysharper
+ipynotxsharper
+goat</property>
+                        <signal name="medcombo-changed" handler="enable_buddy_combo_opengl" object="frame_goat_gg" swapped="no"/>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFrame" id="frame_goat_gg">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_start">18</property>
+                        <property name="margin_end">18</property>
+                        <property name="margin_top">18</property>
+                        <property name="margin_bottom">18</property>
+                        <property name="label_xalign">0.5</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_start">18</property>
+                            <property name="margin_end">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Enable scanlines effect</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">gg.shader.goat.slen</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Force interlaced video to be treated as progressive</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="tooltip_text" translatable="yes">When disabled, the default, the "video.deinterlacer" setting is effectively ignored with respect to what appears on the screen. When enabled, it may be prudent to disable the scanlines effect controlled by the *.goat.slen setting, or else the scanline effect may look objectionable.</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">gg.shader.goat.fprog</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedComboBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">goatron - Goatron
+Brightest.
+
+borg - Borg
+Darkest.
+
+slenderman - Slenderman
+Spookiest?</property>
+                                <property name="command">gg.shader.goat.pat</property>
+                                <property name="label">Mask pattern</property>
+                                <property name="label_width">30</property>
+                                <property name="values">goatron
+borg
+slenderman</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">18</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedRange">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">gg.shader.goat.tp</property>
+                                <property name="label">Transparency of mask areas</property>
+                                <property name="label_width">30</property>
+                                <property name="values">0.00,1.00,0.01,2</property>
+                                <property name="is_scale">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="MedRange">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="command">gg.shader.goat.hdiv</property>
+                                    <property name="label">Constant RGB horizontal divergence</property>
+                                    <property name="label_width">30</property>
+                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                    <property name="is_scale">True</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="MedRange">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="command">gg.shader.goat.vdiv</property>
+                                    <property name="label">Constant RGB vertical divergence</property>
+                                    <property name="label_width">30</property>
+                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                    <property name="is_scale">True</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">18</property>
+                                <property name="position">4</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Goat Options</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page3</property>
+                    <property name="title" translatable="yes">Shader</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="MedCheckButton">
+                        <property name="label" translatable="yes">Enable video temporal blur</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="margin_start">20</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="command">gg.tblur</property>
+                        <signal name="toggled" handler="enable_buddy_toggle" object="gg_tblur_accum" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="gg_tblur_accum">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="MedCheckButton">
+                            <property name="label" translatable="yes">Accumulate color data rather than discarding it</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="margin_start">50</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="command">gg.tblur.accum</property>
+                            <signal name="toggled" handler="enable_buddy_toggle" object="gg_tblur_amount" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="gg_tblur_amount">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedRange">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Specified in percentage of accumulation buffer to mix with the current frame</property>
+                                <property name="command">gg.tblur.accum.amount</property>
+                                <property name="label">Blur amount in accumulation mode</property>
+                                <property name="label_width">40</property>
+                                <property name="values">0,100,1,0</property>
+                                <property name="is_scale">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page4</property>
+                    <property name="title" translatable="yes">Blur</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Graphics</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="MedCheckButton">
+                <property name="label" translatable="yes">Force monophonic sound output</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
+                <property name="command">gg.forcemono</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Sound</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkStackSwitcher">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="stack">gg_stack</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="gg_stack">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_start">18</property>
+                <property name="margin_end">18</property>
+                <property name="margin_top">18</property>
+                <property name="margin_bottom">18</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">gg.input.builtin.gamepad.up</property>
+                            <property name="label">Up</property>
+                            <property name="label_width">16</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">gg.input.builtin.gamepad.down</property>
+                            <property name="label">Down</property>
+                            <property name="label_width">16</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">gg.input.builtin.gamepad.left</property>
+                            <property name="label">Left</property>
+                            <property name="label_width">16</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">gg.input.builtin.gamepad.right</property>
+                            <property name="label">Right</property>
+                            <property name="label_width">16</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">gg.input.builtin.gamepad.button1</property>
+                            <property name="label">Button 1</property>
+                            <property name="label_width">16</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">gg.input.builtin.gamepad.button2</property>
+                            <property name="label">Button 2</property>
+                            <property name="label_width">16</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">gg.input.builtin.gamepad.start</property>
+                            <property name="label">Start</property>
+                            <property name="label_width">16</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="expanded">True</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedInput">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">gg.input.builtin.gamepad.rapid_button1</property>
+                                <property name="label">Rapid Button 1</property>
+                                <property name="label_width">16</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedInput">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">gg.input.builtin.gamepad.rapid_button2</property>
+                                <property name="label">Rapid Button 2</property>
+                                <property name="label_width">16</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Autofire</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">port1</property>
+                    <property name="title" translatable="yes">Port 1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Input</property>
+          </object>
+          <packing>
+            <property name="position">3</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkFrame">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_start">18</property>
+                    <property name="margin_end">18</property>
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">6</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Introduction&lt;/b&gt;
+Mednafen's Sega Game Gear emulation is based off of SMS Plus.
+
+Game Gear emulation in Mednafen is a low-priority system in terms of proactive maintenance and bugfixes.
+
+
+&lt;b&gt;Custom Palettes&lt;/b&gt;
+Global Filename:	Description:
+
+gg.pal			GG 12-bit BGR
+				4096 RGB triplets</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="xalign">0</property>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLinkButton">
+                    <property name="label" translatable="yes">Sega Game Gear Documentation</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="relief">none</property>
+                    <property name="uri">https://mednafen.github.io/documentation/gg.html</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Documentation</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </object>
+</interface>

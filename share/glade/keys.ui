@@ -1,0 +1,1581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 
+
+Copyright (C) 2013-2020 AmatCoder
+
+This file is part of Mednaffe.
+
+Mednaffe is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mednaffe is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: AmatCoder
+
+-->
+<interface>
+  <requires lib="gtk+" version="3.16"/>
+  <requires lib="medwidgets" version="0.0"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name Mednaffe -->
+  <!-- interface-description A front-end (GUI) for mednafen emulator -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
+  <!-- interface-authors AmatCoder -->
+  <object class="GtkBox" id="globbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_start">18</property>
+    <property name="margin_end">18</property>
+    <property name="margin_top">18</property>
+    <property name="margin_bottom">18</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkStackSwitcher">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="stack">keys_stack</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkStack" id="keys_stack">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_top">18</property>
+        <property name="margin_bottom">18</property>
+        <property name="transition_type">slide-left-right</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.toggle_help</property>
+                <property name="label">Toggle in-game quick help screen</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.select_disk</property>
+                <property name="label">Select medium (CD, floppy disk, etc.)</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.insert_eject_disk</property>
+                <property name="label">Insert/Eject medium (CD, floppy disk, etc.)</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.reset</property>
+                <property name="label">Reset</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.power</property>
+                <property name="label">Hard reset (toggle power switch)</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.exit</property>
+                <property name="label">Exit (the emulator or netplay chat mode)</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.pause</property>
+                <property name="label">Pause / Unpause</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.toggle_fs</property>
+                <property name="label">Toggle fullscreen mode</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.rotate_screen</property>
+                <property name="label">Rotate the screen</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Note: Will not respond to RALT/AltGr even if remapped</property>
+                <property name="command">command.toggle_debugger</property>
+                <property name="label">Toggle debugger</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">9</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Note: Will not respond to RALT/AltGr even if remapped</property>
+                <property name="command">command.togglecheatview</property>
+                <property name="label">Toggle cheat console</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">10</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.togglecheatactive</property>
+                <property name="label">Toggle cheat active</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">11</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.togglenetview</property>
+                <property name="label">Enable network play console input</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">12</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.fast_forward</property>
+                <property name="label">Fast-forward</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">13</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.slow_forward</property>
+                <property name="label">Slow-forward</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">14</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.advance_frame</property>
+                <property name="label">Enter frame advance mode</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">15</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.run_normal</property>
+                <property name="label">Exit frame advance mode</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">16</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.state_rewind</property>
+                <property name="label">Rewind emulation</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">17</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.toggle_state_rewind</property>
+                <property name="label">Toggle save-state rewinding functionality</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">18</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.toggle_fps_view</property>
+                <property name="label">Toggle frames-per-second display</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">19</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.take_snapshot</property>
+                <property name="label">Save raw screen snapshot</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">20</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Snapshot is taken after all scaling and special filters/shaders are applied</property>
+                <property name="command">command.take_scaled_snapshot</property>
+                <property name="label">Save scaled screen snapshot</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">21</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.input_configc</property>
+                <property name="label">Configuration for a command key</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">22</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Activate in-game input configuration process for a command key, but after configuration completes, to activate the configured command key will require all buttons configured to it to be in a pressed state simultaneously to trigger the action.
+
+Note that keyboard modifier keys(CTRL, ALT, SHIFT) are still treated as modifiers and not discrete keys.
+
+Especially useful in conjunction with the "Dangerous key action delay" setting.</property>
+                <property name="command">command.input_configc_am</property>
+                <property name="label">Configuration for a command key (pressed simultaneously)</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">23</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.input_config_abd</property>
+                <property name="label">Detect analog buttons on physical joysticks/gamepads</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">24</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.toggle_grab</property>
+                <property name="label">Toggle input grabbing (for emulated mice and keyboards)</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">25</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page0</property>
+            <property name="title" translatable="yes">Basic</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.save_state</property>
+                <property name="label">Save state</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.load_state</property>
+                <property name="label">Load state</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.state_slot_dec</property>
+                <property name="label">Decrement selected save state slot</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.state_slot_inc</property>
+                <property name="label">Increment selected save state slot</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.0</property>
+                <property name="label">Select save state slot 0</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.1</property>
+                <property name="label">Select save state slot 1</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.2</property>
+                <property name="label">Select save state slot 2</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.3</property>
+                <property name="label">Select save state slot 3</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.4</property>
+                <property name="label">Select save state slot 4</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">9</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.5</property>
+                <property name="label">Select save state slot 5</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">10</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.6</property>
+                <property name="label">Select save state slot 6</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">11</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.7</property>
+                <property name="label">Select save state slot 7</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">12</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.8</property>
+                <property name="label">Select save state slot 8</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">13</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.9</property>
+                <property name="label">Select save state slot 9</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">14</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page1</property>
+            <property name="title" translatable="yes">Save States</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.save_movie</property>
+                <property name="label">Record movie</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.load_movie</property>
+                <property name="label">Play movie</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m0</property>
+                <property name="label">Select movie slot 0</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m1</property>
+                <property name="label">Select movie slot 1</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m2</property>
+                <property name="label">Select movie slot 2</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m3</property>
+                <property name="label">Select movie slot 3</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m4</property>
+                <property name="label">Select movie slot 4</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m5</property>
+                <property name="label">Select movie slot 5</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m6</property>
+                <property name="label">Select movie slot 6</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">9</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m7</property>
+                <property name="label">Select movie slot 7</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">10</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m8</property>
+                <property name="label">Select movie slot 8</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">11</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.m9</property>
+                <property name="label">Select movie slot 9</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">12</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page2</property>
+            <property name="title" translatable="yes">Movies</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl1</property>
+                <property name="label">Toggle layer 1</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl2</property>
+                <property name="label">Toggle layer 2</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl3</property>
+                <property name="label">Toggle layer 3</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl4</property>
+                <property name="label">Toggle layer 4</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl5</property>
+                <property name="label">Toggle layer 5</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl6</property>
+                <property name="label">Toggle layer 6</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl7</property>
+                <property name="label">Toggle layer 7</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl8</property>
+                <property name="label">Toggle layer 8</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedInput">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">command.tl9</property>
+                <property name="label">Toggle layer 9</property>
+                <property name="label_width">50</property>
+                <property name="modifier_keys">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page3</property>
+            <property name="title" translatable="yes">Layers</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="label" translatable="yes">&lt;i&gt;Note: Many games do not expect input devices to change while the game is running, and thus may require a hard reset.&lt;/i&gt;</property>
+                <property name="use_markup">True</property>
+                <property name="single_line_mode">True</property>
+                <property name="xalign">0.10000000149011612</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">18</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.device_select1</property>
+                        <property name="label">Select input device on port 1</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkListBoxRow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">command.device_select2</property>
+                            <property name="label">Select input device on port 2</property>
+                            <property name="label_width">50</property>
+                            <property name="modifier_keys">True</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.device_select3</property>
+                        <property name="label">Select input device on port 3</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.device_select4</property>
+                        <property name="label">Select input device on port 4</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.device_select5</property>
+                        <property name="label">Select input device on port 5</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.device_select6</property>
+                        <property name="label">Select input device on port 6</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.device_select7</property>
+                        <property name="label">Select input device on port 7</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.device_select8</property>
+                        <property name="label">Select input device on port 8</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">7</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config1</property>
+                        <property name="label">Configure buttons for device on port 1</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config2</property>
+                        <property name="label">Configure buttons for device on port 2</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config3</property>
+                        <property name="label">Configure buttons for device on port 3</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config4</property>
+                        <property name="label">Configure buttons for device on port 4</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config5</property>
+                        <property name="label">Configure buttons for device on port 5</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config6</property>
+                        <property name="label">Configure buttons for device on port 6</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config7</property>
+                        <property name="label">Configure buttons for device on port 7</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedInput">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">command.input_config8</property>
+                        <property name="label">Configure buttons for device on port 8</property>
+                        <property name="label_width">50</property>
+                        <property name="modifier_keys">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">7</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page4</property>
+            <property name="title" translatable="yes">Devices</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+</interface>

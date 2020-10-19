@@ -7,5 +7,39 @@
     <file compressed="true" preprocess="xml-stripblanks">Setup.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Preferences.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Bios.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">video.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">sound.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">misc.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">keys.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">input.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">netplay.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">sr.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">sf.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">ff.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">recording.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">fps.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">osd.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">paths.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">help.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">lynx.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">gb.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">gba.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">ngp.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">nes.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">pce.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">pce_fast.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">pcfx.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">gg.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">md.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">sms.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">ss.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">psx.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">snes.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">snes_faust.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">vb.ui</file>
+    <file compressed="false" preprocess="xml-stripblanks">wswan.ui</file>
+    <file compressed="false">apply.png</file>
+    <file compressed="false">warning.png</file>
+    <file compressed="false">error.png</file>
   </gresource>
 </gresources>

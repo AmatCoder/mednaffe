@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 
+
+Copyright (C) 2013-2020 AmatCoder
+
+This file is part of Mednaffe.
+
+Mednaffe is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mednaffe is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: AmatCoder
+
+-->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <requires lib="medwidgets" version="0.0"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name Mednaffe -->
+  <!-- interface-description A front-end (GUI) for mednafen emulator -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
+  <!-- interface-authors AmatCoder -->
+  <object class="GtkBox" id="globbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_start">18</property>
+    <property name="margin_end">18</property>
+    <property name="margin_top">18</property>
+    <property name="margin_bottom">18</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+    <child>
+      <object class="MedDialogEntry" id="path_firmware">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_firmware</property>
+        <property name="label">Firmware</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_snap</property>
+        <property name="label">Screen snapshots</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_state</property>
+        <property name="label">Save states</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_cheat</property>
+        <property name="label">Cheats</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_movie</property>
+        <property name="label">Movies</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">4</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_palette</property>
+        <property name="label">Custom palettes</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">5</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_pgconfig</property>
+        <property name="label">Per-game configurations</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">6</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="tooltip_text" translatable="yes">WARNING: Do not set this path to a directory that contains Famicom Disk System disk images, or you will corrupt them when you load an FDS game and exit Mednafen.</property>
+        <property name="command">filesys.path_sav</property>
+        <property name="label">Save games</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">7</property>
+      </packing>
+    </child>
+    <child>
+      <object class="MedDialogEntry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="command">filesys.path_savbackup</property>
+        <property name="label">Backups of save games</property>
+        <property name="label_width">20</property>
+        <property name="is_folder">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">8</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkExpander">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="expanded">True</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_top">12</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="MedEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">WARNING: %x or %p should always be included, otherwise there will be a conflict between the numeric counter text file and the image data file.</property>
+                    <property name="command">filesys.fname_snap</property>
+                    <property name="label">Screen snapshot</property>
+                    <property name="label_width">20</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="MedEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="command">filesys.fname_state</property>
+                    <property name="label">State</property>
+                    <property name="label_width">20</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="MedEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="command">filesys.fname_movie</property>
+                    <property name="label">Movie</property>
+                    <property name="label_width">20</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="MedEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">WARNING: %x should always be included, otherwise you run the risk of overwriting save data for games that create multiple save data files.</property>
+                    <property name="command">filesys.fname_sav</property>
+                    <property name="label">Save games</property>
+                    <property name="label_width">20</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="MedEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">WARNING: %x and %p should always be included.</property>
+                    <property name="command">filesys.fname_savbackup</property>
+                    <property name="label">Save game backups</property>
+                    <property name="label_width">20</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFrame">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <child>
+                      <object class="GtkViewport">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">&lt;b&gt;	Edit at your own risk.&lt;/b&gt;
+
+		Available specifiers:
+
+		%%	-	% symbol
+		%z	-	Path separator (usage is optional, but allows for more platform-independent paths)
+		%b	-	Mednafen base directory (no trailing slash)
+		%d	-	Loaded file base directory ("/games/nintendo/megaman.nes" -&gt; "/games/nintendo")
+		%f	-	File base ("/games/nintendo/megaman.nes" -&gt; "megaman")
+		%F	-	Same as %f, but replaced with emulation module's short name with recognized multi-CD CD sets.  
+		%m	-	MD5 hash of the currently loaded game.
+		%M	-	Empty for first evaluation per full path construction, then filled with the game's
+				MD5 hash (or the game set's MD5 hash ID for multi-CD CD sets) followed by a period.
+				(Not available for the filesys.fname_snap string)
+
+		%e	-	Loaded file extension ("/games/nintendo/megaman.nes" -&gt; ".nes")
+		%s	-	Current emulation module's short name.
+		%p	-	Special parameter (usually a number/numeric counter).
+		%x	-	Default extension for the file type the path will be used for (extension is WITHOUT the period).
+		%X	-	A merging of %p and %x (replaces the last character of %x with %p).
+
+	If the constructed path is relative, it will be prefixed by the Mednafen base directory
+	and value of the filesys.*_path settings automatically.
+	If the constructed path is absolute, this prefixing will not occur.</property>
+                            <property name="use_markup">True</property>
+                            <property name="xalign">0</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label_item">
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Filename Format String</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="padding">36</property>
+        <property name="position">9</property>
+      </packing>
+    </child>
+  </object>
+</interface>

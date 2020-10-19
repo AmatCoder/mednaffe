@@ -1,7 +1,7 @@
 /*
  * preferences.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -52,6 +52,7 @@ typedef enum  {
   NGP,
   NES,
   PCE,
+  PCE_FAST,
   PCFX,
   GG,
   MD,
@@ -59,6 +60,7 @@ typedef enum  {
   SS,
   PSX,
   SNES,
+  SNES_FAUST,
   VB,
   WSWAN,
   SHOWTIPS,
@@ -82,6 +84,7 @@ preferences_window_systems_get_type (void)
                                          {NGP, "NGP", "ngp"},
                                          {NES, "NES", "nes"},
                                          {PCE, "PCE", "pce"},
+                                         {PCE_FAST, "PCE_FAST", "pce_fast"},
                                          {PCFX, "PCFX", "pcfx"},
                                          {GG, "GG", "gg"},
                                          {MD, "MD", "md"},
@@ -89,10 +92,11 @@ preferences_window_systems_get_type (void)
                                          {SS, "SS", "ss"},
                                          {PSX, "PSX", "psx"},
                                          {SNES, "SNES", "snes"},
+                                         {SNES_FAUST, "SNES_FAUST", "snes_faust"},
                                          {VB, "VB", "vb"},
                                          {WSWAN, "WSWAN", "wswan"},
-                                         {SHOWTIPS, "SHOWTIPS", "showtips"},
-                                         {SHOWFILTERSINHEADER, "SHOWFILTERSINHEADER", "showfiltersinheader"},
+                                         {SHOWTIPS, "SHOWTIPS", "ShowTips"},
+                                         {SHOWFILTERSINHEADER, "SHOWFILTERSINHEADER", "ShowFiltersInHeader"},
                                          {0, NULL, NULL} };
 
     GType preferences_window_systems_type_id = g_enum_register_static (g_intern_static_string ("PreferencesWindowSystems"), values);
@@ -213,10 +217,7 @@ preferences_window_new (GtkWindow* parent)
 
   PreferencesWindow *self = (PreferencesWindow*) g_object_new (preferences_window_get_type (), NULL);
 
-  gtk_window_set_destroy_with_parent ((GtkWindow*) self, TRUE);
   gtk_window_set_transient_for ((GtkWindow*) self, parent);
-  gtk_window_set_modal ((GtkWindow*) self, TRUE);
-  gtk_window_set_title ((GtkWindow*) self, "Preferences");
 
   med_widget_set_value ((MedWidget*) self->action_launch, "do nothing");
 

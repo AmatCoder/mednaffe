@@ -1,7 +1,7 @@
 /*
  * medbiosentry.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -31,9 +31,7 @@
 
 G_BEGIN_DECLS
 
-
 #define IS_MED_BIOS_ENTRY(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), med_bios_entry_get_type ()))
-
 
 typedef struct _MedBiosEntry MedBiosEntry;
 
@@ -44,11 +42,6 @@ struct _MedBiosEntry {
 
 GType med_bios_entry_get_type (void) G_GNUC_CONST;
 MedBiosEntry* med_bios_entry_new (void);
-
-void med_bios_entry_update_check (MedBiosEntry* self, const gchar* real_path);
-gchar* med_bios_entry_get_tooltip (MedBiosEntry* self);
-gchar* med_bios_entry_get_icon (MedBiosEntry* self);
-
 
 G_END_DECLS
 

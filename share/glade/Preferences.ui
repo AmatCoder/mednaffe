@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 
+<!-- Generated with glade 3.36.0 
 
-Copyright (C) 2013-2018
+Copyright (C) 2013-2020 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,20 +22,20 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.16"/>
   <requires lib="medwidgets" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2018 -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <template class="PreferencesWindow" parent="GtkDialog">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Preferences</property>
+    <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="on_close_x" swapped="no"/>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -47,11 +47,10 @@ Author: AmatCoder
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton">
-                <property name="label">gtk-close</property>
+                <property name="label">Close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_close" swapped="no"/>
               </object>
               <packing>
@@ -75,8 +74,8 @@ Author: AmatCoder
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">8</property>
-                <property name="margin_right">8</property>
+                <property name="margin_start">8</property>
+                <property name="margin_end">8</property>
                 <property name="margin_top">8</property>
                 <property name="margin_bottom">8</property>
                 <property name="orientation">vertical</property>
@@ -137,7 +136,7 @@ Author: AmatCoder
                                 <property name="receives_default">False</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
-                                <property name="command">showtips</property>
+                                <property name="command">ShowTips</property>
                                 <signal name="toggled" handler="on_system_toggled" swapped="no"/>
                               </object>
                               <packing>
@@ -153,7 +152,7 @@ Author: AmatCoder
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
-                                <property name="command">showfiltersinheader</property>
+                                <property name="command">ShowFiltersInHeader</property>
                                 <signal name="toggled" handler="on_system_toggled" swapped="no"/>
                               </object>
                               <packing>
@@ -218,8 +217,8 @@ hide</property>
               <object class="GtkFrame">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">8</property>
-                <property name="margin_right">8</property>
+                <property name="margin_start">8</property>
+                <property name="margin_end">8</property>
                 <property name="margin_top">8</property>
                 <property name="margin_bottom">8</property>
                 <property name="label_xalign">0</property>
@@ -304,7 +303,7 @@ hide</property>
                         </child>
                         <child>
                           <object class="MedCheckButton">
-                            <property name="label" translatable="yes">Nintendo Entertainment System/Famicom</property>
+                            <property name="label" translatable="yes">Nintendo Entertainment System / Famicom</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -321,7 +320,7 @@ hide</property>
                         </child>
                         <child>
                           <object class="MedCheckButton">
-                            <property name="label" translatable="yes">PC Engine (CD)/TurboGrafx 16 (CD)/SuperGrafx</property>
+                            <property name="label" translatable="yes">PC Engine (CD) / TurboGrafx 16 (CD) / SuperGrafx (pce)</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -338,6 +337,22 @@ hide</property>
                         </child>
                         <child>
                           <object class="MedCheckButton">
+                            <property name="label" translatable="yes">PC Engine (CD) / TurboGrafx 16 (CD) / SuperGrafx (pce_fast)</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="command">pce_fast</property>
+                            <signal name="toggled" handler="on_system_toggled" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedCheckButton">
                             <property name="label" translatable="yes">PC-FX</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -350,7 +365,7 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">6</property>
+                            <property name="position">7</property>
                           </packing>
                         </child>
                         <child>
@@ -367,12 +382,12 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">7</property>
+                            <property name="position">8</property>
                           </packing>
                         </child>
                         <child>
                           <object class="MedCheckButton">
-                            <property name="label" translatable="yes">Sega Genesis/MegaDrive</property>
+                            <property name="label" translatable="yes">Sega Genesis / MegaDrive</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -384,7 +399,7 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">8</property>
+                            <property name="position">9</property>
                           </packing>
                         </child>
                         <child>
@@ -401,7 +416,7 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">9</property>
+                            <property name="position">10</property>
                           </packing>
                         </child>
                         <child>
@@ -418,7 +433,7 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">10</property>
+                            <property name="position">11</property>
                           </packing>
                         </child>
                         <child>
@@ -435,12 +450,12 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">11</property>
+                            <property name="position">12</property>
                           </packing>
                         </child>
                         <child>
                           <object class="MedCheckButton">
-                            <property name="label" translatable="yes">Super Nintendo Entertainment System/Super Famicom</property>
+                            <property name="label" translatable="yes">Super Nintendo Entertainment System / Super Famicom (snes)</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -452,7 +467,23 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">12</property>
+                            <property name="position">13</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedCheckButton">
+                            <property name="label" translatable="yes">Super Nintendo Entertainment System / Super Famicom (snes_faust) </property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="command">snes_faust</property>
+                            <signal name="toggled" handler="on_system_toggled" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">14</property>
                           </packing>
                         </child>
                         <child>
@@ -469,12 +500,12 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">13</property>
+                            <property name="position">15</property>
                           </packing>
                         </child>
                         <child>
                           <object class="MedCheckButton">
-                            <property name="label" translatable="yes">WonderSwan </property>
+                            <property name="label" translatable="yes">WonderSwan (Color)</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -486,7 +517,7 @@ hide</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">14</property>
+                            <property name="position">16</property>
                           </packing>
                         </child>
                       </object>
@@ -523,8 +554,8 @@ hide</property>
               <object class="GtkFrame">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">8</property>
-                <property name="margin_right">8</property>
+                <property name="margin_start">8</property>
+                <property name="margin_end">8</property>
                 <property name="margin_top">8</property>
                 <property name="margin_bottom">8</property>
                 <property name="label_xalign">0</property>
@@ -614,6 +645,9 @@ hide</property>
           </packing>
         </child>
       </object>
+    </child>
+    <child type="titlebar">
+      <placeholder/>
     </child>
   </template>
 </interface>

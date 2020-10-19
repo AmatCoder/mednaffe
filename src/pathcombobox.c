@@ -260,6 +260,10 @@ path_combo_box_new (void)
   self->combo = (GtkComboBox*) gtk_combo_box_new_with_model ((GtkTreeModel*) self->path_store);
   g_object_unref (self->path_store);
 
+  GtkBindingSet *binding_set = gtk_binding_set_by_class (G_OBJECT_GET_CLASS (self->combo));
+  gtk_binding_entry_remove (binding_set, GDK_KEY_Down, 0);
+  gtk_binding_entry_remove (binding_set, GDK_KEY_Up, 0);
+
   renderer = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
 
   gtk_cell_layout_pack_start ((GtkCellLayout*) self->combo, (GtkCellRenderer*) renderer, TRUE);

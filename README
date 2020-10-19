@@ -9,12 +9,10 @@ Its main features are:
  * The only dependency is GTK+3.
  * GPLv3 licensed.
 
-*Note: Mednaffe only works with 1.21.1 or higher versions of mednafen emulator.*
-
 
 ## Building mednaffe on Linux
 
-To build mednaffe you need GTK+3 (3.10 or above) development libraries.
+To build mednaffe you need GTK+3 (3.16 or above) development libraries.
 
 * Run the "configure" script here, e.g.:
 

@@ -55,36 +55,51 @@ enum  {
 static guint med_process_signals[MED_PROCESS_NUM_SIGNALS] = {0};
 
 
-void
-med_process_read_conf (MedProcess* self)
+static GFile*
+med_process_get_conf_path (MedProcess* self)
 {
-  GFile* file;
-  gchar* home;
-
-  g_return_if_fail (self != NULL);
-
+  if (self->MedConfPath == NULL)
+  {
 #ifdef G_OS_WIN32
-  gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
-  home = g_strconcat (dir, "\\mednafen.cfg\\", NULL);
-  g_free(dir);
+    gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
+    home = g_strconcat (dir, "\\mednafen.cfg\\", NULL);
+    g_free(dir);
 #else
-  const gchar* mh = g_getenv ("MEDNAFEN_HOME");
+    const gchar* mh = g_getenv ("MEDNAFEN_HOME");
 
-  if (mh == NULL)
-    home = g_strconcat (g_get_home_dir (), "/.mednafen/mednafen.cfg", NULL);
-  else
-    home = g_strconcat (mh, "/mednafen.cfg", NULL);
+    if (mh == NULL)
+      self->MedConfPath = g_strconcat (g_get_home_dir (), "/.mednafen/mednafen.cfg", NULL);
+    else
+      self->MedConfPath = g_strconcat (mh, "/mednafen.cfg", NULL);
 #endif
+  }
 
-  file = g_file_new_for_path (home);
-  g_free (home);
+  GFile* file = g_file_new_for_path (self->MedConfPath);
 
   if (!g_file_query_exists (file, NULL))
   {
     g_free (self->MedVersion);
     self->MedVersion = NULL;
-    return;
+    g_free (self->MedConfPath);
+    self->MedConfPath = NULL;
+    return NULL;
   }
+
+  return file;
+}
+
+
+void
+med_process_read_conf (MedProcess* self)
+{
+  g_return_if_fail (self != NULL);
+
+  g_hash_table_remove_all (self->table);
+
+  GFile* file = med_process_get_conf_path (self);
+
+  if (!file)
+    return;
 
   GFileInputStream* fis;
   GDataInputStream* dis = NULL;
@@ -257,23 +272,23 @@ med_process_new (void)
 
 #ifdef G_OS_WIN32
   gchar *bin =  g_find_program_in_path ("mednafen.exe");
-  self->MedPath = g_strconcat("\"", bin, "\"", NULL);
+  self->MedExePath = g_strconcat("\"", bin, "\"", NULL);
   g_free(bin);
 #else
-  self->MedPath = g_find_program_in_path ("mednafen");
+  self->MedExePath = g_find_program_in_path ("mednafen");
 #endif
 
-  if (self->MedPath != NULL)
+  if (self->MedExePath != NULL)
   {
 #ifdef G_OS_WIN32
-    bin = g_strconcat(self->MedPath, " --help", NULL);
+    bin = g_strconcat(self->MedExePath, " --help", NULL);
     gboolean b =  WinExec(bin, SW_HIDE);
     g_free(bin);
 #else
     gchar* stdout;
     gchar* stderr;
 
-    gchar *cl = g_shell_quote (self->MedPath);
+    gchar *cl = g_shell_quote (self->MedExePath);
     gboolean b = g_spawn_command_line_sync (cl, &stdout, &stderr, NULL, NULL);
 
     g_free (stdout);
@@ -283,8 +298,8 @@ med_process_new (void)
 
     if (!b)
     {
-      g_free (self->MedPath);
-      self->MedPath = NULL;
+      g_free (self->MedExePath);
+      self->MedExePath = NULL;
     }
   }
 
@@ -299,7 +314,8 @@ med_process_finalize (GObject * obj)
   MedProcessPrivate* priv = med_process_get_instance_private (self);
 
   g_free (self->MedVersion);
-  g_free (self->MedPath);
+  g_free (self->MedExePath);
+  g_free (self->MedConfPath);
   g_hash_table_unref (self->table);
   g_string_free (priv->buffer, TRUE);
 
@@ -312,6 +328,9 @@ med_process_init (MedProcess * self)
 {
   MedProcessPrivate* priv = med_process_get_instance_private (self);
 
+  self->MedVersion = NULL;
+  self->MedExePath = NULL;
+  self->MedConfPath = NULL;
   self->table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   priv->buffer = g_string_sized_new (512);
 }

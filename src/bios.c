@@ -1,7 +1,7 @@
 /*
  * bios.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -23,6 +23,7 @@
 
 
 #include "bios.h"
+#include "widgets/bios_helper.h"
 
 
 typedef struct _BiosWindowClass BiosWindowClass;
@@ -36,161 +37,62 @@ struct _BiosWindowPrivate {
   GtkNotebook* bios_notebook;
 
   GtkLabel* label_lynx_bios;
-  GtkLabel* label2_lynx_bios;
   GtkImage* icon_lynx_bios;
 
   GtkLabel* label_pccdbios;
-  GtkLabel* label2_pccdbios;
   GtkImage* icon_pccdbios;
 
   GtkLabel* label_pcfx_bios;
-  GtkLabel* label2_pcfx_bios;
   GtkImage* icon_pcfx_bios;
 
-  GtkLabel* label_ss_bios_jp;
-  GtkLabel* label2_ss_bios_jp;
-  GtkImage* icon_ss_bios_jp;
   GtkLabel* label_ss_bios_na_eu;
-  GtkLabel* label2_ss_bios_na_eu;
   GtkImage* icon_ss_bios_na_eu;
+  GtkLabel* label_ss_bios_jp;
+  GtkImage* icon_ss_bios_jp;
+
 
   GtkLabel* label_psx_bios_jp;
-  GtkLabel* label2_psx_bios_jp;
   GtkImage* icon_psx_bios_jp;
   GtkLabel* label_psx_bios_na;
-  GtkLabel* label2_psx_bios_na;
   GtkImage* icon_psx_bios_na;
   GtkLabel* label_psx_bios_eu;
-  GtkLabel* label2_psx_bios_eu;
   GtkImage* icon_psx_bios_eu;
 };
-
-typedef enum  {
-  LYNX,
-  GB,
-  PCECD,
-  PCFX,
-  SS_JP,
-  SS_NA_EU,
-  PSX_JP,
-  PSX_NA,
-  PSX_EU
-} BiosSystems;
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (BiosWindow, bios_window, GTK_TYPE_DIALOG);
 
-static GType
-bios_systems_get_type (void)
-{
-  static volatile gsize bios_systems_type_id__volatile = 0;
-
-  if (g_once_init_enter (&bios_systems_type_id__volatile))
-  {
-    static const GEnumValue values[] = { {LYNX, "LYNX", "-lynx_bios"},
-                                         {PCECD, "PCE", "-pce.cdbios"},
-                                         {PCFX, "PCFX", "-pcfx.bios"},
-                                         {SS_JP, "SS_JP", "-ss.bios_jp"},
-                                         {SS_NA_EU, "SS_NA_EU", "-ss.bios_na_eu"},
-                                         {PSX_JP, "PSX_JP", "-psx.bios_jp"},
-                                         {PSX_NA, "PSX_NA", "-psx.bios_na"},
-                                         {PSX_EU, "PSX_EU", "-psx.bios_eu"},
-                                         {0, NULL, NULL} };
-
-    GType bios_systems_type_id = g_enum_register_static (g_intern_static_string ("BiosSystems"), values);
-    g_once_init_leave (&bios_systems_type_id__volatile, bios_systems_type_id);
-  }
-  return bios_systems_type_id__volatile;
-}
-
 
 static void
-bios_window_set_labels (BiosWindow* self,
-                        MedWidget* medwid,
-                        GtkLabel* label1,
-                        GtkLabel* label2,
-                        GtkImage* image)
+bios_window_set_label (GHashTable* table, GtkLabel* label, GtkImage* image, const gchar* command, const gchar* sha256)
 {
-  gchar* tooltip;
-  gchar* icon;
-
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (medwid != NULL);
-  g_return_if_fail (label1 != NULL);
-  g_return_if_fail (label2 != NULL);
-  g_return_if_fail (image != NULL);
-
-  tooltip = med_bios_entry_get_tooltip ((MedBiosEntry*) medwid);
-  gtk_label_set_label (label2, tooltip);
-
-  g_free (tooltip);
-
-  icon = med_bios_entry_get_icon ((MedBiosEntry*) medwid);
-  gtk_image_set_from_icon_name (image, icon, (GtkIconSize) GTK_ICON_SIZE_LARGE_TOOLBAR);
-
-  g_free (icon);
-}
-
-
-static void
-update_gfunc (gpointer data,
-              gpointer self)
-{
-  g_return_if_fail (data != NULL);
-
-  MedWidget* medwid = data;
-  BiosWindow *bw = self;
-  BiosWindowPrivate* priv = bios_window_get_instance_private (bw);
-
-  if (IS_MED_BIOS_ENTRY(medwid))
-  {
-    const gchar* s = med_widget_get_command (medwid);
-
-    GEnumClass *enum_class = g_type_class_ref (bios_systems_get_type());
-    GEnumValue *enum_value = g_enum_get_value_by_nick (g_type_class_peek_static (bios_systems_get_type ()), s);
-
-    if (enum_value)
-    {
-      switch (enum_value->value)
-      {
-        case LYNX:
-          bios_window_set_labels (bw, medwid, priv->label_lynx_bios, priv->label2_lynx_bios, priv->icon_lynx_bios);
-        break;
-        case PCECD:
-          bios_window_set_labels (bw, medwid, priv->label_pccdbios, priv->label2_pccdbios, priv->icon_pccdbios);
-        break;
-        case PCFX:
-          bios_window_set_labels (bw, medwid, priv->label_pcfx_bios, priv->label2_pcfx_bios, priv->icon_pcfx_bios);
-        break;
-        case SS_JP:
-          bios_window_set_labels (bw, medwid, priv->label_ss_bios_jp, priv->label2_ss_bios_jp, priv->icon_ss_bios_jp);
-        break;
-        case SS_NA_EU:
-          bios_window_set_labels (bw, medwid, priv->label_ss_bios_na_eu, priv->label2_ss_bios_na_eu, priv->icon_ss_bios_na_eu);
-        break;
-        case PSX_JP:
-        bios_window_set_labels (bw, medwid, priv->label_psx_bios_jp, priv->label2_psx_bios_jp, priv->icon_psx_bios_jp);
-        break;
-        case PSX_NA:
-            bios_window_set_labels (bw, medwid, priv->label_psx_bios_na, priv->label2_psx_bios_na, priv->icon_psx_bios_na);
-        break;
-        case PSX_EU:
-            bios_window_set_labels (bw, medwid, priv->label_psx_bios_eu, priv->label2_psx_bios_eu, priv->icon_psx_bios_eu);
-        break;
-      }
-    }
-
-    g_type_class_unref (enum_class);
-  }
+  gchar* info = bios_check_sha256 (table, command, NULL, sha256);
+  gtk_label_set_label (label, info);
+  gtk_image_set_from_resource (image, bios_get_icon (info));
+  g_free(info);
 }
 
 
 void
-bios_window_update (BiosWindow* self,
-                    GSList* list)
+bios_window_update (BiosWindow* self, GHashTable* table)
 {
   g_return_if_fail (self != NULL);
-  g_slist_foreach (list, update_gfunc, self);
+
+  BiosWindowPrivate* priv = bios_window_get_instance_private (self);
+
+  bios_window_set_label (table, priv->label_lynx_bios, priv->icon_lynx_bios, NULL, "c26a36c1990bcf841155e5a6fea4d2ee1a4d53b3cc772e70f257a962ad43b383");
+
+  bios_window_set_label (table, priv->label_pccdbios, priv->icon_pccdbios, "pce.cdbios", "df4f75feebb95e53dfef72dea0787df743e3474ba046ff5a4cb88e34dda93ff1");
+
+  bios_window_set_label (table, priv->label_pcfx_bios, priv->icon_pcfx_bios, "pcfx.bios", "4b44ccf5d84cc83daa2e6a2bee00fdafa14eb58bdf5859e96d8861a891675417");
+
+  bios_window_set_label (table, priv->label_ss_bios_na_eu, priv->icon_ss_bios_na_eu, "ss.bios_na_eu", "96e106f740ab448cf89f0dd49dfbac7fe5391cb6bd6e14ad5e3061c13330266f");
+  bios_window_set_label (table, priv->label_ss_bios_jp, priv->icon_ss_bios_jp, "ss.bios_jp", "dcfef4b99605f872b6c3b6d05c045385cdea3d1b702906a0ed930df7bcb7deac");
+
+  bios_window_set_label (table, priv->label_psx_bios_jp, priv->icon_psx_bios_jp, "psx.bios_jp", "9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb");
+  bios_window_set_label (table, priv->label_psx_bios_na, priv->icon_psx_bios_na, "psx.bios_na", "11052b6499e466bbf0a709b1f9cb6834a9418e66680387912451e971cf8a1fef");
+  bios_window_set_label (table, priv->label_psx_bios_eu, priv->icon_psx_bios_eu, "psx.bios_eu", "1faaa18fa820a0225e488d9f086296b8e6c46df739666093987ff7d8fd352c09");
+
 }
 
 
@@ -215,7 +117,6 @@ bios_window_on_system_changed (GtkTreeSelection* sender,
     gtk_tree_model_get (model, &iter, 1, &num, -1);
     gtk_notebook_set_current_page (priv->bios_notebook, num);
   }
-
 }
 
 
@@ -224,7 +125,7 @@ bios_window_on_close_x (GtkWidget* sender,
                         GdkEventAny* event,
                         gpointer self)
 {
-  gtk_widget_set_visible ((GtkWidget*) self, FALSE);
+  gtk_widget_destroy ((GtkWidget*) self);
   return TRUE;
 }
 
@@ -234,7 +135,7 @@ bios_window_on_close (GtkButton* sender,
                       gpointer self)
 {
   g_return_if_fail (self != NULL);
-  gtk_widget_set_visible ((GtkWidget*) self, FALSE);
+  gtk_widget_destroy ((GtkWidget*) self);
 }
 
 
@@ -277,11 +178,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_lynx_bios));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_lynx_bios",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_lynx_bios));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_lynx_bios",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, icon_lynx_bios));
@@ -291,11 +187,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              "label_pccdbios",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_pccdbios));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_pccdbios",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_pccdbios));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_pccdbios",
@@ -309,11 +200,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_pcfx_bios));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_pcfx_bios",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_pcfx_bios));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_pcfx_bios",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, icon_pcfx_bios));
@@ -325,11 +211,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_ss_bios_jp));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_ss_bios_jp",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_ss_bios_jp));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_ss_bios_jp",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, icon_ss_bios_jp));
@@ -338,11 +219,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              "label_ss_bios_na_eu",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_ss_bios_na_eu));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_ss_bios_na_eu",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_ss_bios_na_eu));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_ss_bios_na_eu",
@@ -356,11 +232,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_psx_bios_jp));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_psx_bios_jp",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_psx_bios_jp));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_psx_bios_jp",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, icon_psx_bios_jp));
@@ -371,11 +242,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_psx_bios_na));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_psx_bios_na",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_psx_bios_na));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_psx_bios_na",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, icon_psx_bios_na));
@@ -384,11 +250,6 @@ bios_window_class_init (BiosWindowClass * klass)
                                              "label_psx_bios_eu",
                                              FALSE,
                                              BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label_psx_bios_eu));
-
-  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
-                                             "label2_psx_bios_eu",
-                                             FALSE,
-                                             BiosWindow_private_offset + G_STRUCT_OFFSET (BiosWindowPrivate, label2_psx_bios_eu));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "icon_psx_bios_eu",

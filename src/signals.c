@@ -1,7 +1,7 @@
 /*
  * signals.c
  *
- * Copyright 2013-2019 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -58,6 +58,16 @@ show_stack (GtkStack *stack, guint n)
 
 G_MODULE_EXPORT
 void
+medcombo_changed (GtkComboBox* combo,
+                  const gchar* value,
+                  gpointer stack)
+{
+  gtk_stack_set_visible_child_name ((GtkStack*) stack, value);
+}
+
+
+G_MODULE_EXPORT
+void
 enable_buddy_toggle (GtkToggleButton *toggle,
                      gpointer *buddy)
 {
@@ -67,16 +77,27 @@ enable_buddy_toggle (GtkToggleButton *toggle,
 
 G_MODULE_EXPORT
 void
+enable_buddy_menu (GtkCheckMenuItem *checkmenuitem,
+                   gpointer *buddy)
+{
+  gtk_widget_set_visible ((GtkWidget *)buddy, gtk_check_menu_item_get_active (checkmenuitem));
+}
+
+
+G_MODULE_EXPORT
+void
 enable_buddy_combo_opengl (GtkComboBox *combo,
                            const gchar* value,
                            gpointer *buddy)
 {
-  gboolean goat = (g_strcmp0 (value, "goat") == 0);
-
   gboolean ogl = (g_strcmp0 (value, "default") == 0) ||
                  (g_strcmp0 (value, "opengl") == 0);
 
-  if ( goat || ogl )
+  gboolean goat = (g_strcmp0 (value, "goat") == 0);
+
+  gboolean scale = (g_strcmp0 (value, "0") == 0);
+
+  if ( ogl || goat || scale)
     gtk_widget_set_sensitive ((GtkWidget *)buddy, TRUE);
   else
     gtk_widget_set_sensitive ((GtkWidget *)buddy, FALSE);
@@ -179,4 +200,52 @@ enable_ports_toggle (GtkToggleButton *toggle,
     else
       show_stack (stack, 0);
   }
+}
+
+
+G_MODULE_EXPORT
+void
+custom_entry_icon_press (GtkEntry *entry,
+                         GtkEntryIconPosition icon_pos,
+                         GdkEvent *event,
+                         gpointer data)
+{
+  gtk_entry_set_text (entry, "");
+}
+
+
+G_MODULE_EXPORT
+void
+vb_mode_changed (GtkComboBox* combo,
+                 const gchar* value,
+                 gpointer box)
+{
+  GList *list = gtk_container_get_children (box);
+
+  gboolean b = (g_strcmp0 (value, "anaglyph") == 0);
+  gpointer p = g_object_get_data (box, "preset");
+
+  if (GPOINTER_TO_INT(p) == 0)
+    gtk_widget_set_sensitive (g_list_nth_data (list, 1), b);
+
+  gtk_widget_set_sensitive (g_list_nth_data (list, 0), b);
+  gtk_widget_set_sensitive (g_list_nth_data (list, 2), !b);
+
+  g_list_free (list);
+}
+
+
+G_MODULE_EXPORT
+void
+vb_colors_changed (GtkComboBox* combo,
+                   const gchar* value,
+                   gpointer box)
+{
+  GList *list = gtk_container_get_children (box);
+
+  gint ip = g_strcmp0 (value, "disabled");
+  g_object_set_data (box, "preset", GINT_TO_POINTER(ip));
+  gtk_widget_set_sensitive (g_list_nth_data (list, 1), (ip == 0));
+
+  g_list_free (list);
 }

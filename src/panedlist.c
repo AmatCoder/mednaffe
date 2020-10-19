@@ -44,6 +44,7 @@ struct _PanedListPrivate {
   GtkListStore* games_store;
   GtkCellRenderer* renderer;
   PanedImage* panedimage;
+  gboolean showing_screens;
 };
 
 
@@ -226,6 +227,17 @@ select_first (PanedList* self)
 }
 
 
+void paned_list_show_screens (PanedList* self, gboolean b)
+{
+  g_return_if_fail (self != NULL);
+
+  PanedListPrivate* priv = paned_list_get_instance_private(self);
+
+  gtk_widget_set_visible ((GtkWidget*)priv->panedimage, b);
+  priv->showing_screens = b;
+}
+
+
 void
 paned_list_show_filters (PanedList* self,
                          gboolean b)
@@ -333,6 +345,8 @@ paned_list_fill_list (PanedList* self,
 
   select_first(self);
 
+  paned_list_show_screens (self, priv->showing_screens);
+
   g_strfreev(lines);
   g_slist_free_full (list, (GDestroyNotify) g_pattern_spec_free);
 
@@ -381,6 +395,8 @@ paned_list_new (void)
   PanedListPrivate* priv = paned_list_get_instance_private(self);
 
   GtkScrolledWindow* scrolled;
+
+  priv->showing_screens = TRUE;
 
   priv->games_store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, -1);
   priv->treeview = (GtkTreeView*) gtk_tree_view_new_with_model ((GtkTreeModel*) priv->games_store);

@@ -1,7 +1,7 @@
 /*
  * medbiosentry.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -23,6 +23,8 @@
 
 
 #include "medbiosentry.h"
+#include "bios_helper.h"
+
 
 typedef struct _MedBiosEntryClass MedBiosEntryClass;
 typedef struct _MedBiosEntryPrivate MedBiosEntryPrivate;
@@ -48,77 +50,34 @@ static GParamSpec* med_bios_entry_properties[MED_BIOS_ENTRY_NUM_PROPERTIES];
 G_DEFINE_TYPE_WITH_PRIVATE (MedBiosEntry, med_bios_entry, med_dialog_entry_get_type ());
 
 
-gchar*
-med_bios_entry_get_tooltip (MedBiosEntry* self)
-{
-	g_return_val_if_fail (self != NULL, NULL);
-
-  GtkWidget* widget = (GtkWidget*)((MedEntry*) self)->entry;
-
-	return gtk_widget_get_tooltip_text (widget);
-}
-
-
-gchar*
-med_bios_entry_get_icon (MedBiosEntry* self)
-{
-	g_return_val_if_fail (self != NULL, NULL);
-
-	return g_strdup (gtk_entry_get_icon_name (((MedEntry*) self)->entry, GTK_ENTRY_ICON_SECONDARY));
-}
-
-
-void
-med_bios_entry_update_check (MedBiosEntry* self,
-                             const gchar* real_path)
+static void
+med_bios_entry_update_check (MedBiosEntry* self, gpointer user_data)
 {
 	g_return_if_fail (self != NULL);
-	g_return_if_fail (real_path != NULL);
+
   MedBiosEntryPrivate* priv = med_bios_entry_get_instance_private (self);
 
-  GMappedFile* file;
-  GBytes* data;
-  gchar* cm;
-
   GtkEntry* entry = ((MedEntry*) self)->entry;
-
-  file = g_mapped_file_new (real_path, FALSE, NULL);
-
-  if (file == NULL)
+  GtkWidget *toplevel = gtk_widget_get_toplevel ((GtkWidget*)self);
+  if (toplevel)
   {
-    gtk_entry_set_icon_from_icon_name (entry, GTK_ENTRY_ICON_SECONDARY, "gtk-cancel");
-    gtk_widget_set_tooltip_text ((GtkWidget*) entry, "Bios file not found!\n");
-    return;
+    GHashTable* table = g_object_get_data ((GObject*)toplevel, "table");
+    if (table)
+    {
+      gchar* info = bios_check_sha256 (table,
+                                       med_widget_get_command ((MedWidget*) self),
+                                       med_widget_get_value ((MedWidget*) self),
+                                       priv->_sha256);
+
+      gtk_widget_set_tooltip_text ((GtkWidget*) entry, info);
+
+      GtkImage *image = (GtkImage*) gtk_image_new();
+      gtk_image_set_from_resource (image, bios_get_icon (info));
+      gtk_entry_set_icon_from_pixbuf (entry, GTK_ENTRY_ICON_SECONDARY, gtk_image_get_pixbuf (image));
+
+      g_free (info);
+    }
   }
-
-  data = g_mapped_file_get_bytes (file);
-  cm = g_compute_checksum_for_bytes (G_CHECKSUM_SHA256, data);
-
-  if (g_strcmp0 (cm, priv->_sha256) == 0)
-  {
-    gtk_entry_set_icon_from_icon_name (entry, GTK_ENTRY_ICON_SECONDARY, "gtk-apply");
-
-    gchar* info = g_strconcat ("Bios file is OK\n\nPath: ", real_path, "\n\nSha256 checksum:\n", priv->_sha256, NULL);
-    gtk_widget_set_tooltip_text ((GtkWidget*) entry, info);
-
-    g_free (info);
-
-  }
-  else
-  {
-    gtk_entry_set_icon_from_icon_name (entry, GTK_ENTRY_ICON_SECONDARY, "dialog-warning");
-
-    gchar* info = g_strconcat ("Bios file is not correct!\n\nPath: ", real_path,
-                               "\n\nSha256 checksum:\n", cm, "\nShould be:\n", priv->_sha256, NULL);
-
-    gtk_widget_set_tooltip_text ((GtkWidget*) entry, info);
-
-    g_free (info);
-  }
-
-  g_free (cm);
-  g_bytes_unref (data);
-  g_mapped_file_unref (file);
 }
 
 
@@ -172,6 +131,7 @@ med_bios_entry_new (void)
 static void
 med_bios_entry_init (MedBiosEntry * self)
 {
+  g_signal_connect_object (self, "emit-change", (GCallback) med_bios_entry_update_check, NULL, 0);
 }
 
 

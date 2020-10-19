@@ -1,20 +1,11 @@
 ####  KNOWN ISSUES
 
-## Images does not scale to smaller if *preserve_aspect_ratio* is FALSE.
-
+Images does not scale to smaller if *preserve_aspect_ratio* is FALSE.
 
 ####  TODO
 
 ## Windows support
-Native theme is pending to be developed.
-
-## Find out a way to send some special options
-Especially for *-which_medium*.
+Native themes are pending to be developed.
 
 ## To write a FAQ
 And to put a link on Help.
-
-
-### TO BE THINKING
-
-## pce_fast & snes_faust

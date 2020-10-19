@@ -1,7 +1,7 @@
 /*
  * medinput.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -1173,7 +1173,10 @@ med_input_convert_to_text (MedInput* self,
   gchar** items = g_strsplit (v, " ", 4);
 
   if (g_strv_length (items) < 3)
+  {
+    g_strfreev (items);
     return text;
+  }
 
   if (v[0] ==  'k')
   {
@@ -1236,7 +1239,7 @@ med_input_convert_to_text (MedInput* self,
   else
     text = g_strdup (v);
 
-  g_strfreev(items);
+  g_strfreev (items);
 
   return text;
 }
@@ -1298,8 +1301,6 @@ med_input_real_set_value (MedWidget* base,
 
   g_free (text);
   g_free (p);
-
-  med_widget_set_modified (base, TRUE);
 }
 
 
@@ -1810,16 +1811,15 @@ med_input_constructor (GType type,
   MedInput* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_input_get_type (), MedInput);
   MedInputPrivate* priv = med_input_get_instance_private (self);
 
-  priv->entry = (GtkButton*) gtk_toggle_button_new ();
-  gtk_button_set_alignment (priv->entry, 0.0, 0.5);
-  //gtk_button_set_relief ((GtkButton*) priv->entry, GTK_RELIEF_NONE);
+  priv->entry = (GtkButton*) gtk_toggle_button_new();
+  gtk_button_set_alignment ((GtkButton*)priv->entry, 0.00, 0.50);
 
   priv->entry_label = (GtkLabel*) gtk_label_new (priv->_label);
-  //gtk_label_set_xalign(priv->entry_label,1.00);                    // This needs GTK 3.16
-  gtk_misc_set_alignment ((GtkMisc*) priv->entry_label, 1.00, 0.50); // so I am using this deprecated one.
+  gtk_label_set_xalign(priv->entry_label, 1.00);
+  //gtk_label_set_ellipsize (priv->entry_label, PANGO_ELLIPSIZE_END);
 
   gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) priv->entry_label, FALSE, FALSE, 0);
-  gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) priv->entry, TRUE, TRUE, 12);
+  gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) priv->entry, TRUE, TRUE, 10);
 
   gtk_widget_show ((GtkWidget*) priv->entry_label);
   gtk_widget_show ((GtkWidget*) priv->entry);

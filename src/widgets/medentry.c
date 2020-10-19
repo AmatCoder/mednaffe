@@ -1,7 +1,7 @@
 /*
  * medentry.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -253,8 +253,7 @@ med_entry_constructor (GType type,
 
   priv->entry_label = (GtkLabel*) gtk_label_new (NULL);
   gtk_label_set_markup (priv->entry_label, priv->_label);
-  //gtk_label_set_xalign(priv->entry_label,1.00);                    // This needs GTK 3.16
-  gtk_misc_set_alignment ((GtkMisc*) priv->entry_label, 1.00, 0.50); // so I am using this deprecated one.
+  gtk_label_set_xalign (priv->entry_label, 1.00);
 
   gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) priv->entry_label, FALSE, FALSE, 0);
   gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) self->entry, FALSE, FALSE, 12);

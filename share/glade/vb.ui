@@ -1,0 +1,1718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 
+
+Copyright (C) 2013-2020 AmatCoder
+
+This file is part of Mednaffe.
+
+Mednaffe is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mednaffe is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mednaffe.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: AmatCoder
+
+-->
+<interface>
+  <requires lib="gtk+" version="3.16"/>
+  <requires lib="medwidgets" version="0.0"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name Mednaffe -->
+  <!-- interface-description A front-end (GUI) for mednafen emulator -->
+  <!-- interface-copyright 2013-2020 AmatCoder -->
+  <!-- interface-authors AmatCoder -->
+  <object class="GtkBox" id="sysbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkNotebook">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="MedCheckButton">
+                <property name="label" translatable="yes">Enable automatic usage of this module</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
+                <property name="command">vb.enable</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedComboBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">fast - Fast Mode
+Fast mode trades timing accuracy, cache emulation, and executing from hardware registers and RAM not intended for code use for performance.
+
+accurate - Accurate Mode
+Increased timing accuracy, though not perfect, along with cache emulation, at the cost of decreased performance. Additionally, even the pipeline isn't correctly and fully emulated in this mode.</property>
+                <property name="command">vb.cpu_emulation</property>
+                <property name="label">CPU emulation mode</property>
+                <property name="label_width">20</property>
+                <property name="values">fast
+accurate</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Emulation</property>
+          </object>
+          <packing>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkStackSwitcher">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="stack">vb_video_stack</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="vb_video_stack">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="margin_start">18</property>
+                <property name="margin_end">18</property>
+                <property name="margin_top">18</property>
+                <property name="margin_bottom">18</property>
+                <property name="transition_type">slide-left-right</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="MedCheckButton">
+                        <property name="label" translatable="yes">Disable parallax for BG and OBJ rendering</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="command">vb.disable_parallax</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedCheckButton">
+                        <property name="label" translatable="yes">Allow draw skipping</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="tooltip_text" translatable="yes">If "Display latency reduction hack" and this setting are enabled, then frame-skipping the drawing to the emulated framebuffer will be allowed.
+
+THIS WILL CAUSE GRAPHICAL GLITCHES, AND THEORETICALLY (but unlikely) GAME CRASHES, ESPECIALLY WITH DIRECT FRAMEBUFFER DRAWING GAMES</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="command">vb.allow_draw_skip</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedCheckButton">
+                        <property name="label" translatable="yes">Display latency reduction hack</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="tooltip_text" translatable="yes">Reduces latency in games by displaying the framebuffer 20ms earlier. This hack has some potential of causing graphical glitches, so it is disabled by default.</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="command">vb.instant_display_hack</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="MedRange">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.liprescale</property>
+                            <property name="label">Line Interlaced prescale</property>
+                            <property name="label_width">45</property>
+                            <property name="values">1,10,1,0</property>
+                            <property name="is_scale">True</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedRange">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Setting this higher than the default will cause excessive white crush in at least one game. A value of 1.0 is close to ideal, other than causing the image to be rather dark.</property>
+                            <property name="command">vb.ledonscale</property>
+                            <property name="label">LED on duration to linear RGB conversion coefficient</property>
+                            <property name="label_width">45</property>
+                            <property name="values">1.00,2.00,0.01,2</property>
+                            <property name="is_scale">True</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">12</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page6</property>
+                    <property name="title" translatable="yes">System</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="MedCheckButton">
+                        <property name="label" translatable="yes">Reverse left/right 3D views</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="command">vb.3dreverse</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">12</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">anaglyph - Anaglyph
+Used in conjunction with classic dual-lens-color glasses.
+
+cscope - CyberScope
+Intended for use with the CyberScope 3D device.
+
+sidebyside - Side-by-Side
+The left-eye image is displayed on the left, and the right-eye image is displayed on the right.
+
+vli - Vertical Line Interlaced
+Vertical lines alternate between left view and right view.
+
+hli - Horizontal Line Interlaced
+Horizontal lines alternate between left view and right view.</property>
+                        <property name="command">vb.3dmode</property>
+                        <property name="label">3D mode</property>
+                        <property name="label_width">55</property>
+                        <property name="values">anaglyph
+cscope
+sidebyside
+vli
+hli</property>
+                        <signal name="medcombo-changed" handler="vb_mode_changed" object="vb_colors" swapped="no"/>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="vb_colors">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedComboBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">disabled - Disabled
+Forces usage of custom anaglyph colors.
+
+red_blue - Red/Blue
+Classic red/blue anaglyph.
+
+red_cyan - Red/Cyan
+Improved quality red/cyan anaglyph.
+
+red_electriccyan - Red/Electric Cyan
+Alternate version of red/cyan
+
+red_green - Red/Green
+
+green_magenta - Green/Magenta
+
+yellow_blue - Yellow/Blue</property>
+                                <property name="command">vb.anaglyph.preset</property>
+                                <property name="label">Anaglyph preset colors</property>
+                                <property name="label_width">55</property>
+                                <property name="values">disabled
+red_blue
+red_cyan
+red_electriccyan
+red_green
+green_magenta
+yellow_blue</property>
+                                <signal name="medcombo-changed" handler="vb_colors_changed" object="vb_colors" swapped="no"/>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="MedColorEntry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">vb.anaglyph.lcolor</property>
+                                <property name="label">Anaglyph maximum-brightness color for left view</property>
+                                <property name="label_width">55</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedColorEntry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">vb.anaglyph.rcolor</property>
+                                <property name="label">Anaglyph maximum-brightness color for rigth view</property>
+                                <property name="label_width">55</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedColorEntry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">vb.default_color</property>
+                                <property name="label">Default maximum-brightness color to use in non-anaglyph 3D modes</property>
+                                <property name="label_width">55</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">This setting refers to pixels before scaling is taken into consideration. For example, a value of "100" here will result in a separation of 300 screen pixels if "Scaling factor for the X axis" is set to "3".</property>
+                        <property name="command">vb.sidebyside.separation</property>
+                        <property name="label">Number of pixels to separate L/R views by</property>
+                        <property name="label_width">55</property>
+                        <property name="values">0,1024,1,0</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">18</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page5</property>
+                    <property name="title" translatable="yes">3D</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">vb.xscale</property>
+                        <property name="label">Scaling factor for the X axis</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0.01,256,0.01,6</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="command">vb.yscale</property>
+                        <property name="label">Scaling factor for the Y axis</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0.01,256,0.01,6</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">Windowed</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                        <property name="command">vb.xres</property>
+                        <property name="label">Horizontal resolution</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0,65536,1,0</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                        <property name="command">vb.yres</property>
+                        <property name="label">Vertical resolution</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0,65536,1,0</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">0 - Disabled
+
+full - Full
+Full-screen stretch, disregarding aspect ratio.
+
+aspect - Aspect Preserve
+Full-screen stretch as far as the aspect ratio(in this sense, the equivalent xscalefs == yscalefs) can be maintained.
+
+aspect_int - Aspect Preserve + Integer Scale
+Full-screen stretch, same as "aspect" except that the equivalent xscalefs and yscalefs are rounded down to the nearest integer.
+
+aspect_mult2 - Aspect Preserve + Integer Multiple-of-2 Scale
+Full-screen stretch, same as "aspect_int", but rounds down to the nearest multiple of 2.</property>
+                        <property name="command">vb.stretch</property>
+                        <property name="label">Stretch to fill screen</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0
+full
+aspect
+aspect_int
+aspect_mult2</property>
+                        <signal name="medcombo-changed" handler="enable_buddy_combo_opengl" object="vb_scale" swapped="no"/>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">12</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="vb_scale">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="MedRange">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                            <property name="command">vb.xscalefs</property>
+                            <property name="label">Scaling factor for the X axis</property>
+                            <property name="label_width">30</property>
+                            <property name="values">0.01,256,0.01,6</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedRange">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                            <property name="command">vb.yscalefs</property>
+                            <property name="label">Scaling factor for the Y axis</property>
+                            <property name="label_width">30</property>
+                            <property name="values">0.01,256,0.01,6</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page1</property>
+                    <property name="title" translatable="yes">Fullscreen</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Enable (bi)linear interpolation.
+
+    0 - Disabled
+
+    1 - Bilinear
+
+    x - Linear (X)
+    Interpolation only on the X axis.
+
+    y - Linear (Y)
+    Interpolation only on the Y axis.</property>
+                        <property name="command">vb.videoip</property>
+                        <property name="label">Interpolation</property>
+                        <property name="label_width">30</property>
+                        <property name="values">0
+1
+x
+y</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">The destination rectangle is NOT altered by this setting, so if you have xscale and yscale set to "2", and try to use a 3x scaling filter like hq3x, the image is not going to look that great. The nearest-neighbor scalers are intended for use with bilinear interpolation enabled, at high resolutions(such as 1280x1024; nn2x(or nny2x) + bilinear interpolation + fullscreen stretching at this resolution looks quite nice).
+
+    none - None/Disabled
+
+    hq2x - hq2x
+
+    hq3x - hq3x
+
+    hq4x - hq4x
+
+    scale2x - scale2x
+
+    scale3x - scale3x
+
+    scale4x - scale4x
+
+    2xsai - 2xSaI
+
+    super2xsai - Super 2xSaI
+
+    supereagle - Super Eagle
+
+    nn2x - Nearest-neighbor 2x
+
+    nn3x - Nearest-neighbor 3x
+
+    nn4x - Nearest-neighbor 4x
+
+    nny2x - Nearest-neighbor 2x, y axis only
+
+    nny3x - Nearest-neighbor 3x, y axis only
+
+    nny4x - Nearest-neighbor 4x, y axis only</property>
+                        <property name="command">vb.special</property>
+                        <property name="label">Special video scaler</property>
+                        <property name="label_width">30</property>
+                        <property name="values">none
+hq2x
+hq3x
+hq4x
+scale2x
+scale3x
+scale4x
+2xsai
+super2xsai
+supereagle
+nn2x
+nn3x
+nn4x
+nny2x
+nny3x
+nny4x</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">6</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="MedRange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Opacity is specified in %; IE a value of "100" will give entirely black scanlines.
+
+Negative values are the same as positive values for non-interlaced video, but for interlaced video will cause the scanlines to be overlaid over the previous(if the video.deinterlacer setting is set to "weave", the default) field's lines.</property>
+                        <property name="command">vb.scanlines</property>
+                        <property name="label">Scanlines with specified opacity</property>
+                        <property name="label_width">30</property>
+                        <property name="values">-100,100,1,0</property>
+                        <property name="is_scale">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">12</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page2</property>
+                    <property name="title" translatable="yes">Scaler/Filter</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="MedComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Obviously, this will only work with the OpenGL "video.driver" setting, and only on cards and OpenGL implementations that support shaders, otherwise you will get a black screen, or Mednafen may display an error message when starting up. When a shader is enabled, the ".videoip" setting is ignored.
+
+none - None/Disabled
+
+autoip - Auto Interpolation
+Will automatically interpolate on each axis if the corresponding effective scaling factor is not an integer.
+
+autoipsharper - Sharper Auto Interpolation
+Same as "autoip", but when interpolation is done, it is done in a manner that will reduce blurriness if possible.
+
+scale2x - Scale2x
+
+sabr - SABR v3.0
+GPU-intensive.
+
+ipsharper - Sharper bilinear interpolation.
+
+ipxnoty - Linear interpolation on X axis only.
+
+ipynotx - Linear interpolation on Y axis only.
+
+ipxnotysharper - Sharper version of "ipxnoty".
+
+ipynotxsharper - Sharper version of "ipynotx".
+
+goat - Simple approximation of a color TV CRT look.
+Intended for fullscreen modes with a vertical resolution of around 1000 to 1500 pixels. Doesn't simulate halation and electron beam energy distribution nuances.</property>
+                        <property name="command">vb.shader</property>
+                        <property name="label">OpenGL shader</property>
+                        <property name="label_width">30</property>
+                        <property name="values">none
+autoip
+autoipsharper
+scale2x
+sabr
+ipsharper
+ipxnoty
+ipynotx
+ipxnotysharper
+ipynotxsharper
+goat</property>
+                        <signal name="medcombo-changed" handler="enable_buddy_combo_opengl" object="frame_goat_vb" swapped="no"/>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFrame" id="frame_goat_vb">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_start">18</property>
+                        <property name="margin_end">18</property>
+                        <property name="margin_top">18</property>
+                        <property name="margin_bottom">18</property>
+                        <property name="label_xalign">0.5</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_start">18</property>
+                            <property name="margin_end">18</property>
+                            <property name="margin_top">18</property>
+                            <property name="margin_bottom">18</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Enable scanlines effect</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">vb.shader.goat.slen</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedCheckButton">
+                                <property name="label" translatable="yes">Force interlaced video to be treated as progressive</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="tooltip_text" translatable="yes">When disabled, the default, the "video.deinterlacer" setting is effectively ignored with respect to what appears on the screen. When enabled, it may be prudent to disable the scanlines effect controlled by the *.goat.slen setting, or else the scanline effect may look objectionable.</property>
+                                <property name="draw_indicator">True</property>
+                                <property name="command">vb.shader.goat.fprog</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedComboBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">goatron - Goatron
+Brightest.
+
+borg - Borg
+Darkest.
+
+slenderman - Slenderman
+Spookiest?</property>
+                                <property name="command">vb.shader.goat.pat</property>
+                                <property name="label">Mask pattern</property>
+                                <property name="label_width">30</property>
+                                <property name="values">goatron
+borg
+slenderman</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">18</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedRange">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">vb.shader.goat.tp</property>
+                                <property name="label">Transparency of mask areas</property>
+                                <property name="label_width">30</property>
+                                <property name="values">0.00,1.00,0.01,2</property>
+                                <property name="is_scale">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="MedRange">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="command">vb.shader.goat.hdiv</property>
+                                    <property name="label">Constant RGB horizontal divergence</property>
+                                    <property name="label_width">30</property>
+                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                    <property name="is_scale">True</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="MedRange">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="command">vb.shader.goat.vdiv</property>
+                                    <property name="label">Constant RGB vertical divergence</property>
+                                    <property name="label_width">30</property>
+                                    <property name="values">-2.00,2.00,0.01,2</property>
+                                    <property name="is_scale">True</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">18</property>
+                                <property name="position">4</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Goat Options</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page3</property>
+                    <property name="title" translatable="yes">Shader</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="MedCheckButton">
+                        <property name="label" translatable="yes">Enable video temporal blur</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="margin_start">20</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="command">vb.tblur</property>
+                        <signal name="toggled" handler="enable_buddy_toggle" object="vb_tblur_accum" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="vb_tblur_accum">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="MedCheckButton">
+                            <property name="label" translatable="yes">Accumulate color data rather than discarding it</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="margin_start">50</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="command">vb.tblur.accum</property>
+                            <signal name="toggled" handler="enable_buddy_toggle" object="vb_tblur_amount" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="vb_tblur_amount">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedRange">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Specified in percentage of accumulation buffer to mix with the current frame</property>
+                                <property name="command">vb.tblur.accum.amount</property>
+                                <property name="label">Blur amount in accumulation mode</property>
+                                <property name="label_width">40</property>
+                                <property name="values">0,100,1,0</property>
+                                <property name="is_scale">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page4</property>
+                    <property name="title" translatable="yes">Blur</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Graphics</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="MedCheckButton">
+                <property name="label" translatable="yes">Force monophonic sound output</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
+                <property name="command">vb.forcemono</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Sound</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkStackSwitcher">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="stack">vb_stack</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="vb_stack">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_start">18</property>
+                <property name="margin_end">18</property>
+                <property name="margin_top">18</property>
+                <property name="margin_bottom">18</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">18</property>
+                    <child>
+                      <object class="MedCheckButton">
+                        <property name="label" translatable="yes">Input latency reduction hack</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="tooltip_text" translatable="yes">Reduces latency in some games by 20ms by returning the current pad state, rather than latched state, on serial port data reads. This hack may cause some homebrew software to malfunction, but it should be relatively safe for commercial official games.</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="command">vb.input.instant_read_hack</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.up-l</property>
+                            <property name="label">Up (Left D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.down-l</property>
+                            <property name="label">Down (Left D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.left-l</property>
+                            <property name="label">Left (Left D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.right-l</property>
+                            <property name="label">Right (Left D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.up-r</property>
+                            <property name="label">Up (Right D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.down-r</property>
+                            <property name="label">Down (Right D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.left-r</property>
+                            <property name="label">Left (Right D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.right-r</property>
+                            <property name="label">Right (Right D-Pad)</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.a</property>
+                            <property name="label">Button A</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">8</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.b</property>
+                            <property name="label">Button B</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">9</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.rt</property>
+                            <property name="label">Right-Back</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">10</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.select</property>
+                            <property name="label">Select</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">11</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.start</property>
+                            <property name="label">Start</property>
+                            <property name="label_width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">12</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="expanded">True</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="MedInput">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">vb.input.builtin.gamepad.rapid_a</property>
+                                <property name="label">Rapid A</property>
+                                <property name="label_width">20</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="MedInput">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="command">vb.input.builtin.gamepad.rapid_b</property>
+                                <property name="label">Rapid B</property>
+                                <property name="label_width">20</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Autofire</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">port1</property>
+                    <property name="title" translatable="yes">Port 1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Input</property>
+          </object>
+          <packing>
+            <property name="position">3</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="MedComboBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Note: Setting the font size to larger than the default may cause text overlap in the debugger.
+
+    5x7 - 5x7
+
+    6x9 - 6x9
+
+    6x12 - 6x12
+
+    6x13 - 6x13. CJK support.
+
+    9x18 - 9x18; CJK support.</property>
+                <property name="command">vb.debugger.disfontsize</property>
+                <property name="label">Disassembly font size</property>
+                <property name="label_width">35</property>
+                <property name="values">5x7
+6x9
+6x12
+6x13
+9x18</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MedEntry">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="command">vb.debugger.memcharenc</property>
+                <property name="label">Character encoding for the memory editor</property>
+                <property name="label_width">35</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Debugger</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">18</property>
+            <property name="margin_bottom">18</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkFrame">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_start">18</property>
+                    <property name="margin_end">18</property>
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">6</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Introduction&lt;/b&gt;
+Virtual Boy emulation in Mednafen is original code, except for an extremely modified (optimizations, bug fixes, and better all-around emulation) V810 emulator core taken from Reality Boy years ago for PC-FX emulation.
+
+Virtual Boy ROM images must each have an extension of ".vb" or ".vboy" to be recognized as such. Mednafen versions prior to 0.9.13 allowed ".bin" as well, but this conflicts with the Sega Megadrive emulation module.
+
+Due to how the left+right views are transformed into a single image, enabling most of the image filter effects (bilinear interpolation, OpenGL pixel shaders, special scalers, etc.) is not recommended. However, they will work properly with the "cscope" and "sidebyside" 3D modes, and may work tolerably with the "anaglyph" 3D mode. This limitation may be corrected in the future by refactoring the 3D mode mixing out to the driver side, post individual filtering for each left/right view; however, this would significantly negatively impact performance.
+
+To use the "hli" mode with a "Line Interlaced 3D" monitor, you'll want to set "Scaling factor for the Y axis" to 1, "Line Interlaced prescale" appropriately, and "Scaling factor for the X axis" to 2 multiplied by the value of "Line Interlaced prescale".
+
+NOTE: The "hli" and "vli" modes will not work properly in windowed video output mode; you may need to adjust the window's position to get the lines to line up correctly for the 3D effect to work.
+
+
+&lt;b&gt;Custom Palettes&lt;/b&gt;
+Global Filename:	Description:
+
+vb.pal			256 or 512 RGB triplets
+
+VB LED Active Time; 256 left, 256 right. If only 256 triplets are present, then they will be used for both left and right views. When the custom palette's right view colors are the same as the left view colors (either explicitly, or when using a 256-entry custom palette), and anaglyph 3D mode is active, then the custom palette will not be used.</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="xalign">0</property>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLinkButton">
+                    <property name="label" translatable="yes">Virtual Boy Documentation</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="relief">none</property>
+                    <property name="uri">https://mednafen.github.io/documentation/vb.html</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Documentation</property>
+          </object>
+          <packing>
+            <property name="position">5</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </object>
+</interface>

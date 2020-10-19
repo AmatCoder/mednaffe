@@ -1,7 +1,7 @@
 /*
  * medprocess.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2020 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -37,7 +37,8 @@ typedef struct _MedProcess MedProcess;
 struct _MedProcess {
   GObject parent_instance;
   gchar* MedVersion;
-  gchar* MedPath;
+  gchar* MedExePath;
+  gchar* MedConfPath;
   GHashTable* table;
 };
 
