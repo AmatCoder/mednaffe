@@ -1,7 +1,7 @@
 /*
  * medrange.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,14 +25,10 @@
 #ifndef __MEDRANGE_H__
 #define __MEDRANGE_H__
 
-
 #include <gtk/gtk.h>
-
 #include "medwidget.h"
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedRange MedRange;
 
@@ -40,10 +36,8 @@ struct _MedRange {
   GtkBox parent_instance;
 };
 
-
 GType med_range_get_type (void) G_GNUC_CONST;
 MedRange* med_range_new (void);
-
 
 G_END_DECLS
 

@@ -1,7 +1,7 @@
 /*
  * medlistjoy.c
  *
- * Copyright 2013-2019 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -23,7 +23,6 @@
 
 
 #include "joystick.h"
-
 #include "marshallers.h"
 #include "medlistjoy.h"
 
@@ -77,6 +76,7 @@ med_list_joy_enable_all (MedListJoy* self, gboolean enable)
   if (enable)
   {
     MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
+
     discard_read (priv->list);
     g_timeout_add (50, med_list_joy_watch, self);
   }
@@ -146,21 +146,21 @@ med_list_joy_value_to_text (MedListJoy* self,
 MedListJoy*
 med_list_joy_new (void)
 {
-  MedListJoy * self = (MedListJoy*) g_object_new (med_list_joy_get_type (), NULL);
+  MedListJoy* self = (MedListJoy*) g_object_new (med_list_joy_get_type(), NULL);
   return self;
 }
 
 
 static void
-med_list_joy_init (MedListJoy * self)
+med_list_joy_init (MedListJoy* self)
 {
 }
 
 
 static void
-med_list_joy_finalize (GObject * obj)
+med_list_joy_finalize (GObject* obj)
 {
-  MedListJoy * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_list_joy_get_type (), MedListJoy);
+  MedListJoy* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_list_joy_get_type(), MedListJoy);
   MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
 
   g_source_remove_by_user_data (self);
@@ -177,7 +177,7 @@ med_list_joy_class_init (MedListJoyClass * klass)
   G_OBJECT_CLASS (klass)->finalize = med_list_joy_finalize;
 
   med_list_joy_signals[MED_LIST_JOY_JOY_FOUND_SIGNAL] = g_signal_new ("joy-found",
-                                                                      med_list_joy_get_type (),
+                                                                      med_list_joy_get_type(),
                                                                       G_SIGNAL_RUN_LAST,
                                                                       0,
                                                                       NULL,
@@ -189,7 +189,7 @@ med_list_joy_class_init (MedListJoyClass * klass)
                                                                       G_TYPE_STRING);
 
   med_list_joy_signals[MED_LIST_JOY_JOY_EVENT_SIGNAL] = g_signal_new ("joy-event",
-                                                                      med_list_joy_get_type (),
+                                                                      med_list_joy_get_type(),
                                                                       G_SIGNAL_RUN_LAST,
                                                                       0,
                                                                       NULL,

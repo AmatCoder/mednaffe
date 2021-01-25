@@ -1,7 +1,7 @@
 /*
  * marshallers.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -28,7 +28,6 @@
 #include <glib-object.h>
 
 G_BEGIN_DECLS
-
 
 void g_cclosure_user_marshal_VOID__STRING_STRING (GClosure     *closure,
                                                   GValue       *return_value,
@@ -60,7 +59,6 @@ void g_cclosure_user_marshal_VOID__STRING_STRING_INT_INT_INT (GClosure     *clos
                                                               const GValue *param_values,
                                                               gpointer      invocation_hint,
                                                               gpointer      marshal_data);
-
 
 G_END_DECLS
 

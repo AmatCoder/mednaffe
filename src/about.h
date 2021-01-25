@@ -1,7 +1,7 @@
 /*
  * about.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -29,7 +29,6 @@
 
 G_BEGIN_DECLS
 
-
 typedef struct _AboutWindow AboutWindow;
 
 struct _AboutWindow
@@ -37,10 +36,8 @@ struct _AboutWindow
   GtkAboutDialog parent_instance;
 };
 
-
 GType about_window_get_type (void) G_GNUC_CONST;
 AboutWindow* about_window_new (GtkWindow* parent);
-
 
 G_END_DECLS
 

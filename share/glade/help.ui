@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.36.0 
 
-Copyright (C) 2013-2020 AmatCoder
+Copyright (C) 2013-2021 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -26,7 +26,7 @@ Author: AmatCoder
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2020 AmatCoder -->
+  <!-- interface-copyright 2013-2021 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="globbox">
     <property name="visible">True</property>

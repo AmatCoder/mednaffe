@@ -1,7 +1,7 @@
 /*
  * medspin.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,12 +25,9 @@
 #ifndef __MEDSPIN_H__
 #define __MEDSPIN_H__
 
-
 #include <gtk/gtk.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedSpin MedSpin;
 
@@ -38,10 +35,8 @@ struct _MedSpin {
   GtkSpinButton parent_instance;
 };
 
-
 GType med_spin_get_type (void) G_GNUC_CONST;
 MedSpin* med_spin_new (GtkAdjustment* adjustment, gint digits);
-
 
 G_END_DECLS
 

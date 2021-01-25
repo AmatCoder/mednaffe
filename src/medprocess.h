@@ -1,7 +1,7 @@
 /*
  * medprocess.h
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,12 +25,9 @@
 #ifndef __MEDPROCESS_H__
 #define __MEDPROCESS_H__
 
-
 #include <glib-object.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedProcess MedProcess;
 
@@ -42,13 +39,11 @@ struct _MedProcess {
   GHashTable* table;
 };
 
-
 GType med_process_get_type (void) G_GNUC_CONST;
 MedProcess* med_process_new (void);
 
 void med_process_read_conf (MedProcess* self);
 void med_process_exec_emu (MedProcess* self, gchar** command);
-
 
 G_END_DECLS
 

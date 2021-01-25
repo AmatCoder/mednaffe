@@ -1,7 +1,7 @@
 /*
  * medirange.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -34,20 +34,22 @@ const gchar*
 imed_range_medrange_get_value (IMedRange* self)
 {
   g_return_val_if_fail (self != NULL, NULL);
+
   return IMED_RANGE_GET_INTERFACE (self)->medrange_get_value (self);
 }
 
 
 void
 imed_range_medrange_set_value (IMedRange* self,
-                               const gchar* v)
+                               const gchar* value)
 {
   g_return_if_fail (self != NULL);
-  IMED_RANGE_GET_INTERFACE (self)->medrange_set_value (self, v);
+
+  IMED_RANGE_GET_INTERFACE (self)->medrange_set_value (self, value);
 }
 
 
 static void
-imed_range_default_init (IMedRangeInterface * iface)
+imed_range_default_init (IMedRangeInterface* iface)
 {
 }

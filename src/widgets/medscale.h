@@ -1,7 +1,7 @@
 /*
  * medscale.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,12 +25,9 @@
 #ifndef __MEDSCALE_H__
 #define __MEDSCALE_H__
 
-
 #include <gtk/gtk.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedScale MedScale;
 
@@ -38,10 +35,8 @@ struct _MedScale {
   GtkScale parent_instance;
 };
 
-
 GType med_scale_get_type (void) G_GNUC_CONST;
 MedScale* med_scale_new (GtkAdjustment* adjustment, gint digits);
-
 
 G_END_DECLS
 

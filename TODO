@@ -1,11 +1,13 @@
 ####  KNOWN ISSUES
 
+Mouse movement can not be configurated, only buttons.
+
 Images does not scale to smaller if *preserve_aspect_ratio* is FALSE.
 
 ####  TODO
 
-## Windows support
-Native themes are pending to be developed.
+Windows native themes are pending to be developed.
 
-## To write a FAQ
-And to put a link on Help.
+To write a FAQ and to put a link on Help.
+
+Apple II/II+ module

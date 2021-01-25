@@ -1,7 +1,7 @@
 /*
  * setup.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -29,19 +29,14 @@
 
 G_BEGIN_DECLS
 
-
 typedef struct _SetupWindow SetupWindow;
 
 struct _SetupWindow {
   GtkDialog parent_instance;
 };
 
-
 GType setup_window_get_type (void) G_GNUC_CONST;
-SetupWindow* setup_window_new (GtkWindow* parent, GtkTreeModel* model);
-
-void setup_window_setup_show (SetupWindow* self, GtkTreeIter* iter);
-
+SetupWindow* setup_window_new (GtkWindow* parent, GtkTreeModel* model, GtkTreeIter* iter);
 
 G_END_DECLS
 

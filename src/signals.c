@@ -1,7 +1,7 @@
 /*
  * signals.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -26,7 +26,8 @@
 
 
 static void
-show_stack (GtkStack *stack, guint n)
+show_stack (GtkStack *stack,
+            guint n_port)
 {
   GtkWidget* ports[] = {
     gtk_stack_get_child_by_name (stack, "port3"),
@@ -46,7 +47,7 @@ show_stack (GtkStack *stack, guint n)
 
   while (ports[i] != NULL)
   {
-    if (i < n)
+    if (i < n_port)
       gtk_widget_show (ports[i]);
     else
       gtk_widget_hide (ports[i]);
@@ -71,7 +72,7 @@ void
 enable_buddy_toggle (GtkToggleButton *toggle,
                      gpointer *buddy)
 {
-  gtk_widget_set_sensitive ((GtkWidget *)buddy, gtk_toggle_button_get_active (toggle));
+  gtk_widget_set_sensitive ((GtkWidget*) buddy, gtk_toggle_button_get_active (toggle));
 }
 
 
@@ -80,7 +81,7 @@ void
 enable_buddy_menu (GtkCheckMenuItem *checkmenuitem,
                    gpointer *buddy)
 {
-  gtk_widget_set_visible ((GtkWidget *)buddy, gtk_check_menu_item_get_active (checkmenuitem));
+  gtk_widget_set_visible ((GtkWidget*) buddy, gtk_check_menu_item_get_active (checkmenuitem));
 }
 
 
@@ -98,9 +99,9 @@ enable_buddy_combo_opengl (GtkComboBox *combo,
   gboolean scale = (g_strcmp0 (value, "0") == 0);
 
   if ( ogl || goat || scale)
-    gtk_widget_set_sensitive ((GtkWidget *)buddy, TRUE);
+    gtk_widget_set_sensitive ((GtkWidget*) buddy, TRUE);
   else
-    gtk_widget_set_sensitive ((GtkWidget *)buddy, FALSE);
+    gtk_widget_set_sensitive ((GtkWidget*) buddy, FALSE);
 }
 
 

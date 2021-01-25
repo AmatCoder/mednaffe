@@ -1,7 +1,7 @@
 /*
  * medbiosentry.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -30,18 +30,18 @@ typedef struct _MedBiosEntryClass MedBiosEntryClass;
 typedef struct _MedBiosEntryPrivate MedBiosEntryPrivate;
 
 struct _MedBiosEntryClass {
-	MedDialogEntryClass parent_class;
+  MedDialogEntryClass parent_class;
 };
 
 struct _MedBiosEntryPrivate {
-	gchar* _sha256;
+  gchar* _sha256;
 };
 
 
 enum  {
-	MED_BIOS_ENTRY_0_PROPERTY,
-	MED_BIOS_ENTRY_SHA256_PROPERTY,
-	MED_BIOS_ENTRY_NUM_PROPERTIES
+  MED_BIOS_ENTRY_0_PROPERTY,
+  MED_BIOS_ENTRY_SHA256_PROPERTY,
+  MED_BIOS_ENTRY_NUM_PROPERTIES
 };
 
 static GParamSpec* med_bios_entry_properties[MED_BIOS_ENTRY_NUM_PROPERTIES];
@@ -51,14 +51,15 @@ G_DEFINE_TYPE_WITH_PRIVATE (MedBiosEntry, med_bios_entry, med_dialog_entry_get_t
 
 
 static void
-med_bios_entry_update_check (MedBiosEntry* self, gpointer user_data)
+med_bios_entry_update_check (MedBiosEntry* self,
+                             gpointer user_data)
 {
-	g_return_if_fail (self != NULL);
+  g_return_if_fail (self != NULL);
 
   MedBiosEntryPrivate* priv = med_bios_entry_get_instance_private (self);
 
-  GtkEntry* entry = ((MedEntry*) self)->entry;
   GtkWidget *toplevel = gtk_widget_get_toplevel ((GtkWidget*)self);
+
   if (toplevel)
   {
     GHashTable* table = g_object_get_data ((GObject*)toplevel, "table");
@@ -69,11 +70,12 @@ med_bios_entry_update_check (MedBiosEntry* self, gpointer user_data)
                                        med_widget_get_value ((MedWidget*) self),
                                        priv->_sha256);
 
-      gtk_widget_set_tooltip_text ((GtkWidget*) entry, info);
+      GtkEntry* entry = ((MedEntry*) self)->entry;
+      gtk_entry_set_icon_tooltip_text (entry, GTK_ENTRY_ICON_PRIMARY, info);
 
       GtkImage *image = (GtkImage*) gtk_image_new();
       gtk_image_set_from_resource (image, bios_get_icon (info));
-      gtk_entry_set_icon_from_pixbuf (entry, GTK_ENTRY_ICON_SECONDARY, gtk_image_get_pixbuf (image));
+      gtk_entry_set_icon_from_pixbuf (entry, GTK_ENTRY_ICON_PRIMARY, gtk_image_get_pixbuf (image));
 
       g_free (info);
     }
@@ -84,10 +86,10 @@ med_bios_entry_update_check (MedBiosEntry* self, gpointer user_data)
 static const gchar*
 med_bios_entry_get_sha256 (MedBiosEntry* self)
 {
-	g_return_val_if_fail (self != NULL, NULL);
+  g_return_val_if_fail (self != NULL, NULL);
   MedBiosEntryPrivate* priv = med_bios_entry_get_instance_private (self);
 
-	return priv->_sha256;
+  return priv->_sha256;
 }
 
 
@@ -95,36 +97,36 @@ static void
 med_bios_entry_set_sha256 (MedBiosEntry* self,
                            const gchar* value)
 {
-	g_return_if_fail (self != NULL);
+  g_return_if_fail (self != NULL);
   MedBiosEntryPrivate* priv = med_bios_entry_get_instance_private (self);
 
-	if (g_strcmp0 (value, med_bios_entry_get_sha256 (self)) != 0)
+  if (g_strcmp0 (value, med_bios_entry_get_sha256 (self)) != 0)
   {
-		g_free (priv->_sha256);
-		priv->_sha256 = g_strdup (value);
+    g_free (priv->_sha256);
+    priv->_sha256 = g_strdup (value);
 
-		g_object_notify_by_pspec ((GObject*) self, med_bios_entry_properties[MED_BIOS_ENTRY_SHA256_PROPERTY]);
-	}
+    g_object_notify_by_pspec ((GObject*) self, med_bios_entry_properties[MED_BIOS_ENTRY_SHA256_PROPERTY]);
+  }
 }
 
 
 static void
 med_bios_entry_finalize (GObject * obj)
 {
-	MedBiosEntry * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_bios_entry_get_type (), MedBiosEntry);
+  MedBiosEntry * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_bios_entry_get_type (), MedBiosEntry);
   MedBiosEntryPrivate* priv = med_bios_entry_get_instance_private (self);
 
-	g_free (priv->_sha256);
+  g_free (priv->_sha256);
 
-	G_OBJECT_CLASS (med_bios_entry_parent_class)->finalize (obj);
+  G_OBJECT_CLASS (med_bios_entry_parent_class)->finalize (obj);
 }
 
 
 MedBiosEntry*
 med_bios_entry_new (void)
 {
-	MedBiosEntry * self = (MedBiosEntry*) med_dialog_entry_construct (med_bios_entry_get_type ());
-	return self;
+  MedBiosEntry * self = (MedBiosEntry*) med_dialog_entry_construct (med_bios_entry_get_type ());
+  return self;
 }
 
 
@@ -141,17 +143,17 @@ med_bios_entry_get_property (GObject * object,
                              GValue * value,
                              GParamSpec * pspec)
 {
-	MedBiosEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_bios_entry_get_type (), MedBiosEntry);
+  MedBiosEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_bios_entry_get_type (), MedBiosEntry);
 
-	switch (property_id)
+  switch (property_id)
   {
-		case MED_BIOS_ENTRY_SHA256_PROPERTY:
-		  g_value_set_string (value, med_bios_entry_get_sha256 (self));
-		break;
-		default:
-		  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+    case MED_BIOS_ENTRY_SHA256_PROPERTY:
+      g_value_set_string (value, med_bios_entry_get_sha256 (self));
+    break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    break;
+  }
 }
 
 
@@ -161,28 +163,28 @@ med_bios_entry_set_property (GObject * object,
                              const GValue * value,
                              GParamSpec * pspec)
 {
-	MedBiosEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_bios_entry_get_type (), MedBiosEntry);
+  MedBiosEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_bios_entry_get_type (), MedBiosEntry);
 
-	switch (property_id)
+  switch (property_id)
   {
-		case MED_BIOS_ENTRY_SHA256_PROPERTY:
-		  med_bios_entry_set_sha256 (self, g_value_get_string (value));
-		break;
-		default:
-		  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+    case MED_BIOS_ENTRY_SHA256_PROPERTY:
+      med_bios_entry_set_sha256 (self, g_value_get_string (value));
+    break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    break;
+  }
 }
 
 
 static void
 med_bios_entry_class_init (MedBiosEntryClass * klass)
 {
-	G_OBJECT_CLASS (klass)->get_property = med_bios_entry_get_property;
-	G_OBJECT_CLASS (klass)->set_property = med_bios_entry_set_property;
-	G_OBJECT_CLASS (klass)->finalize = med_bios_entry_finalize;
+  G_OBJECT_CLASS (klass)->get_property = med_bios_entry_get_property;
+  G_OBJECT_CLASS (klass)->set_property = med_bios_entry_set_property;
+  G_OBJECT_CLASS (klass)->finalize = med_bios_entry_finalize;
 
-	g_object_class_install_property (G_OBJECT_CLASS (klass),
+  g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    MED_BIOS_ENTRY_SHA256_PROPERTY,
                                    med_bios_entry_properties[MED_BIOS_ENTRY_SHA256_PROPERTY] = g_param_spec_string
                                   (

@@ -1,7 +1,7 @@
 /*
  * menuinput.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -28,9 +28,7 @@
 
 #include <gtk/gtk.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MenuInput MenuInput;
 
@@ -42,11 +40,9 @@ struct _MenuInput {
 	GtkMenuItem* and_not;
 };
 
-
 GType menu_input_get_type (void) G_GNUC_CONST;
 MenuInput* menu_input_new (void);
 void menu_input_enable_all (MenuInput* self, gboolean b);
-
 
 G_END_DECLS
 

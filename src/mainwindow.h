@@ -1,7 +1,7 @@
 /*
  * mainwindow.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,12 +25,9 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-
 #include <gtk/gtk.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MainWindow MainWindow;
 
@@ -38,12 +35,10 @@ struct _MainWindow {
   GtkApplicationWindow parent_instance;
 };
 
-
 GType main_window_get_type (void) G_GNUC_CONST;
 MainWindow* main_window_new (GtkApplication* app);
 
 void main_window_start (MainWindow* self);
-
 
 G_END_DECLS
 

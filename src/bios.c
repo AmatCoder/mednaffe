@@ -1,7 +1,7 @@
 /*
  * bios.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -73,12 +73,13 @@ bios_window_set_label (GHashTable* table, GtkLabel* label, GtkImage* image, cons
 }
 
 
-void
-bios_window_update (BiosWindow* self, GHashTable* table)
+static void
+bios_window_update (BiosWindow* bw,
+                    GHashTable* table)
 {
-  g_return_if_fail (self != NULL);
+  g_return_if_fail (bw != NULL);
 
-  BiosWindowPrivate* priv = bios_window_get_instance_private (self);
+  BiosWindowPrivate* priv = bios_window_get_instance_private (bw);
 
   bios_window_set_label (table, priv->label_lynx_bios, priv->icon_lynx_bios, NULL, "c26a36c1990bcf841155e5a6fea4d2ee1a4d53b3cc772e70f257a962ad43b383");
 
@@ -92,7 +93,6 @@ bios_window_update (BiosWindow* self, GHashTable* table)
   bios_window_set_label (table, priv->label_psx_bios_jp, priv->icon_psx_bios_jp, "psx.bios_jp", "9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb");
   bios_window_set_label (table, priv->label_psx_bios_na, priv->icon_psx_bios_na, "psx.bios_na", "11052b6499e466bbf0a709b1f9cb6834a9418e66680387912451e971cf8a1fef");
   bios_window_set_label (table, priv->label_psx_bios_eu, priv->icon_psx_bios_eu, "psx.bios_eu", "1faaa18fa820a0225e488d9f086296b8e6c46df739666093987ff7d8fd352c09");
-
 }
 
 
@@ -100,20 +100,19 @@ static void
 bios_window_on_system_changed (GtkTreeSelection* sender,
                                gpointer self)
 {
-  GtkTreeModel* model;
-  GtkTreeIter iter;
-  gint num;
-
   g_return_if_fail (self != NULL);
-  g_return_if_fail (sender != NULL);
 
   BiosWindow* bw = self;
   BiosWindowPrivate* priv = bios_window_get_instance_private (bw);
+
+  GtkTreeModel* model;
+  GtkTreeIter iter;
 
   gboolean valid = gtk_tree_selection_get_selected (sender, &model, &iter);
 
   if (valid)
   {
+    gint num;
     gtk_tree_model_get (model, &iter, 1, &num, -1);
     gtk_notebook_set_current_page (priv->bios_notebook, num);
   }
@@ -134,33 +133,35 @@ static void
 bios_window_on_close (GtkButton* sender,
                       gpointer self)
 {
-  g_return_if_fail (self != NULL);
   gtk_widget_destroy ((GtkWidget*) self);
 }
 
 
 BiosWindow*
-bios_window_new (GtkWindow* parent)
+bios_window_new (GtkWindow* parent,
+                 GHashTable* table)
 {
   g_return_val_if_fail (parent != NULL, NULL);
 
-  BiosWindow * self = (BiosWindow*) g_object_new (bios_window_get_type (), NULL);
+  BiosWindow* self = (BiosWindow*) g_object_new (bios_window_get_type (), NULL);
 
   gtk_window_set_transient_for ((GtkWindow*) self, parent);
+
+  bios_window_update (self, table);
 
   return self;
 }
 
 
 static void
-bios_window_init (BiosWindow * self)
+bios_window_init (BiosWindow* self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 }
 
 
 static void
-bios_window_class_init (BiosWindowClass * klass)
+bios_window_class_init (BiosWindowClass* klass)
 {
   gint BiosWindow_private_offset = g_type_class_get_instance_private_offset (klass);
 

@@ -1,7 +1,7 @@
 /*
  * medrange.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -36,7 +36,7 @@ struct _MedRangeClass {
 };
 
 struct _MedRangePrivate {
-  GtkWidget* s;
+  GtkWidget* s_widget;
   GtkLabel* s_label;
   gchar* _command;
   gboolean _updated;
@@ -61,23 +61,22 @@ enum  {
 static GParamSpec* med_range_properties[MED_RANGE_NUM_PROPERTIES];
 
 
-static void med_range_med_widget_interface_init (MedWidgetInterface * iface);
+static void med_range_med_widget_interface_init (MedWidgetInterface* iface);
 
-G_DEFINE_TYPE_WITH_CODE (MedRange, med_range, GTK_TYPE_BOX,
-                         G_ADD_PRIVATE (MedRange)
+G_DEFINE_TYPE_WITH_CODE (MedRange, med_range, GTK_TYPE_BOX, G_ADD_PRIVATE (MedRange)
                          G_IMPLEMENT_INTERFACE (med_widget_get_type(), med_range_med_widget_interface_init));
 
 
 static void
 med_range_real_set_value (MedWidget* base,
-                          const gchar* v)
+                          const gchar* value)
 {
-  g_return_if_fail (v != NULL);
+  g_return_if_fail (value != NULL);
 
   MedRange * self = (MedRange*) base;
   MedRangePrivate* priv = med_range_get_instance_private (self);
 
-  imed_range_medrange_set_value ((IMedRange*) priv->s, v);
+  imed_range_medrange_set_value ((IMedRange*) priv->s_widget, value);
 }
 
 
@@ -87,7 +86,7 @@ med_range_real_get_value (MedWidget* base)
   MedRange* self = (MedRange*) base;
   MedRangePrivate* priv = med_range_get_instance_private (self);
 
-  return imed_range_medrange_get_value ((IMedRange*) priv->s);
+  return imed_range_medrange_get_value ((IMedRange*) priv->s_widget);
 }
 
 
@@ -95,6 +94,7 @@ static void
 med_range_range_changed (MedRange* self)
 {
   g_return_if_fail (self != NULL);
+
   med_widget_set_modified ((MedWidget*) self, TRUE);
 }
 
@@ -121,7 +121,7 @@ med_range_real_set_command (MedWidget* base,
     g_free (priv->_command);
     priv->_command = g_strdup (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_range_properties[MED_RANGE_COMMAND_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_range_properties[MED_RANGE_COMMAND_PROPERTY]);
   }
 }
 
@@ -191,7 +191,7 @@ med_range_set_label (MedRange* self,
     g_free (priv->_label);
     priv->_label = g_strdup (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_range_properties[MED_RANGE_LABEL_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_range_properties[MED_RANGE_LABEL_PROPERTY]);
   }
 }
 
@@ -201,6 +201,7 @@ med_range_set_label_width (MedRange* self,
                            gint value)
 {
   g_return_if_fail (self != NULL);
+
   MedRangePrivate* priv = med_range_get_instance_private (self);
   g_object_set ((GtkWidget*) priv->s_label, "width-chars", value, NULL);
 }
@@ -229,7 +230,7 @@ med_range_set_values (MedRange* self,
     g_free (priv->_values);
     priv->_values = g_strdup (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_range_properties[MED_RANGE_VALUES_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_range_properties[MED_RANGE_VALUES_PROPERTY]);
   }
 }
 
@@ -254,7 +255,7 @@ med_range_set_is_scale (MedRange* self,
   if (med_range_get_is_scale (self) != value)
   {
     priv->_is_scale = value;
-    g_object_notify_by_pspec ((GObject *) self, med_range_properties[MED_RANGE_IS_SCALE_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_range_properties[MED_RANGE_IS_SCALE_PROPERTY]);
   }
 }
 
@@ -276,9 +277,9 @@ med_range_spin_button_value_changed (GtkSpinButton* sender,
 
 
 static void
-med_range_finalize (GObject * obj)
+med_range_finalize (GObject* obj)
 {
-  MedRange * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_range_get_type (), MedRange);
+  MedRange* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_range_get_type(), MedRange);
   MedRangePrivate* priv = med_range_get_instance_private (self);
 
   g_free (priv->_command);
@@ -292,20 +293,20 @@ med_range_finalize (GObject * obj)
 MedRange*
 med_range_new (void)
 {
-  MedRange* self = (MedRange*) g_object_new (med_range_get_type (), NULL);
+  MedRange* self = (MedRange*) g_object_new (med_range_get_type(), NULL);
   return self;
 }
 
 
-static GObject *
+static GObject*
 med_range_constructor (GType type,
                        guint n_construct_properties,
-                       GObjectConstructParam * construct_properties)
+                       GObjectConstructParam* construct_properties)
 {
   GObjectClass* parent_class = G_OBJECT_CLASS (med_range_parent_class);
   GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 
-  MedRange* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_range_get_type (), MedRange);
+  MedRange* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_range_get_type(), MedRange);
   MedRangePrivate* priv = med_range_get_instance_private (self);
 
   if (priv->_values == NULL)
@@ -324,16 +325,16 @@ med_range_constructor (GType type,
 
   if (priv->_is_scale)
   {
-    priv->s = (GtkWidget*) med_scale_new (priv->adj, v3);
-    g_signal_connect_object ((GtkRange*) priv->s, "value-changed", (GCallback) med_range_range_value_changed, self, 0);
-    gtk_scale_set_value_pos ((GtkScale*) priv->s, GTK_POS_RIGHT);
-    g_object_set ((GtkWidget*) priv->s, "width-request", 216, NULL);
+    priv->s_widget = (GtkWidget*) med_scale_new (priv->adj, v3);
+    g_signal_connect_object ((GtkRange*) priv->s_widget, "value-changed", (GCallback) med_range_range_value_changed, self, 0);
+    gtk_scale_set_value_pos ((GtkScale*) priv->s_widget, GTK_POS_RIGHT);
+    g_object_set ((GtkWidget*) priv->s_widget, "width-request", 216, NULL);
   }
   else
   {
-    priv->s = (GtkWidget*) med_spin_new (priv->adj, v3);
-    g_signal_connect_object ((GtkSpinButton*) priv->s, "value-changed", (GCallback) med_range_spin_button_value_changed, self, 0);
-    g_object_set ((GtkWidget*) priv->s, "width-request", 168, NULL);
+    priv->s_widget = (GtkWidget*) med_spin_new (priv->adj, v3);
+    g_signal_connect_object ((GtkSpinButton*) priv->s_widget, "value-changed", (GCallback) med_range_spin_button_value_changed, self, 0);
+    g_object_set ((GtkWidget*) priv->s_widget, "width-request", 168, NULL);
   }
 
   priv->s_label = (GtkLabel*) gtk_label_new (priv->_label);
@@ -342,23 +343,23 @@ med_range_constructor (GType type,
   gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) priv->s_label, FALSE, FALSE, 0);
 
   if (priv->_is_scale)
-    gtk_box_pack_start ((GtkBox*) self, priv->s, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox*) self, priv->s_widget, FALSE, FALSE, 0);
   else
-    gtk_box_pack_start ((GtkBox*) self, priv->s, FALSE, FALSE, 12);
+    gtk_box_pack_start ((GtkBox*) self, priv->s_widget, FALSE, FALSE, 12);
 
   gtk_widget_show ((GtkWidget*) priv->s_label);
-  gtk_widget_show (priv->s);
+  gtk_widget_show (priv->s_widget);
 
   med_widget_init ((MedWidget*) self, (GtkWidget*) self);
 
-  g_strfreev(vs);
+  g_strfreev (vs);
 
   return obj;
 }
 
 
 static void
-med_range_init (MedRange * self)
+med_range_init (MedRange* self)
 {
   MedRangePrivate* priv = med_range_get_instance_private (self);
   priv->_is_scale = FALSE;
@@ -366,12 +367,12 @@ med_range_init (MedRange * self)
 
 
 static void
-med_range_get_property (GObject * object,
+med_range_get_property (GObject* object,
                         guint property_id,
-                        GValue * value,
-                        GParamSpec * pspec)
+                        GValue* value,
+                        GParamSpec* pspec)
 {
-  MedRange * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_range_get_type (), MedRange);
+  MedRange* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_range_get_type(), MedRange);
 
   switch (property_id)
   {
@@ -395,12 +396,12 @@ med_range_get_property (GObject * object,
 
 
 static void
-med_range_set_property (GObject * object,
+med_range_set_property (GObject* object,
                         guint property_id,
                         const GValue * value,
                         GParamSpec * pspec)
 {
-  MedRange * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_range_get_type (), MedRange);
+  MedRange* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_range_get_type(), MedRange);
 
   switch (property_id)
   {
@@ -427,7 +428,7 @@ med_range_set_property (GObject * object,
 
 
 static void
-med_range_class_init (MedRangeClass * klass)
+med_range_class_init (MedRangeClass* klass)
 {
   G_OBJECT_CLASS (klass)->get_property = med_range_get_property;
   G_OBJECT_CLASS (klass)->set_property = med_range_set_property;
@@ -478,7 +479,7 @@ med_range_class_init (MedRangeClass * klass)
                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT
                                    ));
 
-	g_object_class_install_property (G_OBJECT_CLASS (klass),
+  g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    MED_RANGE_LABELWIDTH_PROPERTY,
                                    med_range_properties[MED_RANGE_LABELWIDTH_PROPERTY] = g_param_spec_int
                                    (
@@ -493,16 +494,16 @@ med_range_class_init (MedRangeClass * klass)
 
 
 static void
-med_range_med_widget_interface_init (MedWidgetInterface * iface)
+med_range_med_widget_interface_init (MedWidgetInterface* iface)
 {
-  iface->set_value = (void (*) (MedWidget *, const gchar*)) med_range_real_set_value;
-  iface->get_value = (const gchar* (*) (MedWidget *)) med_range_real_get_value;
+  iface->set_value = (void (*) (MedWidget*, const gchar*)) med_range_real_set_value;
+  iface->get_value = (const gchar* (*) (MedWidget*)) med_range_real_get_value;
 
-  iface->set_modified = (void (*) (MedWidget *, gboolean)) med_range_real_set_modified;
-  iface->get_modified = (gboolean (*) (MedWidget *)) med_range_real_get_modified;
+  iface->set_modified = (void (*) (MedWidget*, gboolean)) med_range_real_set_modified;
+  iface->get_modified = (gboolean (*) (MedWidget*)) med_range_real_get_modified;
 
-  iface->set_updated = (void (*) (MedWidget *, gboolean)) med_range_real_set_updated;
-  iface->get_updated = (gboolean (*) (MedWidget *)) med_range_real_get_updated;
+  iface->set_updated = (void (*) (MedWidget*, gboolean)) med_range_real_set_updated;
+  iface->get_updated = (gboolean (*) (MedWidget*)) med_range_real_get_updated;
 
   iface->get_command = med_range_real_get_command;
   iface->set_command = med_range_real_set_command;

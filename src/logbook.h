@@ -1,7 +1,7 @@
 /*
  * logbook.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -29,19 +29,16 @@
 
 G_BEGIN_DECLS
 
-
 typedef struct _Logbook Logbook;
 
 struct _Logbook {
   GtkNotebook parent_instance;
 };
 
-
 typedef enum  {
   LOGBOOK_LOG_TAB_FRONTEND = 1 << 0,
   LOGBOOK_LOG_TAB_EMU = 1 << 1
 } LogbookLogTab;
-
 
 GType logbook_get_type (void) G_GNUC_CONST;
 Logbook* logbook_new (void);

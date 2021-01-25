@@ -1,7 +1,7 @@
 /*
  * bios.h
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -26,11 +26,8 @@
 #ifndef __BIOS_H__
 #define __BIOS_H__
 
-
 #include <gtk/gtk.h>
-
 #include "widgets/medbiosentry.h"
-
 
 G_BEGIN_DECLS
 
@@ -40,12 +37,8 @@ struct _BiosWindow {
   GtkDialog parent_instance;
 };
 
-
 GType bios_window_get_type (void) G_GNUC_CONST;
-BiosWindow* bios_window_new (GtkWindow* parent);
-
-
-void bios_window_update (BiosWindow* self, GHashTable* table);
+BiosWindow* bios_window_new (GtkWindow* parent, GHashTable* table);
 
 G_END_DECLS
 

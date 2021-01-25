@@ -1,24 +1,24 @@
 /*
  * joystick_linux.c
- * 
- * Copyright 2013-2019 AmatCoder
- * 
+ *
+ * Copyright 2013-2021 AmatCoder
+ *
  * This file is part of Mednaffe.
- * 
+ *
  * Mednaffe is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Mednaffe is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Mednaffe; if not, see <http://www.gnu.org/licenses/>.
  *
- * 
+ *
  */
 
 
@@ -26,7 +26,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -43,9 +42,9 @@ FindSysFSInputBase (void)
   static const char* p[] = { "/sys/subsystem/input", "/sys/bus/input", "/sys/block/input", "/sys/class/input" };
   struct stat stat_buf;
 
-  for(size_t i = 0; i < sizeof(p) / sizeof(p[0]); i++)
+  for (size_t i = 0; i < sizeof(p) / sizeof(p[0]); i++)
   {
-    if(!stat (p[i], &stat_buf))
+    if (!stat (p[i], &stat_buf))
     {
       return p[i];
     }
@@ -56,6 +55,7 @@ FindSysFSInputBase (void)
     }
   }
   printf ("Couldn't find input subsystem under /sys.");
+
   return NULL;
 }
 
@@ -75,13 +75,13 @@ FindSysFSInputDeviceByJSDev (const char* jsdev_name)
 
   if (!(tmp = realpath (buf, NULL)))
   {
-    printf("realpath(\"%s\") failed.", buf);
+    printf ("realpath(\"%s\") failed.", buf);
     return NULL;
   }
 
   for(;;)
   {
-    char* p = strrchr(tmp, '/');
+    char* p = strrchr (tmp, '/');
     unsigned idx;
 
     if (!p)
@@ -195,7 +195,7 @@ init_joys (void)
       break;
     }
 
-    if (fcntl(fd, F_SETFL, fcntl (fd, F_GETFL) | O_NONBLOCK) == -1)
+    if (fcntl (fd, F_SETFL, fcntl (fd, F_GETFL) | O_NONBLOCK) == -1)
       printf ("WARNING: Failed to enable O_NONBLOCK flag\n");
 
     unsigned char tmp;
@@ -203,27 +203,27 @@ init_joys (void)
     unsigned num_axes = 0;
     char aname[128];
 
-   if(ioctl(fd, JSIOCGBUTTONS, &tmp) == -1)
-     printf("Failed to get number of axes");
+   if (ioctl (fd, JSIOCGBUTTONS, &tmp) == -1)
+     printf ("Failed to get number of axes");
    else
      num_buttons = tmp;
 
-   if(ioctl(fd, JSIOCGAXES, &tmp) == -1)
-     printf("Failed to get number of axes");
+   if (ioctl (fd, JSIOCGAXES, &tmp) == -1)
+     printf ("Failed to get number of axes");
    else
      num_axes = tmp;
 
-    memset(aname, 0, sizeof (aname));
-    ioctl(fd, JSIOCGNAME(sizeof (aname) - 1), aname);
+    memset (aname, 0, sizeof (aname));
+    ioctl (fd, JSIOCGNAME(sizeof (aname) - 1), aname);
 
     joy_s *joy = g_new0 (joy_s, 1);
     joy->num = js;
     joy->type = 1;
-    joy->name = g_strndup(aname, strlen (aname));
+    joy->name = g_strndup (aname, strlen (aname));
     joy->id = g_strdup_printf ("0x%016lx%04x%04x%08x", GetBVPV (number), num_axes, num_buttons, 0);
     joy->data1 = GINT_TO_POINTER(fd);
 
-    g_free(number);
+    g_free (number);
 
     joy_list = g_slist_append (joy_list, joy);
 
@@ -336,7 +336,7 @@ read_joys (GSList *list)
       {
         gchar* n = g_strdup_printf ("%i", e.number);
         value = g_strconcat ("joystick ", joy->id, " button_", n, NULL);
-        g_free(n);
+        g_free (n);
 
         return value;
       }
@@ -352,7 +352,7 @@ read_joys (GSList *list)
         gchar* n = g_strdup_printf ("%i", e.number);
         value = g_strconcat ("joystick ", joy->id, " abs_", n, s, NULL);
         g_free (s);
-        g_free(n);
+        g_free (n);
 
         return value;
       }

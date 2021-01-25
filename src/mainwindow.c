@@ -1,7 +1,7 @@
 /*
  * mainwindow.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -87,7 +87,7 @@ main_window_path_combo_box_selected (PathComboBox* sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  paned_list_fill_list (priv->panedlist, priv->pathbox->path_store, iter);
+  paned_list_fill_list (priv->panedlist, priv->pathbox->combo, iter);
 }
 
 
@@ -446,7 +446,6 @@ main_window_preferences_show_filters (PreferencesWindow* sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  priv->panedlist->filters_header = b;
   paned_list_show_filters (priv->panedlist, b);
 }
 
@@ -611,8 +610,7 @@ main_window_menu_show_bios (GtkMenuItem* sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  BiosWindow* bios_window = bios_window_new ((GtkWindow*) self);
-  bios_window_update (bios_window, priv->med_process->table);
+  BiosWindow* bios_window = bios_window_new ((GtkWindow*) self, priv->med_process->table);
   gtk_widget_show ((GtkWidget*) bios_window);
 }
 
@@ -623,10 +621,7 @@ main_window_menu_show_about (GtkMenuItem* sender,
 {
   g_return_if_fail (self != NULL);
 
-  GObject *app = (GObject*) gtk_window_get_application (self);
   AboutWindow* about_window = about_window_new ((GtkWindow*) self);
-
-  gtk_window_set_title ((GtkWindow*) self, g_object_get_data (app, "name"));
   gtk_widget_show ((GtkWidget*) about_window);
 }
 
@@ -664,7 +659,7 @@ save_preflist_func (gconstpointer data, gpointer self)
 {
   const gchar* command = med_widget_get_command ((MedWidget*)data);
   const gchar* value = med_widget_get_value ((MedWidget*)data);
-  g_key_file_set_string((GKeyFile*)self, "GUI", command, value);
+  g_key_file_set_string ((GKeyFile*) self, "GUI", command, value);
 }
 
 
@@ -686,10 +681,10 @@ main_window_save_settings (MainWindow* self)
   g_key_file_set_comment (key, NULL, NULL, comment, NULL);
   g_free (comment);
 
-  gint size;
+  gsize size;
   gchar** dirs = path_combo_box_get_dirs (priv->pathbox, &size);
   g_key_file_set_string_list (key, "GUI", "Dirs", (const gchar* const*) dirs, size);
-  g_strfreev(dirs);
+  g_strfreev (dirs);
 
   g_key_file_set_integer (key, "GUI", "ActiveDir", gtk_combo_box_get_active (priv->pathbox->combo));
 
@@ -789,7 +784,7 @@ main_window_launch_clicked (GtkButton* sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  main_window_paned_list_launched (NULL, priv->panedlist->selected, mw);
+  paned_list_request_launch (priv->panedlist);
 }
 
 
@@ -825,7 +820,7 @@ main_window_menu_show_preferences (GtkMenuItem* sender,
 
 
 static void
-load_mods (GKeyFile *key, GHashTable* tab)
+load_mods (GKeyFile* key, GHashTable* tab)
 {
   gchar** commands = g_key_file_get_keys (key, "EMU", NULL, NULL);
   gint i = 0;
@@ -997,9 +992,9 @@ main_window_start (MainWindow* self)
 
 
 static void
-main_window_finalize (GObject * obj)
+main_window_finalize (GObject* obj)
 {
-  MainWindow * self = G_TYPE_CHECK_INSTANCE_CAST (obj, main_window_get_type (), MainWindow);
+  MainWindow * self = G_TYPE_CHECK_INSTANCE_CAST (obj, main_window_get_type(), MainWindow);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
   g_object_unref (priv->med_process);
@@ -1028,7 +1023,7 @@ main_window_new (GtkApplication* app)
   g_type_ensure (med_color_entry_get_type ());
   g_type_ensure (med_input_get_type ());
 
-  MainWindow* self = (MainWindow*) g_object_new (main_window_get_type (), "application", app, NULL);
+  MainWindow* self = (MainWindow*) g_object_new (main_window_get_type(), "application", app, NULL);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
   priv->logbook = logbook_new ();
@@ -1052,14 +1047,14 @@ main_window_new (GtkApplication* app)
 
   gtk_tree_model_filter_set_visible_column (priv->systems_filter, 3);
   gtk_tree_model_filter_refilter (priv->systems_filter);
-  g_signal_connect_object (priv->preferences, "on-show-systems", (GCallback) main_window_preferences_show_systems, self, 0); 
+  g_signal_connect_object (priv->preferences, "on-show-systems", (GCallback) main_window_preferences_show_systems, self, 0);
 
   return self;
 }
 
 
 static void
-main_window_init (MainWindow * self)
+main_window_init (MainWindow* self)
 {
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
@@ -1073,7 +1068,7 @@ main_window_init (MainWindow * self)
 
 
 static void
-main_window_class_init (MainWindowClass * klass)
+main_window_class_init (MainWindowClass* klass)
 {
   G_OBJECT_CLASS (klass)->finalize = main_window_finalize;
   gint MainWindow_private_offset = g_type_class_get_instance_private_offset (klass);

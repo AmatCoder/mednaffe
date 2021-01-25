@@ -1,7 +1,7 @@
 /*
  * joystick.h
  * 
- * Copyright 2013-2019 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -27,9 +27,7 @@
 
 #include <glib.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct{
   gint num;
@@ -39,13 +37,11 @@ typedef struct{
   gpointer data1;
 }joy_s;
 
-
 GSList* init_joys (void);
 void discard_read (GSList *list);
 gchar* read_joys (GSList *list);
 void close_joys (GSList *list);
 gchar* value_to_text (GSList* listjoy, const gchar* value);
-
 
 G_END_DECLS
 

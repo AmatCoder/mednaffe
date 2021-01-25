@@ -1,7 +1,7 @@
 /*
  * preferences.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,15 +25,12 @@
 #ifndef __PREFERENCES_H__
 #define __PREFERENCES_H__
 
-
 #include <gtk/gtk.h>
 
 #include "widgets/medcheckbutton.h"
 #include "widgets/medcombobox.h"
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _PreferencesWindow PreferencesWindow;
 
@@ -46,7 +43,6 @@ struct _PreferencesWindow {
   GtkComboBoxText *change_theme;
   GtkNotebook *notebook;
 };
-
 
 GType preferences_window_get_type (void) G_GNUC_CONST;
 PreferencesWindow* preferences_window_new (GtkWindow* parent);

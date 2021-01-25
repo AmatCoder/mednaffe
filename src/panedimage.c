@@ -1,7 +1,7 @@
 /*
  * panedimage.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -27,7 +27,6 @@
 
 typedef struct _PanedImageClass PanedImageClass;
 typedef struct _PanedImagePrivate PanedImagePrivate;
-
 
 struct _PanedImageClass {
   GtkPanedClass parent_class;
@@ -158,24 +157,25 @@ paned_image_scale_images (GtkWidget* sender,
                           GtkAllocation* allocation,
                           gpointer self)
 {
-  g_return_if_fail (allocation != NULL);
-
   PanedImage* pi = self;
   PanedImagePrivate* priv = paned_image_get_instance_private (pi);
 
-  priv->width = (allocation->width - 8);
-  priv->height = ((allocation->height / 2) - 8);
-
-  gboolean visible = gtk_widget_get_visible ((GtkWidget*) pi);
-  if (visible)
+  if ((allocation->width > 8) && (allocation->height > 17))
   {
-    if (gtk_widget_get_visible ((GtkWidget*) priv->image_a))
-      if (priv->file_a != NULL)
-        paned_image_set_pixbuf (pi, priv->image_a, priv->file_a);
+    priv->width = (allocation->width - 8);
+    priv->height = ((allocation->height / 2) - 8);
 
-    if (gtk_widget_get_visible ((GtkWidget*) priv->image_b))
-      if (priv->file_b != NULL)
-        paned_image_set_pixbuf (pi, priv->image_b, priv->file_b);
+    gboolean visible = gtk_widget_get_visible ((GtkWidget*) pi);
+    if (visible)
+    {
+      if (gtk_widget_get_visible ((GtkWidget*) priv->image_a))
+        if (priv->file_a != NULL)
+          paned_image_set_pixbuf (pi, priv->image_a, priv->file_a);
+
+      if (gtk_widget_get_visible ((GtkWidget*) priv->image_b))
+        if (priv->file_b != NULL)
+          paned_image_set_pixbuf (pi, priv->image_b, priv->file_b);
+    }
   }
 }
 
@@ -198,17 +198,23 @@ paned_image_finalize (GObject* obj)
 PanedImage*
 paned_image_new (GtkOrientation orientation)
 {
-  PanedImage *self = (PanedImage*) g_object_new (paned_image_get_type (), NULL);
+  PanedImage* self = (PanedImage*) g_object_new (paned_image_get_type(), NULL);
   PanedImagePrivate* priv = paned_image_get_instance_private (self);
 
   gtk_orientable_set_orientation ((GtkOrientable*) self, orientation);
 
   priv->preserve_aspect_ratio = TRUE; //FIXME & TODO: buggy, so not fully implemented.
+  priv->path_a = NULL;
+  priv->path_b = NULL;
+  priv->file_a = NULL;
+  priv->file_b = NULL;
+  priv->width = 0;
+  priv->height = 0;
 
-  priv->image_a = (GtkImage*) gtk_image_new ();
+  priv->image_a = (GtkImage*) gtk_image_new();
   gtk_paned_pack1 ((GtkPaned*) self, (GtkWidget*) priv->image_a, TRUE, TRUE);
 
-  priv->image_b = (GtkImage*) gtk_image_new ();
+  priv->image_b = (GtkImage*) gtk_image_new();
   gtk_paned_pack2 ((GtkPaned*) self, (GtkWidget*) priv->image_b, TRUE, TRUE);
 
   g_signal_connect_object ((GtkWidget*) self, "size-allocate", (GCallback) paned_image_scale_images, self, 0);
@@ -220,13 +226,13 @@ paned_image_new (GtkOrientation orientation)
 
 
 static void
-paned_image_init (PanedImage * self)
+paned_image_init (PanedImage* self)
 {
 }
 
 
 static void
-paned_image_class_init (PanedImageClass * klass)
+paned_image_class_init (PanedImageClass* klass)
 {
   G_OBJECT_CLASS (klass)->finalize = paned_image_finalize;
 }

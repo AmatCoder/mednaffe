@@ -1,7 +1,7 @@
 /*
  * medcombobox.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -26,12 +26,9 @@
 #define __MEDCOMBOBOX_H__
 
 #include <gtk/gtk.h>
-
 #include "medwidget.h"
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedComboBox MedComboBox;
 
@@ -39,10 +36,8 @@ struct _MedComboBox {
   GtkBox parent_instance;
 };
 
-
 GType med_combo_box_get_type (void) G_GNUC_CONST;
 MedComboBox* med_combo_box_new (void);
-
 
 G_END_DECLS
 

@@ -1,7 +1,7 @@
 /*
  * marshallers.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -91,6 +91,7 @@ g_cclosure_user_marshal_VOID__INT_BOOLEAN (GClosure     *closure,
     data1 = param_values->data[0].v_pointer;
     data2 = closure->data;
   }
+
   callback = (GMarshalFunc_VOID__INT_BOOLEAN) (marshal_data ? marshal_data : cc->callback);
 
   callback (data1,
@@ -128,6 +129,7 @@ g_cclosure_user_marshal_VOID__INT_INT (GClosure     *closure,
     data1 = param_values->data[0].v_pointer;
     data2 = closure->data;
   }
+
   callback = (GMarshalFunc_VOID__INT_INT) (marshal_data ? marshal_data : cc->callback);
 
   callback (data1,
@@ -135,6 +137,7 @@ g_cclosure_user_marshal_VOID__INT_INT (GClosure     *closure,
             g_value_get_int (param_values + 2),
             data2);
 }
+
 
 void
 g_cclosure_user_marshal_VOID__STRING_STRING_INT_INT_INT (GClosure     *closure,
@@ -167,6 +170,7 @@ g_cclosure_user_marshal_VOID__STRING_STRING_INT_INT_INT (GClosure     *closure,
     data1 = param_values->data[0].v_pointer;
     data2 = closure->data;
   }
+
   callback = (GMarshalFunc_VOID__STRING_STRING_INT_INT_INT) (marshal_data ? marshal_data : cc->callback);
 
   callback (data1,

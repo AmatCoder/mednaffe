@@ -1,7 +1,7 @@
 /*
  * medcolorentry.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -37,10 +37,8 @@ struct _MedColorEntry {
   MedEntry parent_instance;
 };
 
-
 GType med_color_entry_get_type (void) G_GNUC_CONST;
 MedColorEntry* med_color_entry_new (void);
-
 
 G_END_DECLS
 

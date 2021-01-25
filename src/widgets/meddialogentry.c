@@ -1,7 +1,7 @@
 /*
  * meddialogentry.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -48,15 +48,16 @@ enum  {
 static guint med_dialog_entry_signals[MED_DIALOG_ENTRY_NUM_SIGNALS] = {0};
 
 
-G_DEFINE_TYPE_WITH_PRIVATE (MedDialogEntry, med_dialog_entry, med_entry_get_type ());
+G_DEFINE_TYPE_WITH_PRIVATE (MedDialogEntry, med_dialog_entry, med_entry_get_type());
 
 
 static void
 med_dialog_entry_real_entry_changed (MedEntry* base)
 {
-  MedDialogEntry * self = (MedDialogEntry*) base;
+  MedDialogEntry* self = (MedDialogEntry*) base;
 
-  MED_ENTRY_CLASS(med_dialog_entry_parent_class)->entry_changed (G_TYPE_CHECK_INSTANCE_CAST (self, med_entry_get_type (), MedEntry));
+  MED_ENTRY_CLASS(med_dialog_entry_parent_class)->entry_changed (G_TYPE_CHECK_INSTANCE_CAST (self, med_entry_get_type(), MedEntry));
+
   g_signal_emit (self, med_dialog_entry_signals[MED_DIALOG_ENTRY_EMIT_CHANGE_SIGNAL], 0);
 }
 
@@ -65,6 +66,7 @@ gboolean
 med_dialog_entry_get_is_folder (MedDialogEntry* self)
 {
   g_return_val_if_fail (self != NULL, FALSE);
+
   MedDialogEntryPrivate* priv = med_dialog_entry_get_instance_private (self);
 
   return priv->_is_folder;
@@ -76,12 +78,13 @@ med_dialog_entry_set_is_folder (MedDialogEntry* self,
                                 gboolean value)
 {
   g_return_if_fail (self != NULL);
+
   MedDialogEntryPrivate* priv = med_dialog_entry_get_instance_private (self);
 
   if (med_dialog_entry_get_is_folder (self) != value)
   {
     priv->_is_folder = value;
-    g_object_notify_by_pspec ((GObject *) self, med_dialog_entry_properties[MED_DIALOG_ENTRY_IS_FOLDER_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_dialog_entry_properties[MED_DIALOG_ENTRY_IS_FOLDER_PROPERTY]);
   }
 }
 
@@ -110,7 +113,7 @@ med_dialog_entry_button_clicked (GtkButton* sender,
 MedDialogEntry*
 med_dialog_entry_construct (GType object_type)
 {
-  MedDialogEntry * self = (MedDialogEntry*) med_entry_construct (object_type);
+  MedDialogEntry* self = (MedDialogEntry*) med_entry_construct (object_type);
   return self;
 }
 
@@ -118,19 +121,19 @@ med_dialog_entry_construct (GType object_type)
 MedDialogEntry*
 med_dialog_entry_new (void)
 {
-  return med_dialog_entry_construct (med_dialog_entry_get_type ());
+  return med_dialog_entry_construct (med_dialog_entry_get_type());
 }
 
 
-static GObject *
+static GObject*
 med_dialog_entry_constructor (GType type,
                               guint n_construct_properties,
-                              GObjectConstructParam * construct_properties)
+                              GObjectConstructParam* construct_properties)
 {
   GObjectClass* parent_class = G_OBJECT_CLASS (med_dialog_entry_parent_class);
   GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 
-  MedDialogEntry* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_dialog_entry_get_type (), MedDialogEntry);
+  MedDialogEntry* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_dialog_entry_get_type(), MedDialogEntry);
   MedDialogEntryPrivate* priv = med_dialog_entry_get_instance_private (self);
 
   gtk_box_set_child_packing ((GtkBox*) self, (GtkWidget*) ((MedEntry*) self)->entry, TRUE, TRUE, 16, GTK_PACK_START);
@@ -155,12 +158,12 @@ med_dialog_entry_init (MedDialogEntry* self)
 
 
 static void
-med_dialog_entry_get_property (GObject * object,
+med_dialog_entry_get_property (GObject* object,
                                 guint property_id,
-                                GValue * value,
-                                GParamSpec * pspec)
+                                GValue* value,
+                                GParamSpec* pspec)
 {
-  MedDialogEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_dialog_entry_get_type (), MedDialogEntry);
+  MedDialogEntry* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_dialog_entry_get_type(), MedDialogEntry);
 
   switch (property_id)
   {
@@ -175,12 +178,12 @@ med_dialog_entry_get_property (GObject * object,
 
 
 static void
-med_dialog_entry_set_property (GObject * object,
+med_dialog_entry_set_property (GObject* object,
                                guint property_id,
-                               const GValue * value,
-                               GParamSpec * pspec)
+                               const GValue* value,
+                               GParamSpec* pspec)
 {
-  MedDialogEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_dialog_entry_get_type (), MedDialogEntry);
+  MedDialogEntry* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_dialog_entry_get_type(), MedDialogEntry);
 
   switch (property_id)
   {
@@ -195,9 +198,9 @@ med_dialog_entry_set_property (GObject * object,
 
 
 static void
-med_dialog_entry_class_init (MedDialogEntryClass * klass)
+med_dialog_entry_class_init (MedDialogEntryClass* klass)
 {
-  ((MedEntryClass *) klass)->entry_changed = (void (*) (MedEntry *)) med_dialog_entry_real_entry_changed;
+  ((MedEntryClass*) klass)->entry_changed = (void (*) (MedEntry*)) med_dialog_entry_real_entry_changed;
 
   G_OBJECT_CLASS (klass)->get_property = med_dialog_entry_get_property;
   G_OBJECT_CLASS (klass)->set_property = med_dialog_entry_set_property;
@@ -216,7 +219,7 @@ med_dialog_entry_class_init (MedDialogEntryClass * klass)
 
 
   med_dialog_entry_signals[MED_DIALOG_ENTRY_EMIT_CHANGE_SIGNAL] = g_signal_new ("emit-change",
-                                                                                med_dialog_entry_get_type (),
+                                                                                med_dialog_entry_get_type(),
                                                                                 G_SIGNAL_RUN_LAST,
                                                                                 0,
                                                                                 NULL,

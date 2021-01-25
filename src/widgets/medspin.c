@@ -1,7 +1,7 @@
 /*
  * medspin.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -38,10 +38,9 @@ struct _MedSpinPrivate {
 };
 
 
-static void med_spin_imed_range_interface_init (IMedRangeInterface * iface);
+static void med_spin_imed_range_interface_init (IMedRangeInterface* iface);
 
-G_DEFINE_TYPE_WITH_CODE (MedSpin, med_spin, GTK_TYPE_SPIN_BUTTON,
-                         G_ADD_PRIVATE (MedSpin)
+G_DEFINE_TYPE_WITH_CODE (MedSpin, med_spin, GTK_TYPE_SPIN_BUTTON, G_ADD_PRIVATE (MedSpin)
                          G_IMPLEMENT_INTERFACE (imed_range_get_type(), med_spin_imed_range_interface_init));
 
 
@@ -56,13 +55,12 @@ double_parse (const gchar* str)
 
 static void
 med_spin_real_medrange_set_value (IMedRange* base,
-                                  const gchar* v)
+                                  const gchar* value)
 {
-  g_return_if_fail (v != NULL);
+  g_return_if_fail (value != NULL);
 
   MedSpin* self = (MedSpin*) base;
-
-  gtk_spin_button_set_value ((GtkSpinButton*) self, double_parse (v));
+  gtk_spin_button_set_value ((GtkSpinButton*) self, double_parse (value));
 }
 
 
@@ -75,14 +73,15 @@ med_spin_real_medrange_get_value (IMedRange* base)
   gdouble value = gtk_spin_button_get_value ((GtkSpinButton*) self);
   g_free (priv->value);
   priv->value = g_strdup_printf ("%.*f", gtk_spin_button_get_digits ((GtkSpinButton*) self), value);
+
   return priv->value;
 }
 
 
 static void
-main_spin_finalize (GObject * obj)
+main_spin_finalize (GObject* obj)
 {
-  MedSpin * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_spin_get_type (), MedSpin);
+  MedSpin * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_spin_get_type(), MedSpin);
   MedSpinPrivate* priv = med_spin_get_instance_private (self);
 
   g_free (priv->value);
@@ -95,34 +94,34 @@ MedSpin*
 med_spin_new (GtkAdjustment* adjustment,
               gint digits)
 {
-  MedSpin * self = (MedSpin*) g_object_new (med_spin_get_type (), NULL);
+  MedSpin * self = (MedSpin*) g_object_new (med_spin_get_type(), NULL);
   MedSpinPrivate* priv = med_spin_get_instance_private (self);
 
   gtk_spin_button_set_adjustment ((GtkSpinButton*) self, adjustment);
   gtk_spin_button_set_digits ((GtkSpinButton*) self, digits);
 
-  priv->value = g_strdup("");
+  priv->value = g_strdup ("");
 
   return self;
 }
 
 
 static void
-med_spin_init (MedSpin * self)
+med_spin_init (MedSpin* self)
 {
 }
 
 
 static void
-med_spin_class_init (MedSpinClass * klass)
+med_spin_class_init (MedSpinClass* klass)
 {
   G_OBJECT_CLASS (klass)->finalize = main_spin_finalize;
 }
 
 
 static void
-med_spin_imed_range_interface_init (IMedRangeInterface * iface)
+med_spin_imed_range_interface_init (IMedRangeInterface* iface)
 {
-  iface->medrange_set_value = (void (*) (IMedRange *, const gchar*)) med_spin_real_medrange_set_value;
-  iface->medrange_get_value = (const gchar* (*) (IMedRange *)) med_spin_real_medrange_get_value;
+  iface->medrange_set_value = (void (*) (IMedRange*, const gchar*)) med_spin_real_medrange_set_value;
+  iface->medrange_get_value = (const gchar* (*) (IMedRange*)) med_spin_real_medrange_get_value;
 }

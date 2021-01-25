@@ -1,7 +1,7 @@
 /*
  * bios_helper.h
  * 
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 

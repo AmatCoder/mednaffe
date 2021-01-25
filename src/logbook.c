@@ -1,7 +1,7 @@
 /*
  * logbook.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -78,20 +78,27 @@ logbook_write_log (Logbook* self,
 gchar*
 logbook_get_last_line (Logbook* self)
 {
-  GtkTextIter start;
-  GtkTextIter end;
-  GtkTextBuffer* buffer;
-
   g_return_val_if_fail (self != NULL, NULL);
 
   LogbookPrivate* priv = logbook_get_instance_private (self);
 
+  GtkTextBuffer* buffer;
+  GtkTextIter start;
+  GtkTextIter end;
+  gint count;
+  gchar* result = NULL;
+
   buffer = gtk_text_view_get_buffer (priv->emu_log);
+  count = gtk_text_buffer_get_line_count (buffer);
 
-  gtk_text_buffer_get_iter_at_line (buffer, &start, gtk_text_buffer_get_line_count (buffer) - 2);
-  gtk_text_buffer_get_iter_at_line (buffer, &end, gtk_text_buffer_get_line_count (buffer) - 1);
+  if (count > 1)
+  {
+    gtk_text_buffer_get_iter_at_line (buffer, &start, count - 2);
+    gtk_text_buffer_get_iter_at_line (buffer, &end, count - 1);
+    result = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+  }
 
-  return gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+  return result;
 }
 
 
@@ -99,13 +106,13 @@ void
 logbook_delete_log (Logbook* self,
                     LogbookLogTab tab)
 {
-  GtkTextIter start;
-  GtkTextIter end;
-  GtkTextBuffer* buffer;
-
   g_return_if_fail (self != NULL);
 
   LogbookPrivate* priv = logbook_get_instance_private (self);
+
+  GtkTextBuffer* buffer;
+  GtkTextIter start;
+  GtkTextIter end;
 
   if (tab == LOGBOOK_LOG_TAB_FRONTEND)
     buffer = gtk_text_view_get_buffer (priv->fe_log);

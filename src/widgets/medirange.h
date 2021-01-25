@@ -1,7 +1,7 @@
 /*
  * medirange.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,12 +25,9 @@
 #ifndef __MEDIRANGE_H__
 #define __MEDIRANGE_H__
 
-
 #include <gtk/gtk.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _IMedRange IMedRange;
 typedef struct _IMedRangeInterface IMedRangeInterface;
@@ -39,14 +36,12 @@ struct _IMedRangeInterface
 {
   GTypeInterface parent_iface;
   const gchar* (*medrange_get_value) (IMedRange* self);
-  void (*medrange_set_value) (IMedRange* self, const gchar* v);
+  void (*medrange_set_value) (IMedRange* self, const gchar* value);
 };
-
 
 GType imed_range_get_type (void) G_GNUC_CONST;
 const gchar* imed_range_medrange_get_value (IMedRange* self);
-void imed_range_medrange_set_value (IMedRange* self, const gchar* v);
-
+void imed_range_medrange_set_value (IMedRange* self, const gchar* value);
 
 G_END_DECLS
 

@@ -1,7 +1,7 @@
 /*
  * medbiosentry.h
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -38,7 +38,6 @@ typedef struct _MedBiosEntry MedBiosEntry;
 struct _MedBiosEntry {
 	MedDialogEntry parent_instance;
 };
-
 
 GType med_bios_entry_get_type (void) G_GNUC_CONST;
 MedBiosEntry* med_bios_entry_new (void);

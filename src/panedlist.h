@@ -1,7 +1,7 @@
 /*
  * panedlist.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -29,23 +29,19 @@
 
 G_BEGIN_DECLS
 
-
 typedef struct _PanedList PanedList;
 
 struct _PanedList {
   GtkPaned parent_instance;
-  gboolean filters_header;
-  gchar* selected;
 };
-
 
 GType paned_list_get_type (void) G_GNUC_CONST;
 PanedList* paned_list_new (void);
 
-void paned_list_fill_list (PanedList* self, GtkListStore* store, GtkTreeIter* iter);
+void paned_list_fill_list (PanedList* self, GtkComboBox* combo, GtkTreeIter* iter);
 void paned_list_show_filters (PanedList* self, gboolean b);
 void paned_list_show_screens (PanedList* self, gboolean b);
-
+void paned_list_request_launch (PanedList* self);
 
 G_END_DECLS
 

@@ -1,7 +1,7 @@
 /*
  * medentry.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -48,21 +48,20 @@ enum  {
 static GParamSpec* med_entry_properties[MED_ENTRY_NUM_PROPERTIES];
 
 
-static void med_entry_med_widget_interface_init (MedWidgetInterface * iface);
+static void med_entry_med_widget_interface_init (MedWidgetInterface* iface);
 
-G_DEFINE_TYPE_WITH_CODE (MedEntry, med_entry, GTK_TYPE_BOX,
-                         G_ADD_PRIVATE (MedEntry)
+G_DEFINE_TYPE_WITH_CODE (MedEntry, med_entry, GTK_TYPE_BOX, G_ADD_PRIVATE (MedEntry)
                          G_IMPLEMENT_INTERFACE (med_widget_get_type (), med_entry_med_widget_interface_init));
 
 
 static void
 med_entry_real_set_value (MedWidget* base,
-                          const gchar* v)
+                          const gchar* value)
 {
-  MedEntry * self = (MedEntry*) base;
+  g_return_if_fail (value != NULL);
 
-  g_return_if_fail (v != NULL);
-  gtk_entry_set_text (self->entry, v);
+  MedEntry * self = (MedEntry*) base;
+  gtk_entry_set_text (self->entry, value);
 }
 
 
@@ -114,7 +113,7 @@ med_entry_real_set_command (MedWidget* base,
     g_free (priv->_command);
     priv->_command = g_strdup (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_entry_properties[MED_ENTRY_COMMAND_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_entry_properties[MED_ENTRY_COMMAND_PROPERTY]);
   }
 }
 
@@ -152,7 +151,7 @@ med_entry_real_get_modified (MedWidget* base)
 
 static void
 med_entry_real_set_modified (MedWidget* base,
-                            gboolean value)
+                             gboolean value)
 {
   MedEntry* self = (MedEntry*) base;
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
@@ -165,6 +164,7 @@ static const gchar*
 med_entry_get_label (MedEntry* self)
 {
   g_return_val_if_fail (self != NULL, NULL);
+
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
 
   return priv->_label;
@@ -183,7 +183,7 @@ med_entry_set_label (MedEntry* self,
     g_free (priv->_label);
     priv->_label = g_strdup (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_entry_properties[MED_ENTRY_LABEL_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_entry_properties[MED_ENTRY_LABEL_PROPERTY]);
   }
 }
 
@@ -193,6 +193,7 @@ med_entry_set_label_width (MedEntry* self,
                            gint value)
 {
   g_return_if_fail (self != NULL);
+
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
   g_object_set ((GtkWidget*) priv->entry_label, "width-chars", value, NULL);
 }
@@ -203,16 +204,17 @@ med_entry_changed (GtkEditable* sender,
                    gpointer self)
 {
   g_return_if_fail (self != NULL);
-  MedEntryClass* klass = (G_TYPE_INSTANCE_GET_CLASS ((self), med_entry_get_type (), MedEntryClass));
+
+  MedEntryClass* klass = (G_TYPE_INSTANCE_GET_CLASS ((self), med_entry_get_type(), MedEntryClass));
 
   klass->entry_changed (self);
 }
 
 
 static void
-med_entry_finalize (GObject * obj)
+med_entry_finalize (GObject* obj)
 {
-  MedEntry * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_entry_get_type (), MedEntry);
+  MedEntry * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_entry_get_type(), MedEntry);
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
 
   g_free (priv->_command);
@@ -226,7 +228,7 @@ med_entry_finalize (GObject * obj)
 MedEntry*
 med_entry_construct (GType object_type)
 {
-  MedEntry * self = (MedEntry*) g_object_new (object_type, NULL);
+  MedEntry* self = (MedEntry*) g_object_new (object_type, NULL);
   return self;
 }
 
@@ -234,22 +236,22 @@ med_entry_construct (GType object_type)
 MedEntry*
 med_entry_new (void)
 {
-  return med_entry_construct (med_entry_get_type ());
+  return med_entry_construct (med_entry_get_type());
 }
 
 
-static GObject *
+static GObject*
 med_entry_constructor (GType type,
                        guint n_construct_properties,
-                       GObjectConstructParam * construct_properties)
+                       GObjectConstructParam* construct_properties)
 {
   GObjectClass* parent_class = G_OBJECT_CLASS (med_entry_parent_class);
   GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 
-  MedEntry* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_entry_get_type (), MedEntry);
+  MedEntry* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_entry_get_type(), MedEntry);
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
 
-  self->entry = (GtkEntry*) gtk_entry_new ();
+  self->entry = (GtkEntry*) gtk_entry_new();
 
   priv->entry_label = (GtkLabel*) gtk_label_new (NULL);
   gtk_label_set_markup (priv->entry_label, priv->_label);
@@ -274,7 +276,7 @@ med_entry_constructor (GType type,
 
 
 static void
-med_entry_init (MedEntry * self)
+med_entry_init (MedEntry* self)
 {
   MedEntryPrivate* priv = med_entry_get_instance_private (self);
 
@@ -283,12 +285,12 @@ med_entry_init (MedEntry * self)
 
 
 static void
-med_entry_get_property (GObject * object,
+med_entry_get_property (GObject* object,
                         guint property_id,
-                        GValue * value,
-                        GParamSpec * pspec)
+                        GValue* value,
+                        GParamSpec* pspec)
 {
-  MedEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_entry_get_type (), MedEntry);
+  MedEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_entry_get_type(), MedEntry);
 
   switch (property_id)
   {
@@ -306,12 +308,12 @@ med_entry_get_property (GObject * object,
 
 
 static void
-med_entry_set_property (GObject * object,
+med_entry_set_property (GObject* object,
                         guint property_id,
-                        const GValue * value,
-                        GParamSpec * pspec)
+                        const GValue* value,
+                        GParamSpec* pspec)
 {
-  MedEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_entry_get_type (), MedEntry);
+  MedEntry* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_entry_get_type(), MedEntry);
 
   switch (property_id)
   {
@@ -332,9 +334,9 @@ med_entry_set_property (GObject * object,
 
 
 static void
-med_entry_class_init (MedEntryClass * klass)
+med_entry_class_init (MedEntryClass* klass)
 {
-  ((MedEntryClass *) klass)->entry_changed = (void (*) (MedEntry *)) med_entry_real_entry_changed;
+  ((MedEntryClass*) klass)->entry_changed = (void (*) (MedEntry*)) med_entry_real_entry_changed;
 
   G_OBJECT_CLASS (klass)->get_property = med_entry_get_property;
   G_OBJECT_CLASS (klass)->set_property = med_entry_set_property;
@@ -362,7 +364,8 @@ med_entry_class_init (MedEntryClass * klass)
                                      NULL,
                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT
                                    ));
-	g_object_class_install_property (G_OBJECT_CLASS (klass),
+
+  g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    MED_ENTRY_LABELWIDTH_PROPERTY,
                                    med_entry_properties[MED_ENTRY_LABELWIDTH_PROPERTY] = g_param_spec_int
                                    (
@@ -376,16 +379,16 @@ med_entry_class_init (MedEntryClass * klass)
 
 
 static void
-med_entry_med_widget_interface_init (MedWidgetInterface * iface)
+med_entry_med_widget_interface_init (MedWidgetInterface* iface)
 {
-  iface->set_value = (void (*) (MedWidget *, const gchar*)) med_entry_real_set_value;
-  iface->get_value = (const gchar* (*) (MedWidget *)) med_entry_real_get_value;
+  iface->set_value = (void (*) (MedWidget*, const gchar*)) med_entry_real_set_value;
+  iface->get_value = (const gchar* (*) (MedWidget*)) med_entry_real_get_value;
 
-  iface->set_modified = (void (*) (MedWidget *, gboolean)) med_entry_real_set_modified;
-  iface->get_modified = (gboolean (*) (MedWidget *)) med_entry_real_get_modified;
+  iface->set_modified = (void (*) (MedWidget*, gboolean)) med_entry_real_set_modified;
+  iface->get_modified = (gboolean (*) (MedWidget*)) med_entry_real_get_modified;
 
-  iface->set_updated = (void (*) (MedWidget *, gboolean)) med_entry_real_set_updated;
-  iface->get_updated = (gboolean (*) (MedWidget *)) med_entry_real_get_updated;
+  iface->set_updated = (void (*) (MedWidget*, gboolean)) med_entry_real_set_updated;
+  iface->get_updated = (gboolean (*) (MedWidget*)) med_entry_real_get_updated;
 
   iface->get_command = med_entry_real_get_command;
   iface->set_command = med_entry_real_set_command;

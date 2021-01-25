@@ -1,7 +1,7 @@
 /*
  * pathcombobox.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -53,8 +53,18 @@ path_combo_box_add_to_combo (PathComboBox* self,
   g_return_if_fail (self != NULL);
   g_return_if_fail (item != NULL);
 
-  gtk_list_store_append (self->path_store, &iter);
-  gtk_list_store_set (self->path_store, &iter, 0, item, 1, FALSE, 2, FALSE, 3, "*.*", 4, "", 5, "", 6, 0, 7, 0, -1);
+  GtkTreeStore* store = (GtkTreeStore*) gtk_combo_box_get_model (self->combo);
+
+  gtk_tree_store_append (store, &iter, NULL);
+  gtk_tree_store_set (store, &iter, 0, item,
+                                    1, FALSE,
+                                    2, FALSE,
+                                    3, "*.*",
+                                    4, "",
+                                    5, "",
+                                    6, 0,
+                                    7, 0,
+                                    -1);
 
   gtk_combo_box_set_active_iter (self->combo, &iter);
 }
@@ -107,31 +117,25 @@ path_combo_box_save_panel_position (PathComboBox* self,
   gboolean valid = gtk_combo_box_get_active_iter (self->combo, &iter);
 
   if (valid)
-    gtk_list_store_set (self->path_store, &iter, 6, vpos, 7, hpos, -1);
-
-}
-
-static const gchar*
-bool_to_string (gboolean self)
-{
-  if (self)
-    return "true";
-  else
-    return "false";
+  {
+    GtkTreeStore* store = (GtkTreeStore*) gtk_combo_box_get_model (self->combo);
+    gtk_tree_store_set (store, &iter, 6, vpos, 7, hpos, -1);
+  }
 }
 
 
 gchar**
 path_combo_box_get_dirs (PathComboBox* self,
-                         int* length)
+                         gsize* length)
 {
   g_return_val_if_fail (self != NULL, NULL);
 
   GtkTreeIter iter;
-  gint i = 0;
-  gchar* res =  g_strdup("");
+  gsize i = 0;
+  gchar* res =  g_strdup ("");
 
-  gboolean next = gtk_tree_model_get_iter_first ((GtkTreeModel*) self->path_store, &iter);
+  GtkTreeModel* store = gtk_combo_box_get_model (self->combo);
+  gboolean next = gtk_tree_model_get_iter_first ((GtkTreeModel*) store, &iter);
 
   while (next)
   {
@@ -145,28 +149,28 @@ path_combo_box_get_dirs (PathComboBox* self,
     gint pph;
 
     i++;
-    gtk_tree_model_get ((GtkTreeModel*) self->path_store, &iter, 0, &path,
-                                                                 1, &scan,
-                                                                 2, &hide,
-                                                                 3, &filters,
-                                                                 4, &sa,
-                                                                 5, &sb,
-                                                                 6, &ppv,
-                                                                 7, &pph,
-                                                                 -1);
+    gtk_tree_model_get ((GtkTreeModel*) store, &iter, 0, &path,
+                                                      1, &scan,
+                                                      2, &hide,
+                                                      3, &filters,
+                                                      4, &sa,
+                                                      5, &sb,
+                                                      6, &ppv,
+                                                      7, &pph,
+                                                      -1);
 
     gchar* ppv_str = g_strdup_printf ("%i", ppv);
     gchar* pph_str = g_strdup_printf ("%i", pph);
 
-    gchar* tmp = g_strconcat (res, path, ",", bool_to_string (scan),
-                                         ",", bool_to_string (hide),
+    gchar* tmp = g_strconcat (res, path, ",", scan ? "true" : "false",
+                                         ",", hide ? "true" : "false",
                                          ",", filters,
                                          ",", sa,
                                          ",", sb,
                                          ",", ppv_str,
                                          ",", pph_str,
                                          ";", NULL);
-    g_free(res);
+    g_free (res);
     res = tmp;
 
     g_free (pph_str);
@@ -176,7 +180,7 @@ path_combo_box_get_dirs (PathComboBox* self,
     g_free (filters);
     g_free (path);
 
-    next = gtk_tree_model_iter_next ((GtkTreeModel*) self->path_store, &iter);
+    next = gtk_tree_model_iter_next ((GtkTreeModel*) store, &iter);
   }
 
   gchar** dirs = g_strsplit(res, ";", -1);
@@ -187,55 +191,39 @@ path_combo_box_get_dirs (PathComboBox* self,
 }
 
 
-static gboolean
-string_to_bool (const gchar* str)
-{
-  if (g_strcmp0 (str, "true") == 0)
-    return TRUE;
-  else
-    return FALSE;
-}
-
-
 void
 path_combo_box_set_dirs (PathComboBox* self,
                          gchar** st,
-                         int length)
+                         gsize length)
 {
-  GtkTreeIter iter;
-
   g_return_if_fail (self != NULL);
 
-  if (length == 0) return;
+  guint i = 0;
 
-  gint i = 0;
+  while (length > i)
+  {
+    GtkTreeIter iter;
+    gchar** values = g_strsplit (st[i], ",", -1);
 
-      while (TRUE)
-      {
-        if (!(i < length))
-          break;
+    gint a = g_ascii_strtoll (values[6], NULL, 0);
+    gint b = g_ascii_strtoll (values[7], NULL, 0);
 
-        gchar** values = g_strsplit (st[i], ",", -1);
+    GtkTreeStore* store = (GtkTreeStore*) gtk_combo_box_get_model (self->combo);
+    gtk_tree_store_append (store, &iter, NULL);
 
-        gint a = g_ascii_strtoll (values[6], NULL, 0);
-        gint b = g_ascii_strtoll (values[7], NULL, 0);
+    gtk_tree_store_set (store, &iter, 0, values[0],
+                                      1, (g_strcmp0 (values[1], "true") == 0),
+                                      2, (g_strcmp0 (values[2], "true") == 0),
+                                      3, values[3],
+                                      4, values[4],
+                                      5, values[5],
+                                      6, a,
+                                      7, b,
+                                      -1);
 
-        gtk_list_store_append (self->path_store, &iter);
-
-        gtk_list_store_set (self->path_store, &iter, 0, values[0],
-                                                     1, string_to_bool (values[1]),
-                                                     2, string_to_bool (values[2]),
-                                                     3, values[3],
-                                                     4, values[4],
-                                                     5, values[5],
-                                                     6, a,
-                                                     7, b,
-                                                     -1);
-
-        g_strfreev (values);
-        i++;
-      }
-
+    g_strfreev (values);
+    i++;
+  }
 }
 
 
@@ -247,7 +235,7 @@ path_combo_box_new (void)
 
   PathComboBox *self = (PathComboBox*) g_object_new (path_combo_box_get_type (), NULL);
 
-  self->path_store = gtk_list_store_new (8, G_TYPE_STRING,
+  GtkTreeStore* store = gtk_tree_store_new (8, G_TYPE_STRING,
                                             G_TYPE_BOOLEAN,
                                             G_TYPE_BOOLEAN,
                                             G_TYPE_STRING,
@@ -257,8 +245,8 @@ path_combo_box_new (void)
                                             G_TYPE_INT,
                                             -1);
 
-  self->combo = (GtkComboBox*) gtk_combo_box_new_with_model ((GtkTreeModel*) self->path_store);
-  g_object_unref (self->path_store);
+  self->combo = (GtkComboBox*) gtk_combo_box_new_with_model ((GtkTreeModel*) store);
+  g_object_unref (store);
 
   GtkBindingSet *binding_set = gtk_binding_set_by_class (G_OBJECT_GET_CLASS (self->combo));
   gtk_binding_entry_remove (binding_set, GDK_KEY_Down, 0);

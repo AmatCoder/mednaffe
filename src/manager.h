@@ -1,7 +1,7 @@
 /*
  * manager.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -29,17 +29,14 @@
 
 G_BEGIN_DECLS
 
-
 typedef struct _ManagerWindow ManagerWindow;
 
 struct _ManagerWindow {
   GtkWindow parent_instance;
 };
 
-
 GType manager_window_get_type (void) G_GNUC_CONST;
 ManagerWindow* manager_window_new (GtkWindow* parent, GtkComboBox* combo);
-
 
 G_END_DECLS
 

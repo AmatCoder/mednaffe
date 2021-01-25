@@ -1,7 +1,7 @@
 /*
  * medinput.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,13 +25,10 @@
 #ifndef __MEDINPUT_H__
 #define __MEDINPUT_H__
 
-
 #include <gtk/gtk.h>
-
 #include "medwidget.h"
 
 G_BEGIN_DECLS
-
 
 typedef struct _MedInput MedInput;
 
@@ -42,7 +39,6 @@ struct _MedInput {
 
 GType med_input_get_type (void) G_GNUC_CONST;
 MedInput* med_input_new (void);
-
 
 G_END_DECLS
 

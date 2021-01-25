@@ -1,7 +1,7 @@
 /*
  * medinput.h
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -1769,9 +1769,9 @@ med_input_entry_mouse_clicked (GtkWidget* sender,
         priv->menu = menu_input_new ();
 
         g_signal_connect_object (priv->menu->clear, "activate", (GCallback) med_input_menu_event, self, 0);
-	      g_signal_connect_object (priv->menu->or, "activate", (GCallback) med_input_menu_event, self, 0);
-	      g_signal_connect_object (priv->menu->and, "activate", (GCallback) med_input_menu_event, self, 0);
-	      g_signal_connect_object (priv->menu->and_not, "activate", (GCallback) med_input_menu_event, self, 0);
+        g_signal_connect_object (priv->menu->or, "activate", (GCallback) med_input_menu_event, self, 0);
+        g_signal_connect_object (priv->menu->and, "activate", (GCallback) med_input_menu_event, self, 0);
+        g_signal_connect_object (priv->menu->and_not, "activate", (GCallback) med_input_menu_event, self, 0);
 
         menu_input_enable_all (priv->menu, (g_strcmp0 (gtk_button_get_label (priv->entry), "") != 0));
         g_object_set ((GtkWidget*) priv->entry, "is-focus", TRUE, NULL);
@@ -1785,17 +1785,16 @@ med_input_entry_mouse_clicked (GtkWidget* sender,
 
 
 static void
-med_input_finalize (GObject * obj)
+med_input_finalize (GObject* obj)
 {
-  MedInput * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_input_get_type (), MedInput);
+  MedInput* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_input_get_type(), MedInput);
   MedInputPrivate* priv = med_input_get_instance_private (self);
 
   g_free (priv->_command);
   g_free (priv->_label);
   g_free (priv->old_text);
   g_free (priv->internal_value);
-
-  g_free(priv->value);
+  g_free (priv->value);
 
   G_OBJECT_CLASS (med_input_parent_class)->finalize (obj);
 }
@@ -1804,18 +1803,18 @@ med_input_finalize (GObject * obj)
 MedInput*
 med_input_new (void)
 {
-  MedInput * self = (MedInput*) g_object_new (med_input_get_type (), NULL);
+  MedInput* self = (MedInput*) g_object_new (med_input_get_type(), NULL);
   return self;
 }
 
 
 static void
-med_input_init (MedInput * self)
+med_input_init (MedInput* self)
 {
 }
 
 
-static GObject *
+static GObject*
 med_input_constructor (GType type,
                        guint n_construct_properties,
                        GObjectConstructParam * construct_properties)
@@ -1823,7 +1822,7 @@ med_input_constructor (GType type,
   GObjectClass* parent_class = G_OBJECT_CLASS (med_input_parent_class);
   GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 
-  MedInput* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_input_get_type (), MedInput);
+  MedInput* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_input_get_type(), MedInput);
   MedInputPrivate* priv = med_input_get_instance_private (self);
 
   priv->entry = (GtkButton*) gtk_toggle_button_new();
@@ -1847,7 +1846,7 @@ med_input_constructor (GType type,
 
   priv->old_text = g_strdup ("");
   priv->internal_value = g_strdup ("");
-  priv->value = g_strdup("");
+  priv->value = g_strdup ("");
 
   priv->listjoy = NULL;
 
@@ -1857,12 +1856,12 @@ med_input_constructor (GType type,
 }
 
 static void
-med_input_get_property (GObject * object,
+med_input_get_property (GObject* object,
                         guint property_id,
-                        GValue * value,
-                        GParamSpec * pspec)
+                        GValue* value,
+                        GParamSpec* pspec)
 {
-  MedInput * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_input_get_type (), MedInput);
+  MedInput* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_input_get_type(), MedInput);
 
   switch (property_id)
   {
@@ -1883,12 +1882,12 @@ med_input_get_property (GObject * object,
 
 
 static void
-med_input_set_property (GObject * object,
+med_input_set_property (GObject* object,
                         guint property_id,
-                        const GValue * value,
-                        GParamSpec * pspec)
+                        const GValue* value,
+                        GParamSpec* pspec)
 {
-  MedInput * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_input_get_type (), MedInput);
+  MedInput* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_input_get_type(), MedInput);
 
   switch (property_id)
 {
@@ -1941,7 +1940,7 @@ med_input_class_init (MedInputClass * klass)
                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT
                                    ));
 
-	g_object_class_install_property (G_OBJECT_CLASS (klass),
+  g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    MED_INPUT_LABELWIDTH_PROPERTY,
                                    med_input_properties[MED_INPUT_LABELWIDTH_PROPERTY] = g_param_spec_int
                                    (
@@ -1966,16 +1965,16 @@ med_input_class_init (MedInputClass * klass)
 
 
 static void
-med_input_med_widget_interface_init (MedWidgetInterface * iface)
+med_input_med_widget_interface_init (MedWidgetInterface* iface)
 {
-  iface->set_value = (void (*) (MedWidget *, const gchar*)) med_input_real_set_value;
-  iface->get_value = (const gchar* (*) (MedWidget *)) med_input_real_get_value;
+  iface->set_value = (void (*) (MedWidget*, const gchar*)) med_input_real_set_value;
+  iface->get_value = (const gchar* (*) (MedWidget*)) med_input_real_get_value;
 
-  iface->set_modified = (void (*) (MedWidget *, gboolean)) med_input_real_set_modified;
-  iface->get_modified = (gboolean (*) (MedWidget *)) med_input_real_get_modified;
+  iface->set_modified = (void (*) (MedWidget*, gboolean)) med_input_real_set_modified;
+  iface->get_modified = (gboolean (*) (MedWidget*)) med_input_real_get_modified;
 
-  iface->set_updated = (void (*) (MedWidget *, gboolean)) med_input_real_set_updated;
-  iface->get_updated = (gboolean (*) (MedWidget *)) med_input_real_get_updated;
+  iface->set_updated = (void (*) (MedWidget*, gboolean)) med_input_real_set_updated;
+  iface->get_updated = (gboolean (*) (MedWidget*)) med_input_real_get_updated;
 
   iface->get_command = med_input_real_get_command;
   iface->set_command = med_input_real_set_command;

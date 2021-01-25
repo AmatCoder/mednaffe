@@ -1,7 +1,7 @@
 /*
  * panedlist.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -37,7 +37,9 @@ struct _PanedListClass {
 
 struct _PanedListPrivate {
   gulong handler_id;
+  gchar* selected;
   gchar* filters;
+  gboolean filters_header;
   GtkTreeView* treeview;
   GtkTreeViewColumn* games_column;
   GtkTreeSelection* games_selection;
@@ -72,7 +74,7 @@ paned_list_selection_changed (GtkTreeSelection* _sender,
   g_return_if_fail (self != NULL);
 
   PanedList* pl = self;
-  PanedListPrivate* priv = paned_list_get_instance_private(pl);
+  PanedListPrivate* priv = paned_list_get_instance_private (pl);
 
   gboolean valid = gtk_tree_selection_get_selected (priv->games_selection, &model, &iter);
 
@@ -84,8 +86,8 @@ paned_list_selection_changed (GtkTreeSelection* _sender,
 
     gtk_tree_model_get ((GtkTreeModel*) priv->games_store, &iter, 0, &str, 1, &str2, 2, &str3, -1);
 
-    g_free (pl->selected);
-    pl->selected = str3;
+    g_free (priv->selected);
+    priv->selected = str3;
 
     paned_image_set_images (priv->panedimage, str2);
     g_free(str2);
@@ -97,22 +99,22 @@ paned_list_selection_changed (GtkTreeSelection* _sender,
 
 
 static void
-paned_list_row_double_clicked (GtkTreeView* _sender,
+paned_list_row_double_clicked (GtkTreeView* sender,
                                GtkTreePath* path,
                                GtkTreeViewColumn* column,
                                gpointer self)
 {
-
   g_return_if_fail (self != NULL);
 
   PanedList* pl = self;
+  PanedListPrivate* priv = paned_list_get_instance_private (pl);
 
-  g_signal_emit (pl, paned_list_signals[PANED_LIST_LAUNCHED_SIGNAL], 0, pl->selected);
+  g_signal_emit (pl, paned_list_signals[PANED_LIST_LAUNCHED_SIGNAL], 0, priv->selected);
 }
 
 
 static gboolean
-paned_list_key_press (GtkWidget* _sender,
+paned_list_key_press (GtkWidget* sender,
                       GdkEventKey* event,
                       gpointer self)
 {
@@ -120,14 +122,62 @@ paned_list_key_press (GtkWidget* _sender,
   g_return_val_if_fail (event != NULL, FALSE);
 
   PanedList* pl = self;
+  PanedListPrivate* priv = paned_list_get_instance_private (pl);
 
   if (event->keyval == 65293)
   {
-    g_signal_emit (pl, paned_list_signals[PANED_LIST_LAUNCHED_SIGNAL], 0, pl->selected);
+    g_signal_emit (pl, paned_list_signals[PANED_LIST_LAUNCHED_SIGNAL], 0, priv->selected);
     return TRUE;
   }
 
   return FALSE;
+}
+
+
+static gboolean
+paned_list_match_filters (const gchar* file,
+                          GSList* filters)
+{
+  gboolean b = FALSE;
+
+  if (filters != NULL)
+  {
+    GSList* item_it = NULL;
+    for (item_it = filters; item_it != NULL; item_it = item_it->next)
+    {
+      GPatternSpec* item = (GPatternSpec*) item_it->data;
+
+      if (g_pattern_match (item, strlen (file), file, NULL))
+      {
+        b = TRUE;
+        break;
+      }
+    }
+  }
+  else
+    b = TRUE;
+
+  return b;
+}
+
+
+static gchar*
+paned_list_hide_ext (const gchar* file)
+{
+  gchar* s;
+  gchar* e;
+
+  e = g_strrstr (file, ".");
+
+  if (e != NULL)
+  {
+    gint z = e - file;
+    s = g_strndup (file, z);
+  }
+  else
+    s = g_strdup (file);
+
+  return s;
 }
 
 
@@ -140,7 +190,7 @@ paned_list_scan_dir (PanedList* self,
   g_return_if_fail (self != NULL);
   g_return_if_fail (path != NULL);
 
-  PanedListPrivate* priv = paned_list_get_instance_private(self);
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
 
   GDir* dir = g_dir_open (path, 0, NULL);
 
@@ -160,38 +210,10 @@ paned_list_scan_dir (PanedList* self,
 
     if (g_file_test (path2, G_FILE_TEST_IS_REGULAR))
     {
-      gboolean b = FALSE;
-
-      if (filters != NULL)
-      {
-        GSList* item_it = NULL;
-        for (item_it = filters; item_it != NULL; item_it = item_it->next)
-        {
-          GPatternSpec* item = (GPatternSpec*) item_it->data;
-
-          if (g_pattern_match (item, strlen (name), name, NULL))
-          {
-            b = TRUE;
-            break;
-          }
-        }
-      } else b = TRUE;
-
-      if (b)
+      if (paned_list_match_filters (name, filters))
       {
         GtkTreeIter iter;
-        gchar* s;
-        gchar* e;
-
-        e = g_strrstr (name, ".");
-
-        if (e != NULL)
-        {
-          gint z = e - name;
-          s = g_strndup (name, z);
-        }
-        else
-          s = g_strdup (name);
+        gchar* s = paned_list_hide_ext (name);
 
         gtk_list_store_append (priv->games_store, &iter);
         gtk_list_store_set (priv->games_store, &iter, 0, name, 1, s, 2, path2, -1);
@@ -218,7 +240,7 @@ select_first (PanedList* self)
   g_return_if_fail (self != NULL);
 
   GtkTreeIter iter;
-  PanedListPrivate* priv = paned_list_get_instance_private(self);
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
 
   if (gtk_tree_model_get_iter_first ((GtkTreeModel*) priv->games_store, &iter))
     gtk_tree_selection_select_iter (priv->games_selection, &iter);
@@ -227,14 +249,25 @@ select_first (PanedList* self)
 }
 
 
-void paned_list_show_screens (PanedList* self, gboolean b)
+void
+paned_list_show_screens (PanedList* self, gboolean b)
 {
   g_return_if_fail (self != NULL);
 
-  PanedListPrivate* priv = paned_list_get_instance_private(self);
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
 
   gtk_widget_set_visible ((GtkWidget*)priv->panedimage, b);
   priv->showing_screens = b;
+}
+
+
+void
+paned_list_request_launch (PanedList* self)
+{
+  g_return_if_fail (self != NULL);
+
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
+  g_signal_emit (self, paned_list_signals[PANED_LIST_LAUNCHED_SIGNAL], 0, priv->selected);
 }
 
 
@@ -245,6 +278,8 @@ paned_list_show_filters (PanedList* self,
   g_return_if_fail (self != NULL);
 
   PanedListPrivate* priv = paned_list_get_instance_private(self);
+
+  priv->filters_header = b;
 
   if ((b) && (g_strcmp0 (priv->filters, "") != 0))
   {
@@ -257,52 +292,36 @@ paned_list_show_filters (PanedList* self,
 }
 
 
-void
-paned_list_fill_list (PanedList* self,
-                      GtkListStore* store,
-                      GtkTreeIter* iter)
+static void
+paned_list_set_position (PanedList* self,
+                         const gchar* path_img_a,
+                         const gchar* path_img_b,
+                         gint vpos,
+                         gint hpos)
 {
-  gchar* path;
-  gchar* path_img_a;
-  gchar* path_img_b;
-  gboolean recursive;
-  gboolean hidden;
-  gint vpos;
-  gint hpos;
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
+
+  GtkAllocation alloc;
+  gtk_widget_get_allocation ((GtkWidget*) self, &alloc);
+
+  if ((path_img_a[0] != '\0') || (path_img_b[0] != '\0'))
+  {
+    if ((alloc.width > 1) && (vpos == 0))
+      vpos = alloc.width / 2;
+
+    gtk_paned_set_position ((GtkPaned*) self, (alloc.width - vpos));
+    gtk_paned_set_position ((GtkPaned*) priv->panedimage, (alloc.height - hpos));
+  }
+}
+
+
+static GSList*
+paned_list_get_filters (PanedList* self)
+{
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
+
   gchar** lines;
   GSList* list = NULL;
-
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (store != NULL);
-
-  PanedListPrivate* priv = paned_list_get_instance_private(self);
-
-  if (iter == NULL)
-  {
-    g_signal_emit (self, paned_list_signals[PANED_LIST_FILLED_SIGNAL], 0, 0);
-    return;
-  }
-
-  g_signal_handler_block (priv->games_selection, priv->handler_id);
-  gtk_list_store_clear (priv->games_store);
-
-  g_free (priv->filters);
-
-  gtk_tree_model_get ((GtkTreeModel*) store, iter, 0, &path,
-                                                   1, &recursive,
-                                                   2, &hidden,
-                                                   3, &priv->filters,
-                                                   4, &path_img_a,
-                                                   5, &path_img_b,
-                                                   6, &vpos,
-                                                   7, &hpos,
-                                                   -1);
-
-  if (hidden)
-    gtk_tree_view_column_set_attributes (priv->games_column, priv->renderer, "text", 1, NULL);
-  else
-    gtk_tree_view_column_set_attributes (priv->games_column, priv->renderer, "text", 0, NULL);
-
 
   lines = g_strsplit (priv->filters, " ", 0);
 
@@ -327,28 +346,72 @@ paned_list_fill_list (PanedList* self,
     }
   }
 
+  g_strfreev (lines);
+
+  return list;
+}
+
+
+void
+paned_list_fill_list (PanedList* self,
+                      GtkComboBox* combo,
+                      GtkTreeIter* iter)
+{
+  gchar* path;
+  gchar* path_img_a;
+  gchar* path_img_b;
+  gboolean recursive;
+  gboolean hidden;
+  gint vpos;
+  gint hpos;
+
+  g_return_if_fail (self != NULL);
+  g_return_if_fail (combo != NULL);
+
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
+
+  GtkTreeModel* store = gtk_combo_box_get_model (combo);
+
+  if (iter == NULL)
+  {
+    g_signal_emit (self, paned_list_signals[PANED_LIST_FILLED_SIGNAL], 0, 0);
+    return;
+  }
+
+  g_signal_handler_block (priv->games_selection, priv->handler_id);
+  gtk_list_store_clear (priv->games_store);
+
+  g_free (priv->filters);
+
+  gtk_tree_model_get (store, iter, 0, &path,
+                                  1, &recursive,
+                                2, &hidden,
+                              3, &priv->filters,
+                                                   4, &path_img_a,
+                                                   5, &path_img_b,
+                                                   6, &vpos,
+                                                   7, &hpos,
+                                                   -1);
+
+  if (hidden)
+    gtk_tree_view_column_set_attributes (priv->games_column, priv->renderer, "text", 1, NULL);
+  else
+    gtk_tree_view_column_set_attributes (priv->games_column, priv->renderer, "text", 0, NULL);
+
+  GSList* list = paned_list_get_filters (self);
   paned_image_set_paths (priv->panedimage, path_img_a, path_img_b);
   paned_list_scan_dir (self, path, list, recursive);
-
-  GtkAllocation alloc;
-  gtk_widget_get_allocation ((GtkWidget*) self, &alloc);
-
-  if ((vpos == 0) && ((path_img_a[0] != '\0') || (path_img_b[0] != '\0')))
-    vpos = alloc.width / 2;
-
-  gtk_paned_set_position ((GtkPaned*) self, (alloc.width - vpos));
-  //gtk_paned_set_position ((GtkPaned*) priv->panedimage, (alloc.height - hpos)); /* FIXME: This does not work (gtk bug?) */
-
-  paned_list_show_filters (self, self->filters_header);
+  g_slist_free_full (list, (GDestroyNotify) g_pattern_spec_free);
+  paned_list_show_filters (self, priv->filters_header);
 
   g_signal_handler_unblock (priv->games_selection, priv->handler_id);
 
   select_first(self);
 
-  paned_list_show_screens (self, priv->showing_screens);
+  paned_list_set_position (self, path_img_a, path_img_b, vpos, hpos);
 
-  g_strfreev(lines);
-  g_slist_free_full (list, (GDestroyNotify) g_pattern_spec_free);
+  if ((path_img_a[0] != '\0') || (path_img_b[0] != '\0'))
+    paned_list_show_screens (self, priv->showing_screens);
 
   g_free (path_img_b);
   g_free (path_img_a);
@@ -361,10 +424,13 @@ button_release (GtkWidget *widget,
                 GdkEvent *event,
                 gpointer self)
 {
-  PanedListPrivate* priv = paned_list_get_instance_private(self);
+  g_return_val_if_fail (self != NULL, FALSE);
+
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
 
   GtkAllocation alloc;
   gtk_widget_get_allocation (widget, &alloc);
+
   g_signal_emit (self,
                  paned_list_signals[PANED_LIST_MOUSE_RELEASED_SIGNAL],
                  0,
@@ -376,13 +442,13 @@ button_release (GtkWidget *widget,
 
 
 static void
-paned_list_finalize (GObject * obj)
+paned_list_finalize (GObject* obj)
 {
-  PanedList * self = G_TYPE_CHECK_INSTANCE_CAST (obj, paned_list_get_type (), PanedList);
-  PanedListPrivate* priv = paned_list_get_instance_private(self);
+  PanedList * self = G_TYPE_CHECK_INSTANCE_CAST (obj, paned_list_get_type(), PanedList);
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
 
   g_free (priv->filters);
-  g_free (self->selected);
+  g_free (priv->selected);
 
   G_OBJECT_CLASS (paned_list_parent_class)->finalize (obj);
 }
@@ -391,12 +457,15 @@ paned_list_finalize (GObject * obj)
 PanedList*
 paned_list_new (void)
 {
-  PanedList * self = (PanedList*) g_object_new (paned_list_get_type (), NULL);
-  PanedListPrivate* priv = paned_list_get_instance_private(self);
+  PanedList* self = (PanedList*) g_object_new (paned_list_get_type(), NULL);
+  PanedListPrivate* priv = paned_list_get_instance_private (self);
 
   GtkScrolledWindow* scrolled;
 
   priv->showing_screens = TRUE;
+  priv->filters_header = FALSE;
+  priv->filters = NULL;
+  priv->selected = NULL;
 
   priv->games_store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, -1);
   priv->treeview = (GtkTreeView*) gtk_tree_view_new_with_model ((GtkTreeModel*) priv->games_store);
@@ -404,7 +473,6 @@ paned_list_new (void)
 
   priv->renderer = (GtkCellRenderer*) gtk_cell_renderer_text_new ();
   priv->games_column = gtk_tree_view_column_new_with_attributes ("Games", priv->renderer, "text", 0, NULL, NULL);
-
 
   gtk_tree_view_column_set_clickable (priv->games_column, TRUE);
   gtk_tree_view_column_set_sort_column_id (priv->games_column, 0);
@@ -452,13 +520,13 @@ paned_list_new (void)
 
 
 static void
-paned_list_init (PanedList * self)
+paned_list_init (PanedList* self)
 {
 }
 
 
 static void
-paned_list_class_init (PanedListClass * klass)
+paned_list_class_init (PanedListClass* klass)
 {
   G_OBJECT_CLASS (klass)->finalize = paned_list_finalize;
 

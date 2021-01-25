@@ -1,7 +1,7 @@
 /*
  * medwidget.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,15 +25,11 @@
 #ifndef __MEDWIDGET_H__
 #define __MEDWIDGET_H__
 
-
 #include <gtk/gtk.h>
-
 
 #define IS_MED_WIDGET(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), med_widget_get_type ()))
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedWidget MedWidget;
 typedef struct _MedWidgetInterface MedWidgetInterface;
@@ -51,7 +47,6 @@ struct _MedWidgetInterface {
   void (*set_modified) (MedWidget* self, gboolean value);
 };
 
-
 GType med_widget_get_type (void) G_GNUC_CONST;
 void med_widget_init (MedWidget* self, GtkWidget* widget);
 
@@ -63,7 +58,6 @@ gboolean med_widget_get_updated (MedWidget* self);
 void med_widget_set_updated (MedWidget* self, gboolean value);
 gboolean med_widget_get_modified (MedWidget* self);
 void med_widget_set_modified (MedWidget* self, gboolean value);
-
 
 G_END_DECLS
 

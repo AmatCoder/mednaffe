@@ -1,7 +1,7 @@
 /*
  * setup.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -55,7 +55,7 @@ enum  {
 static guint setup_window_signals[SETUP_WINDOW_NUM_SIGNALS] = {0};
 
 
-void
+static void
 setup_window_setup_show (SetupWindow* self,
                          GtkTreeIter* iter)
 {
@@ -66,9 +66,6 @@ setup_window_setup_show (SetupWindow* self,
   gchar* filters;
   gchar* sa;
   gchar* sb;
-
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (iter != NULL);
 
   SetupWindowPrivate* priv = setup_window_get_instance_private (self);
 
@@ -84,41 +81,12 @@ setup_window_setup_show (SetupWindow* self,
   gtk_entry_set_text (priv->screen_a, sa);
   gtk_entry_set_text (priv->screen_b, sb);
 
-  gtk_window_present ((GtkWindow*) self);
+  gtk_widget_show ((GtkWidget*) self);
 
   g_free (sb);
   g_free (sa);
   g_free (filters);
   g_free (dir);
-}
-
-
-static void
-setup_window_apply_clicked (GtkButton* sender,
-                            gpointer self)
-{
-  gboolean scan;
-  gboolean hide;
-  const gchar* filters;
-  const gchar* sa;
-  const gchar* sb;
-
-  g_return_if_fail (self != NULL);
-
-  SetupWindow* sw = self;
-  SetupWindowPrivate* priv = setup_window_get_instance_private (sw);
-
-  scan = gtk_toggle_button_get_active ((GtkToggleButton*) priv->scan );
-  hide = gtk_toggle_button_get_active ((GtkToggleButton*) priv->hide_ext);
-  filters = gtk_entry_get_text (priv->filters);
-  sa = gtk_entry_get_text (priv->screen_a);
-  sb = gtk_entry_get_text (priv->screen_b);
-
-  gtk_list_store_set ((GtkListStore*) priv->model, &priv->iter, 1, scan, 2, hide, 3, filters, 4, sa, 5, sb, -1);
-
-  gtk_widget_set_visible ((GtkWidget*) self, FALSE);
-
-  g_signal_emit (sw, setup_window_signals[SETUP_WINDOW_ROW_HAS_CHANGED_SIGNAL], 0);
 }
 
 
@@ -142,10 +110,7 @@ setup_window_on_close_x (GtkWidget* _sender,
                          GdkEventAny* event,
                          gpointer self)
 {
-  g_return_val_if_fail (self != NULL, FALSE);
-
   gtk_widget_destroy ((GtkWidget*) self);
-
   return TRUE;
 }
 
@@ -154,18 +119,45 @@ static void
 setup_window_on_close (GtkButton* sender,
                        gpointer self)
 {
-  g_return_if_fail (self != NULL);
-
   gtk_widget_destroy ((GtkWidget*) self);
+}
+
+
+static void
+setup_window_apply_clicked (GtkButton* sender,
+                            gpointer self)
+{
+  gboolean scan;
+  gboolean hide;
+  const gchar* filters;
+  const gchar* sa;
+  const gchar* sb;
+
+  SetupWindow* sw = self;
+  SetupWindowPrivate* priv = setup_window_get_instance_private (sw);
+
+  scan = gtk_toggle_button_get_active ((GtkToggleButton*) priv->scan );
+  hide = gtk_toggle_button_get_active ((GtkToggleButton*) priv->hide_ext);
+  filters = gtk_entry_get_text (priv->filters);
+  sa = gtk_entry_get_text (priv->screen_a);
+  sb = gtk_entry_get_text (priv->screen_b);
+
+  gtk_list_store_set ((GtkListStore*) priv->model, &priv->iter, 1, scan, 2, hide, 3, filters, 4, sa, 5, sb, -1);
+
+  g_signal_emit (sw, setup_window_signals[SETUP_WINDOW_ROW_HAS_CHANGED_SIGNAL], 0);
+
+  setup_window_on_close (sender, self);
 }
 
 
 SetupWindow*
 setup_window_new (GtkWindow* parent,
-                  GtkTreeModel* model)
+                  GtkTreeModel* model,
+                  GtkTreeIter* iter)
 {
   g_return_val_if_fail (parent != NULL, NULL);
   g_return_val_if_fail (model != NULL, NULL);
+  g_return_val_if_fail (iter != NULL, NULL);
 
   SetupWindow * self = (SetupWindow*) g_object_new (setup_window_get_type (), NULL);
   SetupWindowPrivate* priv = setup_window_get_instance_private (self);
@@ -173,6 +165,8 @@ setup_window_new (GtkWindow* parent,
   gtk_window_set_transient_for ((GtkWindow*) self, parent);
 
   priv->model = model;
+
+  setup_window_setup_show (self, iter);
 
   return self;
 }

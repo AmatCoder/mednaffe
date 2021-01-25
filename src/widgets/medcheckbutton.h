@@ -1,7 +1,7 @@
 /*
  * medcheckbutton.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,14 +25,10 @@
 #ifndef __MEDCHECKBUTTON_H__
 #define __MEDCHECKBUTTON_H__
 
-
 #include <gtk/gtk.h>
-
 #include "medwidget.h"
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedCheckButton MedCheckButton;
 
@@ -40,10 +36,8 @@ struct _MedCheckButton {
   GtkCheckButton parent_instance;
 };
 
-
 GType med_check_button_get_type (void) G_GNUC_CONST;
 MedCheckButton* med_check_button_new (void);
-
 
 G_END_DECLS
 

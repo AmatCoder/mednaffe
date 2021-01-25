@@ -1,7 +1,7 @@
 /*
  * medcolorentry.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -49,15 +49,15 @@ enum  {
 static GParamSpec* med_color_entry_properties[MED_COLOR_ENTRY_NUM_PROPERTIES];
 
 
-G_DEFINE_TYPE_WITH_PRIVATE (MedColorEntry, med_color_entry, med_entry_get_type ());
+G_DEFINE_TYPE_WITH_PRIVATE (MedColorEntry, med_color_entry, med_entry_get_type());
 
 
 static gdouble
 med_color_entry_value_to_alpha (const gchar* value)
 {
-  gdouble d;
-  guint v = g_ascii_strtoull(value, NULL, 16);
-  d = (gdouble)v/(gdouble)255;
+  guint v = g_ascii_strtoull (value, NULL, 16);
+  gdouble d = ((gdouble) v / (gdouble) 255);
+
   return d;
 }
 
@@ -105,18 +105,18 @@ med_color_entry_text_to_rgb (const gchar* text)
 static void
 med_color_entry_real_entry_changed (MedEntry* base)
 {
-  GdkRGBA rgba;
-  const gchar* text;
-  gchar* color;
-
   MedColorEntry* self = (MedColorEntry*) base;
   MedColorEntryPrivate* priv = med_color_entry_get_instance_private (self);
 
-  MED_ENTRY_CLASS (med_color_entry_parent_class)->entry_changed (G_TYPE_CHECK_INSTANCE_CAST (self, med_entry_get_type (), MedEntry));
+  MED_ENTRY_CLASS (med_color_entry_parent_class)->entry_changed (G_TYPE_CHECK_INSTANCE_CAST (self, med_entry_get_type(), MedEntry));
 
-  if (priv->editing) return;
+  if (priv->editing)
+    return;
 
-  text = gtk_entry_get_text (((MedEntry*) self)->entry);
+  gchar* color;
+  GdkRGBA rgba;
+
+  const gchar* text = gtk_entry_get_text (((MedEntry*) self)->entry);
 
   if ((text[0] == '0') && ((text[1] == 'x') || (text[1] == 'X')))
     color = med_color_entry_text_to_rgb (text);
@@ -127,15 +127,15 @@ med_color_entry_real_entry_changed (MedEntry* base)
 
   g_free (color);
 
-
-  gtk_color_chooser_set_rgba ((GtkColorChooser *) priv->colorbutton, &rgba);
+  gtk_color_chooser_set_rgba ((GtkColorChooser*) priv->colorbutton, &rgba);
 }
 
 
 MedColorEntry*
 med_color_entry_new (void)
 {
-  MedColorEntry * self = (MedColorEntry*) med_entry_construct (med_color_entry_get_type ());
+  MedColorEntry * self = (MedColorEntry*) med_entry_construct (med_color_entry_get_type());
+
   return self;
 }
 
@@ -148,6 +148,7 @@ med_color_entry_colorbutton_clicked (GtkColorButton* sender,
 
   gchar* text;
   GdkRGBA* rgba;
+
   MedColorEntry* ce = self;
   MedColorEntryPrivate* priv = med_color_entry_get_instance_private (ce);
 
@@ -175,6 +176,7 @@ gboolean
 med_color_entry_get_has_alpha (MedColorEntry* self)
 {
   g_return_val_if_fail (self != NULL, FALSE);
+
   MedColorEntryPrivate* priv = med_color_entry_get_instance_private (self);
 
   return priv->_has_alpha;
@@ -186,29 +188,30 @@ med_color_entry_set_has_alpha (MedColorEntry* self,
                                gboolean value)
 {
   g_return_if_fail (self != NULL);
+
   MedColorEntryPrivate* priv = med_color_entry_get_instance_private (self);
 
   if (med_color_entry_get_has_alpha (self) != value)
   {
     priv->_has_alpha = value;
-    gtk_color_chooser_set_use_alpha ((GtkColorChooser *) priv->colorbutton, value);
-    g_object_notify_by_pspec ((GObject *) self, med_color_entry_properties[MED_COLOR_ENTRY_HAS_ALPHA_PROPERTY]);
+    gtk_color_chooser_set_use_alpha ((GtkColorChooser*) priv->colorbutton, value);
+    g_object_notify_by_pspec ((GObject*) self, med_color_entry_properties[MED_COLOR_ENTRY_HAS_ALPHA_PROPERTY]);
   }
 }
 
 
-static GObject *
+static GObject*
 med_color_entry_constructor (GType type,
                              guint n_construct_properties,
-                             GObjectConstructParam * construct_properties)
+                             GObjectConstructParam* construct_properties)
 {
   GObjectClass* parent_class = G_OBJECT_CLASS (med_color_entry_parent_class);
   GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 
-  MedColorEntry*  self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_color_entry_get_type (), MedColorEntry);
+  MedColorEntry*  self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_color_entry_get_type(), MedColorEntry);
   MedColorEntryPrivate* priv = med_color_entry_get_instance_private (self);
 
-  priv->colorbutton = (GtkColorButton*) gtk_color_button_new ();
+  priv->colorbutton = (GtkColorButton*) gtk_color_button_new();
 
   g_signal_connect_object (priv->colorbutton, "color-set", (GCallback) med_color_entry_colorbutton_clicked, self, 0);
 
@@ -220,7 +223,7 @@ med_color_entry_constructor (GType type,
 
 
 static void
-med_color_entry_init (MedColorEntry * self)
+med_color_entry_init (MedColorEntry* self)
 {
   MedColorEntryPrivate* priv = med_color_entry_get_instance_private (self);
   priv->_has_alpha = FALSE;
@@ -229,12 +232,12 @@ med_color_entry_init (MedColorEntry * self)
 
 
 static void
-med_color_entry_get_property (GObject * object,
+med_color_entry_get_property (GObject* object,
                               guint property_id,
-                              GValue * value,
-                              GParamSpec * pspec)
+                              GValue* value,
+                              GParamSpec* pspec)
 {
-  MedColorEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_color_entry_get_type (), MedColorEntry);
+  MedColorEntry* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_color_entry_get_type(), MedColorEntry);
 
   switch (property_id)
   {
@@ -249,12 +252,12 @@ med_color_entry_get_property (GObject * object,
 
 
 static void
-med_color_entry_set_property (GObject * object,
+med_color_entry_set_property (GObject* object,
                               guint property_id,
-                              const GValue * value,
-                              GParamSpec * pspec)
+                              const GValue* value,
+                              GParamSpec* pspec)
 {
-  MedColorEntry * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_color_entry_get_type (), MedColorEntry);
+  MedColorEntry* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_color_entry_get_type(), MedColorEntry);
 
   switch (property_id)
   {
@@ -269,9 +272,9 @@ med_color_entry_set_property (GObject * object,
 
 
 static void
-med_color_entry_class_init (MedColorEntryClass * klass)
+med_color_entry_class_init (MedColorEntryClass* klass)
 {
-  ((MedEntryClass *) klass)->entry_changed = (void (*) (MedEntry *)) med_color_entry_real_entry_changed;
+  ((MedEntryClass *) klass)->entry_changed = (void (*) (MedEntry*)) med_color_entry_real_entry_changed;
 
   G_OBJECT_CLASS (klass)->constructor = med_color_entry_constructor;
   G_OBJECT_CLASS (klass)->get_property = med_color_entry_get_property;

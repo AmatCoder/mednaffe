@@ -1,7 +1,7 @@
 /*
  * menuinput.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-20121 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -28,7 +28,7 @@
 typedef struct _MenuInputClass MenuInputClass;
 
 struct _MenuInputClass {
-	GtkMenuClass parent_class;
+  GtkMenuClass parent_class;
 };
 
 
@@ -39,20 +39,20 @@ void
 menu_input_enable_all (MenuInput* self,
                        gboolean b)
 {
-	g_return_if_fail (self != NULL);
+  g_return_if_fail (self != NULL);
 
-	gtk_widget_set_sensitive ((GtkWidget*) self->clear, b);
-	gtk_widget_set_sensitive ((GtkWidget*) self->or, b);
-	gtk_widget_set_sensitive ((GtkWidget*) self->and, b);
-	gtk_widget_set_sensitive ((GtkWidget*) self->and_not, b);
+  gtk_widget_set_sensitive ((GtkWidget*) self->clear, b);
+  gtk_widget_set_sensitive ((GtkWidget*) self->or, b);
+  gtk_widget_set_sensitive ((GtkWidget*) self->and, b);
+  gtk_widget_set_sensitive ((GtkWidget*) self->and_not, b);
 }
 
 
 MenuInput*
 menu_input_new (void)
 {
-	MenuInput* self = (MenuInput*) g_object_new (menu_input_get_type (), NULL);
-	return self;
+  MenuInput* self = (MenuInput*) g_object_new (menu_input_get_type (), NULL);
+  return self;
 }
 
 
@@ -61,47 +61,45 @@ menu_input_constructor (GType type,
                         guint n_construct_properties,
                         GObjectConstructParam * construct_properties)
 {
-	GtkSeparatorMenuItem* separator;
+  GObjectClass* parent_class = G_OBJECT_CLASS (menu_input_parent_class);
+  GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
+  MenuInput* self = G_TYPE_CHECK_INSTANCE_CAST (obj, menu_input_get_type (), MenuInput);
 
-	GObjectClass* parent_class = G_OBJECT_CLASS (menu_input_parent_class);
-	GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
+  GtkWidget* separator = gtk_separator_menu_item_new ();
 
-	MenuInput* self = G_TYPE_CHECK_INSTANCE_CAST (obj, menu_input_get_type (), MenuInput);
+  self->clear = (GtkMenuItem*) gtk_menu_item_new_with_label ("Clear");
+  self->or = (GtkMenuItem*) gtk_menu_item_new_with_label ("Add another input (OR)");
+  self->and = (GtkMenuItem*) gtk_menu_item_new_with_label ("Add another input (AND)");
+  self->and_not = (GtkMenuItem*) gtk_menu_item_new_with_label ("Add another input (AND NOT)");
 
-	self->clear = (GtkMenuItem*) gtk_menu_item_new_with_label ("Clear");
-	separator = (GtkSeparatorMenuItem*) gtk_separator_menu_item_new ();
-	self->or = (GtkMenuItem*) gtk_menu_item_new_with_label ("Add another input (OR)");
-	self->and = (GtkMenuItem*) gtk_menu_item_new_with_label ("Add another input (AND)");
-	self->and_not = (GtkMenuItem*) gtk_menu_item_new_with_label ("Add another input (AND NOT)");
-
-  g_object_set_data_full ((GObject*) self->or,"menu_text", g_strdup(" or "), g_free);
-  g_object_set_data_full ((GObject*) self->or,"menu_op", g_strdup(" || "), g_free);
-  g_object_set_data_full ((GObject*) self->and,"menu_text", g_strdup(" and "), g_free);
-  g_object_set_data_full ((GObject*) self->and,"menu_op", g_strdup(" && "), g_free);
-  g_object_set_data_full ((GObject*) self->and_not,"menu_text", g_strdup(" and not "), g_free);
-  g_object_set_data_full ((GObject*) self->and_not,"menu_op", g_strdup(" &! "), g_free);
+  g_object_set_data_full ((GObject*) self->or, "menu_text", g_strdup(" or "), g_free);
+  g_object_set_data_full ((GObject*) self->or, "menu_op", g_strdup(" || "), g_free);
+  g_object_set_data_full ((GObject*) self->and, "menu_text", g_strdup(" and "), g_free);
+  g_object_set_data_full ((GObject*) self->and, "menu_op", g_strdup(" && "), g_free);
+  g_object_set_data_full ((GObject*) self->and_not, "menu_text", g_strdup(" and not "), g_free);
+  g_object_set_data_full ((GObject*) self->and_not, "menu_op", g_strdup(" &! "), g_free);
 
 
-	gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->clear);
-	gtk_container_add ((GtkContainer*) self, (GtkWidget*) separator);
-	gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->or);
-	gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->and);
-	gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->and_not);
+  gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->clear);
+  gtk_container_add ((GtkContainer*) self, separator);
+  gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->or);
+  gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->and);
+  gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->and_not);
 
-	gtk_widget_show_all ((GtkWidget*) self);
+  gtk_widget_show_all ((GtkWidget*) self);
 
-	return obj;
+  return obj;
 }
 
 
 static void
-menu_input_init (MenuInput * self)
+menu_input_init (MenuInput* self)
 {
 }
 
 
 static void
-menu_input_class_init (MenuInputClass * klass)
+menu_input_class_init (MenuInputClass* klass)
 {
-	G_OBJECT_CLASS (klass)->constructor = menu_input_constructor;
+  G_OBJECT_CLASS (klass)->constructor = menu_input_constructor;
 }

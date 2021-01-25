@@ -1,7 +1,7 @@
 /*
  * pathcombobox.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -29,23 +29,19 @@
 
 G_BEGIN_DECLS
 
-
 typedef struct _PathComboBox PathComboBox;
 
 struct _PathComboBox {
   GtkBox parent_instance;
   GtkComboBox* combo;
-  GtkListStore* path_store;
 };
-
 
 GType path_combo_box_get_type (void) G_GNUC_CONST;
 PathComboBox* path_combo_box_new (void);
 
-gchar** path_combo_box_get_dirs (PathComboBox* self, int* length);
-void path_combo_box_set_dirs (PathComboBox* self, gchar** st, int length);
+gchar** path_combo_box_get_dirs (PathComboBox* self, gsize* length);
+void path_combo_box_set_dirs (PathComboBox* self, gchar** st, gsize length);
 void path_combo_box_save_panel_position (PathComboBox* self, gint vpos, gint hpos);
-
 
 G_END_DECLS
 

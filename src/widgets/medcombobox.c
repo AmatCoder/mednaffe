@@ -1,7 +1,7 @@
 /*
  * medcombobox.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -64,37 +64,34 @@ enum  {
 static guint med_combo_box_signals[MED_COMBO_BOX_NUM_SIGNALS] = {0};
 
 
-static void med_combo_box_med_widget_interface_init (MedWidgetInterface * iface);
+static void med_combo_box_med_widget_interface_init (MedWidgetInterface* iface);
 
-G_DEFINE_TYPE_WITH_CODE (MedComboBox, med_combo_box, GTK_TYPE_BOX,
-                         G_ADD_PRIVATE (MedComboBox)
+G_DEFINE_TYPE_WITH_CODE (MedComboBox, med_combo_box, GTK_TYPE_BOX, G_ADD_PRIVATE (MedComboBox)
                          G_IMPLEMENT_INTERFACE (med_widget_get_type(), med_combo_box_med_widget_interface_init));
 
 
 static void
 med_combo_box_real_set_value (MedWidget* base,
-                              const gchar* v)
+                              const gchar* value)
 {
-  GtkTreeModel* medcombobox_store;
-  GtkTreeIter iter;
-  gchar* item = NULL;
-  gboolean valid;
+  g_return_if_fail (value != NULL);
 
   MedComboBox* self = (MedComboBox*) base;
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
-  g_return_if_fail (v != NULL);
+  GtkTreeModel* medcombobox_store = gtk_combo_box_get_model ((GtkComboBox*) priv->combo);
 
-  medcombobox_store = gtk_combo_box_get_model ((GtkComboBox*) priv->combo);
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_model_get_iter_first (medcombobox_store, &iter);
 
-  valid = gtk_tree_model_get_iter_first (medcombobox_store, &iter);
+  gchar* item = NULL;
 
   while (valid)
   {
     g_free (item);
     gtk_tree_model_get (medcombobox_store, &iter, 0, &item, -1);
 
-    if (g_strcmp0 (item, v) == 0)
+    if (g_strcmp0 (item, value) == 0)
     {
       gtk_combo_box_set_active_iter ((GtkComboBox*) priv->combo, &iter);
       g_free (item);
@@ -114,6 +111,7 @@ med_combo_box_real_get_value (MedWidget* base)
 
   g_free(priv->value);
   priv->value = gtk_combo_box_text_get_active_text (priv->combo);
+
   return priv->value;
 }
 
@@ -140,7 +138,7 @@ med_combo_box_real_set_command (MedWidget* base,
     g_free (priv->_command);
     priv->_command = g_strdup (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_combo_box_properties[MED_COMBO_BOX_COMMAND_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_combo_box_properties[MED_COMBO_BOX_COMMAND_PROPERTY]);
   }
 }
 
@@ -150,6 +148,7 @@ med_combo_box_real_get_updated (MedWidget* base)
 {
   MedComboBox* self = (MedComboBox*) base;
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
+
   return priv->_updated;
 }
 
@@ -190,6 +189,7 @@ static const gchar*
 med_combo_box_get_label (MedComboBox* self)
 {
   g_return_val_if_fail (self != NULL, NULL);
+
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
   return priv->_label;
@@ -201,6 +201,7 @@ med_combo_box_set_label (MedComboBox* self,
                          const gchar* value)
 {
   g_return_if_fail (self != NULL);
+
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
   if (g_strcmp0 (value, priv->_label) != 0)
@@ -208,7 +209,7 @@ med_combo_box_set_label (MedComboBox* self,
     g_free (priv->_label);
     priv->_label = g_strdup (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_combo_box_properties[MED_COMBO_BOX_LABEL_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_combo_box_properties[MED_COMBO_BOX_LABEL_PROPERTY]);
   }
 }
 
@@ -218,6 +219,7 @@ med_combo_box_set_label_width (MedComboBox* self,
                                gint value)
 {
   g_return_if_fail (self != NULL);
+
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
   g_object_set ((GtkWidget*) priv->combo_label, "width-chars", value, NULL);
 }
@@ -227,6 +229,7 @@ static gchar**
 med_combo_box_get_values (MedComboBox* self)
 {
   g_return_val_if_fail (self != NULL, NULL);
+
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
   return priv->_values;
@@ -237,6 +240,7 @@ med_combo_box_set_values (MedComboBox* self,
                           gchar** value)
 {
   g_return_if_fail (self != NULL);
+
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
   if (med_combo_box_get_values (self) != value)
@@ -244,7 +248,7 @@ med_combo_box_set_values (MedComboBox* self,
     g_strfreev(priv->_values);
     priv->_values  = g_strdupv (value);
 
-    g_object_notify_by_pspec ((GObject *) self, med_combo_box_properties[MED_COMBO_BOX_VALUES_PROPERTY]);
+    g_object_notify_by_pspec ((GObject*) self, med_combo_box_properties[MED_COMBO_BOX_VALUES_PROPERTY]);
   }
 }
 
@@ -254,6 +258,7 @@ med_combo_box_changed (GtkComboBox* sender,
                        gpointer self)
 {
   g_return_if_fail (self != NULL);
+
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
   gchar* text = gtk_combo_box_text_get_active_text (priv->combo);
@@ -270,9 +275,9 @@ med_combo_box_changed (GtkComboBox* sender,
 
 
 static void
-med_combo_box_finalize (GObject * obj)
+med_combo_box_finalize (GObject* obj)
 {
-  MedComboBox * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_combo_box_get_type (), MedComboBox);
+  MedComboBox * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_combo_box_get_type(), MedComboBox);
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
   g_free (priv->_command);
@@ -287,25 +292,25 @@ med_combo_box_finalize (GObject * obj)
 MedComboBox*
 med_combo_box_new (void)
 {
-  MedComboBox* self = g_object_new (med_combo_box_get_type (), NULL);
+  MedComboBox* self = g_object_new (med_combo_box_get_type(), NULL);
   return self;
 }
 
 
-static GObject *
+static GObject*
 med_combo_box_constructor (GType type,
                            guint n_construct_properties,
-                           GObjectConstructParam * construct_properties)
+                           GObjectConstructParam* construct_properties)
 {
   GObjectClass* parent_class = G_OBJECT_CLASS (med_combo_box_parent_class);
   GObject* obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 
-  MedComboBox* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_combo_box_get_type (), MedComboBox);
+  MedComboBox* self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_combo_box_get_type(), MedComboBox);
   MedComboBoxPrivate* priv = med_combo_box_get_instance_private (self);
 
   gtk_orientable_set_orientation ((GtkOrientable*) self, GTK_ORIENTATION_HORIZONTAL);
 
-  priv->combo = (GtkComboBoxText*) gtk_combo_box_text_new ();
+  priv->combo = (GtkComboBoxText*) gtk_combo_box_text_new();
   g_object_set ((GtkWidget*) priv->combo, "width-request", 168, NULL);
 
   priv->combo_label = (GtkLabel*) gtk_label_new (priv->_label);
@@ -335,7 +340,7 @@ med_combo_box_constructor (GType type,
                            "changed",
                            (GCallback) med_combo_box_changed, self, 0);
 
-  priv->value = g_strdup("");
+  priv->value = g_strdup ("");
 
   med_widget_init ((MedWidget*) self, (GtkWidget*) self);
 
@@ -344,18 +349,18 @@ med_combo_box_constructor (GType type,
 
 
 static void
-med_combo_box_init (MedComboBox * self)
+med_combo_box_init (MedComboBox* self)
 {
 }
 
 
 static void
-med_combo_box_get_property (GObject * object,
+med_combo_box_get_property (GObject* object,
                             guint property_id,
-                            GValue * value,
-                            GParamSpec * pspec)
+                            GValue* value,
+                            GParamSpec* pspec)
 {
-  MedComboBox * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_combo_box_get_type (), MedComboBox);
+  MedComboBox* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_combo_box_get_type(), MedComboBox);
 
   switch (property_id)
   {
@@ -376,12 +381,12 @@ med_combo_box_get_property (GObject * object,
 
 
 static void
-med_combo_box_set_property (GObject * object,
+med_combo_box_set_property (GObject* object,
                              guint property_id,
-                             const GValue * value,
-                             GParamSpec * pspec)
+                             const GValue* value,
+                             GParamSpec* pspec)
 {
-  MedComboBox * self = G_TYPE_CHECK_INSTANCE_CAST (object, med_combo_box_get_type (), MedComboBox);
+  MedComboBox* self = G_TYPE_CHECK_INSTANCE_CAST (object, med_combo_box_get_type(), MedComboBox);
 
   switch (property_id)
   {
@@ -405,7 +410,7 @@ med_combo_box_set_property (GObject * object,
 
 
 static void
-med_combo_box_class_init (MedComboBoxClass * klass)
+med_combo_box_class_init (MedComboBoxClass* klass)
 {
   G_OBJECT_CLASS (klass)->get_property = med_combo_box_get_property;
   G_OBJECT_CLASS (klass)->set_property = med_combo_box_set_property;
@@ -445,7 +450,7 @@ med_combo_box_class_init (MedComboBoxClass * klass)
                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT
                                    ));
 
-	g_object_class_install_property (G_OBJECT_CLASS (klass),
+  g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    MED_COMBO_BOX_LABELWIDTH_PROPERTY,
                                    med_combo_box_properties[MED_COMBO_BOX_LABELWIDTH_PROPERTY] = g_param_spec_int
                                    (
@@ -457,7 +462,7 @@ med_combo_box_class_init (MedComboBoxClass * klass)
                                    ));
 
   med_combo_box_signals[MED_COMBO_BOX_CHANGED_SIGNAL] = g_signal_new ("medcombo_changed",
-                                                                      med_combo_box_get_type (),
+                                                                      med_combo_box_get_type(),
                                                                       G_SIGNAL_RUN_LAST,
                                                                       0,
                                                                       NULL,
@@ -470,16 +475,16 @@ med_combo_box_class_init (MedComboBoxClass * klass)
 
 
 static void
-med_combo_box_med_widget_interface_init (MedWidgetInterface * iface)
+med_combo_box_med_widget_interface_init (MedWidgetInterface* iface)
 {
-  iface->set_value = (void (*) (MedWidget *, const gchar*)) med_combo_box_real_set_value;
-  iface->get_value = (const gchar* (*) (MedWidget *)) med_combo_box_real_get_value;
+  iface->set_value = (void (*) (MedWidget*, const gchar*)) med_combo_box_real_set_value;
+  iface->get_value = (const gchar* (*) (MedWidget*)) med_combo_box_real_get_value;
 
-  iface->set_modified = (void (*) (MedWidget *, gboolean)) med_combo_box_real_set_modified;
-  iface->get_modified = (gboolean (*) (MedWidget *)) med_combo_box_real_get_modified;
+  iface->set_modified = (void (*) (MedWidget*, gboolean)) med_combo_box_real_set_modified;
+  iface->get_modified = (gboolean (*) (MedWidget*)) med_combo_box_real_get_modified;
 
-  iface->set_updated = (void (*) (MedWidget *, gboolean)) med_combo_box_real_set_updated;
-  iface->get_updated = (gboolean (*) (MedWidget *)) med_combo_box_real_get_updated;
+  iface->set_updated = (void (*) (MedWidget*, gboolean)) med_combo_box_real_set_updated;
+  iface->get_updated = (gboolean (*) (MedWidget*)) med_combo_box_real_get_updated;
 
   iface->get_command = med_combo_box_real_get_command;
   iface->set_command = med_combo_box_real_set_command;

@@ -1,7 +1,7 @@
 /*
  * medprocess.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -118,7 +118,7 @@ med_process_read_conf (MedProcess* self)
   if (line)
   {
     g_free (self->MedVersion);
-    self->MedVersion = g_strdup(g_strstr_len(line, -1, "1."));
+    self->MedVersion = g_strdup (g_strstr_len(line, -1, "1."));
     g_free (line);
   }
 
@@ -163,9 +163,10 @@ med_process_process_line (MedProcess* self,
   if (condition != G_IO_IN)
     return FALSE;
 
+  MedProcessPrivate* priv = med_process_get_instance_private (self);
+
   gchar c[1] = {0};
   gsize pos;
-  MedProcessPrivate* priv = med_process_get_instance_private (self);
 
   g_io_channel_read_chars (channel, c, 1, &pos, NULL);
   g_string_append_c (priv->buffer, c[0]);
@@ -221,17 +222,16 @@ med_process_exec_emu (MedProcess* self,
   STARTUPINFO si;
   PROCESS_INFORMATION pi;
 
-  ZeroMemory(&si, sizeof(STARTUPINFO));
+  ZeroMemory (&si, sizeof(STARTUPINFO));
   si.cb = sizeof(STARTUPINFO);
-  ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
+  ZeroMemory (&pi, sizeof(PROCESS_INFORMATION));
 
-  gchar* command_win = g_strjoinv(" ", command);
+  gchar* command_win = g_strjoinv (" ", command);
 
-  CreateProcess(NULL, command_win, NULL, NULL, FALSE, CREATE_NO_WINDOW,
-                      NULL, NULL, &si, &pi);
+  CreateProcess (NULL, command_win, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
 
   g_child_watch_add (pi.hProcess, (GChildWatchFunc)child_watch_func, self);
-  CloseHandle(pi.hThread);
+  CloseHandle (pi.hThread);
 
 #else
 
@@ -268,7 +268,7 @@ med_process_exec_emu (MedProcess* self,
 MedProcess*
 med_process_new (void)
 {
-  MedProcess *self = (MedProcess*) g_object_new (med_process_get_type (), NULL);
+  MedProcess *self = (MedProcess*) g_object_new (med_process_get_type(), NULL);
 
 #ifdef G_OS_WIN32
   gchar *bin =  g_find_program_in_path ("mednafen.exe");
@@ -308,14 +308,15 @@ med_process_new (void)
 
 
 static void
-med_process_finalize (GObject * obj)
+med_process_finalize (GObject* obj)
 {
-  MedProcess * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_process_get_type (), MedProcess);
+  MedProcess * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_process_get_type(), MedProcess);
   MedProcessPrivate* priv = med_process_get_instance_private (self);
 
   g_free (self->MedVersion);
   g_free (self->MedExePath);
   g_free (self->MedConfPath);
+
   g_hash_table_unref (self->table);
   g_string_free (priv->buffer, TRUE);
 
@@ -324,25 +325,26 @@ med_process_finalize (GObject * obj)
 
 
 static void
-med_process_init (MedProcess * self)
+med_process_init (MedProcess* self)
 {
   MedProcessPrivate* priv = med_process_get_instance_private (self);
 
   self->MedVersion = NULL;
   self->MedExePath = NULL;
   self->MedConfPath = NULL;
+
   self->table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   priv->buffer = g_string_sized_new (512);
 }
 
 
 static void
-med_process_class_init (MedProcessClass * klass)
+med_process_class_init (MedProcessClass* klass)
 {
   G_OBJECT_CLASS (klass)->finalize = med_process_finalize;
 
   med_process_signals[MED_PROCESS_EXEC_EMU_ENDED_SIGNAL] = g_signal_new ("exec-emu-ended",
-                                                                         med_process_get_type (),
+                                                                         med_process_get_type(),
                                                                          G_SIGNAL_RUN_LAST,
                                                                          0,
                                                                          NULL,
@@ -353,7 +355,7 @@ med_process_class_init (MedProcessClass * klass)
                                                                          G_TYPE_INT);
 
   med_process_signals[MED_PROCESS_EXEC_OUTPUT_SIGNAL] = g_signal_new ("exec-output",
-                                                                       med_process_get_type (),
+                                                                       med_process_get_type(),
                                                                        G_SIGNAL_RUN_LAST,
                                                                        0,
                                                                        NULL,

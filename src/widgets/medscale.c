@@ -1,7 +1,7 @@
 /*
  * medscale.c
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -33,16 +33,14 @@ struct _MedScaleClass {
   GtkScaleClass parent_class;
 };
 
-
 struct _MedScalePrivate {
   gchar* value;
 };
 
 
-static void med_scale_imed_range_interface_init (IMedRangeInterface * iface);
+static void med_scale_imed_range_interface_init (IMedRangeInterface* iface);
 
-G_DEFINE_TYPE_WITH_CODE (MedScale, med_scale, GTK_TYPE_SCALE,
-                         G_ADD_PRIVATE (MedScale)
+G_DEFINE_TYPE_WITH_CODE (MedScale, med_scale, GTK_TYPE_SCALE, G_ADD_PRIVATE (MedScale)
                          G_IMPLEMENT_INTERFACE (imed_range_get_type(), med_scale_imed_range_interface_init));
 
 
@@ -50,18 +48,19 @@ static gdouble
 double_parse (const gchar* str)
 {
   g_return_val_if_fail (str != NULL, 0.0);
+
   return g_ascii_strtod (str, NULL);
 }
 
 
 static void
 med_scale_real_medrange_set_value (IMedRange* base,
-                                   const gchar* v)
+                                   const gchar* value)
 {
-  g_return_if_fail (v != NULL);
+  g_return_if_fail (value != NULL);
 
   MedScale * self = (MedScale*) base;
-  gtk_range_set_value ((GtkRange*) self, double_parse (v));
+  gtk_range_set_value ((GtkRange*) self, double_parse (value));
 }
 
 
@@ -79,9 +78,9 @@ med_scale_real_medrange_get_value (IMedRange* base)
 
 
 static void
-main_scale_finalize (GObject * obj)
+main_scale_finalize (GObject* obj)
 {
-  MedScale * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_scale_get_type (), MedScale);
+  MedScale * self = G_TYPE_CHECK_INSTANCE_CAST (obj, med_scale_get_type(), MedScale);
   MedScalePrivate* priv = med_scale_get_instance_private (self);
 
   g_free (priv->value);
@@ -94,7 +93,7 @@ MedScale*
 med_scale_new (GtkAdjustment* adjustment,
                gint digits)
 {
-  MedScale * self = (MedScale*) g_object_new (med_scale_get_type (), NULL);
+  MedScale * self = (MedScale*) g_object_new (med_scale_get_type(), NULL);
   MedScalePrivate* priv = med_scale_get_instance_private (self);
 
   gtk_range_set_adjustment ((GtkRange*) self, adjustment);
@@ -102,28 +101,28 @@ med_scale_new (GtkAdjustment* adjustment,
   g_object_set ((GtkWidget*) self, "width-request", 300, NULL);
   gtk_scale_set_value_pos ((GtkScale*) self, GTK_POS_LEFT);
 
-  priv->value = g_strdup("");
+  priv->value = g_strdup ("");
 
   return self;
 }
 
 
 static void
-med_scale_init (MedScale * self)
+med_scale_init (MedScale* self)
 {
 }
 
 
 static void
-med_scale_class_init (MedScaleClass * klass)
+med_scale_class_init (MedScaleClass* klass)
 {
   G_OBJECT_CLASS (klass)->finalize = main_scale_finalize;
 }
 
 
 static void
-med_scale_imed_range_interface_init (IMedRangeInterface * iface)
+med_scale_imed_range_interface_init (IMedRangeInterface* iface)
 {
-  iface->medrange_set_value = (void (*) (IMedRange *, const gchar*)) med_scale_real_medrange_set_value;
-  iface->medrange_get_value = (const gchar* (*) (IMedRange *)) med_scale_real_medrange_get_value;
+  iface->medrange_set_value = (void (*) (IMedRange*, const gchar*)) med_scale_real_medrange_set_value;
+  iface->medrange_get_value = (const gchar* (*) (IMedRange*)) med_scale_real_medrange_get_value;
 }

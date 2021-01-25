@@ -1,7 +1,7 @@
 /*
  * panedimage.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -29,20 +29,17 @@
 
 G_BEGIN_DECLS
 
-
 typedef struct _PanedImage PanedImage;
 
 struct _PanedImage {
   GtkPaned parent_instance;
 };
 
-
 GType paned_image_get_type (void) G_GNUC_CONST;
 PanedImage* paned_image_new (GtkOrientation orientation);
 
-void paned_image_set_images (PanedImage* self,const gchar* str);
+void paned_image_set_images (PanedImage* self, const gchar* str);
 void paned_image_set_paths (PanedImage* self, const gchar* str_a, const gchar* str_b);
-
 
 G_END_DECLS
 

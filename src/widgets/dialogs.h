@@ -1,7 +1,7 @@
 /*
  * dialogs.h
  * 
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  * 
  * This file is part of Mednaffe.
  * 
@@ -26,7 +26,6 @@
 #define __DIALOGS_H__
 
 #include <gtk/gtk.h>
-
 
 G_BEGIN_DECLS
 

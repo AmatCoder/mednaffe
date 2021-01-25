@@ -1,7 +1,7 @@
 /*
  * medwidget.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -35,6 +35,7 @@ const gchar*
 med_widget_get_value (MedWidget* self)
 {
   g_return_val_if_fail (self != NULL, NULL);
+
   return MED_WIDGET_GET_INTERFACE (self)->get_value (self);
 }
 
@@ -44,6 +45,7 @@ med_widget_set_value (MedWidget* self,
                       const gchar* v)
 {
   g_return_if_fail (self != NULL);
+
   MED_WIDGET_GET_INTERFACE (self)->set_value (self, v);
 }
 
@@ -53,22 +55,27 @@ med_widget_real_init (MedWidget* self,
                       GtkWidget* widget)
 {
   g_return_if_fail (widget != NULL);
+
   med_widget_set_updated ((MedWidget*) widget, TRUE);
   med_widget_set_modified ((MedWidget*) widget, FALSE);
 }
 
 
 static void
-med_widget_realize (GtkWidget *widget, gpointer data)
+med_widget_realize (GtkWidget* widget,
+                    gpointer data)
 {
+  g_return_if_fail (widget != NULL);
+
   GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
   if (toplevel)
   {
-    GHashTable* table = g_object_get_data ((GObject*)toplevel, "table");
+    GHashTable* table = g_object_get_data ((GObject*) toplevel, "table");
+
     if (table)
     {
       gchar* value;
-      const gchar* command = med_widget_get_command ((MedWidget*)widget);
+      const gchar* command = med_widget_get_command ((MedWidget*) widget);
       gchar* command2 = g_strconcat ("-", command, NULL);
 
       if (g_hash_table_contains (table, command2))
@@ -80,7 +87,7 @@ med_widget_realize (GtkWidget *widget, gpointer data)
 
       if (value)
       {
-        med_widget_set_value ((MedWidget*)widget, value);
+        med_widget_set_value ((MedWidget*) widget, value);
         med_widget_set_updated ((MedWidget*) widget, FALSE);
       }
       else
@@ -95,6 +102,7 @@ med_widget_init (MedWidget* self,
                  GtkWidget* widget)
 {
   g_return_if_fail (self != NULL);
+
   MED_WIDGET_GET_INTERFACE (self)->init (self, widget);
   g_signal_connect_object ((GtkWidget*) self, "realize", (GCallback) med_widget_realize, self, 0);
 }
@@ -104,6 +112,7 @@ const gchar*
 med_widget_get_command (MedWidget* self)
 {
   g_return_val_if_fail (self != NULL, NULL);
+
   return MED_WIDGET_GET_INTERFACE (self)->get_command (self);
 }
 
@@ -113,6 +122,7 @@ med_widget_set_command (MedWidget* self,
                         const gchar* value)
 {
   g_return_if_fail (self != NULL);
+
   MED_WIDGET_GET_INTERFACE (self)->set_command (self, value);
 }
 
@@ -121,6 +131,7 @@ gboolean
 med_widget_get_updated (MedWidget* self)
 {
   g_return_val_if_fail (self != NULL, FALSE);
+
   return MED_WIDGET_GET_INTERFACE (self)->get_updated (self);
 }
 
@@ -146,15 +157,16 @@ med_widget_set_modified (MedWidget* self,
                         gboolean value)
 {
   g_return_if_fail (self != NULL);
+
   MED_WIDGET_GET_INTERFACE (self)->set_modified (self, value);
 
   if (med_widget_get_updated(self))
     return;
 
-  GtkWidget *toplevel = gtk_widget_get_toplevel ((GtkWidget*)self);
+  GtkWidget *toplevel = gtk_widget_get_toplevel ((GtkWidget*) self);
   if (toplevel)
   {
-    GHashTable* table = g_object_get_data ((GObject*)toplevel, "table");
+    GHashTable* table = g_object_get_data ((GObject*) toplevel, "table");
 
     if (table)
     {
@@ -166,13 +178,14 @@ med_widget_set_modified (MedWidget* self,
 
 
 static void
-med_widget_default_init (MedWidgetInterface * iface)
+med_widget_default_init (MedWidgetInterface* iface)
 {
-  g_object_interface_install_property (iface, g_param_spec_string ("command",
-                                                                   "command",
-                                                                   "command",
-                                                                   NULL,
-                                                                   G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE));
+  g_object_interface_install_property (iface,
+                                       g_param_spec_string ("command",
+                                                            "command",
+                                                            "command",
+                                                            NULL,
+                                                            G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE));
 
   iface->init = med_widget_real_init;
 }

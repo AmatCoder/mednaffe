@@ -1,7 +1,7 @@
 /*
  * medentry.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -31,9 +31,7 @@
 
 G_BEGIN_DECLS
 
-
 #define MED_ENTRY_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), med_entry_get_type (), MedEntryClass))
-
 
 typedef struct _MedEntry MedEntry;
 typedef struct _MedEntryClass MedEntryClass;
@@ -48,11 +46,9 @@ struct _MedEntryClass {
   void (*entry_changed) (MedEntry* self);
 };
 
-
 GType med_entry_get_type (void) G_GNUC_CONST;
 MedEntry* med_entry_new (void);
 MedEntry* med_entry_construct (GType object_type);
-
 
 G_END_DECLS
 

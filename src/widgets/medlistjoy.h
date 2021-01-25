@@ -1,7 +1,7 @@
 /*
  * medlistjoy.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -25,19 +25,15 @@
 #ifndef __MEDLISTJOY_H__
 #define __MEDLISTJOY_H__
 
-
 #include <glib-object.h>
 
-
 G_BEGIN_DECLS
-
 
 typedef struct _MedListJoy MedListJoy;
 
 struct _MedListJoy {
   GObject parent_instance;
 };
-
 
 GType med_list_joy_get_type (void) G_GNUC_CONST;
 MedListJoy* med_list_joy_new (void);
@@ -46,8 +42,6 @@ void med_list_joy_init_list_joy (MedListJoy* self);
 void med_list_joy_enable_all (MedListJoy* self, gboolean enable);
 gchar* med_list_joy_value_to_text (MedListJoy* self, const gchar* value);
 
-
 G_END_DECLS
-
 
 #endif

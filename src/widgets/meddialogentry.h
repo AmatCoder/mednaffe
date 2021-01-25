@@ -1,7 +1,7 @@
 /*
  * meddialogentry.h
  *
- * Copyright 2013-2018 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -26,9 +26,7 @@
 #define __MEDDIALOGENTRY_H__
 
 #include <gtk/gtk.h>
-
 #include "medentry.h"
-
 
 G_BEGIN_DECLS
 
@@ -43,11 +41,9 @@ struct _MedDialogEntryClass {
   MedEntryClass parent_class;
 };
 
-
 GType med_dialog_entry_get_type (void) G_GNUC_CONST;
 MedDialogEntry* med_dialog_entry_new (void);
 MedDialogEntry* med_dialog_entry_construct (GType object_type);
-
 
 G_END_DECLS
 

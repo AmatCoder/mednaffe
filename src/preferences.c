@@ -1,7 +1,7 @@
 /*
  * preferences.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -145,9 +145,12 @@ static void
 preferences_window_on_change_theme (GtkComboBox* sender,
                                     gpointer self)
 {
+  g_return_if_fail (sender != NULL);
+  g_return_if_fail (self != NULL);
+
   PreferencesWindow* pw = self;
-  gint t = gtk_combo_box_get_active (sender);
-  g_signal_emit (pw, preferences_window_signals[PREFERENCES_WINDOW_ON_CHANGE_THEME_SIGNAL], 0, t);
+  gint theme = gtk_combo_box_get_active (sender);
+  g_signal_emit (pw, preferences_window_signals[PREFERENCES_WINDOW_ON_CHANGE_THEME_SIGNAL], 0, theme);
 }
 
 
@@ -204,7 +207,7 @@ preferences_window_finalize (GObject * obj)
 {
   PreferencesWindow *self = G_TYPE_CHECK_INSTANCE_CAST (obj, preferences_window_get_type (), PreferencesWindow);
 
-  g_slist_free(self->list);
+  g_slist_free (self->list);
 
   G_OBJECT_CLASS (preferences_window_parent_class)->finalize (obj);
 }
@@ -222,6 +225,7 @@ preferences_window_new (GtkWindow* parent)
   med_widget_set_value ((MedWidget*) self->action_launch, "do nothing");
 
   preferences_window_set_list (self, (GtkWidget*) self);
+
 #ifndef STATIC_BUILD
   gtk_notebook_remove_page (self->notebook, 2);
 #endif

@@ -1,7 +1,7 @@
 /*
  * manager.c
  *
- * Copyright 2013-2020 AmatCoder
+ * Copyright 2013-2021 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -30,17 +30,17 @@ typedef struct _ManagerWindowClass ManagerWindowClass;
 typedef struct _ManagerWindowPrivate ManagerWindowPrivate;
 
 struct _ManagerWindowClass {
-	GtkWindowClass parent_class;
+  GtkWindowClass parent_class;
 };
 
 struct _ManagerWindowPrivate {
-	GtkTreeView* treeview;
-	GtkTreeSelection* path_selection;
-	GtkButton* up_button;
-	GtkButton* down_button;
-	GtkButton* setup_button;
-	GtkButton* delete_button;
-	GtkComboBox* combo;
+  GtkTreeView* treeview;
+  GtkTreeSelection* path_selection;
+  GtkButton* up_button;
+  GtkButton* down_button;
+  GtkButton* setup_button;
+  GtkButton* delete_button;
+  GtkComboBox* combo;
 };
 
 
@@ -49,18 +49,18 @@ G_DEFINE_TYPE_WITH_PRIVATE (ManagerWindow, manager_window, GTK_TYPE_WINDOW);
 
 static gboolean
 gtk_tree_iter_not_equal (const GtkTreeIter * s1,
-                     const GtkTreeIter * s2)
+                         const GtkTreeIter * s2)
 {
-	if ((s1 == NULL) || (s2 == NULL))
-		return TRUE;
+  if ((s1 == NULL) || (s2 == NULL))
+    return TRUE;
 
-	if ((s1->stamp != s2->stamp) ||
+  if ((s1->stamp != s2->stamp) ||
        (s1->user_data != s2->user_data) ||
        (s1->user_data2 != s2->user_data2) ||
        (s1->user_data3 != s2->user_data3))
-		return TRUE;
+    return TRUE;
 
-	return FALSE;
+  return FALSE;
 }
 
 
@@ -68,20 +68,19 @@ static void
 manager_window_set_buttons (ManagerWindow* self,
                             GtkTreeIter* iter)
 {
-	GtkTreeIter iter2;
-
-	g_return_if_fail (iter != NULL);
+  g_return_if_fail (iter != NULL);
 
   ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
 
-	GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
+  GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
 
-	gboolean valid = gtk_tree_model_get_iter_first (model, &iter2);
+  GtkTreeIter iter2;
+  gboolean valid = gtk_tree_model_get_iter_first (model, &iter2);
 
-	gtk_widget_set_sensitive ((GtkWidget*) priv->up_button, gtk_tree_iter_not_equal (iter, &iter2));
-	gtk_widget_set_sensitive ((GtkWidget*) priv->down_button, gtk_tree_model_iter_next (model, iter));
-	gtk_widget_set_sensitive ((GtkWidget*) priv->setup_button, valid);
-	gtk_widget_set_sensitive ((GtkWidget*) priv->delete_button, valid);
+  gtk_widget_set_sensitive ((GtkWidget*) priv->up_button, gtk_tree_iter_not_equal (iter, &iter2));
+  gtk_widget_set_sensitive ((GtkWidget*) priv->down_button, gtk_tree_model_iter_next (model, iter));
+  gtk_widget_set_sensitive ((GtkWidget*) priv->setup_button, valid);
+  gtk_widget_set_sensitive ((GtkWidget*) priv->delete_button, valid);
 }
 
 
@@ -89,17 +88,17 @@ static void
 manager_window_selection_changed (GtkTreeSelection* sender,
                                   gpointer self)
 {
-	GtkTreeIter iter;
   ManagerWindow* mw = self;
   ManagerWindowPrivate* priv = manager_window_get_instance_private (mw);
 
-	gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
 
-	if (valid)
+  if (valid)
   {
-		gtk_combo_box_set_active_iter (priv->combo, &iter);
-		manager_window_set_buttons (mw, &iter);
-	}
+    gtk_combo_box_set_active_iter (priv->combo, &iter);
+    manager_window_set_buttons (mw, &iter);
+  }
 }
 
 static void
@@ -108,29 +107,27 @@ manager_window_row_changed (SetupWindow* sender,
 {
   ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
 
-	gtk_combo_box_set_active_iter (priv->combo, NULL);
-	manager_window_selection_changed (NULL, self);
+  gtk_combo_box_set_active_iter (priv->combo, NULL);
+  manager_window_selection_changed (NULL, self);
 }
 
 
 static void
-manager_window_on_realize (GtkWidget* sender,
-                           gpointer self)
+manager_window_realize (ManagerWindow* mw)
 {
-	GtkTreeIter iter;
-  ManagerWindow* mw = self;
   ManagerWindowPrivate* priv = manager_window_get_instance_private (mw);
 
-	gboolean valid = gtk_combo_box_get_active_iter (priv->combo, &iter);
+  GtkTreeIter iter;
+  gboolean valid = gtk_combo_box_get_active_iter (priv->combo, &iter);
 
-	if (valid)
+  if (valid)
   {
-		gtk_tree_selection_select_iter (priv->path_selection, &iter);
+    gtk_tree_selection_select_iter (priv->path_selection, &iter);
     gtk_widget_grab_focus ((GtkWidget*) priv->treeview);
-		manager_window_set_buttons (self, &iter);
-	}
+    manager_window_set_buttons (mw, &iter);
+  }
 
-  g_signal_connect_object (priv->path_selection, "changed", (GCallback) manager_window_selection_changed, self, 0);
+  g_signal_connect_object (priv->path_selection, "changed", (GCallback) manager_window_selection_changed, mw, 0);
 }
 
 
@@ -138,26 +135,27 @@ static void
 manager_window_up_down_clicked (GtkButton* sender,
                                  gpointer self)
 {
-	GtkTreeIter iter, iter2;
   ManagerWindow* mw = self;
   ManagerWindowPrivate* priv = manager_window_get_instance_private(mw);
 
-	gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
 
-	if (valid)
+  if (valid)
   {
+    GtkTreeIter iter2;
     GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
 
-		iter2 = iter;
+    iter2 = iter;
 
-		if (sender == priv->up_button)
-			gtk_tree_model_iter_previous (gtk_combo_box_get_model (priv->combo), &iter);
+    if (sender == priv->up_button)
+      gtk_tree_model_iter_previous (gtk_combo_box_get_model (priv->combo), &iter);
     else if (sender == priv->down_button)
       gtk_tree_model_iter_next (gtk_combo_box_get_model (priv->combo), &iter);
 
-		gtk_list_store_swap ((GtkListStore*) model, &iter, &iter2);
+    gtk_list_store_swap ((GtkListStore*) model, &iter, &iter2);
 
-		manager_window_set_buttons (mw, &iter2);
+    manager_window_set_buttons (mw, &iter2);
   }
 }
 
@@ -181,21 +179,20 @@ static void
 manager_window_delete_row (GtkButton* sender,
                            gpointer self)
 {
-	GtkTreeIter iter;
-
   ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
 
   GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
 
-	gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
 
-	if ( (valid) && (manager_window_show_confirmation (self) == GTK_RESPONSE_YES ) )
-		gtk_list_store_remove ((GtkListStore*) model, &iter);
+  if ( (valid) && (manager_window_show_confirmation (self) == GTK_RESPONSE_YES) )
+    gtk_list_store_remove ((GtkListStore*) model, &iter);
 
-	valid = gtk_tree_model_get_iter_first (model, &iter);
+  valid = gtk_tree_model_get_iter_first (model, &iter);
 
-	gtk_widget_set_sensitive ((GtkWidget*) priv->setup_button, valid);
-	gtk_widget_set_sensitive ((GtkWidget*) priv->delete_button, valid);
+  gtk_widget_set_sensitive ((GtkWidget*) priv->setup_button, valid);
+  gtk_widget_set_sensitive ((GtkWidget*) priv->delete_button, valid);
 }
 
 
@@ -204,10 +201,9 @@ manager_window_on_close_x (GtkWidget* sender,
                            GdkEventAny* event,
                            gpointer self)
 {
-	g_return_val_if_fail (self != NULL, FALSE);
-	gtk_widget_destroy ((GtkWidget*) self);
+  gtk_widget_destroy ((GtkWidget*) self);
 
-	return TRUE;
+  return TRUE;
 }
 
 
@@ -215,8 +211,7 @@ static void
 manager_window_on_close (GtkButton* sender,
                           gpointer self)
 {
-	g_return_if_fail (self != NULL);
-	gtk_widget_destroy ((GtkWidget*) self);
+  gtk_widget_destroy ((GtkWidget*) self);
 }
 
 
@@ -224,19 +219,17 @@ static void
 manager_window_show_setup (GtkButton* sender,
                            gpointer self)
 {
-	GtkTreeIter iter;
-
   ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
 
-	gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
 
-	if (valid)
+  if (valid)
   {
     GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
-    SetupWindow* setup = setup_window_new (self, model);
+    SetupWindow* setup = setup_window_new (self, model, &iter);
 
-	  g_signal_connect_object (setup, "row-has-changed", (GCallback) manager_window_row_changed, self, 0);
-		setup_window_setup_show (setup, &iter);
+    g_signal_connect_object (setup, "row-has-changed", (GCallback) manager_window_row_changed, self, 0);
   }
 }
 
@@ -245,93 +238,90 @@ ManagerWindow*
 manager_window_new (GtkWindow* parent,
                     GtkComboBox* combo)
 {
-	g_return_val_if_fail (parent != NULL, NULL);
-	g_return_val_if_fail (combo != NULL, NULL);
+  g_return_val_if_fail (parent != NULL, NULL);
+  g_return_val_if_fail (combo != NULL, NULL);
 
-	ManagerWindow *self = (ManagerWindow*) g_object_new (manager_window_get_type (), NULL);
+  ManagerWindow *self = (ManagerWindow*) g_object_new (manager_window_get_type (), NULL);
   ManagerWindowPrivate* priv = manager_window_get_instance_private (self);
 
-	gtk_window_set_transient_for ((GtkWindow*) self, parent);
+  gtk_window_set_transient_for ((GtkWindow*) self, parent);
 
-	priv->combo = combo;
-
-	GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
-	gtk_tree_view_set_model (priv->treeview, model);
+  priv->combo = combo;
+  GtkTreeModel* model = gtk_combo_box_get_model (priv->combo);
+  gtk_tree_view_set_model (priv->treeview, model);
 
   gtk_button_set_image (priv->up_button, gtk_image_new_from_icon_name ("go-up", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
   gtk_button_set_image (priv->down_button, gtk_image_new_from_icon_name ("go-down", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
   gtk_button_set_image (priv->delete_button, gtk_image_new_from_icon_name ("edit-delete", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
   gtk_button_set_image (priv->setup_button, gtk_image_new_from_icon_name ("document-page-setup", (GtkIconSize) GTK_ICON_SIZE_BUTTON));
 
-	return self;
+  manager_window_realize (self);
+
+  return self;
 }
 
 
 static void
 manager_window_init (ManagerWindow * self)
 {
-	gtk_widget_init_template (GTK_WIDGET (self));
+  gtk_widget_init_template (GTK_WIDGET (self));
 }
 
 
 static void
 manager_window_class_init (ManagerWindowClass * klass)
 {
-	gint ManagerWindow_private_offset = g_type_class_get_instance_private_offset (klass);
-	gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass), "/com/github/mednaffe/Manager.ui");
+  gint ManagerWindow_private_offset = g_type_class_get_instance_private_offset (klass);
+  gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass), "/com/github/mednaffe/Manager.ui");
 
-	gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "treeview",
                                              FALSE,
                                              ManagerWindow_private_offset + G_STRUCT_OFFSET (ManagerWindowPrivate, treeview));
 
-	gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "path_selection",
                                              FALSE,
                                              ManagerWindow_private_offset + G_STRUCT_OFFSET (ManagerWindowPrivate, path_selection));
 
-	gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "up_button",
                                              FALSE,
                                              ManagerWindow_private_offset + G_STRUCT_OFFSET (ManagerWindowPrivate, up_button));
 
-	gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "down_button",
                                              FALSE,
                                              ManagerWindow_private_offset + G_STRUCT_OFFSET (ManagerWindowPrivate, down_button));
 
-	gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "setup_button",
                                              FALSE,
                                              ManagerWindow_private_offset + G_STRUCT_OFFSET (ManagerWindowPrivate, setup_button));
 
-	gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "delete_button",
                                              FALSE,
                                              ManagerWindow_private_offset + G_STRUCT_OFFSET (ManagerWindowPrivate, delete_button));
 
 
-	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
-                                                "on_realize",
-                                                G_CALLBACK(manager_window_on_realize));
-
-	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "up_down_clicked",
                                                 G_CALLBACK(manager_window_up_down_clicked));
 
-	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "delete_row",
                                                 G_CALLBACK(manager_window_delete_row));
 
-	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "show_setup",
                                                 G_CALLBACK(manager_window_show_setup));
 
-	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "on_close_x",
                                                 G_CALLBACK(manager_window_on_close_x));
 
-	gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "on_close",
                                                 G_CALLBACK(manager_window_on_close));
 }
