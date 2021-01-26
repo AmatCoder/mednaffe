@@ -62,7 +62,7 @@ med_process_get_conf_path (MedProcess* self)
   {
 #ifdef G_OS_WIN32
     gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
-    home = g_strconcat (dir, "\\mednafen.cfg\\", NULL);
+    self->MedConfPath = g_strconcat (dir, "\\mednafen.cfg\\", NULL);
     g_free(dir);
 #else
     const gchar* mh = g_getenv ("MEDNAFEN_HOME");
