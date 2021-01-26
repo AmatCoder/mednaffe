@@ -41,7 +41,7 @@ else
 if WINDOWS
   mednaffe_SOURCES+= widgets/joystick_windows.c
   override CFLAGS +=-mwindows
-  LIBS +=-ldxguid -ldinput
+  LIBS +=../share/win/mednaffe.res -ldxguid -ldinput
 else
 if MAC
   mednaffe_SOURCES+= widgets/joystick_dummy.c

@@ -1,15 +1,15 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
-AC_INIT([mednaffe], [0.9.0])
+AC_PREREQ([2.70])
+AC_INIT([mednaffe],[0.9.0])
 AC_CONFIG_SRCDIR([src/mednaffe.c])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([subdir-objects])
 
 # Checks for programs.
 AC_PROG_CC
-AC_LANG_C
+AC_LANG([C])
 
 # Check for host
 AC_CANONICAL_HOST
