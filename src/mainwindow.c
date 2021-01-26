@@ -985,7 +985,7 @@ main_window_start (MainWindow* self)
 
   g_object_set_data ((GObject*) self, "listjoy", priv->listjoy);
 
-  gtk_window_set_icon ((GtkWindow*) self, g_object_get_data (app, "icon"));
+  gtk_window_set_default_icon_list (g_object_get_data (app, "list"));
 
   main_window_load_settings (self);
 }

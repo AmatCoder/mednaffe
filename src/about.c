@@ -57,7 +57,7 @@ about_window_new (GtkWindow* parent)
 
   GObject *app = (GObject*) gtk_window_get_application (parent);
 
-  gtk_about_dialog_set_logo ((GtkAboutDialog*) self, g_object_get_data (app, "icon"));
+  gtk_about_dialog_set_logo ((GtkAboutDialog*) self, g_list_nth_data (g_object_get_data (app, "icon_list"), 0));
 
   const char *authors[2] = { "AmatCoder", NULL };
   gtk_about_dialog_set_authors ((GtkAboutDialog*) self, authors);

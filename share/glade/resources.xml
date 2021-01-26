@@ -2,6 +2,9 @@
 <gresources>
   <gresource prefix="/com/github/mednaffe">
     <file preprocess="to-pixdata">mednaffe.png</file>
+    <file preprocess="to-pixdata">mednaffe16.png</file>
+    <file preprocess="to-pixdata">mednaffe32.png</file>
+    <file preprocess="to-pixdata">mednaffe48.png</file>
     <file compressed="true" preprocess="xml-stripblanks">MainWindow.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Manager.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Setup.ui</file>

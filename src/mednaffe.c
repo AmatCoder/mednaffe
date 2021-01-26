@@ -43,7 +43,7 @@ G_DEFINE_TYPE (MednaffeApp, mednaffe_app, GTK_TYPE_APPLICATION);
 MednaffeApp*
 mednaffe_app_new (void)
 {
-  MednaffeApp * self = (MednaffeApp*) g_object_new (mednaffe_app_get_type (),
+  MednaffeApp * self = (MednaffeApp*) g_object_new (mednaffe_app_get_type(),
                                                     "application-id",
                                                     "com.github.mednaffe",
                                                     "flags",
@@ -57,10 +57,6 @@ static void
 mednaffe_app_real_activate (GApplication* base)
 {
   MainWindow* main_window = main_window_new ((GtkApplication*) base);
-
-  GdkPixbuf* icon = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe.png", NULL);
-  g_object_set_data_full ((GObject*)base, "icon", icon, g_object_unref);
-
   main_window_start (main_window);
 }
 
@@ -84,13 +80,33 @@ main (int argc,
 {
   MednaffeApp* mednaffe_app = mednaffe_app_new ();
 
-  g_object_set_data_full ((GObject*)mednaffe_app, "name", g_strdup("Mednaffe"), g_free);
-  g_object_set_data_full ((GObject*)mednaffe_app, "desc", g_strdup("A front-end (GUI) for mednafen emulator"), g_free);
-  g_object_set_data_full ((GObject*)mednaffe_app, "copyright", g_strdup("Copyright © 2013-2021 AmatCoder"), g_free);
-  g_object_set_data_full ((GObject*)mednaffe_app, "url", g_strdup("https://github.com/AmatCoder/mednaffe"), g_free);
-  g_object_set_data_full ((GObject*)mednaffe_app, "version", g_strdup("0.9.0"), g_free);
+  g_object_set_data_full ((GObject*) mednaffe_app, "name", g_strdup("Mednaffe"), g_free);
+  g_object_set_data_full ((GObject*) mednaffe_app, "desc", g_strdup("A front-end (GUI) for mednafen emulator"), g_free);
+  g_object_set_data_full ((GObject*) mednaffe_app, "copyright", g_strdup("Copyright © 2013-2021 AmatCoder"), g_free);
+  g_object_set_data_full ((GObject*) mednaffe_app, "url", g_strdup("https://github.com/AmatCoder/mednaffe"), g_free);
+  g_object_set_data_full ((GObject*) mednaffe_app, "version", g_strdup("0.9.0"), g_free);
+
+  GList *icon_list = NULL;
+
+  GdkPixbuf* icon = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe.png", NULL);
+  icon_list = g_list_append (icon_list, icon);
+
+  GdkPixbuf* icon16 = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe16.png", NULL);
+  icon_list = g_list_append (icon_list, icon16);
+
+  GdkPixbuf* icon32 = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe32.png", NULL);
+  icon_list = g_list_append (icon_list, icon32);
+
+  GdkPixbuf* icon48 = gdk_pixbuf_new_from_resource ("/com/github/mednaffe/mednaffe48.png", NULL);
+  icon_list = g_list_append (icon_list, icon48);
+
+  g_object_set_data ((GObject*) mednaffe_app, "icon_list", icon_list);
+
 
   gint result = g_application_run ((GApplication*) mednaffe_app, argc, argv);
+
+
+  g_list_free_full (icon_list, (GDestroyNotify) g_object_unref);
   g_object_unref (mednaffe_app);
 
   return result;
