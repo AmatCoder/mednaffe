@@ -153,7 +153,7 @@ manager_window_up_down_clicked (GtkButton* sender,
     else if (sender == priv->down_button)
       gtk_tree_model_iter_next (gtk_combo_box_get_model (priv->combo), &iter);
 
-    gtk_list_store_swap ((GtkListStore*) model, &iter, &iter2);
+    gtk_tree_store_swap ((GtkTreeStore*) model, &iter, &iter2);
 
     manager_window_set_buttons (mw, &iter2);
   }
@@ -187,7 +187,7 @@ manager_window_delete_row (GtkButton* sender,
   gboolean valid = gtk_tree_selection_get_selected (priv->path_selection, NULL, &iter);
 
   if ( (valid) && (manager_window_show_confirmation (self) == GTK_RESPONSE_YES) )
-    gtk_list_store_remove ((GtkListStore*) model, &iter);
+    gtk_tree_store_remove  ((GtkTreeStore*) model, &iter);
 
   valid = gtk_tree_model_get_iter_first (model, &iter);
 

@@ -142,7 +142,7 @@ setup_window_apply_clicked (GtkButton* sender,
   sa = gtk_entry_get_text (priv->screen_a);
   sb = gtk_entry_get_text (priv->screen_b);
 
-  gtk_list_store_set ((GtkListStore*) priv->model, &priv->iter, 1, scan, 2, hide, 3, filters, 4, sa, 5, sb, -1);
+  gtk_tree_store_set ((GtkTreeStore*) priv->model, &priv->iter, 1, scan, 2, hide, 3, filters, 4, sa, 5, sb, -1);
 
   g_signal_emit (sw, setup_window_signals[SETUP_WINDOW_ROW_HAS_CHANGED_SIGNAL], 0);
 
