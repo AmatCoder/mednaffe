@@ -223,15 +223,15 @@ main_window_set_all_sensitive (MainWindow* self, gboolean b, gboolean c)
 }
 
 
-static const gchar**
+static gchar**
 main_window_build_command (MainWindow* self, const gchar* game_path)
 {
   g_return_val_if_fail (self != NULL, NULL);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
-  const gchar** command;
-  command = g_new0 (const gchar*, 3);
-  command[0] = priv->med_process->MedExePath;
+  gchar** command;
+  command = g_new0 (gchar*, 3);
+  command[0] = g_strdup (priv->med_process->MedExePath);
 
   GHashTableIter iter;
   gpointer key, value;
@@ -241,39 +241,42 @@ main_window_build_command (MainWindow* self, const gchar* game_path)
   while (g_hash_table_iter_next (&iter, &key, &value))
   {
     gchar* k = (gchar*)key;
-    gchar* v = (gchar*)value;
     if (k[0] == '-')
     {
-      command = g_renew (const gchar*, command, i+2+2);
+      command = g_renew (gchar*, command, i+2+2);
 
-      command[i] = k;
+      command[i] = g_strdup (key);
       i++;
-      command[i] = v;
+#ifdef G_OS_WIN32
+      command[i] = g_strconcat ("\"", value, "\"", NULL);
+#else
+      command[i] = g_strdup (value);
+#endif
       i++;
     }
   }
 
   gchar* custom = g_strdup (gtk_entry_get_text (priv->custom_entry));
-  g_strstrip(custom);
+  g_strstrip (custom);
 
   if ( (gtk_widget_is_visible ((GtkWidget*)priv->custom_entry)) && (g_strcmp0 (custom, "") != 0) )
   {
     gchar** pch = g_strsplit (custom, " ", 0);
     guint n = g_strv_length (pch);
-    command = g_renew (const gchar*, command, i+n+2);
+    command = g_renew (gchar*, command, i+n+2);
     gint j = 0;
     while (pch[j])
     {
-      command[i] = pch[j];
+      command[i] = g_strdup (pch[j]);
       i++;
       j++;
     }
-    g_free (pch);
+    g_strfreev (pch);
   }
 
   g_free (custom);
 
-  command[i] = game_path;
+  command[i] = g_strdup (game_path);
   i++;
   command[i] = NULL;
 
@@ -306,15 +309,15 @@ main_window_paned_list_launched (PanedList* _sender,
 
 #ifdef G_OS_WIN32
     gchar* selection2 = g_strconcat("\"", selection, "\"", NULL);
-    const gchar** command = main_window_build_command (mw, selection2);
+    gchar** command = main_window_build_command (mw, selection2);
 #else
-    const gchar** command = main_window_build_command (mw, selection);
+    gchar** command = main_window_build_command (mw, selection);
 #endif
 
-    med_process_exec_emu (priv->med_process, (gchar**) command);
+    med_process_exec_emu (priv->med_process, command);
 
-    gchar* tmp = g_strjoinv (" ", (gchar**) command);
-    g_free (command);
+    gchar* tmp = g_strjoinv (" ", command);
+    g_strfreev (command);
 
     gchar* f_command = g_strconcat ("Launching mednafen with command line:\n  \"", tmp, "\"\n", NULL);
     g_free (tmp);

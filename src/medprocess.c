@@ -233,6 +233,7 @@ med_process_exec_emu (MedProcess* self,
   g_child_watch_add (pi.hProcess, (GChildWatchFunc)child_watch_func, self);
   CloseHandle (pi.hThread);
 
+  g_free (command_win);
 #else
 
   GPid child_pid;

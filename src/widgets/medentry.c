@@ -51,7 +51,7 @@ static GParamSpec* med_entry_properties[MED_ENTRY_NUM_PROPERTIES];
 static void med_entry_med_widget_interface_init (MedWidgetInterface* iface);
 
 G_DEFINE_TYPE_WITH_CODE (MedEntry, med_entry, GTK_TYPE_BOX, G_ADD_PRIVATE (MedEntry)
-                         G_IMPLEMENT_INTERFACE (med_widget_get_type (), med_entry_med_widget_interface_init));
+                         G_IMPLEMENT_INTERFACE (med_widget_get_type(), med_entry_med_widget_interface_init));
 
 
 static void
@@ -73,11 +73,7 @@ med_entry_real_get_value (MedWidget* base)
 
   g_free (priv->internal_value);
 
-#ifdef G_OS_WIN32
-  priv->internal_value = g_strconcat ("\"", gtk_entry_get_text (self->entry), "\"", NULL);
-#else
   priv->internal_value = g_strdup (gtk_entry_get_text (self->entry));
-#endif
 
   return priv->internal_value;
 }
