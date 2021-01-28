@@ -181,23 +181,22 @@ paned_list_hide_ext (const gchar* file)
 }
 
 
-static void
+static guint
 paned_list_scan_dir (PanedList* self,
                      const gchar* path,
                      GSList* filters,
                      gboolean recursive)
 {
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (path != NULL);
+  g_return_val_if_fail (self != NULL, 0);
+  g_return_val_if_fail (path != NULL, 0);
 
   PanedListPrivate* priv = paned_list_get_instance_private (self);
 
+  guint i = 0;
   GDir* dir = g_dir_open (path, 0, NULL);
 
   if (dir == NULL)
-    return;
-
-  gint i = 0;
+    return i;
 
   while (TRUE)
   {
@@ -223,14 +222,14 @@ paned_list_scan_dir (PanedList* self,
     }
 
     if ((g_file_test (path2, G_FILE_TEST_IS_DIR)) && (recursive))
-      paned_list_scan_dir (self, path2, filters, recursive);
+      i += paned_list_scan_dir (self, path2, filters, recursive);
 
     g_free (path2);
   }
 
-  g_signal_emit (self, paned_list_signals[PANED_LIST_FILLED_SIGNAL], 0, i);
-
   g_dir_close (dir);
+
+  return i;
 }
 
 
@@ -309,6 +308,9 @@ paned_list_set_position (PanedList* self,
     if ((alloc.width > 1) && (vpos == 0))
       vpos = alloc.width / 2;
 
+    if ((alloc.height > 1) && (hpos == 0))
+      hpos = alloc.height / 2;
+
     gtk_paned_set_position ((GtkPaned*) self, (alloc.width - vpos));
     gtk_paned_set_position ((GtkPaned*) priv->panedimage, (alloc.height - hpos));
   }
@@ -374,24 +376,36 @@ paned_list_fill_list (PanedList* self,
 
   if (iter == NULL)
   {
+    paned_list_show_filters (self, FALSE);
+    gtk_widget_set_visible ((GtkWidget*)priv->panedimage, FALSE);
+
+    g_signal_handler_block (priv->games_selection, priv->handler_id);
+    gtk_list_store_clear (priv->games_store);
+    g_signal_handler_unblock (priv->games_selection, priv->handler_id);
+
     g_signal_emit (self, paned_list_signals[PANED_LIST_FILLED_SIGNAL], 0, 0);
     return;
   }
 
   g_signal_handler_block (priv->games_selection, priv->handler_id);
+
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (priv->games_store),
+                                        GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID,
+                                        GTK_SORT_ASCENDING);
+
   gtk_list_store_clear (priv->games_store);
 
   g_free (priv->filters);
 
   gtk_tree_model_get (store, iter, 0, &path,
-                                  1, &recursive,
-                                2, &hidden,
-                              3, &priv->filters,
-                                                   4, &path_img_a,
-                                                   5, &path_img_b,
-                                                   6, &vpos,
-                                                   7, &hpos,
-                                                   -1);
+                                   1, &recursive,
+                                   2, &hidden,
+                                   3, &priv->filters,
+                                   4, &path_img_a,
+                                   5, &path_img_b,
+                                   6, &vpos,
+                                   7, &hpos,
+                                   -1);
 
   if (hidden)
     gtk_tree_view_column_set_attributes (priv->games_column, priv->renderer, "text", 1, NULL);
@@ -400,13 +414,17 @@ paned_list_fill_list (PanedList* self,
 
   GSList* list = paned_list_get_filters (self);
   paned_image_set_paths (priv->panedimage, path_img_a, path_img_b);
-  paned_list_scan_dir (self, path, list, recursive);
+
+  guint i = paned_list_scan_dir (self, path, list, recursive);
+  g_signal_emit (self, paned_list_signals[PANED_LIST_FILLED_SIGNAL], 0, i);
+
   g_slist_free_full (list, (GDestroyNotify) g_pattern_spec_free);
   paned_list_show_filters (self, priv->filters_header);
 
+  gtk_tree_view_column_clicked (priv->games_column);
   g_signal_handler_unblock (priv->games_selection, priv->handler_id);
 
-  select_first(self);
+  select_first (self);
 
   paned_list_set_position (self, path_img_a, path_img_b, vpos, hpos);
 
@@ -464,7 +482,7 @@ paned_list_new (void)
 
   priv->showing_screens = TRUE;
   priv->filters_header = FALSE;
-  priv->filters = NULL;
+  priv->filters = g_strdup ("");
   priv->selected = NULL;
 
   priv->games_store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, -1);
@@ -472,6 +490,7 @@ paned_list_new (void)
   g_object_unref (priv->games_store);
 
   priv->renderer = (GtkCellRenderer*) gtk_cell_renderer_text_new ();
+
   priv->games_column = gtk_tree_view_column_new_with_attributes ("Games", priv->renderer, "text", 0, NULL, NULL);
 
   gtk_tree_view_column_set_clickable (priv->games_column, TRUE);
@@ -513,8 +532,6 @@ paned_list_new (void)
                                               self,
                                               0);
 
-  gtk_tree_view_column_clicked (priv->games_column);
-
   return self;
 }
 
@@ -531,7 +548,7 @@ paned_list_class_init (PanedListClass* klass)
   G_OBJECT_CLASS (klass)->finalize = paned_list_finalize;
 
   paned_list_signals[PANED_LIST_FILLED_SIGNAL] = g_signal_new ("filled",
-                                                               paned_list_get_type (),
+                                                               paned_list_get_type(),
                                                                G_SIGNAL_RUN_LAST,
                                                                0,
                                                                NULL,
@@ -542,7 +559,7 @@ paned_list_class_init (PanedListClass* klass)
                                                                G_TYPE_INT);
 
   paned_list_signals[PANED_LIST_MOUSE_RELEASED_SIGNAL] = g_signal_new ("mouse-released",
-                                                                       paned_list_get_type (),
+                                                                       paned_list_get_type(),
                                                                        G_SIGNAL_RUN_LAST,
                                                                        0,
                                                                        NULL,
@@ -554,7 +571,7 @@ paned_list_class_init (PanedListClass* klass)
                                                                        G_TYPE_INT);
 
   paned_list_signals[PANED_LIST_ITEM_SELECTED_SIGNAL] = g_signal_new ("item-selected",
-                                                                       paned_list_get_type (),
+                                                                       paned_list_get_type(),
                                                                        G_SIGNAL_RUN_LAST,
                                                                        0,
                                                                        NULL,
@@ -565,7 +582,7 @@ paned_list_class_init (PanedListClass* klass)
                                                                        G_TYPE_STRING);
 
   paned_list_signals[PANED_LIST_LAUNCHED_SIGNAL] = g_signal_new ("launched",
-                                                                  paned_list_get_type (),
+                                                                  paned_list_get_type(),
                                                                   G_SIGNAL_RUN_LAST,
                                                                   0,
                                                                   NULL,
