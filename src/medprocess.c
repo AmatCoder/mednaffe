@@ -271,26 +271,40 @@ med_process_new (void)
 {
   MedProcess *self = (MedProcess*) g_object_new (med_process_get_type(), NULL);
 
+  gboolean b = FALSE;
 #ifdef G_OS_WIN32
   gchar *bin =  g_find_program_in_path ("mednafen.exe");
-  self->MedExePath = g_strconcat("\"", bin, "\"", NULL);
-  g_free(bin);
+
+  if (bin != NULL)
+  {
+    self->MedExePath = g_strconcat("\"", bin, "\"", NULL);
+    b = TRUE;
+  }
+
+  g_free (bin);
 #else
   self->MedExePath = g_find_program_in_path ("mednafen");
 #endif
-
   if (self->MedExePath != NULL)
   {
 #ifdef G_OS_WIN32
+    GFile* test = med_process_get_conf_path (self);
+
     bin = g_strconcat(self->MedExePath, " --help", NULL);
-    gboolean b =  WinExec(bin, SW_HIDE);
-    g_free(bin);
+    b =  (WinExec (bin, SW_HIDE) > 31);
+
+    if (test == NULL)
+      Sleep (2000);
+    else
+      g_object_unref (test);
+
+    g_free (bin);
 #else
     gchar* stdout;
     gchar* stderr;
 
     gchar *cl = g_shell_quote (self->MedExePath);
-    gboolean b = g_spawn_command_line_sync (cl, &stdout, &stderr, NULL, NULL);
+    b = g_spawn_command_line_sync (cl, &stdout, &stderr, NULL, NULL);
 
     g_free (stdout);
     g_free (stderr);

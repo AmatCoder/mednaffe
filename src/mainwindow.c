@@ -294,7 +294,7 @@ main_window_paned_list_launched (PanedList* _sender,
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
-  if ((selection != NULL) || (priv->sensitive))
+  if ((selection != NULL) && (priv->sensitive))
   {
     main_window_set_all_sensitive (mw, FALSE, priv->show_tooltips);
 
@@ -957,22 +957,28 @@ main_window_start (MainWindow* self)
 
   if (priv->med_process->MedExePath == NULL)
   {
-    main_window_show_error (self, "Mednafen executable not found!\n");
+#ifdef G_OS_WIN32
+    main_window_show_error (self, "Mednafen executable not found in this folder!\n");
+#else
+    main_window_show_error (self, "Mednafen executable not found in PATH!\n");
+#endif
     main_window_set_all_sensitive (self, FALSE, priv->show_tooltips);
   }
-
-  med_process_read_conf (priv->med_process);
-
-  if (priv->med_process->MedVersion == NULL)
-    main_window_show_error (self, "Mednafen configuration file (mednafen.cfg) not found!\n");
   else
   {
-    gtk_label_set_label (priv->status_version, priv->med_process->MedVersion);
-    if (priv->med_process->MedExePath)
+    med_process_read_conf (priv->med_process);
+
+    if (priv->med_process->MedVersion == NULL)
+      main_window_show_error (self, "Mednafen configuration file (mednafen.cfg) not found!\n");
+    else
     {
-      gchar *tooltip = g_strconcat ("Executable: ", priv->med_process->MedExePath, "\nConfiguration: ", priv->med_process->MedConfPath, NULL);
-      gtk_widget_set_tooltip_text ((GtkWidget*) priv->status_version, tooltip);
-      g_free (tooltip);
+      gtk_label_set_label (priv->status_version, priv->med_process->MedVersion);
+      if (priv->med_process->MedExePath)
+      {
+        gchar *tooltip = g_strconcat ("Executable: ", priv->med_process->MedExePath, "\nConfiguration: ", priv->med_process->MedConfPath, NULL);
+        gtk_widget_set_tooltip_text ((GtkWidget*) priv->status_version, tooltip);
+        g_free (tooltip);
+      }
     }
   }
 
@@ -989,6 +995,10 @@ main_window_start (MainWindow* self)
   g_object_set_data ((GObject*) self, "listjoy", priv->listjoy);
 
   gtk_window_set_default_icon_list (g_object_get_data (app, "icon_list"));
+
+#ifdef G_OS_WIN32
+  gtk_entry_set_icon_from_icon_name (priv->custom_entry, GTK_ENTRY_ICON_SECONDARY, "gtk-clear");
+#endif
 
   main_window_load_settings (self);
 }
