@@ -29,7 +29,8 @@ widgets/medrange.c widgets/medrange.h \
 widgets/medscale.c widgets/medscale.h \
 widgets/medspin.c widgets/medspin.h \
 widgets/medwidget.c widgets/medwidget.h \
-widgets/menuinput.c widgets/menuinput.h
+widgets/menuinput.c widgets/menuinput.h \
+widgets/joystick.h
 
 
 override CFLAGS +=-std=c99 -Wall $(DEFINES)

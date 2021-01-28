@@ -125,8 +125,8 @@ am__mednaffe_SOURCES_DIST = about.c about.h bios.c bios.h logbook.c \
 	widgets/medrange.h widgets/medscale.c widgets/medscale.h \
 	widgets/medspin.c widgets/medspin.h widgets/medwidget.c \
 	widgets/medwidget.h widgets/menuinput.c widgets/menuinput.h \
-	widgets/joystick_linux.c widgets/joystick_windows.c \
-	widgets/joystick_dummy.c
+	widgets/joystick.h widgets/joystick_linux.c \
+	widgets/joystick_windows.c widgets/joystick_dummy.c
 am__dirstamp = $(am__leading_dot)dirstamp
 @LINUX_TRUE@am__objects_1 = widgets/joystick_linux.$(OBJEXT)
 @LINUX_FALSE@@WINDOWS_TRUE@am__objects_2 =  \
@@ -349,8 +349,8 @@ mednaffe_SOURCES = about.c about.h bios.c bios.h logbook.c logbook.h \
 	widgets/medrange.h widgets/medscale.c widgets/medscale.h \
 	widgets/medspin.c widgets/medspin.h widgets/medwidget.c \
 	widgets/medwidget.h widgets/menuinput.c widgets/menuinput.h \
-	$(am__append_1) $(am__append_2) $(am__append_4) \
-	$(am__append_5)
+	widgets/joystick.h $(am__append_1) $(am__append_2) \
+	$(am__append_4) $(am__append_5)
 AM_CPPFLAGS = @GTK_CFLAGS@
 LDADD = @GTK_LIBS@
 CLEANFILES = *~
