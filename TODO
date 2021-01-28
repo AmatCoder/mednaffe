@@ -1,13 +1,11 @@
 ####  KNOWN ISSUES
 
-Mouse movement can not be configurated, only buttons.
+- Mouse movement can not be configurated by now, only buttons.
+- Images does not scale.
+- [Windows] Some widgets are misaligned.
 
-Images does not scale to smaller if *preserve_aspect_ratio* is FALSE.
 
 ####  TODO
 
-Windows native themes are pending to be developed.
-
-To write a FAQ and to put a link on Help.
-
-Apple II/II+ module
+- To write a FAQ and to put a link on Help.
+- Apple II/II+ module

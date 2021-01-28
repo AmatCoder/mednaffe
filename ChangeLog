@@ -1,3 +1,17 @@
+#### 28 / Jan / 2021
+
+Mednaffe 0.9.0 is released with the following changes:
+
+- Complete rewrite, dropping support for GTK2 and Windows XP.
+- Almost all input options are included now.
+- Added pce_fast and snes_faust modules.
+- Added an option to show screenshots.
+- Added the ability to send custom commands to emulator.
+- Added a bios check widget.
+- [Windows] Added an option to change themes.
+- New logo & cosmetic changes.
+
+
 #### 30 / Apr / 2018
 
 Mednaffe 0.8.8 is released with the following changes:
@@ -10,6 +24,7 @@ Mednaffe 0.8.8 is released with the following changes:
   it is set (Patch by denisfa).
 - Some minor fixes.
 
+
 #### 25 / Mar / 2018
 
 Mednaffe 0.8.7 is released with the following changes:
@@ -20,6 +35,7 @@ Mednaffe 0.8.7 is released with the following changes:
 - Honor environment CFLAGS in configure script (Thanks to akien-mga for patch).
 - Support compilation under *BSD OS'es. (Thanks to PaddyMac for report and testing).
 
+
 #### 29 / Jul / 2017
 
 Mednaffe 0.8.6 is released with the following changes:
@@ -27,21 +43,24 @@ Mednaffe 0.8.6 is released with the following changes:
 - Add checks to avoid access array out of bounds (It cause a segfault
   when configuring some keys)
 
+
 #### 14 / Feb / 2017
 
 Mednaffe 0.8.5 is released with the following changes:
 
 - Check properly version of mednafen emulator (It fails when used
   spanish locale on Linux).
-- Fixed Saturn bios setup. 
+- Fixed Saturn bios setup.
 - Add expansion cart option for Saturn.
+
 
 #### 21 / Jan / 2017
 
 Mednaffe 0.8.4 is released with the following changes:
 
-- Added support for new settings added by mednafen 0.9.41 (Obviously, 
+- Added support for new settings added by mednafen 0.9.41 (Obviously,
   it needs this version or higher to work).
+
 
 #### 19 / Nov / 2016
 
@@ -51,11 +70,13 @@ Mednaffe 0.8.3 is released with the following changes:
 - [Linux] Fix stack smashing when compiling with '-fstack-protector' caused by
   buffer overflow (Thanks to 'not-a-user' for report it).
 
+
 #### 21 / Feb / 2016
 
 Mednaffe 0.8.1 is released with the following changes:
 
 - [Windows] Fix xbox 360 controller detection on some conditions.
+
 
 #### 24 / Jul / 2015
 
@@ -90,6 +111,7 @@ Mednaffe 0.7 is released with the following changes:
 
 Note: This version will need 0.9.36 (or above) of mednafen emulator.
 
+
 #### 10 / December / 2013
 
 Mednaffe 0.6 is released with the following changes:
@@ -104,6 +126,7 @@ Mednaffe 0.6 is released with the following changes:
 - Add a desktop file and icons to install on Linux.
 - Some minor fixes.
 
+
 #### 16 / September / 2013
 
 Mednaffe 0.5 is released with the following changes:
@@ -114,13 +137,15 @@ Mednaffe 0.5 is released with the following changes:
 - List options (filters, sort direction) are saved now.
 - Fix 'Open' buttons signals on Windows.
 - Now Mednaffe restore after minimize on Windows.
-- Fix Windows icon (hopefully) 
+- Fix Windows icon (hopefully)
+
 
 #### 30 / August / 2013
 
 Mednaffe 0.4 is released with the following changes:
 
 - Mednaffe has been rewritten from scratch in C language.
+
 
 #### 24 / October / 2010
 
@@ -132,6 +157,7 @@ Mednaffe 0.3 is released with the following changes:
   usability.
 - Now Mednaffe remember his position on the screen
 
+
 #### 22 / August / 2010
 
 Mednaffe 0.2 is released with the following changes:
@@ -139,6 +165,7 @@ Mednaffe 0.2 is released with the following changes:
 - Fixed: Values by default are shown now.
 - Fixed: Size of sound buffer in Linux.
 - Minor cosmetics changes.
+
 
 #### 12 / August / 2010
 

@@ -1,8 +1,8 @@
-  NOTICE
+      NOTICE
 ------------------
 
 Mednaffe is licensed under the GNU GENERAL PUBLIC LICENSE version 3.
-See: /licenses/mednaffe/COPYING
+See: /licenses/mednaffe-0.9.0/COPYING
 
 This build of Mednaffe uses libraries (statically-linked) and resources
 from various free sofware / open source projects.
@@ -10,71 +10,62 @@ from various free sofware / open source projects.
 Most of them are been modified by MXE (M cross environment) <http://mxe.cc/>
 in order to cross compile statically-linked executables.
 
-Source code of all packages and patches applied are available on:
-<https://sites.google.com/site/amatcoder/mednaffe/downloads/>
-
 Libraries used (with their respectives licenses) are:
 
-* GTK+ <http://www.gtk.org/>
+* GTK <http://www.gtk.org/>
   Modified by MXE (M cross environment) and by me (AmatCoder).
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2
-  See: /licenses/gtk+-2.24.27/COPYING
-
-
-* SDL <http://www.libsdl.org/>
-  Modified by MXE (M cross environment) and by me (AmatCoder).
-  Licensed under the zlib license.
-  See: /licenses/SDL2-2.0.3/COPYING.txt
+  See: /licenses/gtk+-3.22.30/COPYING
 
 
 * gdk-pixbuf <http://www.gtk.org/>
   Modified by MXE (M cross environment).
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2
-  See: /licenses/gdk-pixbuf-2.30.8/COPYING
+  See: /licenses/gdk-pixbuf-2.32.3/COPYING
 
 
 * pango <http://www.pango.org/>
   Modified by MXE (M cross environment).
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2
-  See: /licenses/pango-1.36.1/COPYING
+  See: /licenses/pango-1.37.4/COPYING
 
 
 * cairo <http://cairographics.org/>
   Modified by MXE (M cross environment).
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2.1
-  See: /licenses/cairo-1.12.18/COPYING and
-       /licenses/cairo-1.12.18/COPYING-LPGL-2.1
+  See: /licenses/cairo-1.16.0/COPYING and
+       /licenses/cairo-1.16.0/COPYING-LPGL-2.1
 
 
 * atk <https://developer.gnome.org/atk/>
   Modified by MXE (M cross environment).
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2
-  See: /licenses/atk-2.14.0/COPYING
+  See: /licenses/atk-2.16.0/COPYING
 
 
 * glib <http://www.gtk.org/>
   Modified by MXE (M cross environment).
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2
-  See: /licenses/glib-2.42.1/COPYING
+  See: /licenses/glib-2.50.2/COPYING
 
 
 * libpng <http://www.libpng.org/pub/png/libpng.html>
   Unmodified.
   Licensed under the zlib license
-  See: /licenses/libpng-1.6.16/LICENSE
+  See: /licenses/libpng-1.6.37/LICENSE
 
 
 * libintl <https://www.gnu.org/software/gettext/>
   Unmodified.
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2.1
-  See: /licenses/gettext-0.19.3/gettext-runtime/COPYING and
-       /licenses/gettext-0.19.3/gettext-runtime/intl/COPYING.LIB
+  See: /licenses/gettext-0.20.1/gettext-runtime/COPYING and
+       /licenses/gettext-0.20.1/gettext-runtime/intl/COPYING.LIB
 
 
 * harfbuzz <http://www.freedesktop.org/wiki/Software/HarfBuzz/>
   Unmodified.
   Licensed under the GNU LIBRARY GENERAL PUBLIC LICENSE version 2
-  See: /licenses/harfbuzz-0.9.38/COPYING
+  See: /licenses/harfbuzz-2.6.4/COPYING
 
 
 * libffi <https://sourceware.org/libffi/>
@@ -83,24 +74,29 @@ Libraries used (with their respectives licenses) are:
   See: /licenses/libffi-3.2.1/LICENSE
 
 
+* libepoxy <https://github.com/anholt/libepoxy/>
+  Unmodified.
+  Licensed under the MIT license
+  See: /licenses/libepoxy-1.3.1/COPYING
+
+
 * pixman <http://www.pixman.org/>
   Unmodified.
   Licensed under the MIT license
-  See: /licenses/pixman-0.31.2/COPYING
+  See: /licenses/pixman-0.33.6/COPYING
 
 
 * libtiff <http://www.remotesensing.org/libtiff/>
   Unmodified.
   Licensed under a custom license
-  See: /licenses/tiff-4.0.3/COPYRIGHT
+  See: /licenses/tiff-4.1.0/COPYRIGHT
 
 
 * zlib <http://www.zlib.net/>
   Unmodified.
   Licensed under the zlib license
-  See: /licenses/zlib-1.2.8/README
+  See: /licenses/zlib-1.2.11/README
 
 
 Mednaffe includes modified code from mednafen <http://mednafen.sourceforge.net/>
 licensed under the GNU GENERAL PUBLIC LICENSE version 2 (or later).
-
