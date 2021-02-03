@@ -1,21 +1,21 @@
 1 ICON "mednaffe.ico"
 
 1 VERSIONINFO
-FILEVERSION     0,9,0,0
-PRODUCTVERSION  0,9,0,0
+FILEVERSION     0,9,1,0
+PRODUCTVERSION  0,9,1,0
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "FileDescription", "A front-end (GUI) for Mednafen emulator"
-      VALUE "FileVersion", "0.9.0"
+      VALUE "FileVersion", "0.9.1"
       VALUE "InternalName", "mednaffe"
       VALUE "LegalCopyright", "Copyright \251 2010-2021 AmatCoder"
       VALUE "LegalTrademarks", "Released under GPLv3"
       VALUE "OriginalFilename", "mednaffe.exe"
       VALUE "ProductName", "Mednaffe"
-      VALUE "ProductVersion", "0.9.0"
+      VALUE "ProductVersion", "0.9.1"
     END
   END
 

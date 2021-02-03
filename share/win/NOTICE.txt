@@ -2,7 +2,7 @@
 ------------------
 
 Mednaffe is licensed under the GNU GENERAL PUBLIC LICENSE version 3.
-See: /licenses/mednaffe-0.9.0/COPYING
+See: /licenses/mednaffe-0.9.1/COPYING
 
 This build of Mednaffe uses libraries (statically-linked) and resources
 from various free sofware / open source projects.
@@ -100,3 +100,6 @@ Libraries used (with their respectives licenses) are:
 
 Mednaffe includes modified code from mednafen <http://mednafen.sourceforge.net/>
 licensed under the GNU GENERAL PUBLIC LICENSE version 2 (or later).
+
+Mednaffe also includes modified theme from B00merang Project <https://github.com/B00merang-Project/Windows-10>
+licensed under the GNU GENERAL PUBLIC LICENSE version 3.

@@ -84,7 +84,7 @@ main (int argc,
   g_object_set_data_full ((GObject*) mednaffe_app, "desc", g_strdup("A front-end (GUI) for mednafen emulator"), g_free);
   g_object_set_data_full ((GObject*) mednaffe_app, "copyright", g_strdup("Copyright © 2013-2021 AmatCoder"), g_free);
   g_object_set_data_full ((GObject*) mednaffe_app, "url", g_strdup("https://github.com/AmatCoder/mednaffe"), g_free);
-  g_object_set_data_full ((GObject*) mednaffe_app, "version", g_strdup("0.9.0"), g_free);
+  g_object_set_data_full ((GObject*) mednaffe_app, "version", g_strdup("0.9.1"), g_free);
 
   GList *icon_list = NULL;
 

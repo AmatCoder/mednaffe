@@ -1,3 +1,13 @@
+#### 04 / Feb /2021
+
+Mednaffe 0.9.1 is released with the following changes:
+
+- [Windows] Show correct icons in window buttons.
+- [Windows] Changed Windows10 theme in order to fix most issues.
+- [Windows] Add support for the guide button (XInput devices).
+- [Linux] Lower version requirement of Autoconf to 2.69.
+
+
 #### 28 / Jan / 2021
 
 Mednaffe 0.9.0 is released with the following changes:
