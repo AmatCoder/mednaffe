@@ -267,7 +267,11 @@ init_joys (void)
     }
   }
 
-  p_XInputGetState = (void*)GetProcAddress(x_dll_handle, "XInputGetState");
+  p_XInputGetState = (void*)GetProcAddress(x_dll_handle, (const char*)100/*"XInputGetStateEx"*/);
+
+  if (p_XInputGetState == NULL)
+    p_XInputGetState = (void*)GetProcAddress(x_dll_handle, "XInputGetState");
+
   p_XInputGetCapabilities = (void*)GetProcAddress(x_dll_handle, "XInputGetCapabilities");
 
   if ((p_XInputGetCapabilities == NULL) || (p_XInputGetState == NULL))

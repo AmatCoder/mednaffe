@@ -1324,11 +1324,7 @@ med_input_real_get_value (MedWidget* base)
 
   g_free(priv->value);
 
-#ifdef G_OS_WIN32
-  priv->value = g_strconcat ("\"", priv->internal_value, "\"", NULL);
-#else
   priv->value = g_strdup (priv->internal_value);
-#endif
 
   return priv->value;
 }
