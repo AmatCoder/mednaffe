@@ -45,7 +45,7 @@ mednaffe_app_new (void)
 {
   MednaffeApp * self = (MednaffeApp*) g_object_new (mednaffe_app_get_type(),
                                                     "application-id",
-                                                    "com.github.mednaffe",
+                                                    "com.github.AmatCoder.mednaffe",
                                                     "flags",
                                                     G_APPLICATION_FLAGS_NONE,
                                                     NULL);
