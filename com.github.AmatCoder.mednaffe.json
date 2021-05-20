@@ -1,9 +1,11 @@
 {
-    "app-id": "com.github.mednaffe",
+    "app-id": "com.github.AmatCoder.mednaffe",
     "command": "mednaffe",
     "runtime": "org.freedesktop.Platform",
     "runtime-version": "20.08",
     "sdk": "org.freedesktop.Sdk",
+    "rename-desktop-file": "mednaffe.desktop",
+    "rename-icon": "mednaffe",
     "finish-args": [
         "--share=network",
         "--share=ipc",
@@ -28,12 +30,22 @@
         {
             "name": "mednaffe",
             "buildsystem": "autotools",
+            "post-install": [
+                "install -Dm644 com.github.AmatCoder.mednaffe.appdata.xml /app/share/appdata/com.github.AmatCoder.mednaffe.appdata.xml"
+            ],
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://github.com/AmatCoder/mednaffe",
-                    "tag": "0.9.1",
-                    "commit": "1d87c53c66d1cbd2017c6d3ca0c61c0486d3787d"
+                    "type": "archive",
+                    "url": "https://github.com/AmatCoder/mednaffe/releases/download/0.9.1/mednaffe-0.9.1.tar.gz",
+                    "sha256": "426cd53342db9f6d619f5b7fafda3a262e5b4789aa87790265bb09ce674b454f"
+                },
+                {
+                    "type": "patch",
+                    "path": "id.patch"
+                },
+                {
+                    "type": "file",
+                    "path": "com.github.AmatCoder.mednaffe.appdata.xml"
                 }
             ]
         }
