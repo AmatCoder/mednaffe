@@ -220,7 +220,7 @@ init_joys (void)
     joy->num = js;
     joy->type = 1;
     joy->name = g_strndup (aname, strlen (aname));
-    joy->id = g_strdup_printf ("0x%016lx%04x%04x%08x", GetBVPV (number), num_axes, num_buttons, 0);
+    joy->id = g_strdup_printf ("0x%016"G_GINT64_MODIFIER"x%04x%04x%08x", GetBVPV (number), num_axes, num_buttons, 0);
     joy->data1 = GINT_TO_POINTER(fd);
 
     g_free (number);
