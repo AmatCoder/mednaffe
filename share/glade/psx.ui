@@ -2061,7 +2061,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port1.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -2611,7 +2611,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port1.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -4911,7 +4911,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port2.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -5461,7 +5461,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port2.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -7760,7 +7760,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port3.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -8310,7 +8310,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port3.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -10609,7 +10609,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port4.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -11159,7 +11159,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port4.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -13458,7 +13458,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port5.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -14008,7 +14008,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port5.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -16307,7 +16307,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port6.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -16857,7 +16857,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port6.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -19156,7 +19156,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port7.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -19706,7 +19706,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port7.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -22005,7 +22005,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port8.dualshock.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
@@ -22555,7 +22555,7 @@ dancepad</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="command">psx.input.port8.dualanalog.l3</property>
-                                        <property name="label">L3 (right stick button)</property>
+                                        <property name="label">L3 (left stick button)</property>
                                         <property name="label_width">25</property>
                                         <child>
                                           <placeholder/>
