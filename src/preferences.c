@@ -74,7 +74,7 @@ G_DEFINE_TYPE (PreferencesWindow, preferences_window, GTK_TYPE_DIALOG);
 static GType
 preferences_window_systems_get_type (void)
 {
-  static volatile gsize preferences_window_systems_type_id__volatile = 0;
+  static gsize preferences_window_systems_type_id__volatile = 0;
 
   if (g_once_init_enter (&preferences_window_systems_type_id__volatile))
   {
@@ -304,7 +304,7 @@ preferences_window_class_init (PreferencesWindowClass * klass)
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "win_pos",
                                              FALSE,
-                                             G_STRUCT_OFFSET (PreferencesWindow, win_pos));
+                                             G_STRUCT_OFFSET (PreferencesWindow, win_pos));https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1719
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "action_launch",
