@@ -419,7 +419,7 @@ main_window_process_exec_emu_ended (MedProcess* sender,
   med_process_read_conf (priv->med_process);
   main_window_set_all_values (mw, (GtkWidget*)mw);
 
-  logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_FRONTEND, "End of execution catched\n");
+  logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_FRONTEND, "End of execution caught\n");
 }
 
 
