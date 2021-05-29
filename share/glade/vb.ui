@@ -386,7 +386,7 @@ yellow_blue</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="command">vb.anaglyph.rcolor</property>
-                                <property name="label">Anaglyph maximum-brightness color for rigth view</property>
+                                <property name="label">Anaglyph maximum-brightness color for right view</property>
                                 <property name="label_width">55</property>
                               </object>
                               <packing>
