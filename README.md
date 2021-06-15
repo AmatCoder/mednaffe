@@ -11,6 +11,7 @@ Its main features are:
 #### Downloads - Version 0.9.1
  * You can download Mednaffe [here](https://github.com/AmatCoder/mednaffe/releases/latest "Downloads").
  * You can see the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
+ * [Flatpak](https://flathub.org/apps/details/com.github.AmatCoder.mednaffe) is available for Linux users.
 
 *Note: Mednaffe only works with 1.22.1 or higher versions of mednafen emulator.*
 
