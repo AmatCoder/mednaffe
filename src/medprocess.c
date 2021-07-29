@@ -28,12 +28,8 @@
 
 #ifdef G_OS_WIN32
   #include <windows.h>
+  #include "win32util.h"
 #endif
-
-#ifdef G_WITH_CYGWIN
-#include <sys/cygwin.h>
-#endif
-
 
 
 typedef struct _MedProcessClass MedProcessClass;
@@ -59,30 +55,6 @@ enum  {
 
 static guint med_process_signals[MED_PROCESS_NUM_SIGNALS] = {0};
 
-#ifdef G_OS_WIN32
-static gchar*
-win32_get_process_directory (void)
-{
-  wchar_t wpath[MAX_PATH];
-  if (!GetModuleFileNameW (NULL, wpath, MAX_PATH))
-    return NULL;
-
-  gchar* retval = g_utf16_to_utf8 (wpath, -1, NULL, NULL, NULL);
-
-  #ifdef G_WITH_CYGWIN
-  /* In Cygwin we need to have POSIX paths */
-  {
-    gchar tmp[MAX_PATH];
-
-    cygwin_conv_to_posix_path (retval, tmp);
-    g_free (retval);
-    retval = g_strdup (tmp);
-  }
-  #endif
-
-  return retval;
-}
-#endif
 
 static GFile*
 med_process_get_conf_path (MedProcess* self)

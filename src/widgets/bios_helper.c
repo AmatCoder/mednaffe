@@ -24,6 +24,10 @@
 
 #include "bios_helper.h"
 
+#ifdef G_OS_WIN32
+  #include "win32util.h"
+#endif
+
 
 static const gchar*
 bios_get_value (GHashTable* table, const gchar* command)
@@ -52,7 +56,7 @@ bios_get_base_path (void)
   gchar* mh;
 
 #ifdef G_OS_WIN32
-  mh = g_win32_get_package_installation_directory_of_module (NULL);
+  mh = win32_get_process_directory ();
 
   if (mh == NULL)
     mh = g_strdup ("");
