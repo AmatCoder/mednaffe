@@ -461,14 +461,39 @@ static void
 main_window_preferences_change_theme (PreferencesWindow* sender, gint t, gpointer self)
 {
 #ifdef STATIC_BUILD
-  GtkSettings *settings = gtk_settings_get_default();
 
-  if (t == 0)
-    g_object_set(settings, "gtk-theme-name", "Windows10", NULL);
-  else if (t == 1)
-    g_object_set(settings, "gtk-theme-name", "win32", NULL);
-  else if (t == 2)
-    g_object_set(settings, "gtk-theme-name", "Adwaita", NULL);
+  GtkSettings* settings = gtk_settings_get_default();
+  char* theme;
+  gboolean dark;
+
+  switch (t)
+  {
+    case 1:
+      theme = "win32";
+      dark = FALSE;
+      break;
+
+    case 2:
+      theme = "Adwaita";
+      dark = FALSE;
+      break;
+
+    case 3:
+      theme = "Windows10";
+      dark = TRUE;
+      break;
+
+    case 4:
+      theme = "Adwaita";
+      dark = TRUE;
+      break;
+
+    default:
+      theme = "Windows10";
+      dark = FALSE;
+  }
+
+  g_object_set (settings, "gtk-theme-name", theme, "gtk-application-prefer-dark-theme", dark, NULL);
 
 #endif
 }
@@ -717,6 +742,10 @@ main_window_save_settings (MainWindow* self)
   gint theme = gtk_combo_box_get_active (GTK_COMBO_BOX(priv->preferences->change_theme));
   g_key_file_set_integer (key, "GUI", "Theme", theme);
 
+  GtkAdjustment *adj = gtk_spin_button_get_adjustment (priv->preferences->change_font);
+  gint fsize = (gint)gtk_adjustment_get_value (adj);
+  g_key_file_set_integer (key, "GUI", "FontSize", fsize);
+
   gchar* conf_path = win32_get_process_directory ();
 #else
   gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe", NULL);
@@ -919,9 +948,16 @@ main_window_load_settings (MainWindow* self)
   gtk_widget_show ((GtkWidget*) self);
 
 #ifdef G_OS_WIN32
+
   gint t = g_key_file_get_integer (key, "GUI", "Theme", NULL);
   gtk_combo_box_set_active (GTK_COMBO_BOX(priv->preferences->change_theme), t);
-  main_window_preferences_change_theme (NULL, t, NULL);
+  //main_window_preferences_change_theme (NULL, t, NULL);
+
+  gint s = g_key_file_get_integer (key, "GUI", "FontSize", NULL);
+
+  if (s > 0)
+    gtk_spin_button_set_value (priv->preferences->change_font, (gdouble)s);
+
 #endif
 
   gsize size;

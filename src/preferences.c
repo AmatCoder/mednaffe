@@ -155,6 +155,28 @@ preferences_window_on_change_theme (GtkComboBox* sender,
 
 
 static void
+preferences_window_on_change_font_size (GtkSpinButton *sender,
+                                        gpointer self)
+{
+  g_return_if_fail (sender != NULL);
+  g_return_if_fail (self != NULL);
+
+  GtkAdjustment *adj = gtk_spin_button_get_adjustment (sender);
+  gint value = (gint)gtk_adjustment_get_value (adj);
+  gchar* css = g_strdup_printf ("#gamelist {font-size:%ipx;}\n#gamelist>header {font-size:12px;}", value);
+
+  GtkCssProvider *cssProvider = gtk_css_provider_new();
+  gtk_css_provider_load_from_data (cssProvider, css, -1, NULL);
+  gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                               GTK_STYLE_PROVIDER(cssProvider),
+                               GTK_STYLE_PROVIDER_PRIORITY_USER);
+
+  g_free (css);
+
+}
+
+
+static void
 preferences_window_set_list (PreferencesWindow* self,
                              GtkWidget* wid)
 {
@@ -317,6 +339,11 @@ preferences_window_class_init (PreferencesWindowClass * klass)
                                              G_STRUCT_OFFSET (PreferencesWindow, change_theme));
 
   gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
+                                             "change_font",
+                                             FALSE,
+                                             G_STRUCT_OFFSET (PreferencesWindow, change_font));
+
+  gtk_widget_class_bind_template_child_full (GTK_WIDGET_CLASS (klass),
                                              "notebook",
                                              FALSE,
                                              G_STRUCT_OFFSET (PreferencesWindow, notebook));
@@ -337,4 +364,8 @@ preferences_window_class_init (PreferencesWindowClass * klass)
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "on_change_theme",
                                                 G_CALLBACK(preferences_window_on_change_theme));
+
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+                                                "on_change_font_size",
+                                                G_CALLBACK(preferences_window_on_change_font_size));
 }
