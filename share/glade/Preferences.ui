@@ -582,7 +582,9 @@ hide</property>
                                 <items>
                                   <item translatable="yes">Windows 10</item>
                                   <item translatable="yes">Window 7</item>
-                                  <item translatable="yes">Adwaita (Gtk3)</item>
+                                  <item translatable="yes">Adwaita</item>
+                                  <item translatable="yes">Windows 10 (Dark)</item>
+                                  <item translatable="yes">Adwaita (Dark)</item>
                                 </items>
                                 <signal name="changed" handler="on_change_theme" swapped="no"/>
                               </object>

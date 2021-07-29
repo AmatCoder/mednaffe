@@ -457,14 +457,39 @@ static void
 main_window_preferences_change_theme (PreferencesWindow* sender, gint t, gpointer self)
 {
 #ifdef STATIC_BUILD
-  GtkSettings *settings = gtk_settings_get_default();
 
-  if (t == 0)
-    g_object_set(settings, "gtk-theme-name", "Windows10", NULL);
-  else if (t == 1)
-    g_object_set(settings, "gtk-theme-name", "win32", NULL);
-  else if (t == 2)
-    g_object_set(settings, "gtk-theme-name", "Adwaita", NULL);
+  GtkSettings* settings = gtk_settings_get_default();
+  char* theme;
+  gboolean dark;
+
+  switch (t)
+  {
+    case 1:
+      theme = "win32";
+      dark = FALSE;
+      break;
+
+    case 2:
+      theme = "Adwaita";
+      dark = FALSE;
+      break;
+
+    case 3:
+      theme = "Windows10";
+      dark = TRUE;
+      break;
+
+    case 4:
+      theme = "Adwaita";
+      dark = TRUE;
+      break;
+
+    default:
+      theme = "Windows10";
+      dark = FALSE;
+  }
+
+  g_object_set (settings, "gtk-theme-name", theme, "gtk-application-prefer-dark-theme", dark, NULL);
 
 #endif
 }
