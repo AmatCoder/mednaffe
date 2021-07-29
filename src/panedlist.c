@@ -489,6 +489,8 @@ paned_list_new (void)
   priv->treeview = (GtkTreeView*) gtk_tree_view_new_with_model ((GtkTreeModel*) priv->games_store);
   g_object_unref (priv->games_store);
 
+  gtk_widget_set_name ((GtkWidget*) priv->treeview, "gamelist");
+
   priv->renderer = (GtkCellRenderer*) gtk_cell_renderer_text_new ();
 
   priv->games_column = gtk_tree_view_column_new_with_attributes ("Games", priv->renderer, "text", 0, NULL, NULL);
