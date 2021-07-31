@@ -25,16 +25,12 @@
 #ifndef __WIN32UTIL_H__
 #define __WIN32UTIL_H__
 
-#include <gtk/gtk.h>
-
-#ifdef G_OS_WIN32
+#include <glib.h>
 
 G_BEGIN_DECLS
 
 gchar* win32_get_process_directory (void);
 
 G_END_DECLS
-
-#endif
 
 #endif

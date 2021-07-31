@@ -23,10 +23,8 @@
 
 
 #include "win32util.h"
-
-#ifdef G_OS_WIN32
-
 #include <windows.h>
+
 
 gchar*
 win32_get_process_directory (void)
@@ -37,5 +35,3 @@ win32_get_process_directory (void)
 
   return g_utf16_to_utf8 (wpath, -1, NULL, NULL, NULL);
 }
-
-#endif
