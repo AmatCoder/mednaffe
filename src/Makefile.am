@@ -40,8 +40,7 @@ if LINUX
   override CFLAGS +=-Wl,-export-dynamic
 else
 if WINDOWS
-  mednaffe_SOURCES+= widgets/joystick_windows.c
-  mednaffe_SOURCES+= win32util.c win32util.h
+  mednaffe_SOURCES+= win32util.c win32util.h widgets/joystick_windows.c
   override CFLAGS +=-mwindows
   LIBS +=../share/win/mednaffe.res -ldxguid -ldinput
 else
