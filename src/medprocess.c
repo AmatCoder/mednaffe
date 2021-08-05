@@ -28,6 +28,7 @@
 
 #ifdef G_OS_WIN32
   #include <windows.h>
+  #include "win32util.h"
 #endif
 
 
@@ -61,7 +62,7 @@ med_process_get_conf_path (MedProcess* self)
   if (self->MedConfPath == NULL)
   {
 #ifdef G_OS_WIN32
-    gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
+    gchar* dir = win32_get_process_directory ();
     self->MedConfPath = g_strconcat (dir, "\\mednafen.cfg\\", NULL);
     g_free(dir);
 #else

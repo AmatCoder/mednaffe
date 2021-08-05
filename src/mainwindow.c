@@ -41,6 +41,10 @@
 #include "preferences.h"
 #include "bios.h"
 
+#ifdef G_OS_WIN32
+  #include "win32util.h"
+#endif
+
 
 typedef struct _MainWindowClass MainWindowClass;
 typedef struct _MainWindowPrivate MainWindowPrivate;
@@ -381,7 +385,7 @@ main_window_process_exec_emu_ended (MedProcess* sender,
 
 #ifdef G_OS_WIN32
   gchar* string = NULL;
-  gchar* wpath = g_win32_get_package_installation_directory_of_module (NULL);
+  gchar* wpath = win32_get_process_directory ();
   gchar* txt = g_strconcat (wpath, "\\stdout.txt", NULL);
 
   if (g_file_get_contents(txt, &string, NULL, NULL))
@@ -742,7 +746,7 @@ main_window_save_settings (MainWindow* self)
   gint fsize = (gint)gtk_adjustment_get_value (adj);
   g_key_file_set_integer (key, "GUI", "FontSize", fsize);
 
-  gchar* conf_path = g_win32_get_package_installation_directory_of_module (NULL);
+  gchar* conf_path = win32_get_process_directory ();
 #else
   gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe", NULL);
 
@@ -894,7 +898,7 @@ main_window_load_settings (MainWindow* self)
   GKeyFile *key = g_key_file_new ();
 
 #ifdef G_OS_WIN32
-  gchar* dir = g_win32_get_package_installation_directory_of_module (NULL);
+  gchar* dir = win32_get_process_directory ();
   gchar* conf_path = g_strconcat (dir, "\\mednaffe.conf", NULL);
   g_free(dir);
 #else
