@@ -32,7 +32,6 @@ Author: AmatCoder
   <object class="GtkAdjustment" id="fontsize">
     <property name="lower">9</property>
     <property name="upper">32</property>
-    <property name="value">12</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>

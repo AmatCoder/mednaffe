@@ -951,12 +951,13 @@ main_window_load_settings (MainWindow* self)
 
   gint t = g_key_file_get_integer (key, "GUI", "Theme", NULL);
   gtk_combo_box_set_active (GTK_COMBO_BOX(priv->preferences->change_theme), t);
-  //main_window_preferences_change_theme (NULL, t, NULL);
 
   gint s = g_key_file_get_integer (key, "GUI", "FontSize", NULL);
 
   if (s > 0)
     gtk_spin_button_set_value (priv->preferences->change_font, (gdouble)s);
+  else
+    gtk_spin_button_set_value (priv->preferences->change_font, 13.0);
 
 #endif
 

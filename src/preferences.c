@@ -163,7 +163,7 @@ preferences_window_on_change_font_size (GtkSpinButton *sender,
 
   GtkAdjustment *adj = gtk_spin_button_get_adjustment (sender);
   gint value = (gint)gtk_adjustment_get_value (adj);
-  gchar* css = g_strdup_printf ("#gamelist {font-size:%ipx;}\n#gamelist>header {font-size:12px;}", value);
+  gchar* css = g_strdup_printf ("#gamelist {font-size:%ipx;}\n#gamelist>header {font-size:13px;}", value);
 
   GtkCssProvider *cssProvider = gtk_css_provider_new();
   gtk_css_provider_load_from_data (cssProvider, css, -1, NULL);
