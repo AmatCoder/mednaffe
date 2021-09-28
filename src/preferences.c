@@ -249,7 +249,7 @@ preferences_window_new (GtkWindow* parent)
   preferences_window_set_list (self, (GtkWidget*) self);
 
 #ifndef STATIC_BUILD
-  gtk_notebook_remove_page (self->notebook, 2);
+  gtk_notebook_remove_page (self->notebook, 3);
 #endif
 
   return self;

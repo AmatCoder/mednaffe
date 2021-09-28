@@ -42,6 +42,7 @@ void paned_list_fill_list (PanedList* self, GtkComboBox* combo, GtkTreeIter* ite
 void paned_list_show_filters (PanedList* self, gboolean b);
 void paned_list_show_screens (PanedList* self, gboolean b);
 void paned_list_request_launch (PanedList* self);
+void paned_list_selection_nav (PanedList* self, gint direction, GtkMovementStep step);
 
 G_END_DECLS
 

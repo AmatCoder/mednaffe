@@ -176,6 +176,11 @@
               <type>GParamBoolean</type>
             </parameter-spec>
         </property>
+        <property id="only_joy" name="Allow only joysticks/gamepads">
+            <parameter-spec>
+              <type>GParamBoolean</type>
+            </parameter-spec>
+        </property>
       </properties>
     </glade-widget-class>
 

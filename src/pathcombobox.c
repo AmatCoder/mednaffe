@@ -107,6 +107,24 @@ path_combo_box_changed (GtkComboBox* sender,
 
 
 void
+path_combo_box_move_to_item (PathComboBox* self, gboolean down)
+{
+  g_return_if_fail (self != NULL);
+
+  GtkTreeIter iter;
+  GtkTreeModel* store = gtk_combo_box_get_model (self->combo);
+
+  gtk_combo_box_get_active_iter (self->combo, &iter);
+
+  if ((down) && (gtk_tree_model_iter_next (store, &iter)))
+    gtk_combo_box_set_active_iter (self->combo, &iter);
+
+  if ((!down) && (gtk_tree_model_iter_previous (store, &iter)))
+    gtk_combo_box_set_active_iter (self->combo, &iter);
+}
+
+
+void
 path_combo_box_save_panel_position (PathComboBox* self,
                                     gint vpos,
                                     gint hpos)

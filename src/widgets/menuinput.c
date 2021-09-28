@@ -48,6 +48,19 @@ menu_input_enable_all (MenuInput* self,
 }
 
 
+void
+menu_input_enable_clear (MenuInput* self,
+                         gboolean b)
+{
+  g_return_if_fail (self != NULL);
+
+  gtk_widget_set_sensitive ((GtkWidget*) self->clear, b);
+  gtk_widget_set_sensitive ((GtkWidget*) self->or, FALSE);
+  gtk_widget_set_sensitive ((GtkWidget*) self->and, FALSE);
+  gtk_widget_set_sensitive ((GtkWidget*) self->and_not, FALSE);
+}
+
+
 MenuInput*
 menu_input_new (void)
 {

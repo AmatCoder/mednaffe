@@ -75,6 +75,15 @@ struct _MainWindowPrivate {
   GtkBuilder *globui;
   gboolean show_tooltips;
   gboolean sensitive;
+  gboolean treeisfocus;
+
+  const gchar* navup;
+  const gchar* navdown;
+  const gchar* navpageup;
+  const gchar* navpagedown;
+  const gchar* navfolderup;
+  const gchar* navfolderdown;
+  const gchar* navlaunch;
 };
 
 
@@ -969,7 +978,90 @@ main_window_load_settings (MainWindow* self)
   gtk_combo_box_set_active (priv->pathbox->combo, active);
 
   g_strfreev(dirs);
+
+  priv->navup = g_key_file_get_string (key, "GUI", "MoveUp", NULL);
+  priv->navdown = g_key_file_get_string (key, "GUI", "MoveDown", NULL);
+  priv->navpageup = g_key_file_get_string (key, "GUI", "MovePageUp", NULL);
+  priv->navpagedown = g_key_file_get_string (key, "GUI", "MovePageDown", NULL);
+  priv->navfolderup = g_key_file_get_string (key, "GUI", "FolderUp", NULL);
+  priv->navfolderdown = g_key_file_get_string (key, "GUI", "FolderDown", NULL);
+  priv->navlaunch = g_key_file_get_string (key, "GUI", "LaunchGame", NULL);
+
   g_key_file_free (key);
+}
+
+
+static void
+main_window_joy_event (MedListJoy* sender,
+                       const gchar* text,
+                       const gchar* value,
+                       gpointer self)
+{
+  g_return_if_fail (self != NULL);
+  g_return_if_fail (text != NULL);
+  g_return_if_fail (value != NULL);
+
+  MainWindowPrivate* priv = main_window_get_instance_private (self);
+
+  if ((!priv->treeisfocus) || (!priv->sensitive))
+    return;
+
+  if (g_strcmp0 (value, priv->navdown) == 0)
+    paned_list_selection_nav (priv->panedlist, 1, GTK_MOVEMENT_DISPLAY_LINES);
+  else if (g_strcmp0 (value, priv->navup) == 0)
+    paned_list_selection_nav (priv->panedlist, -1, GTK_MOVEMENT_DISPLAY_LINES);
+  else if (g_strcmp0 (value, priv->navpagedown) == 0)
+    paned_list_selection_nav (priv->panedlist, 1, GTK_MOVEMENT_PAGES);
+  else if (g_strcmp0 (value, priv->navpageup) == 0)
+    paned_list_selection_nav (priv->panedlist, -1, GTK_MOVEMENT_PAGES);
+  else if (g_strcmp0 (value, priv->navfolderdown) == 0)
+    path_combo_box_move_to_item (priv->pathbox, TRUE);
+  else if (g_strcmp0 (value, priv->navfolderup) == 0)
+    path_combo_box_move_to_item (priv->pathbox, FALSE);
+  else if (g_strcmp0 (value, priv->navlaunch) == 0)
+    paned_list_request_launch (priv->panedlist);
+}
+
+
+static void
+main_window_focus_changed (GtkWidget* sender,
+                           gboolean in,
+                           gpointer self)
+{
+  g_return_if_fail (self != NULL);
+  MainWindowPrivate* priv = main_window_get_instance_private (self);
+
+  med_list_joy_enable_all (priv->listjoy, in);
+  priv->treeisfocus = in;
+}
+
+
+static void
+main_window_preferences_hidden (GtkWidget* window, gpointer self)
+{
+  g_return_if_fail (self != NULL);
+  MainWindowPrivate* priv = main_window_get_instance_private (self);
+
+  GSList* it = NULL;
+  for(it = priv->preferences->list; it != NULL; it = it->next)
+  {
+    const gchar* command = med_widget_get_command ((MedWidget*)it->data);
+
+    if (g_strcmp0 (command, "MoveDown") == 0)
+      priv->navdown = med_widget_get_value ((MedWidget*)it->data);
+    else if (g_strcmp0 (command, "MoveUp") == 0)
+      priv->navup = med_widget_get_value ((MedWidget*)it->data);
+    else if (g_strcmp0 (command, "MovePageDown") == 0)
+      priv->navpagedown = med_widget_get_value ((MedWidget*)it->data);
+    else if (g_strcmp0 (command, "MovePageUp") == 0)
+      priv->navpageup = med_widget_get_value ((MedWidget*)it->data);
+    else if (g_strcmp0 (command, "FolderDown") == 0)
+      priv->navfolderdown = med_widget_get_value ((MedWidget*)it->data);
+    else if (g_strcmp0 (command, "FolderUp") == 0)
+      priv->navfolderup = med_widget_get_value ((MedWidget*)it->data);
+    else if (g_strcmp0 (command, "LaunchGame") == 0)
+      priv->navlaunch = med_widget_get_value ((MedWidget*)it->data);
+  }
 }
 
 
@@ -1034,6 +1126,11 @@ main_window_start (MainWindow* self)
   med_list_joy_init_list_joy (priv->listjoy);
 
   g_object_set_data ((GObject*) self, "listjoy", priv->listjoy);
+  g_object_set_data ((GObject*) priv->preferences, "listjoy", priv->listjoy);
+
+  g_signal_connect_object (priv->listjoy, "joy-event", (GCallback) main_window_joy_event, self, 0);
+  g_signal_connect_object (priv->panedlist, "focus-changed", (GCallback) main_window_focus_changed, self, 0);
+  g_signal_connect_object (priv->preferences, "hide", (GCallback) main_window_preferences_hidden, self, 0);
 
   gtk_window_set_default_icon_list (g_object_get_data (app, "icon_list"));
 
@@ -1094,6 +1191,12 @@ main_window_new (GtkApplication* app)
   g_signal_connect_object (priv->panedlist, "launched", (GCallback) main_window_paned_list_launched, self, 0);
   gtk_box_pack_start (priv->main_box, (GtkWidget*) priv->panedlist, TRUE, TRUE, 0);
 
+  GList *list = NULL;
+  list = g_list_append (list, priv->panedlist);
+  list = g_list_append (list, priv->pathbox);
+  gtk_container_set_focus_chain ((GtkContainer*) priv->main_box, list);
+  g_list_free (list);
+
   priv->preferences = preferences_window_new ((GtkWindow*) self);
   g_signal_connect_object (priv->preferences, "on-show-tips", (GCallback) main_window_preferences_show_tooltips, self, 0);
   g_signal_connect_object (priv->preferences, "on-show-filters", (GCallback) main_window_preferences_show_filters, self, 0);
@@ -1116,6 +1219,7 @@ main_window_init (MainWindow* self)
   priv->sysui = NULL;
   priv->sensitive = TRUE;
   priv->show_tooltips = TRUE;
+  priv->treeisfocus = FALSE;
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

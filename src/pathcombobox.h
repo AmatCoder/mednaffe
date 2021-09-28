@@ -42,6 +42,7 @@ PathComboBox* path_combo_box_new (void);
 gchar** path_combo_box_get_dirs (PathComboBox* self, gsize* length);
 void path_combo_box_set_dirs (PathComboBox* self, gchar** st, gsize length);
 void path_combo_box_save_panel_position (PathComboBox* self, gint vpos, gint hpos);
+void path_combo_box_move_to_item (PathComboBox* self, gboolean down);
 
 G_END_DECLS
 

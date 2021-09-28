@@ -43,6 +43,7 @@ struct _MedInputPrivate {
   gboolean _modified;
   gchar* _label;
   gboolean _modifier_keys;
+  gboolean _only_joy;
   gboolean is_active;
   gboolean is_mouse;
   gchar* old_text;
@@ -58,6 +59,7 @@ enum  {
   MED_INPUT_LABEL_PROPERTY,
   MED_INPUT_LABELWIDTH_PROPERTY,
   MED_INPUT_MODIFIER_KEYS_PROPERTY,
+  MED_INPUT_ONLY_JOY_PROPERTY,
   MED_INPUT_NUM_PROPERTIES
 };
 
@@ -1417,6 +1419,9 @@ med_input_entry_key_press (GtkWidget* sender,
   MedInput* mi = self;
   MedInputPrivate* priv = med_input_get_instance_private (mi);
 
+  if (priv->_only_joy)
+    return FALSE;
+
   if (priv->_modifier_keys)
   {
     if ((event->keyval == 65505) ||
@@ -1649,6 +1654,32 @@ med_input_set_modifier_keys (MedInput* self,
 }
 
 
+gboolean
+med_input_get_only_joy (MedInput* self)
+{
+  g_return_val_if_fail (self != NULL, FALSE);
+  MedInputPrivate* priv = med_input_get_instance_private (self);
+
+  return priv->_only_joy;
+}
+
+
+void
+med_input_set_only_joy (MedInput* self,
+                        gboolean value)
+{
+  g_return_if_fail (self != NULL);
+  MedInputPrivate* priv = med_input_get_instance_private (self);
+
+  if (med_input_get_only_joy (self) != value)
+  {
+    priv->_only_joy = value;
+    g_object_notify_by_pspec ((GObject *) self, med_input_properties[MED_INPUT_ONLY_JOY_PROPERTY]);
+  }
+}
+
+
+
 static gboolean
 med_input_entry_focus_out (GtkWidget* sender,
                            GdkEvent* event,
@@ -1769,7 +1800,11 @@ med_input_entry_mouse_clicked (GtkWidget* sender,
         g_signal_connect_object (priv->menu->and, "activate", (GCallback) med_input_menu_event, self, 0);
         g_signal_connect_object (priv->menu->and_not, "activate", (GCallback) med_input_menu_event, self, 0);
 
-        menu_input_enable_all (priv->menu, (g_strcmp0 (gtk_button_get_label (priv->entry), "") != 0));
+        if (priv->_only_joy)
+          menu_input_enable_clear (priv->menu, (g_strcmp0 (gtk_button_get_label (priv->entry), "") != 0));
+        else
+          menu_input_enable_all (priv->menu, (g_strcmp0 (gtk_button_get_label (priv->entry), "") != 0));
+
         g_object_set ((GtkWidget*) priv->entry, "is-focus", TRUE, NULL);
         gtk_menu_popup ((GtkMenu*) priv->menu, NULL, NULL, NULL, NULL, event->button, event->time);
       }
@@ -1870,6 +1905,9 @@ med_input_get_property (GObject* object,
     case MED_INPUT_MODIFIER_KEYS_PROPERTY:
       g_value_set_boolean (value, med_input_get_modifier_keys (self));
     break;
+    case MED_INPUT_ONLY_JOY_PROPERTY:
+      g_value_set_boolean (value, med_input_get_only_joy (self));
+    break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     break;
@@ -1898,6 +1936,9 @@ med_input_set_property (GObject* object,
     break;
     case MED_INPUT_MODIFIER_KEYS_PROPERTY:
       med_input_set_modifier_keys (self, g_value_get_boolean (value));
+    break;
+    case MED_INPUT_ONLY_JOY_PROPERTY:
+      med_input_set_only_joy (self, g_value_get_boolean (value));
     break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -1954,6 +1995,17 @@ med_input_class_init (MedInputClass * klass)
                                      "modifier-keys",
                                      "modifier-keys",
                                      "modifier-keys",
+                                     FALSE,
+                                     G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE
+                                   ));
+
+  g_object_class_install_property (G_OBJECT_CLASS (klass),
+                                   MED_INPUT_ONLY_JOY_PROPERTY,
+                                   med_input_properties[MED_INPUT_ONLY_JOY_PROPERTY] = g_param_spec_boolean
+                                   (
+                                     "only-joy",
+                                     "only-joy",
+                                     "only-joy",
                                      FALSE,
                                      G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE
                                    ));

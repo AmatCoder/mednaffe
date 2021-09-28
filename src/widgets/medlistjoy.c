@@ -78,7 +78,7 @@ med_list_joy_enable_all (MedListJoy* self, gboolean enable)
     MedListJoyPrivate* priv = med_list_joy_get_instance_private (self);
 
     discard_read (priv->list);
-    g_timeout_add (50, med_list_joy_watch, self);
+    g_timeout_add (100, med_list_joy_watch, self);
   }
   else
     g_source_remove_by_user_data (self);

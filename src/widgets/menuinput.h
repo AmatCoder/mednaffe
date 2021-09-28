@@ -43,6 +43,7 @@ struct _MenuInput {
 GType menu_input_get_type (void) G_GNUC_CONST;
 MenuInput* menu_input_new (void);
 void menu_input_enable_all (MenuInput* self, gboolean b);
+void menu_input_enable_clear (MenuInput* self, gboolean b);
 
 G_END_DECLS
 

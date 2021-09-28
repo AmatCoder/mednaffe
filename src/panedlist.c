@@ -55,6 +55,7 @@ enum  {
   PANED_LIST_MOUSE_RELEASED_SIGNAL,
   PANED_LIST_ITEM_SELECTED_SIGNAL,
   PANED_LIST_LAUNCHED_SIGNAL,
+  PANED_LIST_FOCUS_SIGNAL,
   PANED_LIST_NUM_SIGNALS
 };
 
@@ -95,6 +96,41 @@ paned_list_selection_changed (GtkTreeSelection* _sender,
     g_signal_emit (pl, paned_list_signals[PANED_LIST_ITEM_SELECTED_SIGNAL], 0, str);
     g_free(str);
   }
+}
+
+
+void
+paned_list_selection_nav (PanedList* self, gint direction, GtkMovementStep step)
+{
+  g_return_if_fail (self != NULL);
+
+  PanedList* pl = self;
+  PanedListPrivate* priv = paned_list_get_instance_private (pl);
+
+  gboolean b;
+  g_signal_emit_by_name (priv->treeview, "move-cursor", step, direction ,&b);
+
+/*
+  GtkTreeModel* model;
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_selection_get_selected (priv->games_selection, &model, &iter);
+
+  if (valid)
+  {
+    gtk_tree_selection_select_iter (priv->games_selection, &iter);
+
+    GtkTreePath *path = gtk_tree_model_get_path (model, &iter);
+    gtk_tree_view_scroll_to_cell (priv->treeview,
+                              path,
+                              priv->games_column,
+                              TRUE,
+                              0.5,
+                              0.0);
+
+    gtk_tree_path_free (path);
+  }
+*/
+
 }
 
 
@@ -472,6 +508,21 @@ paned_list_finalize (GObject* obj)
 }
 
 
+gboolean
+paned_list_focus_changed (GtkWidget *widget,
+                          GdkEvent *event,
+                          gpointer self)
+{
+
+  if (((GdkEventFocus*)event)->in)
+    g_signal_emit (self, paned_list_signals[PANED_LIST_FOCUS_SIGNAL], 0, TRUE);
+  else
+    g_signal_emit (self, paned_list_signals[PANED_LIST_FOCUS_SIGNAL], 0, FALSE);
+
+  return FALSE;
+}
+
+
 PanedList*
 paned_list_new (void)
 {
@@ -519,6 +570,18 @@ paned_list_new (void)
   g_signal_connect_object (priv->treeview,
                            "row-activated",
                            (GCallback) paned_list_row_double_clicked,
+                           self,
+                           0);
+
+  g_signal_connect_object (priv->treeview,
+                           "focus-in-event",
+                           (GCallback) paned_list_focus_changed,
+                           self,
+                           0);
+
+  g_signal_connect_object (priv->treeview,
+                           "focus-out-event",
+                           (GCallback) paned_list_focus_changed,
                            self,
                            0);
 
@@ -593,4 +656,15 @@ paned_list_class_init (PanedListClass* klass)
                                                                   G_TYPE_NONE,
                                                                   1,
                                                                   G_TYPE_STRING);
+
+  paned_list_signals[PANED_LIST_FOCUS_SIGNAL] = g_signal_new ("focus-changed",
+                                                               paned_list_get_type(),
+                                                               G_SIGNAL_RUN_LAST,
+                                                               0,
+                                                               NULL,
+                                                               NULL,
+                                                               g_cclosure_marshal_VOID__BOOLEAN,
+                                                               G_TYPE_NONE,
+                                                               1,
+                                                               G_TYPE_BOOLEAN);
 }
