@@ -33,5 +33,9 @@ win32_get_process_directory (void)
   if (!GetModuleFileNameW (NULL, wpath, MAX_PATH))
     return NULL;
 
-  return g_utf16_to_utf8 (wpath, -1, NULL, NULL, NULL);
+  gchar* cpath =  g_utf16_to_utf8 (wpath, -1, NULL, NULL, NULL);
+  gchar* path = g_path_get_dirname (cpath);
+  g_free (cpath);
+
+  return path;
 }
