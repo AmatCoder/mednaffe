@@ -83,6 +83,8 @@ med_process_get_conf_path (MedProcess* self)
     self->MedVersion = NULL;
     g_free (self->MedConfPath);
     self->MedConfPath = NULL;
+    g_object_unref (file);
+
     return NULL;
   }
 
@@ -220,21 +222,23 @@ med_process_exec_emu (MedProcess* self,
 
 #ifdef G_OS_WIN32
 
-  STARTUPINFO si;
+  STARTUPINFOW si;
   PROCESS_INFORMATION pi;
 
-  ZeroMemory (&si, sizeof(STARTUPINFO));
-  si.cb = sizeof(STARTUPINFO);
+  ZeroMemory (&si, sizeof(STARTUPINFOW));
+  si.cb = sizeof(STARTUPINFOW);
   ZeroMemory (&pi, sizeof(PROCESS_INFORMATION));
 
   gchar* command_win = g_strjoinv (" ", command);
+  gunichar2* command_win_utf16 = g_utf8_to_utf16 (command_win, -1, NULL, NULL, NULL);
 
-  CreateProcess (NULL, command_win, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
+  CreateProcessW (NULL, command_win_utf16, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
+
+  g_free (command_win_utf16);
+  g_free (command_win);
 
   g_child_watch_add (pi.hProcess, (GChildWatchFunc)child_watch_func, self);
   CloseHandle (pi.hThread);
-
-  g_free (command_win);
 #else
 
   GPid child_pid;
@@ -277,10 +281,7 @@ med_process_new (void)
   gchar *bin =  g_find_program_in_path ("mednafen.exe");
 
   if (bin != NULL)
-  {
     self->MedExePath = g_strconcat("\"", bin, "\"", NULL);
-    b = TRUE;
-  }
 
   g_free (bin);
 #else
@@ -292,12 +293,33 @@ med_process_new (void)
     GFile* test = med_process_get_conf_path (self);
 
     bin = g_strconcat(self->MedExePath, " --help", NULL);
-    b =  (WinExec (bin, SW_HIDE) > 31);
 
-    if (test == NULL)
-      Sleep (2000);
-    else
+    STARTUPINFOW si;
+    PROCESS_INFORMATION pi;
+
+    ZeroMemory (&si, sizeof(STARTUPINFOW));
+    si.cb = sizeof(STARTUPINFOW);
+    ZeroMemory (&pi, sizeof(PROCESS_INFORMATION));
+
+    gunichar2* command_win_utf16 = g_utf8_to_utf16 (bin, -1, NULL, NULL, NULL);
+
+    b = CreateProcessW (NULL, command_win_utf16, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
+
+    DWORD ret = WaitForSingleObject (pi.hProcess, 2500);
+
+    if (b)
+    {
+      CloseHandle (pi.hProcess);
+      CloseHandle (pi.hThread);
+    }
+
+    if (ret != WAIT_OBJECT_0)
+      b = FALSE;
+
+    if (test != NULL)
       g_object_unref (test);
+    else
+      Sleep (2500);
 
     g_free (bin);
 #else
