@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([mednaffe],[0.9.1])
+AC_INIT([mednaffe],[0.9.2])
 AC_CONFIG_SRCDIR([src/mednaffe.c])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([subdir-objects])
