@@ -1,4 +1,4 @@
-       README for Mednaffe 0.9.1 (Windows version)
+       README for Mednaffe 0.9.2 (Windows version)
 -------------------------------------------------------------------------------------------
 
 Mednaffe is a front-end (GUI) for mednafen emulator.

@@ -1,4 +1,19 @@
-#### 04 / Feb /2021
+#### 30 / Nov / 2021
+
+Mednaffe 0.9.2 is released with the following changes:
+
+- Added support for gamepad navigation through game list.
+- Fix Gen/MD 6-buttons controller input mapping.
+- [Windows] Fix issues when non-ASCII characters are used in paths.
+- [Windows] Add an option to allow larger fonts for game list.
+- [Windows] Add dark variants for themes.
+- [Windows] Fix failure to find configuration inside bin/ or lib/ folders (patch by mayawarrier).
+- [Linux] Fix joystick support on 32 bits (patch by not-a-user).
+- [Linux] Flatpak is available on Flathub (thanks to GabMus and hfiguiere for the help).
+
+
+
+#### 04 / Feb / 2021
 
 Mednaffe 0.9.1 is released with the following changes:
 
