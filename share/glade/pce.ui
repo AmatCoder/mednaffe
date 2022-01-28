@@ -1594,6 +1594,69 @@ tsushinkb</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
+                                <child>
+                                  <object class="GtkExpander">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="expanded">True</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">pce.input.port1.gamepad.rapid_i</property>
+                                            <property name="label">Rapid I</property>
+                                            <property name="label_width">12</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">pce.input.port1.gamepad.rapid_ii</property>
+                                            <property name="label">Rapid II</property>
+                                            <property name="label_width">12</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child type="label">
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Autofire</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
                                 <property name="name">gamepad</property>
@@ -2106,6 +2169,69 @@ mouse</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
+                                <child>
+                                  <object class="GtkExpander">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="expanded">True</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">pce.input.port2.gamepad.rapid_i</property>
+                                            <property name="label">Rapid I</property>
+                                            <property name="label_width">12</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="MedInput">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="command">pce.input.port2.gamepad.rapid_ii</property>
+                                            <property name="label">Rapid II</property>
+                                            <property name="label_width">12</property>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child type="label">
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Autofire</property>
+                                        <attributes>
+                                          <attribute name="weight" value="bold"/>
+                                        </attributes>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
                                 <property name="name">gamepad</property>
@@ -2597,6 +2723,69 @@ mouse</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GtkExpander">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="expanded">True</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedInput">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">pce.input.port3.gamepad.rapid_i</property>
+                                        <property name="label">Rapid I</property>
+                                        <property name="label_width">12</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedInput">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">pce.input.port3.gamepad.rapid_ii</property>
+                                        <property name="label">Rapid II</property>
+                                        <property name="label_width">12</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Autofire</property>
+                                    <attributes>
+                                      <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="name">gamepad</property>
@@ -3081,6 +3270,69 @@ mouse</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GtkExpander">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="expanded">True</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedInput">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">pce.input.port4.gamepad.rapid_i</property>
+                                        <property name="label">Rapid I</property>
+                                        <property name="label_width">12</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedInput">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">pce.input.port4.gamepad.rapid_ii</property>
+                                        <property name="label">Rapid II</property>
+                                        <property name="label_width">12</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Autofire</property>
+                                    <attributes>
+                                      <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="name">gamepad</property>
@@ -3563,6 +3815,69 @@ mouse</property>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
                                 <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkExpander">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="expanded">True</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="MedInput">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">pce.input.port5.gamepad.rapid_i</property>
+                                        <property name="label">Rapid I</property>
+                                        <property name="label_width">12</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="MedInput">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="command">pce.input.port5.gamepad.rapid_ii</property>
+                                        <property name="label">Rapid II</property>
+                                        <property name="label_width">12</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Autofire</property>
+                                    <attributes>
+                                      <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
