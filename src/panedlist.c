@@ -349,6 +349,8 @@ paned_list_set_position (PanedList* self,
 
     gtk_paned_set_position ((GtkPaned*) self, (alloc.width - vpos));
     gtk_paned_set_position ((GtkPaned*) priv->panedimage, (alloc.height - hpos));
+
+    gtk_container_check_resize ((GtkContainer*) priv->panedimage);
   }
 }
 

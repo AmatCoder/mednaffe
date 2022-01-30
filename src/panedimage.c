@@ -40,7 +40,8 @@ struct _PanedImagePrivate {
   gchar* file_a;
   gchar* file_b;
   gint width;
-  gint height;
+  gint height1;
+  gint height2;
   gboolean preserve_aspect_ratio;
 };
 
@@ -51,13 +52,14 @@ G_DEFINE_TYPE_WITH_PRIVATE (PanedImage, paned_image, GTK_TYPE_PANED);
 static void
 paned_image_set_pixbuf (PanedImage* self,
                         GtkImage* image,
-                        const gchar* path)
+                        const gchar* path,
+                        gint height)
 {
   PanedImagePrivate* priv = paned_image_get_instance_private (self);
 
-  if ((priv->width > 0) && (priv->height > 0))
+  if ((priv->width > 0) && (height > 0))
   {
-    GdkPixbuf* pix = gdk_pixbuf_new_from_file_at_scale (path, priv->width, priv->height, priv->preserve_aspect_ratio, NULL);
+    GdkPixbuf* pix = gdk_pixbuf_new_from_file_at_scale (path, priv->width, height, priv->preserve_aspect_ratio, NULL);
 
     if (pix != NULL)
     {
@@ -73,14 +75,15 @@ static gchar*
 paned_image_set_image (PanedImage* self,
                        GtkImage* image,
                        const gchar* path,
-                       const gchar* filename)
+                       const gchar* filename,
+                       gint height)
 {
   gchar* file = g_strconcat (path, "/", filename, ".png", NULL);
 
   gboolean b = g_file_test (file, G_FILE_TEST_EXISTS);
 
   if (b)
-    paned_image_set_pixbuf (self, image, file);
+    paned_image_set_pixbuf (self, image, file, height);
   else
   {
     gtk_image_clear (image);
@@ -110,7 +113,7 @@ paned_image_set_images (PanedImage* self,
     if (visible)
     {
       g_free (priv->file_a);
-      priv->file_a = paned_image_set_image (self, priv->image_a, priv->path_a, str);
+      priv->file_a = paned_image_set_image (self, priv->image_a, priv->path_a, str, priv->height1);
     }
 
     visible = gtk_widget_get_visible ((GtkWidget*) priv->image_b);
@@ -118,7 +121,7 @@ paned_image_set_images (PanedImage* self,
     if (visible)
     {
       g_free (priv->file_b);
-      priv->file_b = paned_image_set_image (self, priv->image_b, priv->path_b, str);
+      priv->file_b = paned_image_set_image (self, priv->image_b, priv->path_b, str, priv->height2);
     }
 
   }
@@ -160,21 +163,28 @@ paned_image_scale_images (GtkWidget* sender,
   PanedImage* pi = self;
   PanedImagePrivate* priv = paned_image_get_instance_private (pi);
 
-  if ((allocation->width > 8) && (allocation->height > 17))
+  gint tmp_width = allocation->width - 16;
+  gint tmp_heigth = (allocation->height - gtk_paned_get_position ((GtkPaned*) pi)) - 8;
+
+  if ((priv->width == tmp_width) && (priv->height2 == tmp_heigth))
+    return;
+
+  if ((allocation->width > 16) && (allocation->height > 16))
   {
-    priv->width = (allocation->width - 8);
-    priv->height = ((allocation->height / 2) - 8);
+    priv->width = tmp_width;
+    priv->height2 = tmp_heigth;
+    priv->height1 = (allocation->height - priv->height2) - 16;
 
     gboolean visible = gtk_widget_get_visible ((GtkWidget*) pi);
     if (visible)
     {
       if (gtk_widget_get_visible ((GtkWidget*) priv->image_a))
         if (priv->file_a != NULL)
-          paned_image_set_pixbuf (pi, priv->image_a, priv->file_a);
+          paned_image_set_pixbuf (pi, priv->image_a, priv->file_a, priv->height1);
 
       if (gtk_widget_get_visible ((GtkWidget*) priv->image_b))
         if (priv->file_b != NULL)
-          paned_image_set_pixbuf (pi, priv->image_b, priv->file_b);
+          paned_image_set_pixbuf (pi, priv->image_b, priv->file_b, priv->height2);
     }
   }
 }
@@ -209,7 +219,8 @@ paned_image_new (GtkOrientation orientation)
   priv->file_a = NULL;
   priv->file_b = NULL;
   priv->width = 0;
-  priv->height = 0;
+  priv->height1 = 0;
+  priv->height2 = 0;
 
   priv->image_a = (GtkImage*) gtk_image_new();
   gtk_paned_pack1 ((GtkPaned*) self, (GtkWidget*) priv->image_a, TRUE, TRUE);

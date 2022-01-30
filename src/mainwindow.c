@@ -707,9 +707,8 @@ save_preflist_func (gconstpointer data, gpointer self)
 static void
 main_window_save_settings (MainWindow* self)
 {
-  gint width = 0;
-  gint height = 0;
-  gboolean maximized;
+  gint width;
+  gint height;
 
   g_return_if_fail (self != NULL);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
@@ -729,13 +728,10 @@ main_window_save_settings (MainWindow* self)
 
   g_key_file_set_integer (key, "GUI", "ActiveDir", gtk_combo_box_get_active (priv->pathbox->combo));
 
-  g_object_get ((GtkWindow*) self, "is-maximized", &maximized, NULL);
-
-  if (!maximized)
-    gtk_window_get_size ((GtkWindow*) self, &width, &height);
-
+  gtk_window_get_size ((GtkWindow*) self, &width, &height);
   g_key_file_set_integer (key, "GUI", "Width", width);
   g_key_file_set_integer (key, "GUI", "Height", height);
+  g_key_file_set_boolean (key, "GUI", "Maximized", gtk_window_is_maximized ((GtkWindow*) self));
 
   gtk_window_get_position ((GtkWindow*) self, &width, &height);
   g_key_file_set_integer (key, "GUI", "PosX", width);
@@ -935,7 +931,8 @@ main_window_load_settings (MainWindow* self)
 
   if ((width > 0) && ( height > 0))
     gtk_window_resize ((GtkWindow*) self, width, height);
-  else
+
+  if (g_key_file_get_boolean (key, "GUI", "Maximized", NULL))
     gtk_window_maximize ((GtkWindow*) self);
 
   if (gtk_toggle_button_get_active ((GtkToggleButton*) priv->preferences->win_pos))
