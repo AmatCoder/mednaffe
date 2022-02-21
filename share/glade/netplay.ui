@@ -146,7 +146,7 @@ Author: AmatCoder
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="command">netplay.gamekey</property>
-            <property name="label">MD5 hash of the game</property>
+            <property name="label">Game key, to hash with the MD5 hash of the game</property>
             <property name="label_width">20</property>
             <child>
               <placeholder/>
