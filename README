@@ -28,3 +28,9 @@ To build mednaffe you need GTK+3 (3.16 or above) development libraries.
 
 
 *Note: You do not need to install mednaffe, it can be run from /src folder.*
+
+## Rebuilding resources.c for GUI changes
+
+If you make changes to the ui files inside the /share folder, you need to rebuild resources.c before compiling:
+
+  ``glib-compile-resources --sourcedir=./share/glade --target=./src/resources.c --generate-source ./share/glade/resources.xml``
