@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.36.0
 
 Copyright (C) 2013-2021 AmatCoder
 
@@ -451,25 +451,38 @@ Author: AmatCoder
                     <property name="label_xalign">0</property>
                     <property name="label_yalign">0</property>
                     <child>
-                      <object class="GtkTreeView">
-                        <property name="width_request">240</property>
+                      <object class="GtkScrolledWindow">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="model">global_settings_store</property>
-                        <property name="headers_visible">False</property>
-                        <property name="enable_search">False</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection">
-                            <signal name="changed" handler="selection_changed" swapped="no"/>
-                          </object>
-                        </child>
+                        <property name="can_focus">False</property>
+                        <property name="shadow_type">none</property>
+                        <property name="width_request">240</property>
                         <child>
-                          <object class="GtkTreeViewColumn">
+                          <object class="GtkViewport">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkCellRendererText"/>
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
+                              <object class="GtkTreeView">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="model">global_settings_store</property>
+                                <property name="headers_visible">False</property>
+                                <property name="enable_search">False</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection">
+                                    <signal name="changed" handler="selection_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn">
+                                    <child>
+                                      <object class="GtkCellRendererText"/>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
                             </child>
                           </object>
                         </child>
@@ -539,24 +552,38 @@ Author: AmatCoder
                     <property name="label_xalign">0</property>
                     <property name="label_yalign">0</property>
                     <child>
-                      <object class="GtkTreeView">
+                      <object class="GtkScrolledWindow">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="model">systems_filter</property>
-                        <property name="headers_visible">False</property>
-                        <property name="enable_search">False</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection">
-                            <signal name="changed" handler="selection_changed" swapped="no"/>
-                          </object>
-                        </child>
+                        <property name="can_focus">False</property>
+                        <property name="shadow_type">none</property>
+                        <property name="width_request">240</property>
                         <child>
-                          <object class="GtkTreeViewColumn">
+                          <object class="GtkViewport">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkCellRendererText"/>
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
+                              <object class="GtkTreeView">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="model">systems_filter</property>
+                                <property name="headers_visible">False</property>
+                                <property name="enable_search">False</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection">
+                                    <signal name="changed" handler="selection_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn">
+                                    <child>
+                                      <object class="GtkCellRendererText"/>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
                             </child>
                           </object>
                         </child>
