@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.40.0 
 
-Copyright (C) 2013-2021 AmatCoder
+Copyright (C) 2013-2023 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,28 +22,28 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.16"/>
+  <requires lib="gtk+" version="3.22"/>
   <requires lib="medwidgets" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2021 AmatCoder -->
+  <!-- interface-copyright 2013-2023 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="globbox">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_start">18</property>
-    <property name="margin_end">18</property>
-    <property name="margin_top">18</property>
-    <property name="margin_bottom">18</property>
+    <property name="can-focus">False</property>
+    <property name="margin-start">18</property>
+    <property name="margin-end">18</property>
+    <property name="margin-top">18</property>
+    <property name="margin-bottom">18</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="MedCheckButton">
         <property name="label" translatable="yes">Enable fullscreen</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="draw_indicator">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="draw-indicator">True</property>
         <property name="command">video.fs</property>
       </object>
       <packing>
@@ -56,10 +56,10 @@ Author: AmatCoder
       <object class="MedCheckButton">
         <property name="label" translatable="yes">Enable frameskip during emulation rendering</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="tooltip_text" translatable="yes">Disable for rendering code performance testing</property>
-        <property name="draw_indicator">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="tooltip-text" translatable="yes">Disable for rendering code performance testing</property>
+        <property name="draw-indicator">True</property>
         <property name="command">video.frameskip</property>
       </object>
       <packing>
@@ -72,10 +72,10 @@ Author: AmatCoder
       <object class="MedCheckButton">
         <property name="label" translatable="yes">Attempt to disable desktop composition</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="tooltip_text" translatable="yes">Currently, this setting only has an effect on Windows Vista and Windows 7 (and probably the equivalent server versions as well)</property>
-        <property name="draw_indicator">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="tooltip-text" translatable="yes">Currently, this setting only has an effect on Windows Vista and Windows 7 (and probably the equivalent server versions as well)</property>
+        <property name="draw-indicator">True</property>
         <property name="command">video.disable_composition</property>
       </object>
       <packing>
@@ -88,11 +88,11 @@ Author: AmatCoder
       <object class="MedCheckButton">
         <property name="label" translatable="yes">Enable time synchronization for frame blitting</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="tooltip_text" translatable="yes">Disable to reduce latency, at the cost of potentially increased video "juddering", with the maximum reduction in latency being about 1 video frame's time.
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="tooltip-text" translatable="yes">Disable to reduce latency, at the cost of potentially increased video "juddering", with the maximum reduction in latency being about 1 video frame's time.
 Will work best with emulated systems that are not very computationally expensive to emulate, combined with running on a relatively fast CPU.</property>
-        <property name="draw_indicator">True</property>
+        <property name="draw-indicator">True</property>
         <property name="command">video.blit_timesync</property>
       </object>
       <packing>
@@ -102,19 +102,35 @@ Will work best with emulated systems that are not very computationally expensive
       </packing>
     </child>
     <child>
+      <object class="MedCheckButton">
+        <property name="label" translatable="yes">Force backbuffer clear before drawing</property>
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="tooltip-text" translatable="yes">Enabling may result in a noticeable negative impact on performance with the "softfb" video driver, and with the "opengl" video driver on underpowered GPUs.</property>
+        <property name="draw-indicator">True</property>
+        <property name="command">video.force_bbclear</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">4</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkBox" id="opengl_vsync">
         <property name="visible">True</property>
         <property name="sensitive">False</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="MedCheckButton">
             <property name="label" translatable="yes">Synchronize OpenGL page flips to vertical retrace period</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_text" translatable="yes">Note: Additionally, if the environment variable "__GL_SYNC_TO_VBLANK" does not exist, then it will be created and set to the value specified for this setting. This has the effect of forcibly enabling or disabling vblank synchronization when running under Linux with NVidia's drivers.</property>
-            <property name="draw_indicator">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Note: Additionally, if the environment variable "__GL_SYNC_TO_VBLANK" does not exist, then it will be created and set to the value specified for this setting. This has the effect of forcibly enabling or disabling vblank synchronization when running under Linux with NVidia's drivers.</property>
+            <property name="draw-indicator">True</property>
             <property name="command">video.glvsync</property>
           </object>
           <packing>
@@ -127,20 +143,20 @@ Will work best with emulated systems that are not very computationally expensive
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">4</property>
+        <property name="position">5</property>
       </packing>
     </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="MedComboBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="tooltip_text" translatable="yes">Video output driver.
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Video output driver.
 
 default - Default
 Selects the default video driver. Currently, this is OpenGL for all platforms, but may change in the future if better platform-specific drivers are added.
@@ -152,7 +168,7 @@ softfb - Software Blitting to Framebuffer
 Slower with lower-quality scaling than OpenGL, but if you don't have hardware-accelerated OpenGL rendering, it will probably be faster than software OpenGL rendering. Bilinear interpolation not available. OpenGL shaders do not work with this output method, of course.</property>
             <property name="command">video.driver</property>
             <property name="label">Driver</property>
-            <property name="label_width">30</property>
+            <property name="label-width">45</property>
             <property name="values">default
 opengl
 softfb</property>
@@ -170,8 +186,8 @@ softfb</property>
         <child>
           <object class="MedComboBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="tooltip_text" translatable="yes">Deinterlacer to use for interlaced video.
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Deinterlacer to use for interlaced video.
 
 weave - Good for low-motion video; can be used in conjunction with negative .scanlines setting values.
 
@@ -184,7 +200,7 @@ blend - Blend fields together; reduces vertical and temporal resolution.
 blend_rg - Like the "blend" deinterlacer, but the blending is done in a manner that respects gamma, reducing unwanted brightness changes, at the cost of increased CPU usage.</property>
             <property name="command">video.deinterlacer</property>
             <property name="label">Deinterlacer</property>
-            <property name="label_width">30</property>
+            <property name="label-width">45</property>
             <property name="values">weave
 bob
 bob_offset
@@ -200,22 +216,78 @@ blend_rg</property>
             <property name="position">1</property>
           </packing>
         </child>
+        <child>
+          <object class="MedComboBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">The cursor will still be forcibly hidden in relative mouse mode (used automatically when emulating a mouse input device in fullscreen mode or in windowed mode and input grabbing is toggled on), and forcibly shown in the debugger.</property>
+            <property name="command">video.cursorvis</property>
+            <property name="label">Preferred window manager cursor visibility</property>
+            <property name="label-width">45</property>
+            <property name="values">hidden
+visible</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MedComboBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Using hicolor (RGB555/RGB565) formats may boost performance, but at the cost of color fidelity. Noticeability of color degradation depends on the emulated system and features, such as custom palettes or NTSC blitter, being used. When hicolor format support is not available for the emulation module or special scaler being used, Mednafen will automatically fall back to using a truecolor format. Examine Mednafen's startup output to see the actual OpenGL texture formats being used.
+
+    auto - Auto
+    Currently the same as "truecolor", but may automatically select deeper color formats in the future.
+
+    truecolor - Truecolor, 16M colors
+    RGB, 8 bits per color component.
+
+    hicolor - Hicolor, 32K/64K colors
+    RGB565 or RGB555, with priority given to RGB565.
+
+    rgb565 - RGB565, 64K colors
+
+    rgb555 - RGB555, 32K colors</property>
+            <property name="command">video.glformat</property>
+            <property name="label">Preferred source data pixel format for emulated video</property>
+            <property name="label-width">45</property>
+            <property name="values">auto
+truecolor
+hicolor
+rgb565
+rgb555</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="padding">12</property>
-        <property name="position">5</property>
+        <property name="padding">16</property>
+        <property name="position">6</property>
       </packing>
     </child>
     <child>
       <object class="MedRange">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="tooltip_text" translatable="yes">Specify -1 to use the display on which the center of the window lies in windowed mode</property>
+        <property name="can-focus">False</property>
+        <property name="tooltip-text" translatable="yes">Specify -1 to use the display on which the center of the window lies in windowed mode</property>
         <property name="command">video.fs.display</property>
         <property name="label">Display to use with fullscreen mode</property>
-        <property name="label_width">30</property>
+        <property name="label-width">45</property>
         <property name="values">-1,32767,1,0</property>
         <child>
           <placeholder/>
@@ -224,7 +296,7 @@ blend_rg</property>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">6</property>
+        <property name="position">7</property>
       </packing>
     </child>
   </object>
