@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.40.0 
 
-Copyright (C) 2013-2021 AmatCoder
+Copyright (C) 2013-2023 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,75 +22,82 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.22"/>
   <requires lib="medwidgets" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2021 AmatCoder -->
+  <!-- interface-copyright 2013-2023 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="globbox">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_start">18</property>
-    <property name="margin_end">18</property>
-    <property name="margin_top">18</property>
-    <property name="margin_bottom">18</property>
+    <property name="can-focus">False</property>
+    <property name="margin-start">18</property>
+    <property name="margin-end">18</property>
+    <property name="margin-top">18</property>
+    <property name="margin-bottom">18</property>
     <property name="orientation">vertical</property>
     <property name="spacing">18</property>
     <child>
+      <!-- n-columns=3 n-rows=2 -->
       <object class="GtkGrid">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="row_spacing">6</property>
+        <property name="can-focus">False</property>
+        <property name="row-spacing">6</property>
         <child>
           <object class="MedEntry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">netplay.host</property>
             <property name="label">Server hostname</property>
-            <property name="label_width">20</property>
+            <property name="label-width">20</property>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="MedEntry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">netplay.password</property>
             <property name="label">Server password</property>
-            <property name="label_width">20</property>
+            <property name="label-width">20</property>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="MedRange">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">netplay.port</property>
             <property name="label">Server port</property>
-            <property name="label_width">20</property>
+            <property name="label-width">20</property>
             <property name="values">1,65535,1,0</property>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
@@ -103,58 +110,43 @@ Author: AmatCoder
       </packing>
     </child>
     <child>
+      <!-- n-columns=3 n-rows=1 -->
       <object class="GtkGrid">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="row_spacing">6</property>
+        <property name="can-focus">False</property>
+        <property name="row-spacing">6</property>
         <child>
           <object class="MedEntry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">netplay.nick</property>
             <property name="label">Nickname</property>
-            <property name="label_width">20</property>
+            <property name="label-width">20</property>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="MedRange">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="tooltip_text" translatable="yes">Number of local players for network play. This number is advisory to the server, and the server may assign fewer players if the number of players requested is higher than the number of controllers currently available.</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Number of local players for network play. This number is advisory to the server, and the server may assign fewer players if the number of players requested is higher than the number of controllers currently available.</property>
             <property name="command">netplay.localplayers</property>
             <property name="label">Local player count</property>
-            <property name="label_width">20</property>
+            <property name="label-width">20</property>
             <property name="values">0,16,1,0</property>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="MedEntry">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="command">netplay.gamekey</property>
-            <property name="label">Game key, to hash with the MD5 hash of the game</property>
-            <property name="label_width">20</property>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
@@ -168,55 +160,73 @@ Author: AmatCoder
       </packing>
     </child>
     <child>
+      <object class="MedEntry">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="command">netplay.gamekey</property>
+        <property name="label">Key to hash with the MD5 hash of the game</property>
+        <property name="label-width">64</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkExpander">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <property name="expanded">True</property>
         <child>
+          <!-- n-columns=3 n-rows=2 -->
           <object class="GtkGrid">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="row_spacing">6</property>
+            <property name="can-focus">False</property>
+            <property name="row-spacing">6</property>
             <child>
               <object class="MedRange">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="command">netplay.console.lines</property>
                 <property name="label">Height in lines</property>
-                <property name="label_width">20</property>
+                <property name="label-width">20</property>
                 <property name="values">5,64,1,0</property>
                 <child>
                   <placeholder/>
                 </child>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
               <object class="MedRange">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">A value of 0 enables auto-scaling</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">A value of 0 enables auto-scaling</property>
                 <property name="command">netplay.console.scale</property>
                 <property name="label"> Text scale factor</property>
-                <property name="label_width">20</property>
+                <property name="label-width">20</property>
                 <property name="values">0,16,1,0</property>
                 <child>
                   <placeholder/>
                 </child>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
               </packing>
             </child>
             <child>
               <object class="MedComboBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">5x7 - 5x7
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">5x7 - 5x7
 
 6x9 - 6x9
 
@@ -227,7 +237,7 @@ Author: AmatCoder
 9x18 - 9x18; CJK support.</property>
                 <property name="command">netplay.console.font</property>
                 <property name="label">Font</property>
-                <property name="label_width">20</property>
+                <property name="label-width">20</property>
                 <property name="values">5x7
 6x9
 6x12
@@ -238,9 +248,15 @@ Author: AmatCoder
                 </child>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <placeholder/>
@@ -250,7 +266,7 @@ Author: AmatCoder
         <child type="label">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Chat Console</property>
             <attributes>
               <attribute name="weight" value="bold"/>
@@ -262,7 +278,7 @@ Author: AmatCoder
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="padding">18</property>
-        <property name="position">2</property>
+        <property name="position">3</property>
       </packing>
     </child>
   </object>
