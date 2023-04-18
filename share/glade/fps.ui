@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.40.0 
 
-Copyright (C) 2013-2021 AmatCoder
+Copyright (C) 2013-2023 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,29 +22,29 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.22"/>
   <requires lib="medwidgets" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2021 AmatCoder -->
+  <!-- interface-copyright 2013-2023 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="globbox">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_start">18</property>
-    <property name="margin_end">18</property>
-    <property name="margin_top">18</property>
-    <property name="margin_bottom">18</property>
+    <property name="can-focus">False</property>
+    <property name="margin-start">18</property>
+    <property name="margin-end">18</property>
+    <property name="margin-top">18</property>
+    <property name="margin-bottom">18</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="MedCheckButton">
         <property name="label" translatable="yes">Automatically enable FPS display on startup</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="tooltip_text" translatable="yes">From top to bottom, the display format is: virtual, rendered, blitted.</property>
-        <property name="draw_indicator">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="tooltip-text" translatable="yes">From top to bottom, the display format is: virtual, rendered, blitted.</property>
+        <property name="draw-indicator">True</property>
         <property name="command">fps.autoenable</property>
       </object>
       <packing>
@@ -54,17 +54,18 @@ Author: AmatCoder
       </packing>
     </child>
     <child>
+      <!-- n-columns=3 n-rows=3 -->
       <object class="GtkGrid">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="row_spacing">6</property>
+        <property name="can-focus">False</property>
+        <property name="row-spacing">6</property>
         <child>
           <object class="MedComboBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">fps.font</property>
             <property name="label">Font</property>
-            <property name="label_width">10</property>
+            <property name="label-width">10</property>
             <property name="values">5x7
 6x9
 6x12
@@ -75,55 +76,72 @@ Author: AmatCoder
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="MedComboBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">fps.position</property>
             <property name="label">Position</property>
-            <property name="label_width">10</property>
+            <property name="label-width">10</property>
             <property name="values">upper_left
-upper_right</property>
+upper_right
+upper_center
+center</property>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="MedColorEntry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">fps.textcolor</property>
             <property name="label">Text color</property>
-            <property name="label_width">20</property>
-            <property name="has_alpha">True</property>
+            <property name="label-width">20</property>
+            <property name="has-alpha">True</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="MedColorEntry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="command">fps.bgcolor</property>
             <property name="label">Background color</property>
-            <property name="label_width">20</property>
-            <property name="has_alpha">True</property>
+            <property name="label-width">20</property>
+            <property name="has-alpha">True</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
       <packing>
@@ -136,11 +154,11 @@ upper_right</property>
     <child>
       <object class="MedRange">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="tooltip_text" translatable="yes">A value of 0 enables auto-scaling</property>
+        <property name="can-focus">False</property>
+        <property name="tooltip-text" translatable="yes">A value of 0 enables auto-scaling</property>
         <property name="command">fps.scale</property>
         <property name="label">Scale factor</property>
-        <property name="label_width">10</property>
+        <property name="label-width">10</property>
         <property name="values">0,32,1,0</property>
         <child>
           <placeholder/>
