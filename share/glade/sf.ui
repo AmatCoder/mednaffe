@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.40.0 
 
-Copyright (C) 2013-2021 AmatCoder
+Copyright (C) 2013-2023 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,29 +22,29 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.22"/>
   <requires lib="medwidgets" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2021 AmatCoder -->
+  <!-- interface-copyright 2013-2023 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="globbox">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_start">18</property>
-    <property name="margin_end">18</property>
-    <property name="margin_top">18</property>
-    <property name="margin_bottom">18</property>
+    <property name="can-focus">False</property>
+    <property name="margin-start">18</property>
+    <property name="margin-end">18</property>
+    <property name="margin-top">18</property>
+    <property name="margin-bottom">18</property>
     <property name="orientation">vertical</property>
     <property name="spacing">6</property>
     <child>
       <object class="MedCheckButton">
         <property name="label" translatable="yes">Treat the slow-forward button as a toggle</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="draw_indicator">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="draw-indicator">True</property>
         <property name="command">sftoggle</property>
       </object>
       <packing>
@@ -56,12 +56,11 @@ Author: AmatCoder
     <child>
       <object class="MedRange">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="command">sfspeed</property>
         <property name="label">Slow-forwarding speed multiplier:</property>
-        <property name="label_width">-1</property>
-        <property name="values">0.25,1,0.01,2</property>
-        <property name="is_scale">True</property>
+        <property name="label-width">-1</property>
+        <property name="values">0.25,15,0.01,2</property>
         <child>
           <placeholder/>
         </child>
