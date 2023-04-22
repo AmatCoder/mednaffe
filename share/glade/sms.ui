@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.40.0 
 
-Copyright (C) 2013-2021 AmatCoder
+Copyright (C) 2013-2023 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,37 +22,37 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.16"/>
+  <requires lib="gtk+" version="3.22"/>
   <requires lib="medwidgets" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2021 AmatCoder -->
+  <!-- interface-copyright 2013-2023 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="sysbox">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <child>
       <object class="GtkNotebook">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">18</property>
-            <property name="margin_end">18</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">18</property>
+            <property name="margin-end">18</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">18</property>
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
               <object class="MedCheckButton">
                 <property name="label" translatable="yes">Enable automatic usage of this module</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="draw-indicator">True</property>
                 <property name="command">sms.enable</property>
               </object>
               <packing>
@@ -64,10 +64,10 @@ Author: AmatCoder
             <child>
               <object class="MedComboBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="command">sms.territory</property>
                 <property name="label">System territory/region</property>
-                <property name="label_width">20</property>
+                <property name="label-width">20</property>
                 <property name="values">domestic
 export</property>
                 <child>
@@ -85,26 +85,26 @@ export</property>
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Emulation</property>
           </object>
           <packing>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">18</property>
-            <property name="margin_end">18</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">18</property>
+            <property name="margin-end">18</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">18</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkStackSwitcher">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <property name="stack">sms_video_stack</property>
               </object>
@@ -117,26 +117,26 @@ export</property>
             <child>
               <object class="GtkStack" id="sms_video_stack">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">center</property>
-                <property name="margin_start">18</property>
-                <property name="margin_end">18</property>
-                <property name="margin_top">18</property>
-                <property name="margin_bottom">18</property>
-                <property name="transition_type">slide-left-right</property>
+                <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
+                <property name="margin-top">18</property>
+                <property name="margin-bottom">18</property>
+                <property name="transition-type">slide-left-right</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="command">sms.slstart</property>
                         <property name="label">First displayed scanline in NTSC mode</property>
-                        <property name="label_width">32</property>
+                        <property name="label-width">32</property>
                         <property name="values">0,239,1,0</property>
                         <child>
                           <placeholder/>
@@ -151,10 +151,10 @@ export</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="command">sms.slend</property>
                         <property name="label">Last displayed scanline in NTSC mode</property>
-                        <property name="label_width">32</property>
+                        <property name="label-width">32</property>
                         <property name="values">0,239,1,0</property>
                         <child>
                           <placeholder/>
@@ -169,10 +169,10 @@ export</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="command">sms.slstartp</property>
                         <property name="label">First displayed scanline in PAL mode</property>
-                        <property name="label_width">32</property>
+                        <property name="label-width">32</property>
                         <property name="values">0,287,1,0</property>
                         <child>
                           <placeholder/>
@@ -187,10 +187,10 @@ export</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="command">sms.slendp</property>
                         <property name="label">Last displayed scanline in PAL mode</property>
-                        <property name="label_width">32</property>
+                        <property name="label-width">32</property>
                         <property name="values">0,287,1,0</property>
                         <child>
                           <placeholder/>
@@ -211,16 +211,16 @@ export</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="command">sms.xscale</property>
                         <property name="label">Scaling factor for the X axis</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">0.01,256,0.01,6</property>
                         <child>
                           <placeholder/>
@@ -235,10 +235,10 @@ export</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="command">sms.yscale</property>
                         <property name="label">Scaling factor for the Y axis</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">0.01,256,0.01,6</property>
                         <child>
                           <placeholder/>
@@ -260,17 +260,17 @@ export</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
                         <property name="command">sms.xres</property>
                         <property name="label">Horizontal resolution</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">0,65536,1,0</property>
                         <child>
                           <placeholder/>
@@ -285,11 +285,11 @@ export</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">A value of "0" will cause the current desktop horizontal resolution to be used</property>
                         <property name="command">sms.yres</property>
                         <property name="label">Vertical resolution</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">0,65536,1,0</property>
                         <child>
                           <placeholder/>
@@ -304,8 +304,8 @@ export</property>
                     <child>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">0 - Disabled
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">0 - Disabled
 
 full - Full
 Full-screen stretch, disregarding aspect ratio.
@@ -320,7 +320,7 @@ aspect_mult2 - Aspect Preserve + Integer Multiple-of-2 Scale
 Full-screen stretch, same as "aspect_int", but rounds down to the nearest multiple of 2.</property>
                         <property name="command">sms.stretch</property>
                         <property name="label">Stretch to fill screen</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">0
 full
 aspect
@@ -341,17 +341,17 @@ aspect_mult2</property>
                     <child>
                       <object class="GtkBox" id="sms_scale">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="MedRange">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                            <property name="can-focus">False</property>
+                            <property name="tooltip-text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
                             <property name="command">sms.xscalefs</property>
                             <property name="label">Scaling factor for the X axis</property>
-                            <property name="label_width">30</property>
+                            <property name="label-width">30</property>
                             <property name="values">0.01,256,0.01,6</property>
                             <child>
                               <placeholder/>
@@ -366,11 +366,11 @@ aspect_mult2</property>
                         <child>
                           <object class="MedRange">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
+                            <property name="can-focus">False</property>
+                            <property name="tooltip-text" translatable="yes">For this setting to have any effect, the "stretch" setting must be set to "0"</property>
                             <property name="command">sms.yscalefs</property>
                             <property name="label">Scaling factor for the Y axis</property>
-                            <property name="label_width">30</property>
+                            <property name="label-width">30</property>
                             <property name="values">0.01,256,0.01,6</property>
                             <child>
                               <placeholder/>
@@ -399,13 +399,13 @@ aspect_mult2</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Enable (bi)linear interpolation.
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">Enable (bi)linear interpolation.
 
     0 - Disabled
 
@@ -418,7 +418,7 @@ aspect_mult2</property>
     Interpolation only on the Y axis.</property>
                         <property name="command">sms.videoip</property>
                         <property name="label">Interpolation</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">0
 1
 x
@@ -436,8 +436,8 @@ y</property>
                     <child>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">The destination rectangle is NOT altered by this setting, so if you have xscale and yscale set to "2", and try to use a 3x scaling filter like hq3x, the image is not going to look that great. The nearest-neighbor scalers are intended for use with bilinear interpolation enabled, at high resolutions(such as 1280x1024; nn2x(or nny2x) + bilinear interpolation + fullscreen stretching at this resolution looks quite nice).
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">The destination rectangle is NOT altered by this setting, so if you have xscale and yscale set to "2", and try to use a 3x scaling filter like hq3x, the image is not going to look that great. The nearest-neighbor scalers are intended for use with bilinear interpolation enabled, at high resolutions(such as 1280x1024; nn2x(or nny2x) + bilinear interpolation + fullscreen stretching at this resolution looks quite nice).
 
     none - None/Disabled
 
@@ -472,7 +472,7 @@ y</property>
     nny4x - Nearest-neighbor 4x, y axis only</property>
                         <property name="command">sms.special</property>
                         <property name="label">Special video scaler</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">none
 hq2x
 hq3x
@@ -503,15 +503,15 @@ nny4x</property>
                     <child>
                       <object class="MedRange">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Opacity is specified in %; IE a value of "100" will give entirely black scanlines.
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">Opacity is specified in %; IE a value of "100" will give entirely black scanlines.
 
 Negative values are the same as positive values for non-interlaced video, but for interlaced video will cause the scanlines to be overlaid over the previous(if the video.deinterlacer setting is set to "weave", the default) field's lines.</property>
                         <property name="command">sms.scanlines</property>
                         <property name="label">Scanlines with specified opacity</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">-100,100,1,0</property>
-                        <property name="is_scale">True</property>
+                        <property name="is-scale">True</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -533,14 +533,14 @@ Negative values are the same as positive values for non-interlaced video, but fo
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <child>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Obviously, this will only work with the OpenGL "video.driver" setting, and only on cards and OpenGL implementations that support shaders, otherwise you will get a black screen, or Mednafen may display an error message when starting up. When a shader is enabled, the ".videoip" setting is ignored.
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">Obviously, this will only work with the OpenGL "video.driver" setting, and only on cards and OpenGL implementations that support shaders, otherwise you will get a black screen, or Mednafen may display an error message when starting up. When a shader is enabled, the ".videoip" setting is ignored.
 
 none - None/Disabled
 
@@ -569,7 +569,7 @@ goat - Simple approximation of a color TV CRT look.
 Intended for fullscreen modes with a vertical resolution of around 1000 to 1500 pixels. Doesn't simulate halation and electron beam energy distribution nuances.</property>
                         <property name="command">sms.shader</property>
                         <property name="label">OpenGL shader</property>
-                        <property name="label_width">30</property>
+                        <property name="label-width">30</property>
                         <property name="values">none
 autoip
 autoipsharper
@@ -595,28 +595,28 @@ goat</property>
                     <child>
                       <object class="GtkFrame" id="frame_goat_sms">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_start">18</property>
-                        <property name="margin_end">18</property>
-                        <property name="margin_top">18</property>
-                        <property name="margin_bottom">18</property>
-                        <property name="label_xalign">0.5</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-start">18</property>
+                        <property name="margin-end">18</property>
+                        <property name="margin-top">18</property>
+                        <property name="margin-bottom">18</property>
+                        <property name="label-xalign">0.5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="margin_start">18</property>
-                            <property name="margin_end">18</property>
-                            <property name="margin_top">18</property>
-                            <property name="margin_bottom">18</property>
+                            <property name="can-focus">False</property>
+                            <property name="margin-start">18</property>
+                            <property name="margin-end">18</property>
+                            <property name="margin-top">18</property>
+                            <property name="margin-bottom">18</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="MedCheckButton">
                                 <property name="label" translatable="yes">Enable scanlines effect</property>
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="draw_indicator">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">False</property>
+                                <property name="draw-indicator">True</property>
                                 <property name="command">sms.shader.goat.slen</property>
                               </object>
                               <packing>
@@ -629,10 +629,10 @@ goat</property>
                               <object class="MedCheckButton">
                                 <property name="label" translatable="yes">Force interlaced video to be treated as progressive</property>
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="tooltip_text" translatable="yes">When disabled, the default, the "video.deinterlacer" setting is effectively ignored with respect to what appears on the screen. When enabled, it may be prudent to disable the scanlines effect controlled by the *.goat.slen setting, or else the scanline effect may look objectionable.</property>
-                                <property name="draw_indicator">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">False</property>
+                                <property name="tooltip-text" translatable="yes">When disabled, the default, the "video.deinterlacer" setting is effectively ignored with respect to what appears on the screen. When enabled, it may be prudent to disable the scanlines effect controlled by the *.goat.slen setting, or else the scanline effect may look objectionable.</property>
+                                <property name="draw-indicator">True</property>
                                 <property name="command">sms.shader.goat.fprog</property>
                               </object>
                               <packing>
@@ -644,8 +644,8 @@ goat</property>
                             <child>
                               <object class="MedComboBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="tooltip_text" translatable="yes">goatron - Goatron
+                                <property name="can-focus">False</property>
+                                <property name="tooltip-text" translatable="yes">goatron - Goatron
 Brightest.
 
 borg - Borg
@@ -655,7 +655,7 @@ slenderman - Slenderman
 Spookiest?</property>
                                 <property name="command">sms.shader.goat.pat</property>
                                 <property name="label">Mask pattern</property>
-                                <property name="label_width">30</property>
+                                <property name="label-width">30</property>
                                 <property name="values">goatron
 borg
 slenderman</property>
@@ -673,12 +673,12 @@ slenderman</property>
                             <child>
                               <object class="MedRange">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="command">sms.shader.goat.tp</property>
                                 <property name="label">Transparency of mask areas</property>
-                                <property name="label_width">30</property>
+                                <property name="label-width">30</property>
                                 <property name="values">0.00,1.00,0.01,2</property>
-                                <property name="is_scale">True</property>
+                                <property name="is-scale">True</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -692,18 +692,18 @@ slenderman</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="orientation">vertical</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="MedRange">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="command">sms.shader.goat.hdiv</property>
                                     <property name="label">Constant RGB horizontal divergence</property>
-                                    <property name="label_width">30</property>
+                                    <property name="label-width">30</property>
                                     <property name="values">-2.00,2.00,0.01,2</property>
-                                    <property name="is_scale">True</property>
+                                    <property name="is-scale">True</property>
                                     <child>
                                       <placeholder/>
                                     </child>
@@ -717,12 +717,12 @@ slenderman</property>
                                 <child>
                                   <object class="MedRange">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="command">sms.shader.goat.vdiv</property>
                                     <property name="label">Constant RGB vertical divergence</property>
-                                    <property name="label_width">30</property>
+                                    <property name="label-width">30</property>
                                     <property name="values">-2.00,2.00,0.01,2</property>
-                                    <property name="is_scale">True</property>
+                                    <property name="is-scale">True</property>
                                     <child>
                                       <placeholder/>
                                     </child>
@@ -746,7 +746,7 @@ slenderman</property>
                         <child type="label">
                           <object class="GtkLabel">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Goat Options</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -770,16 +770,16 @@ slenderman</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="MedCheckButton">
                         <property name="label" translatable="yes">Enable video temporal blur</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="margin_start">20</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="margin-start">20</property>
+                        <property name="draw-indicator">True</property>
                         <property name="command">sms.tblur</property>
                         <signal name="toggled" handler="enable_buddy_toggle" object="sms_tblur_accum" swapped="no"/>
                       </object>
@@ -793,16 +793,16 @@ slenderman</property>
                       <object class="GtkBox" id="sms_tblur_accum">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="MedCheckButton">
                             <property name="label" translatable="yes">Accumulate color data rather than discarding it</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="margin_start">50</property>
-                            <property name="draw_indicator">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="receives-default">False</property>
+                            <property name="margin-start">50</property>
+                            <property name="draw-indicator">True</property>
                             <property name="command">sms.tblur.accum</property>
                             <signal name="toggled" handler="enable_buddy_toggle" object="sms_tblur_amount" swapped="no"/>
                           </object>
@@ -816,18 +816,18 @@ slenderman</property>
                           <object class="GtkBox" id="sms_tblur_amount">
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="MedRange">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="tooltip_text" translatable="yes">Specified in percentage of accumulation buffer to mix with the current frame</property>
+                                <property name="can-focus">False</property>
+                                <property name="tooltip-text" translatable="yes">Specified in percentage of accumulation buffer to mix with the current frame</property>
                                 <property name="command">sms.tblur.accum.amount</property>
                                 <property name="label">Blur amount in accumulation mode</property>
-                                <property name="label_width">40</property>
+                                <property name="label-width">40</property>
                                 <property name="values">0,100,1,0</property>
-                                <property name="is_scale">True</property>
+                                <property name="is-scale">True</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -874,30 +874,30 @@ slenderman</property>
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Graphics</property>
           </object>
           <packing>
             <property name="position">1</property>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">18</property>
-            <property name="margin_end">18</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">18</property>
+            <property name="margin-end">18</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">18</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="MedCheckButton">
                 <property name="label" translatable="yes">Force monophonic sound output</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="draw-indicator">True</property>
                 <property name="command">sms.forcemono</property>
               </object>
               <packing>
@@ -910,9 +910,9 @@ slenderman</property>
               <object class="MedCheckButton">
                 <property name="label" translatable="yes">Enable FM sound emulation when playing domestic/Japan-region games</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="draw-indicator">True</property>
                 <property name="command">sms.fm</property>
               </object>
               <packing>
@@ -929,27 +929,27 @@ slenderman</property>
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Sound</property>
           </object>
           <packing>
             <property name="position">2</property>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">18</property>
-            <property name="margin_end">18</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">18</property>
+            <property name="margin-end">18</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">18</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkStackSwitcher">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <property name="stack">sms_stack</property>
               </object>
@@ -962,30 +962,30 @@ slenderman</property>
             <child>
               <object class="GtkStack" id="sms_stack">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_start">18</property>
-                <property name="margin_end">18</property>
-                <property name="margin_top">18</property>
-                <property name="margin_bottom">18</property>
-                <property name="transition_type">slide-left-right</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
+                <property name="margin-top">18</property>
+                <property name="margin-bottom">18</property>
+                <property name="transition-type">slide-left-right</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">18</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port1.gamepad.up</property>
                             <property name="label">Up</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -999,10 +999,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port1.gamepad.down</property>
                             <property name="label">Down</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1016,10 +1016,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port1.gamepad.left</property>
                             <property name="label">Left</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1033,10 +1033,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port1.gamepad.right</property>
                             <property name="label">Right</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1050,10 +1050,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port1.gamepad.fire1</property>
                             <property name="label">Fire 1 / Start</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1067,10 +1067,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port1.gamepad.fire2</property>
                             <property name="label">Fire 2</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1084,10 +1084,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port1.gamepad.pause</property>
                             <property name="label">Pause</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1108,20 +1108,20 @@ slenderman</property>
                     <child>
                       <object class="GtkExpander">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can-focus">True</property>
                         <property name="expanded">True</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="MedInput">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="command">sms.input.port2.gamepad.rapid_fire1</property>
+                                <property name="can-focus">False</property>
+                                <property name="command">sms.input.port1.gamepad.rapid_fire1</property>
                                 <property name="label">Rapid Fire 1 / Start</property>
-                                <property name="label_width">16</property>
+                                <property name="label-width">16</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -1135,10 +1135,10 @@ slenderman</property>
                             <child>
                               <object class="MedInput">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="command">sms.input.port2.gamepad.rapid_fire2</property>
+                                <property name="can-focus">False</property>
+                                <property name="command">sms.input.port1.gamepad.rapid_fire2</property>
                                 <property name="label">Rapid Fire 2</property>
-                                <property name="label_width">16</property>
+                                <property name="label-width">16</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -1154,7 +1154,7 @@ slenderman</property>
                         <child type="label">
                           <object class="GtkLabel">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Autofire</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -1177,21 +1177,21 @@ slenderman</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">18</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port2.gamepad.up</property>
                             <property name="label">Up</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1205,10 +1205,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port2.gamepad.down</property>
                             <property name="label">Down</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1222,10 +1222,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port2.gamepad.left</property>
                             <property name="label">Left</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1239,10 +1239,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port2.gamepad.right</property>
                             <property name="label">Right</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1256,10 +1256,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port2.gamepad.fire1</property>
                             <property name="label">Fire 1 / Start</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1273,10 +1273,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port2.gamepad.fire2</property>
                             <property name="label">Fire 2</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1290,10 +1290,10 @@ slenderman</property>
                         <child>
                           <object class="MedInput">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="command">sms.input.port2.gamepad.pause</property>
                             <property name="label">Pause</property>
-                            <property name="label_width">16</property>
+                            <property name="label-width">16</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1314,20 +1314,20 @@ slenderman</property>
                     <child>
                       <object class="GtkExpander">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can-focus">True</property>
                         <property name="expanded">True</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="MedInput">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="command">sms.input.port2.gamepad.rapid_fire1</property>
                                 <property name="label">Rapid Fire 1 / Start</property>
-                                <property name="label_width">16</property>
+                                <property name="label-width">16</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -1341,10 +1341,10 @@ slenderman</property>
                             <child>
                               <object class="MedInput">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="command">sms.input.port2.gamepad.rapid_fire2</property>
                                 <property name="label">Rapid Fire 2</property>
-                                <property name="label_width">16</property>
+                                <property name="label-width">16</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -1360,7 +1360,7 @@ slenderman</property>
                         <child type="label">
                           <object class="GtkLabel">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Autofire</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -1396,36 +1396,36 @@ slenderman</property>
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Input</property>
           </object>
           <packing>
             <property name="position">3</property>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">18</property>
-            <property name="margin_end">18</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">18</property>
+            <property name="margin-end">18</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">18</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label_xalign">0.5</property>
+                <property name="can-focus">False</property>
+                <property name="label-xalign">0.5</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_start">18</property>
-                    <property name="margin_end">18</property>
-                    <property name="margin_top">6</property>
-                    <property name="margin_bottom">6</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-start">18</property>
+                    <property name="margin-end">18</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
                     <property name="label" translatable="yes">&lt;b&gt;Introduction&lt;/b&gt;
 Mednafen's Sega Master System emulation is based off of SMS Plus.
 
@@ -1437,7 +1437,7 @@ Global Filename:	Description:
 
 sms.pal			SMS 6-bit BGR
 				64 RGB triple</property>
-                    <property name="use_markup">True</property>
+                    <property name="use-markup">True</property>
                     <property name="wrap">True</property>
                     <property name="xalign">0</property>
                   </object>
@@ -1446,8 +1446,8 @@ sms.pal			SMS 6-bit BGR
                   <object class="GtkLinkButton">
                     <property name="label" translatable="yes">Sega Master System Documentation</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
                     <property name="relief">none</property>
                     <property name="uri">https://mednafen.github.io/documentation/sms.html</property>
                   </object>
@@ -1467,12 +1467,12 @@ sms.pal			SMS 6-bit BGR
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Documentation</property>
           </object>
           <packing>
             <property name="position">4</property>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
       </object>
