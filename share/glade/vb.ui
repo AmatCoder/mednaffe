@@ -1415,6 +1415,23 @@ slenderman</property>
                           <object class="MedInput">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
+                            <property name="command">vb.input.builtin.gamepad.lt</property>
+                            <property name="label">Left-Back</property>
+                            <property name="label-width">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">10</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="MedInput">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
                             <property name="command">vb.input.builtin.gamepad.rt</property>
                             <property name="label">Right-Back</property>
                             <property name="label-width">20</property>
@@ -1425,7 +1442,7 @@ slenderman</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">10</property>
+                            <property name="position">11</property>
                           </packing>
                         </child>
                         <child>
@@ -1442,7 +1459,7 @@ slenderman</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">11</property>
+                            <property name="position">12</property>
                           </packing>
                         </child>
                         <child>
@@ -1459,7 +1476,7 @@ slenderman</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">12</property>
+                            <property name="position">13</property>
                           </packing>
                         </child>
                       </object>
