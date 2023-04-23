@@ -1299,7 +1299,7 @@ mouse - Mouse
 
 tsushinkb - Tsushin Keyboard
 Emulated keyboard key state is not updated unless input grabbing (by default, mapped to CTRL+SHIFT+Menu) is toggled on; refer to the main documentation for details.</property>
-                            <property name="command">pcfx.input.port1</property>
+                            <property name="command">pce.input.port1</property>
                             <property name="label">Input device</property>
                             <property name="label-width">12</property>
                             <property name="values">none
@@ -1875,7 +1875,7 @@ tsushinkb</property>
                           <object class="MedComboBox">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="command">pcfx.input.port2</property>
+                            <property name="command">pce.input.port2</property>
                             <property name="label">Input device</property>
                             <property name="label-width">12</property>
                             <property name="values">none
@@ -2429,7 +2429,7 @@ mouse</property>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="command">pcfx.input.port3</property>
+                        <property name="command">pce.input.port3</property>
                         <property name="label">Input device</property>
                         <property name="label-width">12</property>
                         <property name="values">none
@@ -2976,7 +2976,7 @@ mouse</property>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="command">pcfx.input.port4</property>
+                        <property name="command">pce.input.port4</property>
                         <property name="label">Input device</property>
                         <property name="label-width">12</property>
                         <property name="values">none
@@ -3523,7 +3523,7 @@ mouse</property>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="command">pcfx.input.port5</property>
+                        <property name="command">pce.input.port5</property>
                         <property name="label">Input device</property>
                         <property name="label-width">12</property>
                         <property name="values">none
@@ -4110,7 +4110,7 @@ mouse</property>
     6x13 - 6x13. CJK support.
 
     9x18 - 9x18; CJK support.</property>
-                <property name="command">pcfx.debugger.disfontsize</property>
+                <property name="command">pce.debugger.disfontsize</property>
                 <property name="label">Disassembly font size</property>
                 <property name="label-width">35</property>
                 <property name="values">5x7
@@ -4132,7 +4132,7 @@ mouse</property>
               <object class="MedEntry">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="command">pcfx.debugger.memcharenc</property>
+                <property name="command">pce.debugger.memcharenc</property>
                 <property name="label">Character encoding for the memory editor</property>
                 <property name="label-width">35</property>
                 <child>

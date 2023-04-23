@@ -1186,13 +1186,12 @@ slenderman</property>
 
     tsushinkb - Tsushin Keyboard
     Emulated keyboard key state is not updated unless input grabbing (by default, mapped to CTRL+SHIFT+Menu) is toggled on; refer to the main documentation for details.</property>
-                            <property name="command">pcfx.input.port1</property>
+                            <property name="command">pce_fast.input.port1</property>
                             <property name="label">Input device</property>
                             <property name="label-width">12</property>
                             <property name="values">none
 gamepad
-mouse
-tsushinkb</property>
+mouse</property>
                             <signal name="medcombo-changed" handler="medcombo_changed" object="pce_port1_stack" swapped="no"/>
                             <child>
                               <placeholder/>
@@ -1712,19 +1711,7 @@ tsushinkb</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="orientation">vertical</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="name">tsushinkb</property>
-                                <property name="title" translatable="yes">page0</property>
-                                <property name="position">3</property>
-                              </packing>
+                              <placeholder/>
                             </child>
                           </object>
                           <packing>
@@ -1762,7 +1749,7 @@ tsushinkb</property>
                           <object class="MedComboBox">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="command">pcfx.input.port2</property>
+                            <property name="command">pce_fast.input.port2</property>
                             <property name="label">Input device</property>
                             <property name="label-width">12</property>
                             <property name="values">none
@@ -2317,7 +2304,7 @@ mouse</property>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="command">pcfx.input.port3</property>
+                        <property name="command">pce_fast.input.port3</property>
                         <property name="label">Input device</property>
                         <property name="label-width">12</property>
                         <property name="values">none
@@ -2865,7 +2852,7 @@ mouse</property>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="command">pcfx.input.port4</property>
+                        <property name="command">pce_fast.input.port4</property>
                         <property name="label">Input device</property>
                         <property name="label-width">12</property>
                         <property name="values">none
@@ -3413,7 +3400,7 @@ mouse</property>
                       <object class="MedComboBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="command">pcfx.input.port5</property>
+                        <property name="command">pce_fast.input.port5</property>
                         <property name="label">Input device</property>
                         <property name="label-width">12</property>
                         <property name="values">none
@@ -4000,7 +3987,7 @@ mouse</property>
     6x13 - 6x13. CJK support.
 
     9x18 - 9x18; CJK support.</property>
-                <property name="command">pcfx.debugger.disfontsize</property>
+                <property name="command">pce_fast.debugger.disfontsize</property>
                 <property name="label">Disassembly font size</property>
                 <property name="label-width">35</property>
                 <property name="values">5x7
@@ -4022,7 +4009,7 @@ mouse</property>
               <object class="MedEntry">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="command">pcfx.debugger.memcharenc</property>
+                <property name="command">pce_fast.debugger.memcharenc</property>
                 <property name="label">Character encoding for the memory editor</property>
                 <property name="label-width">35</property>
                 <child>
