@@ -83,7 +83,7 @@ bios_window_update (BiosWindow* bw,
 
   bios_window_set_label (table, priv->label_lynx_bios, priv->icon_lynx_bios, NULL, "c26a36c1990bcf841155e5a6fea4d2ee1a4d53b3cc772e70f257a962ad43b383");
 
-  bios_window_set_label (table, priv->label_pccdbios, priv->icon_pccdbios, "pce.cdbios", "df4f75feebb95e53dfef72dea0787df743e3474ba046ff5a4cb88e34dda93ff1");
+  bios_window_set_label (table, priv->label_pccdbios, priv->icon_pccdbios, "pce.cdbios", "e11527b3b96ce112a037138988ca72fd117a6b0779c2480d9e03eaebece3d9ce");
 
   bios_window_set_label (table, priv->label_pcfx_bios, priv->icon_pcfx_bios, "pcfx.bios", "4b44ccf5d84cc83daa2e6a2bee00fdafa14eb58bdf5859e96d8861a891675417");
 
