@@ -1,7 +1,7 @@
 /*
  * mainwindow.c
  *
- * Copyright 2013-2021 AmatCoder
+ * Copyright 2013-2023 AmatCoder
  *
  * This file is part of Mednaffe.
  *
@@ -84,6 +84,8 @@ struct _MainWindowPrivate {
   const gchar* navfolderup;
   const gchar* navfolderdown;
   const gchar* navlaunch;
+
+  GSList* recent_files;
 };
 
 
@@ -319,6 +321,22 @@ main_window_paned_list_launched (PanedList* _sender,
         gtk_widget_hide ((GtkWidget*) self);
 
     logbook_delete_log (priv->logbook, LOGBOOK_LOG_TAB_EMU);
+
+    GSList *elem = g_slist_find_custom (priv->recent_files , selection, (GCompareFunc) g_strcmp0);
+    if (elem != NULL)
+    {
+      g_free (elem->data);
+      priv->recent_files = g_slist_remove (priv->recent_files, elem->data);
+    }
+
+    priv->recent_files = g_slist_prepend (priv->recent_files, g_strdup(selection));
+
+    if (g_slist_length (priv->recent_files) > 20)
+    {
+      elem = g_slist_last (priv->recent_files);
+      g_free (elem->data);
+      priv->recent_files = g_slist_remove (priv->recent_files, elem->data);
+    }
 
 #ifdef G_OS_WIN32
     gchar* selection2 = g_strconcat("\"", selection, "\"", NULL);
@@ -740,6 +758,16 @@ main_window_save_settings (MainWindow* self)
   g_key_file_set_boolean (key, "GUI", "AdditionalCommandActivated", gtk_widget_is_visible ((GtkWidget*)priv->custom_entry));
   g_key_file_set_string (key, "GUI", "AdditionalCommand", gtk_entry_get_text (priv->custom_entry));
 
+  GSList* it = NULL;
+  int i = 0;
+  for(it = priv->recent_files; it != NULL; it = it->next)
+  {
+    i++;
+    gchar* recent_key = g_strdup_printf ("Recent%i", i);
+    g_key_file_set_string (key, "GUI", recent_key, (gchar*)it->data);
+    g_free (recent_key);
+  }
+
   g_slist_foreach (priv->preferences->list, (GFunc) save_preflist_func, key);
   save_mods (key, priv->med_process->table);
 
@@ -826,6 +854,63 @@ main_window_launch_clicked (GtkButton* sender,
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
   paned_list_request_launch (priv->panedlist);
+}
+
+
+static void
+submenu_activate_recent (GtkMenuItem* sender,
+                         gpointer self)
+{
+  g_return_if_fail (self != NULL);
+  g_return_if_fail (sender != NULL);
+
+  MainWindow* mw = self;
+  MainWindowPrivate* priv = main_window_get_instance_private (mw);
+
+  const gchar* filename = gtk_menu_item_get_label (sender);
+
+  if (g_strcmp0 (filename, "Clear History") == 0)
+  {
+    g_slist_free_full (priv->recent_files, g_free);
+    priv->recent_files = NULL;
+  }
+  else
+    main_window_paned_list_launched (NULL, filename, mw);
+}
+
+
+static void
+main_window_menu_activate_recent (GtkMenuItem* sender,
+                                  gpointer self)
+{
+  g_return_if_fail (self != NULL);
+  g_return_if_fail (sender != NULL);
+  
+  MainWindow* mw = self;
+  MainWindowPrivate* priv = main_window_get_instance_private (mw);
+
+  gtk_menu_item_set_submenu (sender, NULL);
+  GtkWidget* menu = gtk_menu_new();
+  gtk_menu_item_set_submenu (sender, menu);
+
+  GtkWidget *submenu;
+  GSList* it = NULL;
+  for(it = priv->recent_files; it != NULL; it = it->next)
+  {
+    submenu = gtk_menu_item_new_with_label (it->data);
+    gtk_menu_shell_append (GTK_MENU_SHELL(menu), submenu);
+    g_signal_connect_object (submenu, "activate", (GCallback) submenu_activate_recent, self, 0);
+  }
+
+  submenu = gtk_separator_menu_item_new();
+  gtk_menu_shell_append (GTK_MENU_SHELL(menu), submenu);
+
+  submenu = gtk_menu_item_new_with_label ("Clear History");
+  gtk_menu_shell_append (GTK_MENU_SHELL(menu), submenu);
+  g_signal_connect_object (submenu, "activate", (GCallback) submenu_activate_recent, self, 0);
+  gtk_widget_set_sensitive (submenu, (priv->recent_files != NULL) ? TRUE : FALSE);
+
+  gtk_widget_show_all (menu);
 }
 
 
@@ -975,6 +1060,18 @@ main_window_load_settings (MainWindow* self)
   gtk_combo_box_set_active (priv->pathbox->combo, active);
 
   g_strfreev(dirs);
+
+  for (int i = 1; i < 21; i++)
+  {
+    gchar* recent_key = g_strdup_printf ("Recent%i", i);
+    gchar* recent_value = g_key_file_get_string (key, "GUI", recent_key, NULL);
+    g_free (recent_key);
+
+    if (recent_value != NULL)
+      priv->recent_files = g_slist_append (priv->recent_files, recent_value);
+    else
+      break;
+  }
 
   priv->navup = g_key_file_get_string (key, "GUI", "MoveUp", NULL);
   priv->navdown = g_key_file_get_string (key, "GUI", "MoveDown", NULL);
@@ -1145,6 +1242,8 @@ main_window_finalize (GObject* obj)
   MainWindow * self = G_TYPE_CHECK_INSTANCE_CAST (obj, main_window_get_type(), MainWindow);
   MainWindowPrivate* priv = main_window_get_instance_private (self);
 
+  g_slist_free_full (priv->recent_files, g_free);
+
   g_object_unref (priv->med_process);
   g_object_unref (priv->listjoy);
 
@@ -1217,6 +1316,7 @@ main_window_init (MainWindow* self)
   priv->sensitive = TRUE;
   priv->show_tooltips = TRUE;
   priv->treeisfocus = FALSE;
+  priv->recent_files = NULL;
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }
@@ -1321,6 +1421,10 @@ main_window_class_init (MainWindowClass* klass)
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "open_rom",
                                                 G_CALLBACK (main_window_menu_open_rom));
+
+  gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
+                                                "activate_recent",
+                                                G_CALLBACK (main_window_menu_activate_recent));
 
   gtk_widget_class_bind_template_callback_full (GTK_WIDGET_CLASS (klass),
                                                 "show_preferences",
