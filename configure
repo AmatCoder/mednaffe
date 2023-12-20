@@ -650,6 +650,8 @@ am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
 DEFINES
+SDL2_LIBS
+SDL2_CFLAGS
 GTK_LIBS
 GTK_CFLAGS
 PKG_CONFIG_LIBDIR
@@ -774,7 +776,9 @@ PKG_CONFIG
 PKG_CONFIG_PATH
 PKG_CONFIG_LIBDIR
 GTK_CFLAGS
-GTK_LIBS'
+GTK_LIBS
+SDL2_CFLAGS
+SDL2_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1424,6 +1428,8 @@ Some influential environment variables:
               path overriding pkg-config's built-in search path
   GTK_CFLAGS  C compiler flags for GTK, overriding pkg-config
   GTK_LIBS    linker flags for GTK, overriding pkg-config
+  SDL2_CFLAGS C compiler flags for SDL2, overriding pkg-config
+  SDL2_LIBS   linker flags for SDL2, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -4886,8 +4892,8 @@ fi
 
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for GTK" >&5
-printf %s "checking for GTK... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for gtk+-3.0 >= 3.16 glib-2.0 >= 2.42" >&5
+printf %s "checking for gtk+-3.0 >= 3.16 glib-2.0 >= 2.42... " >&6; }
 
 if test -n "$GTK_CFLAGS"; then
     pkg_cv_GTK_CFLAGS="$GTK_CFLAGS"
@@ -4927,7 +4933,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -4945,7 +4951,7 @@ fi
 
 	as_fn_error $? "Mednaffe needs GTK+ >= 3.16 development libraries" "$LINENO" 5
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	as_fn_error $? "Mednaffe needs GTK+ >= 3.16 development libraries" "$LINENO" 5
 else
@@ -4956,6 +4962,82 @@ printf "%s\n" "yes" >&6; }
 	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: Checking for GTK+ 3 development libraries" >&5
 printf "%s\n" "$as_me: Checking for GTK+ 3 development libraries" >&6;}
 fi
+case $host_os in
+  darwin*)
+
+pkg_failed=no
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for SDL2 >= 2.0.6" >&5
+printf %s "checking for SDL2 >= 2.0.6... " >&6; }
+
+if test -n "$SDL2_CFLAGS"; then
+    pkg_cv_SDL2_CFLAGS="$SDL2_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"SDL2 >= 2.0.6\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "SDL2 >= 2.0.6") 2>&5
+  ac_status=$?
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_SDL2_CFLAGS=`$PKG_CONFIG --cflags "SDL2 >= 2.0.6" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$SDL2_LIBS"; then
+    pkg_cv_SDL2_LIBS="$SDL2_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"SDL2 >= 2.0.6\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "SDL2 >= 2.0.6") 2>&5
+  ac_status=$?
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_SDL2_LIBS=`$PKG_CONFIG --libs "SDL2 >= 2.0.6" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        SDL2_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "SDL2 >= 2.0.6" 2>&1`
+        else
+	        SDL2_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "SDL2 >= 2.0.6" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$SDL2_PKG_ERRORS" >&5
+
+	as_fn_error $? "Mednaffe darwin needs SDL2 >= 2.0.6 development libraries" "$LINENO" 5
+elif test $pkg_failed = untried; then
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+	as_fn_error $? "Mednaffe darwin needs SDL2 >= 2.0.6 development libraries" "$LINENO" 5
+else
+	SDL2_CFLAGS=$pkg_cv_SDL2_CFLAGS
+	SDL2_LIBS=$pkg_cv_SDL2_LIBS
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: Checking for SDL2 development libraries" >&5
+printf "%s\n" "$as_me: Checking for SDL2 development libraries" >&6;}
+fi
+    ;;
+esac
 
 
 
