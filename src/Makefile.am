@@ -45,7 +45,7 @@ if WINDOWS
   LIBS +=../share/win/mednaffe.res -ldxguid -ldinput
 else
 if MAC
-  mednaffe_SOURCES+= widgets/joystick_dummy.c
+  mednaffe_SOURCES+= widgets/joystick_sdl.c
 else
   mednaffe_SOURCES+= widgets/joystick_dummy.c
   override CFLAGS +=-Wl,-export-dynamic
@@ -54,7 +54,12 @@ endif
 endif
 
 
-AM_CPPFLAGS        = @GTK_CFLAGS@
-LDADD           = @GTK_LIBS@
+if MAC
+  AM_CPPFLAGS   = @GTK_CFLAGS@ @SDL2_CFLAGS@
+  LDADD         = @GTK_LIBS@ @SDL2_LIBS@
+else
+  AM_CPPFLAGS   = @GTK_CFLAGS@
+  LDADD         = @GTK_LIBS@
+endif
 CLEANFILES      = *~
 DISTCLEANFILES  = .deps/*.P

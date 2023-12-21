@@ -92,7 +92,7 @@ bin_PROGRAMS = mednaffe$(EXEEXT)
 @LINUX_TRUE@am__append_1 = widgets/joystick_linux.c
 @LINUX_FALSE@@WINDOWS_TRUE@am__append_2 = win32util.c win32util.h widgets/joystick_windows.c
 @LINUX_FALSE@@WINDOWS_TRUE@am__append_3 = ../share/win/mednaffe.res -ldxguid -ldinput
-@LINUX_FALSE@@MAC_TRUE@@WINDOWS_FALSE@am__append_4 = widgets/joystick_dummy.c
+@LINUX_FALSE@@MAC_TRUE@@WINDOWS_FALSE@am__append_4 = widgets/joystick_sdl.c
 @LINUX_FALSE@@MAC_FALSE@@WINDOWS_FALSE@am__append_5 = widgets/joystick_dummy.c
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -126,13 +126,13 @@ am__mednaffe_SOURCES_DIST = about.c about.h bios.c bios.h logbook.c \
 	widgets/medspin.c widgets/medspin.h widgets/medwidget.c \
 	widgets/medwidget.h widgets/menuinput.c widgets/menuinput.h \
 	widgets/joystick.h widgets/joystick_linux.c win32util.c \
-	win32util.h widgets/joystick_windows.c \
+	win32util.h widgets/joystick_windows.c widgets/joystick_sdl.c \
 	widgets/joystick_dummy.c
 am__dirstamp = $(am__leading_dot)dirstamp
 @LINUX_TRUE@am__objects_1 = widgets/joystick_linux.$(OBJEXT)
 @LINUX_FALSE@@WINDOWS_TRUE@am__objects_2 = win32util.$(OBJEXT) \
 @LINUX_FALSE@@WINDOWS_TRUE@	widgets/joystick_windows.$(OBJEXT)
-@LINUX_FALSE@@MAC_TRUE@@WINDOWS_FALSE@am__objects_3 = widgets/joystick_dummy.$(OBJEXT)
+@LINUX_FALSE@@MAC_TRUE@@WINDOWS_FALSE@am__objects_3 = widgets/joystick_sdl.$(OBJEXT)
 @LINUX_FALSE@@MAC_FALSE@@WINDOWS_FALSE@am__objects_4 = widgets/joystick_dummy.$(OBJEXT)
 am_mednaffe_OBJECTS = about.$(OBJEXT) bios.$(OBJEXT) logbook.$(OBJEXT) \
 	mainwindow.$(OBJEXT) manager.$(OBJEXT) mednaffe.$(OBJEXT) \
@@ -179,6 +179,7 @@ am__depfiles_remade = ./$(DEPDIR)/about.Po ./$(DEPDIR)/bios.Po \
 	widgets/$(DEPDIR)/dialogs.Po \
 	widgets/$(DEPDIR)/joystick_dummy.Po \
 	widgets/$(DEPDIR)/joystick_linux.Po \
+	widgets/$(DEPDIR)/joystick_sdl.Po \
 	widgets/$(DEPDIR)/joystick_windows.Po \
 	widgets/$(DEPDIR)/marshallers.Po \
 	widgets/$(DEPDIR)/medbiosentry.Po \
@@ -277,6 +278,8 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+SDL2_CFLAGS = @SDL2_CFLAGS@
+SDL2_LIBS = @SDL2_LIBS@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -354,8 +357,10 @@ mednaffe_SOURCES = about.c about.h bios.c bios.h logbook.c logbook.h \
 	widgets/medwidget.h widgets/menuinput.c widgets/menuinput.h \
 	widgets/joystick.h $(am__append_1) $(am__append_2) \
 	$(am__append_4) $(am__append_5)
-AM_CPPFLAGS = @GTK_CFLAGS@
-LDADD = @GTK_LIBS@
+@MAC_FALSE@AM_CPPFLAGS = @GTK_CFLAGS@
+@MAC_TRUE@AM_CPPFLAGS = @GTK_CFLAGS@ @SDL2_CFLAGS@
+@MAC_FALSE@LDADD = @GTK_LIBS@
+@MAC_TRUE@LDADD = @GTK_LIBS@ @SDL2_LIBS@
 CLEANFILES = *~
 DISTCLEANFILES = .deps/*.P
 all: all-am
@@ -477,6 +482,8 @@ widgets/joystick_linux.$(OBJEXT): widgets/$(am__dirstamp) \
 	widgets/$(DEPDIR)/$(am__dirstamp)
 widgets/joystick_windows.$(OBJEXT): widgets/$(am__dirstamp) \
 	widgets/$(DEPDIR)/$(am__dirstamp)
+widgets/joystick_sdl.$(OBJEXT): widgets/$(am__dirstamp) \
+	widgets/$(DEPDIR)/$(am__dirstamp)
 widgets/joystick_dummy.$(OBJEXT): widgets/$(am__dirstamp) \
 	widgets/$(DEPDIR)/$(am__dirstamp)
 
@@ -510,6 +517,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/dialogs.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/joystick_dummy.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/joystick_linux.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/joystick_sdl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/joystick_windows.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/marshallers.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@widgets/$(DEPDIR)/medbiosentry.Po@am__quote@ # am--include-marker
@@ -698,6 +706,7 @@ distclean: distclean-am
 	-rm -f widgets/$(DEPDIR)/dialogs.Po
 	-rm -f widgets/$(DEPDIR)/joystick_dummy.Po
 	-rm -f widgets/$(DEPDIR)/joystick_linux.Po
+	-rm -f widgets/$(DEPDIR)/joystick_sdl.Po
 	-rm -f widgets/$(DEPDIR)/joystick_windows.Po
 	-rm -f widgets/$(DEPDIR)/marshallers.Po
 	-rm -f widgets/$(DEPDIR)/medbiosentry.Po
@@ -778,6 +787,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f widgets/$(DEPDIR)/dialogs.Po
 	-rm -f widgets/$(DEPDIR)/joystick_dummy.Po
 	-rm -f widgets/$(DEPDIR)/joystick_linux.Po
+	-rm -f widgets/$(DEPDIR)/joystick_sdl.Po
 	-rm -f widgets/$(DEPDIR)/joystick_windows.Po
 	-rm -f widgets/$(DEPDIR)/marshallers.Po
 	-rm -f widgets/$(DEPDIR)/medbiosentry.Po

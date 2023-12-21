@@ -65,6 +65,11 @@ else
 fi
 
 PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.16 glib-2.0 >= 2.42], AC_MSG_NOTICE([Checking for GTK+ 3 development libraries]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.16 development libraries))
+case $host_os in
+  darwin*)
+    PKG_CHECK_MODULES([SDL2],[SDL2 >= 2.0.6], AC_MSG_NOTICE([Checking for SDL2 development libraries]), AC_MSG_ERROR(Mednaffe darwin needs SDL2 >= 2.0.6 development libraries))
+    ;;
+esac
 
 AC_SUBST(DEFINES)
 
