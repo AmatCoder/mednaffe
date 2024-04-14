@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.40.0 
 
-Copyright (C) 2013-2023 AmatCoder
+Copyright (C) 2013-2024 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -27,7 +27,7 @@ Author: AmatCoder
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2023 AmatCoder -->
+  <!-- interface-copyright 2013-2024 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="sysbox">
     <property name="visible">True</property>
@@ -1709,9 +1709,6 @@ mouse</property>
                                 <property name="title" translatable="yes">page5</property>
                                 <property name="position">2</property>
                               </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
                             </child>
                           </object>
                           <packing>
@@ -3971,82 +3968,6 @@ mouse</property>
             <property name="margin-top">18</property>
             <property name="margin-bottom">18</property>
             <property name="orientation">vertical</property>
-            <property name="spacing">6</property>
-            <child>
-              <object class="MedComboBox">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="tooltip-text" translatable="yes">Note: Setting the font size to larger than the default may cause text overlap in the debugger.
-
-    5x7 - 5x7
-
-    6x9 - 6x9
-
-    6x12 - 6x12
-
-    6x13 - 6x13. CJK support.
-
-    9x18 - 9x18; CJK support.</property>
-                <property name="command">pce_fast.debugger.disfontsize</property>
-                <property name="label">Disassembly font size</property>
-                <property name="label-width">35</property>
-                <property name="values">5x7
-6x9
-6x12
-6x13
-9x18</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="MedEntry">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="command">pce_fast.debugger.memcharenc</property>
-                <property name="label">Character encoding for the memory editor</property>
-                <property name="label-width">35</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">Debugger</property>
-          </object>
-          <packing>
-            <property name="position">4</property>
-            <property name="tab-fill">False</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-start">18</property>
-            <property name="margin-end">18</property>
-            <property name="margin-top">18</property>
-            <property name="margin-bottom">18</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame">
                 <property name="visible">True</property>
@@ -4096,7 +4017,7 @@ pce_fast.pal			PCE/TG16 9-bit GRB. If only 512 triplets are present, the remaini
             </child>
           </object>
           <packing>
-            <property name="position">5</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child type="tab">
@@ -4106,7 +4027,7 @@ pce_fast.pal			PCE/TG16 9-bit GRB. If only 512 triplets are present, the remaini
             <property name="label" translatable="yes">Documentation</property>
           </object>
           <packing>
-            <property name="position">5</property>
+            <property name="position">4</property>
             <property name="tab-fill">False</property>
           </packing>
         </child>
