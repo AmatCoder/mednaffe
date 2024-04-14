@@ -8,7 +8,7 @@ Its main features are:
  * The only dependency is GTK 3.
  * GPLv3 licensed.
 
-#### Downloads - Version 0.9.2
+#### Downloads - Version 0.9.3
  * You can download Mednaffe [here](https://github.com/AmatCoder/mednaffe/releases/latest "Downloads").
  * You can read the changelog [here](https://github.com/AmatCoder/mednaffe/blob/master/ChangeLog "ChangeLog").
  * [Flatpak](https://flathub.org/apps/details/com.github.AmatCoder.mednaffe) is available for Linux users.
