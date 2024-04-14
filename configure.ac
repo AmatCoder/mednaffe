@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([mednaffe],[0.9.2])
+AC_INIT([mednaffe],[0.9.3])
 AC_CONFIG_SRCDIR([src/mednaffe.c])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([subdir-objects])
@@ -24,7 +24,7 @@ case $host_os in
          AM_CONDITIONAL([LINUX], [false])
          AM_CONDITIONAL([WINDOWS], [true])
          AM_CONDITIONAL([MAC], [false])
-	;;
+   ;;
   darwin*)
          AM_CONDITIONAL([MAC], [true])
          AM_CONDITIONAL([LINUX], [false])
@@ -39,10 +39,10 @@ esac
 
 case $host in
   *-mingw32.static)
-	DEFINES="-DSTATIC_BUILD"
+   DEFINES="-DSTATIC_BUILD"
          ;;
   *)
-        DEFINES="" 
+        DEFINES=""
          ;;
 esac
 
@@ -64,7 +64,7 @@ else
   PKG_PROG_PKG_CONFIG
 fi
 
-PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.16 glib-2.0 >= 2.42], AC_MSG_NOTICE([Checking for GTK+ 3 development libraries]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.16 development libraries))
+PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.22 glib-2.0 >= 2.48], AC_MSG_NOTICE([Checking for GTK+ 3 development libraries]), AC_MSG_ERROR(Mednaffe needs GTK+ >= 3.22 development libraries))
 
 AC_SUBST(DEFINES)
 

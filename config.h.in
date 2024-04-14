@@ -1,6 +1,6 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define to 1 if you have the `atexit' function. */
+/* Define to 1 if you have the 'atexit' function. */
 #undef HAVE_ATEXIT
 
 /* Define to 1 if you have the <fcntl.h> header file. */
@@ -9,13 +9,13 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if you have the `memset' function. */
+/* Define to 1 if you have the 'memset' function. */
 #undef HAVE_MEMSET
 
-/* Define to 1 if you have the `mkdir' function. */
+/* Define to 1 if you have the 'mkdir' function. */
 #undef HAVE_MKDIR
 
-/* Define to 1 if you have the `realpath' function. */
+/* Define to 1 if you have the 'realpath' function. */
 #undef HAVE_REALPATH
 
 /* Define to 1 if you have the <stdint.h> header file. */
@@ -33,7 +33,7 @@
 /* Define to 1 if you have the <string.h> header file. */
 #undef HAVE_STRING_H
 
-/* Define to 1 if you have the `strrchr' function. */
+/* Define to 1 if you have the 'strrchr' function. */
 #undef HAVE_STRRCHR
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
@@ -66,7 +66,7 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define to 1 if all of the C90 standard headers exist (not just the ones
+/* Define to 1 if all of the C89 standard headers exist (not just the ones
    required in a freestanding environment). This macro is provided for
    backward compatibility; new code need not use it. */
 #undef STDC_HEADERS
@@ -74,8 +74,8 @@
 /* Version number of package */
 #undef VERSION
 
-/* Define to `unsigned int' if <sys/types.h> does not define. */
+/* Define as 'unsigned int' if <stddef.h> doesn't define. */
 #undef size_t
 
-/* Define to `int' if <sys/types.h> does not define. */
+/* Define as 'int' if <sys/types.h> doesn't define. */
 #undef ssize_t
