@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.40.0 
 
-Copyright (C) 2013-2021 AmatCoder
+Copyright (C) 2013-2024 AmatCoder
 
 This file is part of Mednaffe.
 
@@ -22,28 +22,28 @@ Author: AmatCoder
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.22"/>
   <requires lib="medwidgets" version="0.0"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name Mednaffe -->
   <!-- interface-description A front-end (GUI) for mednafen emulator -->
-  <!-- interface-copyright 2013-2021 AmatCoder -->
+  <!-- interface-copyright 2013-2024 AmatCoder -->
   <!-- interface-authors AmatCoder -->
   <object class="GtkBox" id="globbox">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_start">18</property>
-    <property name="margin_end">18</property>
-    <property name="margin_top">18</property>
-    <property name="margin_bottom">18</property>
+    <property name="can-focus">False</property>
+    <property name="margin-start">18</property>
+    <property name="margin-end">18</property>
+    <property name="margin-top">18</property>
+    <property name="margin-bottom">18</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="MedCheckButton">
         <property name="label" translatable="yes">Update physical joystick(s) internal state in Mednafen even when Mednafen lacks OS focus</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="draw_indicator">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
+        <property name="draw-indicator">True</property>
         <property name="command">input.joystick.global_focus</property>
       </object>
       <packing>
@@ -55,18 +55,35 @@ Author: AmatCoder
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
-          <object class="MedRange">
+          <object class="MedComboBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="tooltip_text" translatable="yes">Auto-fire frequency = GameSystemFrameRateHz / (value + 1)</property>
-            <property name="command">input.autofirefreq</property>
-            <property name="label">Auto-fire frequency</property>
-            <property name="label_width">40</property>
-            <property name="values">0,1000,1,0</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Selects the conditions for and extent of system keyboard and mouse grabbing when input grabbing is toggled on.
+
+Note that regardless of this setting, system keyboard grabbing is temporarily disabled while in the cheat interface, debugger, or netplay console text entry.
+
+auto
+Grab the system mouse only when an emulated mouse or other device that requires relative ball motion is active, and grab the system keyboard only when an emulated keyboard is active.
+
+full
+Grab the system mouse and keyboard regardless of whether or not an emulated keyboard or mouse/ball device is active.
+
+kb_auto
+Keyboard auto, mouse regardless of emulated devices.
+
+mouse_auto
+Mouse auto, keyboard regardless of emulated devices.</property>
+            <property name="command">input.grab.strategy</property>
+            <property name="label">Input grabbing strategy</property>
+            <property name="label-width">40</property>
+            <property name="values">auto
+full
+kb_auto
+mouse_auto</property>
             <child>
               <placeholder/>
             </child>
@@ -80,12 +97,12 @@ Author: AmatCoder
         <child>
           <object class="MedRange">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="tooltip_text" translatable="yes">The length of time, in milliseconds, that a button/key corresponding to a "dangerous" command like power, reset, exit, etc. must be pressed before the command is executed.</property>
-            <property name="command">input.ckdelay</property>
-            <property name="label">Dangerous key action delay</property>
-            <property name="label_width">40</property>
-            <property name="values">0,99999,1,0</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Auto-fire frequency = GameSystemFrameRateHz / (value + 1)</property>
+            <property name="command">input.autofirefreq</property>
+            <property name="label">Auto-fire frequency</property>
+            <property name="label-width">40</property>
+            <property name="values">0,1000,1,0</property>
             <child>
               <placeholder/>
             </child>
@@ -94,6 +111,25 @@ Author: AmatCoder
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MedRange">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">The length of time, in milliseconds, that a button/key corresponding to a "dangerous" command like power, reset, exit, etc. must be pressed before the command is executed.</property>
+            <property name="command">input.ckdelay</property>
+            <property name="label">Dangerous key action delay</property>
+            <property name="label-width">40</property>
+            <property name="values">0,99999,1,0</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -107,13 +143,13 @@ Author: AmatCoder
     <child>
       <object class="MedRange">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="tooltip_text" translatable="yes">Threshold for detecting a digital-like "button" press on analog axis, in percent</property>
+        <property name="can-focus">False</property>
+        <property name="tooltip-text" translatable="yes">Threshold for detecting a digital-like "button" press on analog axis, in percent</property>
         <property name="command">input.joystick.axis_threshold</property>
         <property name="label">Analog axis binary press detection threshold</property>
-        <property name="label_width">40</property>
+        <property name="label-width">40</property>
         <property name="values">0,100,1,0</property>
-        <property name="is_scale">True</property>
+        <property name="is-scale">True</property>
         <child>
           <placeholder/>
         </child>
