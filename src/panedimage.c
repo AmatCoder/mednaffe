@@ -42,6 +42,9 @@ struct _PanedImagePrivate {
   gint width;
   gint height1;
   gint height2;
+  gboolean isvisible;
+  gboolean isvisible_a;
+  gboolean isvisible_b;
   gboolean preserve_aspect_ratio;
 };
 
@@ -104,26 +107,19 @@ paned_image_set_images (PanedImage* self,
 
   PanedImagePrivate* priv = paned_image_get_instance_private (self);
 
-  gboolean b = gtk_widget_get_visible ((GtkWidget*) self);
-
-  if (b)
+  if (priv->isvisible)
   {
-
-    gboolean visible = gtk_widget_get_visible ((GtkWidget*) priv->image_a);
-    if (visible)
+    if (priv->isvisible_a)
     {
       g_free (priv->file_a);
       priv->file_a = paned_image_set_image (self, priv->image_a, priv->path_a, str, priv->height1);
     }
 
-    visible = gtk_widget_get_visible ((GtkWidget*) priv->image_b);
-
-    if (visible)
+    if (priv->isvisible_b)
     {
       g_free (priv->file_b);
       priv->file_b = paned_image_set_image (self, priv->image_b, priv->path_b, str, priv->height2);
     }
-
   }
 }
 
@@ -145,13 +141,14 @@ paned_image_set_paths (PanedImage* self,
   g_free (priv->path_b);
   priv->path_b = g_strdup (str_b);
 
-  gboolean ba = (g_strcmp0 (str_a, "") != 0);
-  gboolean bb = (g_strcmp0 (str_b, "") != 0);
+  priv->isvisible_a = (g_strcmp0 (str_a, "") != 0);
+  priv->isvisible_b = (g_strcmp0 (str_b, "") != 0);
 
-  gtk_widget_set_visible ((GtkWidget*) priv->image_a, ba);
-  gtk_widget_set_visible ((GtkWidget*) priv->image_b, bb);
+  gtk_widget_set_visible ((GtkWidget*) priv->image_a, priv->isvisible_a);
+  gtk_widget_set_visible ((GtkWidget*) priv->image_b, priv->isvisible_b);
 
-  gtk_widget_set_visible ((GtkWidget*) self, (ba || bb));
+  priv->isvisible = (priv->isvisible_a || priv->isvisible_b);
+  gtk_widget_set_visible ((GtkWidget*) self, (priv->isvisible));
 }
 
 
@@ -163,29 +160,35 @@ paned_image_scale_images (GtkWidget* sender,
   PanedImage* pi = self;
   PanedImagePrivate* priv = paned_image_get_instance_private (pi);
 
-  gint tmp_width = allocation->width - 16;
-  gint tmp_heigth = (allocation->height - gtk_paned_get_position ((GtkPaned*) pi)) - 8;
+  if ((allocation->width < 16) && (allocation->height < 16))
+    return;
+
+  gint tmp_width = allocation->width;
+  gint tmp_heigth = (allocation->height - gtk_paned_get_position ((GtkPaned*) pi));
 
   if ((priv->width == tmp_width) && (priv->height2 == tmp_heigth))
     return;
 
-  if ((allocation->width > 16) && (allocation->height > 16))
-  {
-    priv->width = tmp_width;
+  priv->width = tmp_width;
+
+  if (priv->isvisible_a && priv->isvisible_b)
     priv->height2 = tmp_heigth;
-    priv->height1 = (allocation->height - priv->height2) - 16;
+  else if (!priv->isvisible_a && priv->isvisible_b)
+    priv->height2 = allocation->height;
+  else if (priv->isvisible_a && !priv->isvisible_b)
+    priv->height2 = 0;
 
-    gboolean visible = gtk_widget_get_visible ((GtkWidget*) pi);
-    if (visible)
-    {
-      if (gtk_widget_get_visible ((GtkWidget*) priv->image_a))
-        if (priv->file_a != NULL)
-          paned_image_set_pixbuf (pi, priv->image_a, priv->file_a, priv->height1);
+  priv->height1 = (allocation->height - priv->height2);
 
-      if (gtk_widget_get_visible ((GtkWidget*) priv->image_b))
-        if (priv->file_b != NULL)
-          paned_image_set_pixbuf (pi, priv->image_b, priv->file_b, priv->height2);
-    }
+  if (priv->isvisible)
+  {
+    if (priv->isvisible_a)
+      if (priv->file_a != NULL)
+        paned_image_set_pixbuf (pi, priv->image_a, priv->file_a, priv->height1);
+
+    if (priv->isvisible_b)
+      if (priv->file_b != NULL)
+        paned_image_set_pixbuf (pi, priv->image_b, priv->file_b, priv->height2);
   }
 }
 
@@ -213,7 +216,6 @@ paned_image_new (GtkOrientation orientation)
 
   gtk_orientable_set_orientation ((GtkOrientable*) self, orientation);
 
-  priv->preserve_aspect_ratio = TRUE; //FIXME & TODO: buggy, so not fully implemented.
   priv->path_a = NULL;
   priv->path_b = NULL;
   priv->file_a = NULL;
@@ -221,6 +223,10 @@ paned_image_new (GtkOrientation orientation)
   priv->width = 0;
   priv->height1 = 0;
   priv->height2 = 0;
+  priv->isvisible = FALSE;
+  priv->isvisible_a = FALSE;
+  priv->isvisible_b = FALSE;
+  priv->preserve_aspect_ratio = TRUE; //TODO: to be implemented.
 
   priv->image_a = (GtkImage*) gtk_image_new();
   gtk_paned_pack1 ((GtkPaned*) self, (GtkWidget*) priv->image_a, TRUE, TRUE);
