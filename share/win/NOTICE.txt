@@ -2,7 +2,7 @@
 ------------------
 
 Mednaffe is licensed under the GNU GENERAL PUBLIC LICENSE version 3.
-See: /licenses/mednaffe-0.9.2/COPYING
+See: /licenses/mednaffe-0.9.3/COPYING
 
 This build of Mednaffe uses libraries (statically-linked) and resources
 from various free sofware / open source projects.

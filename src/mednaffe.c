@@ -1,7 +1,7 @@
 /*
  * mednaffe.c
  *
- * Copyright 2013-2021 AmatCoder
+ * Copyright 2013-2024 AmatCoder
  *
  * This file is part of Mednaffe.
  *

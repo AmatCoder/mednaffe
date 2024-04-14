@@ -1,3 +1,14 @@
+#### 14 / Apr / 2024
+
+Mednaffe 0.9.3 is released with the following changes:
+
+- Added a 'Recent files' menu.
+- Fix misalignment of screenshots.
+- Added and fixed settings (up to mednafen 1.31.1).
+- pce, pce_fast: Correct sha-256 bios (thanks to SamRohod for reporting).
+- [MacOS] Use macOS keyboard mapping when __APPLE__ is defined (patch by codeman38).
+
+
 #### 30 / Nov / 2021
 
 Mednaffe 0.9.2 is released with the following changes:
