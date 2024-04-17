@@ -160,16 +160,14 @@ paned_image_scale_images (GtkWidget* sender,
   PanedImage* pi = self;
   PanedImagePrivate* priv = paned_image_get_instance_private (pi);
 
-  if ((allocation->width < 16) && (allocation->height < 16))
+  if (allocation->width < 16)
     return;
 
-  gint tmp_width = allocation->width;
+  if (priv->width == allocation->width - 16)
+    return;
+
+  priv->width = allocation->width - 16;
   gint tmp_heigth = (allocation->height - gtk_paned_get_position ((GtkPaned*) pi));
-
-  if ((priv->width == tmp_width) && (priv->height2 == tmp_heigth))
-    return;
-
-  priv->width = tmp_width;
 
   if (priv->isvisible_a && priv->isvisible_b)
     priv->height2 = tmp_heigth;
