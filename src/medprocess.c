@@ -62,16 +62,18 @@ med_process_get_conf_path (MedProcess* self)
   if (self->MedConfPath == NULL)
   {
 #ifdef G_OS_WIN32
-    gchar* dir = win32_get_process_directory ();
-    self->MedConfPath = g_strconcat (dir, "\\mednafen.cfg\\", NULL);
-    g_free(dir);
+    self->MedConfPath = g_strconcat (self->MedBaseDir, "\\mednafen.cfg", NULL);
 #else
-    const gchar* mh = g_getenv ("MEDNAFEN_HOME");
+    self->MedBaseDir = g_strdup (getenv ("MEDNAFEN_HOME"));
 
-    if (mh == NULL)
-      self->MedConfPath = g_strconcat (g_get_home_dir (), "/.mednafen/mednafen.cfg", NULL);
+    if (self->MedBaseDir == NULL)
+    {
+      self->MedBaseDir = g_strdup (g_get_home_dir());
+      self->MedConfPath = g_strconcat (self->MedBaseDir, "/.mednafen/mednafen.cfg", NULL);
+    }
     else
-      self->MedConfPath = g_strconcat (mh, "/mednafen.cfg", NULL);
+      self->MedConfPath = g_strconcat (self->MedBaseDir, "/mednafen.cfg", NULL);
+
 #endif
   }
 
@@ -83,6 +85,8 @@ med_process_get_conf_path (MedProcess* self)
     self->MedVersion = NULL;
     g_free (self->MedConfPath);
     self->MedConfPath = NULL;
+    g_free (self->MedBaseDir);
+    self->MedBaseDir = NULL;
     g_object_unref (file);
 
     return NULL;
@@ -272,18 +276,25 @@ med_process_exec_emu (MedProcess* self,
 
 
 MedProcess*
-med_process_new (void)
+med_process_new (gchar* path)
 {
   MedProcess *self = (MedProcess*) g_object_new (med_process_get_type(), NULL);
 
   gboolean b = FALSE;
 #ifdef G_OS_WIN32
-  gchar *bin =  g_find_program_in_path ("mednafen.exe");
+  self->MedBaseDir = path;
 
-  if (bin != NULL)
-    self->MedExePath = g_strconcat("\"", bin, "\"", NULL);
+  if (self->MedBaseDir == NULL)
+  {
+    gchar* bin =  g_find_program_in_path ("mednafen.exe");
+    if (bin != NULL)
+      self->MedExePath = g_strconcat("\"", bin, "\"", NULL);
 
-  g_free (bin);
+    g_free (bin);
+  }
+  else
+    self->MedExePath = g_strconcat("\"", self->MedBaseDir, "\\mednafen.exe\"", NULL);
+
 #else
   self->MedExePath = g_find_program_in_path ("mednafen");
 #endif
@@ -292,7 +303,7 @@ med_process_new (void)
 #ifdef G_OS_WIN32
     GFile* test = med_process_get_conf_path (self);
 
-    bin = g_strconcat(self->MedExePath, " --help", NULL);
+    gchar* com = g_strconcat(self->MedExePath, " --help", NULL);
 
     STARTUPINFOW si;
     PROCESS_INFORMATION pi;
@@ -301,7 +312,7 @@ med_process_new (void)
     si.cb = sizeof(STARTUPINFOW);
     ZeroMemory (&pi, sizeof(PROCESS_INFORMATION));
 
-    gunichar2* command_win_utf16 = g_utf8_to_utf16 (bin, -1, NULL, NULL, NULL);
+    gunichar2* command_win_utf16 = g_utf8_to_utf16 (com, -1, NULL, NULL, NULL);
 
     b = CreateProcessW (NULL, command_win_utf16, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
 
@@ -321,7 +332,7 @@ med_process_new (void)
     else
       Sleep (2500);
 
-    g_free (bin);
+    g_free (com);
 #else
     gchar* stdout;
     gchar* stderr;
@@ -354,6 +365,7 @@ med_process_finalize (GObject* obj)
   g_free (self->MedVersion);
   g_free (self->MedExePath);
   g_free (self->MedConfPath);
+  g_free (self->MedBaseDir);
 
   g_hash_table_unref (self->table);
   g_string_free (priv->buffer, TRUE);
@@ -370,6 +382,7 @@ med_process_init (MedProcess* self)
   self->MedVersion = NULL;
   self->MedExePath = NULL;
   self->MedConfPath = NULL;
+  self->MedBaseDir = NULL;
 
   self->table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   priv->buffer = g_string_sized_new (512);

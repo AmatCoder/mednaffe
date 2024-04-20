@@ -36,11 +36,12 @@ struct _MedProcess {
   gchar* MedVersion;
   gchar* MedExePath;
   gchar* MedConfPath;
+  gchar* MedBaseDir;
   GHashTable* table;
 };
 
 GType med_process_get_type (void) G_GNUC_CONST;
-MedProcess* med_process_new (void);
+MedProcess* med_process_new (gchar* path);
 
 void med_process_read_conf (MedProcess* self);
 void med_process_exec_emu (MedProcess* self, gchar** command);

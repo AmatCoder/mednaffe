@@ -380,6 +380,28 @@ main_window_process_write_emu_log (MedProcess* sender,
 }
 
 
+#ifdef G_OS_WIN32
+static gchar*
+main_window_exe_dialog (MainWindow* self,
+                        const gchar* msg)
+{
+  g_return_val_if_fail (self != NULL, 0);
+  g_return_val_if_fail (msg != NULL, 0);
+
+  GtkWidget* dialog = gtk_message_dialog_new ((GtkWindow*) self, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, "%s", msg);
+  gtk_dialog_add_buttons ((GtkDialog*) dialog, "Yes", 1, "No", 0, NULL);
+
+  gint result = gtk_dialog_run ((GtkDialog*) dialog);
+  gtk_widget_destroy (dialog);
+
+  if (result == 1)
+    return select_path ((GtkWidget*) self, TRUE);
+
+  return NULL;
+}
+#endif
+
+
 static void
 main_window_show_error (MainWindow* self,
                         const gchar* msg)
@@ -412,8 +434,7 @@ main_window_process_exec_emu_ended (MedProcess* sender,
 
 #ifdef G_OS_WIN32
   gchar* string = NULL;
-  gchar* wpath = win32_get_process_directory ();
-  gchar* txt = g_strconcat (wpath, "\\stdout.txt", NULL);
+  gchar* txt = g_strconcat (priv->med_process->MedBaseDir, "\\stdout.txt", NULL);
 
   if (g_file_get_contents(txt, &string, NULL, NULL))
   {
@@ -422,7 +443,6 @@ main_window_process_exec_emu_ended (MedProcess* sender,
   }
 
   g_free (txt);
-  g_free (wpath);
 #else
   if (status != 0)
   {
@@ -779,6 +799,8 @@ main_window_save_settings (MainWindow* self)
   gint fsize = (gint)gtk_adjustment_get_value (adj);
   g_key_file_set_integer (key, "GUI", "FontSize", fsize);
 
+  g_key_file_set_string (key, "GUI", "MedBaseDir", priv->med_process->MedBaseDir);
+
   gchar* conf_path = win32_get_process_directory ();
 #else
   gchar* conf_path = g_strconcat (g_get_user_config_dir (), "/mednaffe", NULL);
@@ -885,7 +907,7 @@ main_window_menu_activate_recent (GtkMenuItem* sender,
 {
   g_return_if_fail (self != NULL);
   g_return_if_fail (sender != NULL);
-  
+
   MainWindow* mw = self;
   MainWindowPrivate* priv = main_window_get_instance_private (mw);
 
@@ -1179,19 +1201,51 @@ main_window_start (MainWindow* self)
   logbook_write_log (priv->logbook, LOGBOOK_LOG_TAB_FRONTEND, welcome);
   g_free (welcome);
 
-
-  priv->med_process = med_process_new ();
+  priv->med_process = med_process_new (NULL);
 
   if (priv->med_process->MedExePath == NULL)
   {
 #ifdef G_OS_WIN32
-    main_window_show_error (self, "Mednafen executable not found in this folder!\n");
+    GKeyFile *key = g_key_file_new();
+    gchar* dir = win32_get_process_directory();
+    gchar* conf_path = g_strconcat (dir, "\\mednaffe.conf", NULL);
+    g_free(dir);
+
+    gboolean valid = g_key_file_load_from_file (key, conf_path, G_KEY_FILE_NONE, NULL);
+    g_free (conf_path);
+
+    if (valid)
+    {
+      gchar* exepath = g_key_file_get_string (key, "GUI", "MedBaseDir", NULL);
+      g_object_unref (priv->med_process);
+      priv->med_process = med_process_new (exepath);
+    }
+
+    g_key_file_free (key);
+
+    while (priv->med_process->MedExePath == NULL)
+    {
+      gchar* test = main_window_exe_dialog(self, "Mednafen executable not found in this folder!\nDo you want select other?\n");
+      if (test)
+      {
+        g_object_unref (priv->med_process);
+        priv->med_process = med_process_new (test);
+      }
+      else
+      {
+        main_window_show_error (self, "Mednafen executable not found!\n");
+        main_window_set_all_sensitive (self, FALSE, priv->show_tooltips);
+        break;
+      }
+    }
+
 #else
     main_window_show_error (self, "Mednafen executable not found in PATH!\n");
-#endif
     main_window_set_all_sensitive (self, FALSE, priv->show_tooltips);
+#endif
   }
-  else
+
+  if (priv->med_process->MedExePath != NULL)
   {
     med_process_read_conf (priv->med_process);
 
