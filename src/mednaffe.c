@@ -23,6 +23,8 @@
 
 
 #include "mainwindow.h"
+#include <locale.h>
+#include <glib/gi18n.h>
 
 
 typedef struct _MednaffeApp MednaffeApp;
@@ -78,6 +80,11 @@ int
 main (int argc,
       char ** argv)
 {
+  setlocale (LC_ALL, "");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+
   MednaffeApp* mednaffe_app = mednaffe_app_new ();
 
   g_object_set_data_full ((GObject*) mednaffe_app, "name", g_strdup("Mednaffe"), g_free);

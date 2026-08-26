@@ -1,0 +1,3184 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mednaffe 0.9.3\n"
+"PO-Revision-Date: 2026-08-26 00:00+0000\n"
+"Last-Translator: Swedish translation contributors\n"
+"Language-Team: Swedish\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: share/glade/gb.ui:1
+msgid ""
+"    auto - Auto\n"
+"    Automatic detection based on headers.\n"
+"\n"
+"    dmg - DMG\n"
+"    Original GameBoy Monochrome.\n"
+"\n"
+"    cgb - CGB\n"
+"    GameBoy Color.\n"
+"\n"
+"    This option is not fully implemented in regards to handling of DMG games.\n"
+"\n"
+"    agb - AGB\n"
+"    GameBoy Advance.\n"
+"\n"
+"    This option is not fully implemented in regards to handling of DMG games."
+msgstr ""
+
+#: share/glade/pce_fast.ui:1
+msgid ""
+"    none - none\n"
+"\n"
+"    gamepad - Gamepad\n"
+"\n"
+"    mouse - Mouse\n"
+"\n"
+"    tsushinkb - Tsushin Keyboard\n"
+"    Emulated keyboard key state is not updated unless input grabbing (by default, mapped to CTRL+SHIFT+Menu) is toggled on; refer to the main documentation for details."
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"0 - Disabled\n"
+"\n"
+"full - Full\n"
+"Full-screen stretch, disregarding aspect ratio.\n"
+"\n"
+"aspect - Aspect Preserve\n"
+"Full-screen stretch as far as the aspect ratio(in this sense, the equivalent xscalefs == yscalefs) can be maintained.\n"
+"\n"
+"aspect_int - Aspect Preserve + Integer Scale\n"
+"Full-screen stretch, same as \"aspect\" except that the equivalent xscalefs and yscalefs are rounded down to the nearest integer.\n"
+"\n"
+"aspect_mult2 - Aspect Preserve + Integer Multiple-of-2 Scale\n"
+"Full-screen stretch, same as \"aspect_int\", but rounds down to the nearest multiple of 2."
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid ""
+"0 is lowest quality and CPU usage, 10 is highest quality and CPU usage. The "
+"resampler that this setting refers to is used for converting from 44.1KHz to"
+" the sampling rate of the host audio device Mednafen is using. Changing "
+"Mednafen's output rate, via the \"Playback rate\" setting, to \"44100\" may "
+"bypass the resampler, which can decrease CPU usage by Mednafen, and can "
+"increase or decrease audio quality, depending on various operating system "
+"and hardware factors."
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid ""
+"0 is lowest quality and CPU usage, 10 is highest quality and CPU usage. The "
+"resampler that this setting refers to is used for converting from 44.1KHz to"
+" the sampling rate of the host audio device Mednafen is using. Changing "
+"Mednafen's output rate, via the \"sound.rate\" setting, to \"44100\" may "
+"bypass the resampler, which can decrease CPU usage by Mednafen, and can "
+"increase or decrease audio quality, depending on various operating system "
+"and hardware factors."
+msgstr ""
+
+#: share/glade/snes.ui:1
+msgid ""
+"0 is lowest quality and latency and CPU usage, 10 is highest quality and latency and CPU usage.\n"
+"\n"
+"With a Mednafen sound output rate of about 32041Hz or higher: Quality \"0\" resampler has approximately 0.125ms of latency, quality \"5\" resampler has approximately 1.25ms of latency, and quality \"10\" resampler has approximately 3.99ms of latency."
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid ""
+"0x0001=SELECT\n"
+"0x0002=L3\n"
+"0x0004=R3\n"
+"0x0008=START\n"
+"0x0010=D-Pad UP\n"
+"0x0020=D-Pad Right\n"
+"0x0040=D-Pad Down\n"
+"0x0080=D-Pad Left\n"
+"0x0100=L2\n"
+"0x0200=R2\n"
+"0x0400=L1\n"
+"0x0800=R1\n"
+"0x1000=△\n"
+"0x2000=○\n"
+"0x4000=x\n"
+"0x8000=□"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid "3D"
+msgstr ""
+
+#: share/glade/netplay.ui:1
+msgid ""
+"5x7 - 5x7\n"
+"\n"
+"6x9 - 6x9\n"
+"\n"
+"6x12 - 6x12\n"
+"\n"
+"6x13 - 6x13. CJK support.\n"
+"\n"
+"9x18 - 9x18; CJK support."
+msgstr ""
+
+#: share/glade/paths.ui:1
+msgid ""
+"<b>\tEdit at your own risk.</b>\n"
+"\n"
+"\t\tAvailable specifiers:\n"
+"\n"
+"\t\t%%\t-\t% symbol\n"
+"\t\t%z\t-\tPath separator (usage is optional, but allows for more platform-independent paths)\n"
+"\t\t%b\t-\tMednafen base directory (no trailing slash)\n"
+"\t\t%d\t-\tLoaded file base directory (\"/games/nintendo/megaman.nes\" -> \"/games/nintendo\")\n"
+"\t\t%f\t-\tFile base (\"/games/nintendo/megaman.nes\" -> \"megaman\")\n"
+"\t\t%F\t-\tSame as %f, but replaced with emulation module's short name with recognized multi-CD CD sets.  \n"
+"\t\t%m\t-\tMD5 hash of the currently loaded game.\n"
+"\t\t%M\t-\tEmpty for first evaluation per full path construction, then filled with the game's\n"
+"\t\t\t\tMD5 hash (or the game set's MD5 hash ID for multi-CD CD sets) followed by a period.\n"
+"\t\t\t\t(Not available for the filesys.fname_snap string)\n"
+"\n"
+"\t\t%e\t-\tLoaded file extension (\"/games/nintendo/megaman.nes\" -> \".nes\")\n"
+"\t\t%s\t-\tCurrent emulation module's short name.\n"
+"\t\t%p\t-\tSpecial parameter (usually a number/numeric counter).\n"
+"\t\t%x\t-\tDefault extension for the file type the path will be used for (extension is WITHOUT the period).\n"
+"\t\t%X\t-\tA merging of %p and %x (replaces the last character of %x with %p).\n"
+"\n"
+"\tIf the constructed path is relative, it will be prefixed by the Mednafen base directory\n"
+"\tand value of the filesys.*_path settings automatically.\n"
+"\tIf the constructed path is absolute, this prefixing will not occur."
+msgstr ""
+
+#: share/glade/pce_fast.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+" The \"pce_fast\" emulation module is an experimental alternative to the pce emulation module. It is a fork of 0.8.x modified for speed at the expense of (usually) unneeded accuracy (this compares to the \"pce\" module, which traded speed away in favor of accuracy).\n"
+"\n"
+"To use this module rather than the \"pce\" module, you must either uncheck the \"Enable automatic usage of this module\" setting from \"pce\" module, or pass \"-force_module pce_fast\" to Mednafen each time it is invoked.\n"
+"\n"
+"WARNING: Save states, movies, and netplay are definitely not compatible between the \"pce\" module and the \"pce_fast\" module. \n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\t\tDescription:\n"
+"\n"
+"pce_fast.pal\t\t\tPCE/TG16 9-bit GRB. If only 512 triplets are present, the remaining 512 greyscale colors will be calculated automatically.\n"
+"\t\t\t\t\t512 or 1024 RGB triplets"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+" The \"snes_faust\" emulation module is experimental, and not used automatically by default except for SPC playback. To use this module rather than the \"snes\" module, you must either uncheck the \"Enable automatic usage of this module\" setting from \"snes\" module, or pass \"-force_module snes_faust\" to Mednafen each time it is invoked.\n"
+"\n"
+"Timing is approximate, so some games may exhibit timing-related issues. The only input devices currently emulated are the standard SNES gamepad and multitap.The following special cart chips and devices are emulated:\n"
+"\n"
+"    CX4\n"
+"    DSP-1 (HLE, currently unsuitable for use with netplay)\n"
+"    DSP-2 (HLE)\n"
+"    MSU1\n"
+"    S-DD1\n"
+"    SA1\n"
+"    Super FX \n"
+"\n"
+"A unique feature to this module (at the current time) is optional 1-frame speculative execution, disabled by default, controlled by the \"Enable 1-frame speculative execution for video output\" setting. Enabling it will reduce input(controller)->output(video) latency by 1 video frame (~16.7ms), with no deleterious effects on most games tested (though it will increase CPU usage a bit).\n"
+"\n"
+"To boost performance on underpowered multi-CPU-core platforms, enable multi-threaded rendering by changing the setting \"PPU renderer\" to \"mt\"."
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Internal backup memory and external backup memory are emulated.\n"
+"Motion decoder RLE and JPEG-like modes are emulated.\n"
+"KING Background 0 scaling+rotation mode is supported.\n"
+"Mouse emulation.\n"
+"Working CD+G playback.\n"
+"\n"
+"\n"
+"<b>Firmware/BIOS</b>\n"
+"Place a correct BIOS image file in the correct location (firmware path or Mednafen base directory).\n"
+"\n"
+"The filename listed below is per default bios setting.\n"
+"\n"
+"Filename:\t\tpcfx.rom\n"
+"Purpose:\t\t\tPC-FX BIOS version 1.00. Recommended BIOS version.\n"
+"SHA-256 Hash:\t4b44ccf5d84cc83daa2e6a2bee00fdafa14eb58bdf5859e96d8861a891675417"
+msgstr ""
+
+#: share/glade/lynx.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's Atari Lynx emulation is based off of Handy (http://handy.sourceforge.net).\n"
+"\n"
+"<b>Atari Lynx emulation requires the 512-byte Lynx boot ROM image, named as \"lynxboot.img\", and placed in the Mednafen base directory.</b>\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\t\tDescription:\n"
+"\n"
+"lynx.pal\t\t\t\tAtari Lynx 12-bit BRG\n"
+"\t\t\t\t\t4096 RGB triplets"
+msgstr ""
+
+#: share/glade/gb.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's GameBoy (Color) emulation is based off of VisualBoy Advance.\n"
+"\n"
+"Super Game Boy is presently not supported. If it ever is supported in the future, it will likely be via the SNES module instead of the GB module.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\t\tDescription:\n"
+"\n"
+"gb.pal\t\t\t\tGameBoy(mono)\n"
+"\t\t\t\t\t4 or 8 or 12 RGB triplets\n"
+"\n"
+"gbc.pal\t\t\t\tGameBoy Color 15-bit BGR\n"
+"\t\t\t\t\t32768 RGB triplets"
+msgstr ""
+
+#: share/glade/gba.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's GameBoy Advance emulation is based off of VisualBoy Advance.\n"
+"\n"
+"\n"
+"<b>BIOS</b>\n"
+"Built-in high-level BIOS emulation is used by default; however, a real BIOS can be used by setting the \"Optional BIOS ROM image\" setting.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\t\tDescription:\n"
+"\n"
+"gba.pal\t\t\t\tGBA 15-bit BGR\n"
+"\t\t\t\t\t32768 RGB triplets\n"
+"\n"
+"\n"
+"<b>Backup Memory Type</b>\n"
+"To specify the backup memory type on a per-game basis, create a file with the same name as the ROM image but with the extension replaced with \"type\", in the \"sav\" directory under the Mednafen base directory.\n"
+"\n"
+"Example: SexyPlumbers.gba -> SexyPlumbers.type\n"
+"\n"
+"One or more of the following strings(on separate lines) should appear in this file:\n"
+"\n"
+"    sram\n"
+"    flash\n"
+"    eeprom\n"
+"    sensor\n"
+"    rtc \n"
+"\n"
+"Additionally, the flash size can be specified by specifying the size(real size, or divided by 1024) after the type, like \"flash 128\" or \"flash 131072\"."
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's NES/Famicom emulation is based off of FCE Ultra.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\t\tDescription:\n"
+"\n"
+"nes-pal.pal\t\t\tPAL NES\n"
+"\t\t\t\t\t64 or 512 RGB triplets\n"
+"\n"
+"nes.pal\t\t\t\tNTSC NES/Famicom\n"
+"\t\t\t\t\t64 or 512 RGB triplets\n"
+"\n"
+"rp2c04-0001.pal\t\tArcade RP2C04-0001\n"
+"\t\t\t\t\t64 RGB triplets\n"
+"\n"
+"rp2c04-0002.pal\t\tArcade RP2C04-0002\n"
+"\t\t\t\t\t64 RGB triplets\n"
+"\n"
+"rp2c04-0003.pal\t\tArcade RP2C04-0003\n"
+"\t\t\t\t\t64 RGB triplets\n"
+"\n"
+"rp2c04-0004.pal\t\tArcade RP2C04-0004\n"
+"\t\t\t\t\t64 RGB triplets\n"
+"\n"
+"rp2c0x.pal\t\t\tArcade RP2C03/RP2C05\n"
+"\t\t\t\t\t64 RGB triplets\n"
+"\n"
+"\n"
+"<b>Input</b>\n"
+"Mednafen emulates the standard NES gamepad, the Four-Score multiplayer adapter, the Zapper, the Power Pad, and the Arkanoid controller. The Famicom version of the Arkanoid controller, the \"Space Shadow\" gun, the Famicom 4-player adapter, the Family Keyboard, the HyperShot controller, the Mahjong controller, the Oeka Kids tablet, the Party Tap, the Family Trainer, and the Barcode Battler II barcode reader are also emulated.\n"
+"\n"
+"\n"
+"<b>Zapper</b>\n"
+"Most Zapper NES games expect the Zapper to be plugged into port 2. and most VS Unisystem games expect the Zapper to be plugged into port 1.\n"
+"\n"
+"The left mouse button is the emulated trigger button for the Zapper. The right mouse button is also emulated as the trigger, but as long as you have the right mouse button held down, no color detection will take place, which is effectively like pulling the trigger while the Zapper is pointed away from the television screen. Note that you must hold the right button down for a short time to have the desired effect.\n"
+"\n"
+"\n"
+"<b>File Formats</b>\n"
+"Mednafen supports the iNES, FDS (raw and with a header), UNIF, and NSF file formats. FDS ROM images in the iNES format are not supported; it would be silly to do so and storing them in that format is nonsensical.\n"
+"\n"
+"\n"
+"<b>Famicom Disk System</b>\n"
+"You will need the FDS BIOS ROM image in the base Mednafen directory. It must be named \"disksys.rom\". Mednafen will not load FDS games without this file.\n"
+"Two types of FDS disk images are supported: disk images with the FWNES-style header, and disk images with no header. The number of sides on headerless disk images is calculated by the total file size, so don't put extraneous data at the end of the file.\n"
+"\n"
+"If a loaded disk image is written to during emulation, Mednafen will store the modified disk image in the save games directory, which is by default \"sav\" under the base directory.\n"
+"\n"
+"\n"
+"<b>Game Genie</b>\n"
+"The Game Genie ROM image is loaded from the path specified by the setting \"Game Genie ROM\", or, if that is not set, the file \"gg.rom\" in the base directory when Game Genie emulation is enabled.\n"
+"\n"
+"The ROM image may either be the 24592 byte iNES-format image, or the 4352 byte raw ROM image.\n"
+"\n"
+"\n"
+"<b>VS Unisystem</b>\n"
+"Mednafen currently only supports VS Unisystem ROM images in the iNES format. DIP switches and coin insertion are both emulated. The following games are supported, and have palettes provided (though not necessarily 100% accurate or complete):\n"
+"\n"
+"    Battle City\n"
+"    Castlevania\n"
+"    Clu Clu Land\n"
+"    Dr. Mario\n"
+"    Duck Hunt\n"
+"    Excitebike\n"
+"    Excitebike (Japanese)\n"
+"    Freedom Force\n"
+"    Goonies, The\n"
+"    Gradius\n"
+"    Gumshoe\n"
+"    Hogan's Alley\n"
+"    Ice Climber\n"
+"    Ladies Golf\n"
+"    Mach Rider\n"
+"    Mach Rider (Japanese)\n"
+"    Mighty Bomb Jack (Japanese)\n"
+"    Ninja Jajamaru Kun (Japanese)\n"
+"    Pinball\n"
+"    Pinball (Japanese)\n"
+"    Platoon\n"
+"    RBI Baseball\n"
+"    Slalom\n"
+"    Soccer\n"
+"    Star Luster\n"
+"    Stroke and Match Golf\n"
+"    Stroke and Match Golf - Ladies\n"
+"    Stroke and Match Golf (Japanese)\n"
+"    Super Mario Bros.\n"
+"    Super Sky Kid\n"
+"    Super Xevious\n"
+"    Tetris\n"
+"    TKO Boxing\n"
+"    Top Gun\n"
+"\n"
+"\n"
+"<b>Family Keyboard</b>\n"
+"All emulated keys are mapped to the closest open key on the PC keyboard, with a few exceptions. The emulated \"@\" key is mapped to the \"`\" (grave) key, and the emulated \"kana\" key is mapped to the \"Insert\" key (in the 3x2 key block above the cursor keys).\n"
+"\n"
+"To use the Family Keyboard emulation properly, press SHIFT + Scroll Lock, which will cause input to be grabbed from the window manager (if present) and disable Mednafen's other internal command processing."
+msgstr ""
+
+#: share/glade/ngp.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's Neo Geo Pocket emulation is based off of NeoPop.\n"
+"\n"
+"The Neo Geo Pocket (Color) emulation in Mednafen is not very accurate in terms of low-level details; BIOS is HLE'd, CPU instruction timing is totally fubared, and some CPU instructions are likely emulated incorrectly. It's sufficient to play most of the commercially released games fairly well, but if you want to do NGP(C) homebrew development, you're better off at looking at something like MAME (http://mamedev.org)."
+msgstr ""
+
+#: share/glade/gg.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's Sega Game Gear emulation is based off of SMS Plus.\n"
+"\n"
+"Game Gear emulation in Mednafen is a low-priority system in terms of proactive maintenance and bugfixes.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\tDescription:\n"
+"\n"
+"gg.pal\t\t\tGG 12-bit BGR\n"
+"\t\t\t\t4096 RGB triplets"
+msgstr ""
+
+#: share/glade/md.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's Sega Genesis/Megadrive emulation is based off of Genesis Plus and information and code from Genesis Plus GX (old GPL-licensed version). The GPL-incompatible CPU and sound emulation cores in the aforementioned projects have been replaced with GPLed or GPL-compatible alternatives; heavily-modified and improved YM2612 emulation from Gens, and Z80 emulation core from FUSE.\n"
+"\n"
+"Sega Genesis/Megadrive emulation should still be considered experimental; there are still likely timing bugs in the 68K emulation code, the YM2612 emulation code is not particularly accurate, and the VDP code has timing-related issues.\n"
+"\n"
+"Sega 32X and Sega CD are not currently supported, though there is a bit of stub Sega CD code present currently."
+msgstr ""
+
+#: share/glade/sms.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's Sega Master System emulation is based off of SMS Plus.\n"
+"\n"
+"Sega Master System emulation in Mednafen is a low-priority system in terms of proactive maintenance and bugfixes.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\tDescription:\n"
+"\n"
+"sms.pal\t\t\tSMS 6-bit BGR\n"
+"\t\t\t\t64 RGB triple"
+msgstr ""
+
+#: share/glade/wswan.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's WonderSwan (Color) emulation is based off of Cygne (http://cygne.emuunlim.com), modified with bug fixes and to add sound emulation.\n"
+"\n"
+"WSR (WonderSwan sound rip format) playback is supported.\n"
+"\n"
+"\n"
+"<b>Default Key Assignments</b>\n"
+"The \"X Cursor\" buttons are usually used for directional control with horizontal-layout games, while the \"Y Cursor\" buttons are usually used for directional control with vertical-layout games. Additionally, the opposite buttons are often treated as action buttons...because of this, <b>you must *NOT* configure the X cursor buttons and Y cursor buttons to the same real buttons or keys</b>. Games will not behave well at all if you do."
+msgstr ""
+
+#: share/glade/snes.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Mednafen's primary SNES emulation module is a fork of bsnes (http://byuu.org) v0.059, with (but not limited to) the following modifications:\n"
+"\n"
+"    Cx4 Op10 fix patch\n"
+"    blargg_libco_ppc64-5\n"
+"    nall serializer 64-bit type bugfix backport\n"
+"    a few minor timing/scheduler related changes\n"
+"    Minor SuperFX emulation optimizations\n"
+"    Minor S-SMP emulation optimizations\n"
+"    Modified blending behavior when in hi-res modes\n"
+"\n"
+"SNSF playback is supported to a degree; however, its implementation in Mednafen is incomplete.\n"
+"\n"
+"SPC playback is not supported.\n"
+"\n"
+"WARNING: Saving state (and by extension rewinding and netplay) with this module's SNES emulation may break some games. \"Tales of Phantasia\" is a known problematic game in this regard.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\tDescription:\n"
+"\n"
+"snes.pal\t\t\tSNES 15-bit BGR\n"
+"\t\t\t\t32768 RGB triplets"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"NOTE: The Sega Saturn emulation is currently experimental and under active development. By default (and for the official releases for Windows), Saturn emulation is only compiled in for builds for some 64-bit architectures (x86_64, AArch64, PPC64).\n"
+"\n"
+"Mednafen's Sega Saturn emulation is extremely CPU intensive. The minimum recommended CPU is a quad-core Intel Haswell-microarchitecture CPU with a base frequency of >= 3.3GHz and a turbo frequency of >= 3.7GHz (e.g. Xeon E3-1226 v3), but note that this recommendation does not apply to any unofficial ports or forks, which may have higher CPU requirements.\n"
+"\n"
+"Save states are supported, but the data is not fully sanitized properly on save state load, so definitely <b>avoid loading save states acquired from sources you don't trust</b> (this includes via netplay).\n"
+"\n"
+"Enabling CD image preloading into memory via the \"Cache entire CD images in memory\" setting is recommended, to avoid short emulator pauses and audio pops due to waiting for disk accesses to complete when the emulated CD is accessed.\n"
+"\n"
+"A list of known emulation bugs (with workarounds in some cases) in Saturn games with Mednafen is available at https://forum.fobby.net/index.php?t=msg&amp;th=1357\n"
+"\n"
+"\n"
+"<b>Firmware/BIOS</b>\n"
+"Place the correct BIOS image files in the correct location (firmware path or Mednafen base directory).\n"
+"\n"
+"The filenames listed below are per default bios settings.\n"
+"\n"
+"Filename:\t\tsega_101.bin\n"
+"Purpose:\t\t\tBIOS image. Required for Japan-region games.\n"
+"SHA-256 Hash:\tdcfef4b99605f872b6c3b6d05c045385cdea3d1b702906a0ed930df7bcb7deac\n"
+"\n"
+"Filename:\t\tmpr-17933.bin\n"
+"Purpose:\t\t\tBIOS image. Required for North America/US-region and Europe-region games.\n"
+"SHA-256 Hash:\t96e106f740ab448cf89f0dd49dfbac7fe5391cb6bd6e14ad5e3061c13330266f\n"
+"\n"
+"\n"
+"<b>Mouse on Virtual Ports 1-12</b>\n"
+"NOTE: The default mapping for the emulated mouse \"START\" button conflicts with the default mapping for the \"Enter\" key on the emulated keyboards on all virtual ports, and the default mapping for \"START\" on the emulated digital gamepad on virtual port 1. If you want to use an emulated mouse with an emulated keyboard, you should probably remap the \"START\" button to a non-keyboard host device."
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Sub-instruction timing granularity (but greater than cycle granularity)\n"
+"All sprite sizes supported.\n"
+"16-sprites per line limit emulated.\n"
+"Accurate HuC6280 flags emulation.\n"
+"Dot-clock emulation for more accurate aspect ratios.\n"
+"Support for Street Fighter 2's HuCard hardware.\n"
+"Support for Populous's backup RAM.\n"
+"6-button pad emulation.\n"
+"Mouse emulation.\n"
+"Working CD+G playback.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\tDescription:\n"
+"\n"
+"pce.pal\t\t\tPCE/TG16 9-bit GRB. If only 512 triplets are present, the remaining 512 greyscale colors will be calculated automatically.\n"
+"\t\t\t\t512 or 1024 RGB triplets\n"
+"\n"
+"\n"
+"<b>Accidental Soft Resets</b>\n"
+"To prevent soft resets due to accidentally hitting RUN and SEL at the same time, check \"Disable soft reset\" option. This will prevent the emulated PCE from seeing both of those buttons pressed at the same time. However, it is not guaranteed to work on all games, particularly ones with sloppily-coded gamepad polling routines.\n"
+"\n"
+"\n"
+"<b>Sprite Flickering</b>\n"
+"Sprite flickering in shmups got you down? Tired of scenery having a critical existence failure in games that have complex multi-layer effects? Then the \"Remove 16-sprites-per-scanline hardware limit\" setting is for you!\n"
+"Enabling this setting will eliminate 99% of your flickering and existence failure woes. Side effects may include the superpower of seeing submarines through water (as in the first boss scene of \"Bloody Wolf\"), along with seeing other hidden elements and graphical glitches (\"Ninja Ryukenden\" has at least one broken cutscene with this setting enabled).\n"
+"\n"
+"\n"
+"<b>Obnoxious Sound Effects in CD Games</b>\n"
+"Many CD games have awesome music, but it is drowned out by excessively loud obnoxious sound effects. This can be partially remedied by altering the \"PSG volume when playing a CD game\" and \"ADPCM volume\" settings, try say a value of 50, but doing so may cause issues with cutscenes and PSG music-only sections."
+msgstr ""
+
+#: share/glade/help.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"This is a summary of the official documentation. Click on the link above to read it in full.\n"
+"\n"
+"\n"
+"<b>Base Directory</b>\n"
+"Mednafen's \"base directory\" is the directory under which Mednafen stores its data and looks for various auxiliary data by default. If the \"HOME\" environment variable is set, it will be suffixed with \"/.mednafen\" and used as the base directory (in other words ~/.mednafen, or $HOME/.mednafen). If the \"MEDNAFEN_HOME\" environment variable is set, it will be used as the base directory. If neither the \"HOME\" nor \"MEDNAFEN_HOME\" environment variable is set, and the current user has an entry in the password file, the corresponding home directory will be used as if it were the \"HOME\" environment variable.\n"
+"\n"
+"On Microsoft Windows, these conditions are typically not met, in which case the directory the Mednafen executable (\"mednafen.exe\") is in will be used as the base directory.\n"
+"\n"
+"\n"
+"<b>Firmware/BIOS</b>\n"
+"Some emulation modules require firmware/BIOS images to function. If a firmware path is non-absolute (doesn't begin with C:\\ or / or similar), Mednafen will try to load the file relative to the \"firmware\" directory under the Mednafen base directory. If it doesn't find it there, it will be loaded relative to the Mednafen base directory itself. Of course, if the \"Firmware\" setting is set to a custom value, the firmware files will be searched relative to that path.\n"
+"\n"
+"\n"
+"<b>CD Emulation</b>\n"
+"Mednafen can load CD-ROM games from a dumped copy of the disc, such as CUE+BIN. Physical CD support was removed in version 0.9.38.\n"
+"\n"
+"\n"
+"<b>Compact Disc Images</b>\n"
+"Mednafen supports \"CUE\" sheets, CloneCD \"CCD/IMG/SUB\", and cdrdao \"TOC\" files; though only a very limited subset of the latter's full capabilities is supported. Mednafen supports raw, simple storage formats supported by libsndfile (MS WAV, AIFF/AIFC, AU/SND, etc.), and Ogg Vorbis and Musepack audio files referenced by CUE sheets. MP3 is not supported, and will not be supported.\n"
+"\n"
+"\n"
+"<b>Multiple-CD Games</b>\n"
+"To play a game that consists of more than one CD, you will need to create an M3U file (plain-text, \".m3u\" extension), and enter the filenames of the CUE/TOC/CCD files, one per line. Load the M3U file with Mednafen instead of the CUE/TOC/CCD files, and use the F6 and F8 keys to switch among the various discs available.\n"
+"Note: Preferably, your M3U file(s) should reference CUE/TOC/CCD files that are in the same directory as the M3U file.\n"
+"\n"
+"\n"
+"<b>Security Issues</b>\n"
+"It is hypothetically possible to overflow some buffers on some emulated systems by clever manipulation of saved timekeeping variables. In combination with custom emulated machine code and state, it may therefore be possible to run arbitrary host code, compromising the host system. <b>Therefore, loading save states from parties you have reason to distrust, or not trust, is advised against.</b>\n"
+"\n"
+"CUE and TOC, and PSF (PSF1, GSF, etc.) files can reference arbitrary files for inclusion and parsing. Inclusion of device files may cause odd system behavior, particularly if you are running Mednafen as root (which you shouldn't be!) on a UN*X system, or cause Mednafen to lockup or abort. <b>In combination with save states, this file inclusion presents the possibility of leaking of private local information.</b>\n"
+"\n"
+"Mednafen's network play automatically utilizes save states to synchronize state among newly connected players, and thereafter at connected players command. Hence, any security issues relating to save states apply to network play as well.\n"
+"\n"
+"\n"
+"<b>Input Grabbing</b>\n"
+"Keyboard and mouse input can be grabbed (from the OS/window manager) by pressing CTRL+SHIFT+Menu (default mapping), and disabled by pressing the same again.\n"
+"\n"
+"Emulated keyboards will only function when input grabbing is enabled. This disables hotkeys/command keys (unless the user has mapped them to a non-keyboard device), and the keyboard mappings of any non-keyboard emulated devices.\n"
+"\n"
+"Emulated mice mapped to the system mouse will only function properly when input grabbing is enabled or when in a fullscreen video mode, the debugger is inactive, and no other emulated input devices that rely on absolute mouse coordinates(e.g. lightguns) are active and mapped to the system mouse.\n"
+"\n"
+"\n"
+"<b>Configuration Files</b>\n"
+"Mednafen loads/saves its settings from/to a primary configuration file, named \"mednafen.cfg\", under the Mednafen base directory. This file is created and written to when Mednafen shuts down.\n"
+"\n"
+"Mednafen loads override settings from optional per-module override configuration files, also located directly under the Mednafen base directory. The general pattern for the naming of these user-created files is \"system.cfg\"; e.g. \"nes.cfg\", \"pce.cfg\", \"gba.cfg\", \"psx.cfg\", etc. This allows for overriding global settings on a per-module basis.\n"
+"\n"
+"Per-game override configuration files are also supported. They should be placed in the pgconfig directory under the Mednafen base directory. Name these files like \"FileBase.system.cfg\"; e.g. \"Lieutenant Spoon's Sing-a-Tune (USA).psx.cfg\".\n"
+"\n"
+"The aforementioned per-module and per-game configuration override files will NOT be written to by Mednafen, and they will generally not alter the contents of the primary configuration file.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Custom palettes for a system should generally be named \"system.pal\", IE \"snes.pal\", \"pce.pal\", etc., and placed in the \"palettes\" directory beneath the Mednafen base directory.\n"
+"\n"
+"Per-game custom palettes are also supported, and should be named as \"FileBase.pal\" or \"FileBase.MD5 Hash.pal\", IE \"Mega Man 4.pal\" or \"Mega Man 4.db45eb9413964295adb8d1da961807cc.pal\".\n"
+"\n"
+"Each entry in a custom palette file consists of 3 8-bit color components; Red, Green, Blue, in that order.\n"
+"\n"
+"Not all emulated systems support custom palettes.\n"
+"\n"
+"\n"
+"<b>Automatic IPS Patching</b>\n"
+"Place the IPS file in the same directory as the file to load, and name it \"FullFileName.ips\".\n"
+"\n"
+"        Examples:       Boat.nes - Boat.nes.ips\n"
+"                                Boat.zip - Boat.zip.ips\n"
+"                                Boat.nes.gz - Boat.nes.gz.ips\n"
+"                                Boat     - Boat.ips"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"Virtual Boy emulation in Mednafen is original code, except for an extremely modified (optimizations, bug fixes, and better all-around emulation) V810 emulator core taken from Reality Boy years ago for PC-FX emulation.\n"
+"\n"
+"Virtual Boy ROM images must each have an extension of \".vb\" or \".vboy\" to be recognized as such. Mednafen versions prior to 0.9.13 allowed \".bin\" as well, but this conflicts with the Sega Megadrive emulation module.\n"
+"\n"
+"Due to how the left+right views are transformed into a single image, enabling most of the image filter effects (bilinear interpolation, OpenGL pixel shaders, special scalers, etc.) is not recommended. However, they will work properly with the \"cscope\" and \"sidebyside\" 3D modes, and may work tolerably with the \"anaglyph\" 3D mode. This limitation may be corrected in the future by refactoring the 3D mode mixing out to the driver side, post individual filtering for each left/right view; however, this would significantly negatively impact performance.\n"
+"\n"
+"To use the \"hli\" mode with a \"Line Interlaced 3D\" monitor, you'll want to set \"Scaling factor for the Y axis\" to 1, \"Line Interlaced prescale\" appropriately, and \"Scaling factor for the X axis\" to 2 multiplied by the value of \"Line Interlaced prescale\".\n"
+"\n"
+"NOTE: The \"hli\" and \"vli\" modes will not work properly in windowed video output mode; you may need to adjust the window's position to get the lines to line up correctly for the 3D effect to work.\n"
+"\n"
+"\n"
+"<b>Custom Palettes</b>\n"
+"Global Filename:\tDescription:\n"
+"\n"
+"vb.pal\t\t\t256 or 512 RGB triplets\n"
+"\n"
+"VB LED Active Time; 256 left, 256 right. If only 256 triplets are present, then they will be used for both left and right views. When the custom palette's right view colors are the same as the left view colors (either explicitly, or when using a 256-entry custom palette), and anaglyph 3D mode is active, then the custom palette will not be used."
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid ""
+"<b>Introduction</b>\n"
+"WARNING: Save states (and by extension, state rewinding and netplay) and saved games on emulated memory cards do not mix well unless you are extremely careful. For any given game, either use save states or the game's own save system, but not both, lest you may destroy your saved games.\n"
+"\n"
+"A dual-core Phenom II or Athlon II at 3GHz or higher, or rough equivalent (in terms of single-core IPC), is recommended for running Mednafen's PlayStation 1 emulation on (note that this recommendation does not apply to any unofficial ports or forks, which may have higher CPU requirements). For better performance, the binary should be compiled for a 64-bit target (for example, x86_64) rather than 32-bit, if available.\n"
+"\n"
+"Enabling CD image preloading into memory via the \"Cache entire CD images in memory\" setting is recommended, to avoid short emulator pauses and audio pops due to waiting for disk accesses to complete when the emulated CD is accessed.\n"
+"\n"
+"PSF1 playback is supported. However, many PSF1 rips won't work properly as they are broken in various ways:\n"
+"\n"
+"    Contain malformed PS-EXE headers.\n"
+"    Perform unaligned halfword and word memory accesses.\n"
+"    Erroneously use load instruction target register as a source register in load delay slots.\n"
+"    Set volume too high, leading to obnoxious clipping in the emulated SPU. \n"
+"\n"
+"\n"
+"<b>Firmware/BIOS</b>\n"
+"Place the correct BIOS image files in the correct location (firmware path or Mednafen base directory). Do not rename other revisions/regions of the BIOS to match the expected filenames, or you'll likely cause emulation glitches (and cause confusion if you ever distribute or otherwise refer to these misnamed files).\n"
+"\n"
+"The filenames listed below are per default bios settings.\n"
+"\n"
+"Filename:\t\tscph5500.bin\n"
+"Purpose:\t\t\tSCPH-5500/v3.0J BIOS image. Required for Japan-region games.\n"
+"SHA-256 Hash:\t9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb\n"
+"\n"
+"Filename:\t\tscph5501.bin\n"
+"Purpose:\t\t\tSCPH-5501/v3.0A BIOS image. Required for North America/US-region games. Reportedly the same as the SCPH-7003 BIOS image.\n"
+"SHA-256 Hash:\t11052b6499e466bbf0a709b1f9cb6834a9418e66680387912451e971cf8a1fef\n"
+"\n"
+"Filename:\t\tscph5502.bin\n"
+"Purpose:\t\t\tSCPH-5502/v3.0E BIOS image. Required for Europe-region games.\n"
+"SHA-256 Hash:\t1faaa18fa820a0225e488d9f086296b8e6c46df739666093987ff7d8fd352c09\n"
+"\n"
+"\n"
+"<b>Analog Sticks Range Issues</b>\n"
+"The DualShock and Dual Analog controllers' analog sticks have a circular physical range of movement, but a much more squareish (corners are a bit rounded for DualShock) logical range, likely due to conservative calibration in the gamepads' hardware and firmware design. Modern PC (compatible) gamepads with a circular physical range of motion for their analog sticks (e.g. XBox 360 type controllers) tend to be more tightly-calibrated in hardware, and thus their logical range of motion will be closer to circles than squares. This can cause problems with movement in some PS1 games (e.g. \"Mega Man Legends 2\") that care not for proper trigonometry, as they are expecting larger values at ordinal angles of the sticks than the aforementioned type of PC gamepad can provide due to its design.\n"
+"\n"
+"An \"axis_scale\" setting (named like \"Analog axis scale coefficient\") is provided for each possible emulated DualShock and Dual Analog controller on each port. To work around this range issue with DualShock emulation, an \"axis_scale\" setting of \"1.33\" is recommended as a starting point. Smaller values (such as \"1.20\") may be sufficient and provide for more precise control, so try experimenting to find the ideal for your combination of gamepad and games.\n"
+"\n"
+"\n"
+"<b>Multitap Usage</b>\n"
+"By default, no multitap is enabled. Be aware that if you enable multitap on PSX port 1, game view mapping will be inconsistent between games that support multitap and those that do not.\n"
+"\n"
+"Enabling multitap on either PSX port may cause slight game slowdown. Some 1-and-2-player-only games half-support the multitap, but are apparently not coded with the multitap in mind, and may suffer from graphical glitches like screen tearing if multitap is enabled when running them."
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid ""
+"<i>Note: Many games do not expect input devices to change while the game is "
+"running, and thus may require a hard reset.</i>"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gb.ui:1 share/glade/gba.ui:1
+#: share/glade/gba.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ngp.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/sms.ui:1 share/glade/pcfx.ui:1
+#: share/glade/pcfx.ui:1 share/glade/vb.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/lynx.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/wswan.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/snes.ui:1 share/glade/snes.ui:1
+#: share/glade/gg.ui:1 share/glade/gg.ui:1
+msgid ""
+"A value of \"0\" will cause the current desktop horizontal resolution to be "
+"used"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid "A value of 0 effectively disables recursive loading of M3U files."
+msgstr ""
+
+#: share/glade/fps.ui:1 share/glade/netplay.ui:1
+msgid "A value of 0 enables auto-scaling"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid "A value of 0x1000000 disables crosshair drawing"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Accumulate color data rather than discarding it"
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid ""
+"Activate in-game input configuration process for a command key, but after configuration completes, to activate the configured command key will require all buttons configured to it to be in a pressed state simultaneously to trigger the action.\n"
+"\n"
+"Note that keyboard modifier keys(CTRL, ALT, SHIFT) are still treated as modifiers and not discrete keys.\n"
+"\n"
+"Especially useful in conjunction with the \"Dangerous key action delay\" setting."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Add your commands here..."
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Adwaita"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Adwaita (Dark)"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid "Allow draw skipping"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Also affects language used in some games"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Atari Lynx"
+msgstr ""
+
+#: share/glade/lynx.ui:1
+msgid "Atari Lynx Documentation"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1
+msgid "Attempt to auto-detect region of game"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid "Attempt to disable desktop composition"
+msgstr ""
+
+#: share/glade/input.ui:1
+msgid "Auto-fire frequency = GameSystemFrameRateHz / (value + 1)"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/sms.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/lynx.ui:1 share/glade/wswan.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/pce.ui:1
+#: share/glade/pce.ui:1 share/glade/pce.ui:1 share/glade/pce.ui:1
+#: share/glade/pce.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/snes.ui:1 share/glade/snes.ui:1
+#: share/glade/snes.ui:1 share/glade/snes.ui:1 share/glade/snes.ui:1
+#: share/glade/snes.ui:1 share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Autofire"
+msgstr ""
+
+#: share/glade/fps.ui:1
+msgid "Automatically enable FPS display on startup"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid "Automatically go into the debugger's step mode after a game is loaded"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid "Automatically load/save state on game load/close"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid ""
+"Automatically save and load save states when a game is closed or loaded, "
+"respectively."
+msgstr ""
+
+#: share/glade/md.ui:1
+msgid "Automatically select appropriate input devices"
+msgstr ""
+
+#: share/glade/md.ui:1
+msgid ""
+"Automatically select appropriate input devices, based on an internal "
+"database. Currently, only multitap device usage data is contained in the "
+"database."
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Automatically set RTC on game load"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid ""
+"Automatically set the SMPC's emulated Real-Time Clock to the host system's "
+"current time and date upon game load."
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "BIOS Version 1.00"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Barcode Readers"
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid "Basic"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "Bios Check"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Blur"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid "Cache entire CD images in memory"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Change theme"
+msgstr ""
+
+#: share/glade/netplay.ui:1
+msgid "Chat Console"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Clear all"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Clip left+right 8 pixel columns"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1
+msgid "Correct aspect ratio"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/snes_faust.ui:1 share/glade/md.ui:1
+#: share/glade/nes.ui:1 share/glade/snes.ui:1
+msgid "Correct the aspect ratio"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Currently, this setting only has an effect on Windows Vista and Windows 7 "
+"(and probably the equivalent server versions as well)"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1 share/glade/pcfx.ui:1
+#: share/glade/vb.ui:1 share/glade/wswan.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/nes.ui:1
+msgid "Debugger"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Deinterlacer to use for interlaced video.\n"
+"\n"
+"weave - Good for low-motion video; can be used in conjunction with negative .scanlines setting values.\n"
+"\n"
+"bob - Good for causing a headache. All glory to Bob.\n"
+"\n"
+"bob_offset - Good for high-motion video, but is a bit flickery; reduces the subjective vertical resolution.\n"
+"\n"
+"blend - Blend fields together; reduces vertical and temporal resolution.\n"
+"\n"
+"blend_rg - Like the \"blend\" deinterlacer, but the blending is done in a manner that respects gamma, reducing unwanted brightness changes, at the cost of increased CPU usage."
+msgstr ""
+
+#: share/glade/sound.ui:1
+msgid ""
+"Desired buffer size in milliseconds(ms).\n"
+"\n"
+"The default value of 0 enables automatic buffer size selection."
+msgstr ""
+
+#: share/glade/sound.ui:1
+msgid ""
+"Desired period size in microseconds(μs).\n"
+"\n"
+"Currently only affects OSS, ALSA, WASAPI(exclusive mode), and SDL output. A value of 0 defers to the default in the driver code in SexyAL.\n"
+"\n"
+"Note: This is not the \"sound buffer size\" setting, that would be \"sound.buffer_time\"."
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid "Devices"
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Directory"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid "Disable BRAM (saved game memory) for CD games"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid "Disable BRAM (saved game memory) for HuCard games"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid "Disable for rendering code performance testing"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Disable four-score emulation"
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid "Disable internal and external BRAM"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid "Disable parallax for BG and OBJ rendering"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid "Disable soft reset"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid "Disable speed throttling when sound is disabled"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Disable to reduce latency, at the cost of potentially increased video \"juddering\", with the maximum reduction in latency being about 1 video frame's time.\n"
+"Will work best with emulated systems that are not very computationally expensive to emulate, combined with running on a relatively fast CPU."
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1
+msgid ""
+"Disabling aspect ratio correction with this setting should be considered a hack.\n"
+"\n"
+"If disabling it to allow for sharper pixels by also separately disabling interpolation (though using Mednafen's \"autoipsharper\" OpenGL shader is usually a better option), remember to use scale factors that are multiples of 2, or else games that use high-resolution and interlaced modes will have distorted pixels.\n"
+"\n"
+"Disabling aspect ratio correction with this setting will allow for the QuickTime movie recording feature to produce much smaller files using much less CPU time."
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid "Display latency reduction hack"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Documentation"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1
+msgid "Emulate memory card"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Emulation"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"Enable (bi)linear interpolation.\n"
+"\n"
+"    0 - Disabled\n"
+"\n"
+"    1 - Bilinear\n"
+"\n"
+"    x - Linear (X)\n"
+"    Interpolation only on the X axis.\n"
+"\n"
+"    y - Linear (Y)\n"
+"    Interpolation only on the Y axis."
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid "Enable 1-frame speculative execution for video output"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid "Enable Arcade Card emulation"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1
+msgid "Enable BIOS ROM image sanity checks"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid "Enable CD (image) sanity checks"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Enable CD image sanity checks"
+msgstr ""
+
+#: share/glade/sms.ui:1
+msgid "Enable FM sound emulation when playing domestic/Japan-region games"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Enable Game Genie emulation"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Enable NTSC color generation and blitter"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Enable NTSC custom decoder matrix"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Enable PAL (50Hz) NES emulation"
+msgstr ""
+
+#: share/glade/osd.ui:1
+msgid "Enable alpha blending for OSD elements"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid "Enable analog mode combo-button alternate toggle"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Enable automatic usage of this module"
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"Enable bilinear interpolation on the chroma channel of RAINBOW YUV output"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid "Enable cheats"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1
+msgid "Enable dynamic ADPCM lowpass filter"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid "Enable frameskip during emulation rendering"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid "Enable fullscreen"
+msgstr ""
+
+#: share/glade/ss.ui:1 share/glade/snes.ui:1
+msgid "Enable horizontal blend (blur) filter"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"Enable less-accurate, but better sounding, Namco 106 (mapper 19) sound "
+"emulation"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Enable mid-frame synchronization"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid "Enable multitap (TurboTap) emulation"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid "Enable multitap on PSX port 1"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid "Enable multitap on PSX port 2"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1 share/glade/snes.ui:1
+msgid "Enable multitap on SNES port 1"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1 share/glade/snes.ui:1
+msgid "Enable multitap on SNES port 2"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Enable multitap on Saturn port 1"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Enable multitap on Saturn port 2"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Enable scanlines effect"
+msgstr ""
+
+#: share/glade/sound.ui:1
+msgid "Enable sound output"
+msgstr ""
+
+#: share/glade/lynx.ui:1
+msgid "Enable sound output lowpass filter"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid "Enable speculative execution for sound output too"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid "Enable time synchronization for frame blitting"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid "Enable untrusted file-inclusion path security check"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Enable video temporal blur"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid ""
+"Enables blacklisting of known bad BIOS dumps and known BIOS versions that "
+"don't match the region of the hardware being emulated"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Enabling may result in a noticeable negative impact on performance with the "
+"\"softfb\" video driver, and with the \"opengl\" video driver on "
+"underpowered GPUs."
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid ""
+"Enabling this option causes the MSM5205 ADPCM predictor to be outputted with"
+" full precision of 12-bits, rather than only outputting 10-bits of precision"
+" (as an actual MSM5205 does). Enable this option to reduce whining noise "
+"during ADPCM playback."
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid ""
+"Enabling this option is not necessary to run unrecognized PCE ROM images in "
+"SuperGrafx mode, and enabling it is discouraged; ROM images with a file "
+"extension of \".sgx\" will automatically enable SuperGrafx emulation."
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Expansion Port"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid ""
+"Expansion cart to emulate when \"Expansion cart\" is set to \"auto\", but the game wasn't found in the internal database for carts.\n"
+"\n"
+"none - None\n"
+"\n"
+"backup - Backup Memory(512KiB)\n"
+"\n"
+"extram1 - 1MiB Extended RAM\n"
+"\n"
+"extram4 - 4MiB Extended RAM\n"
+"\n"
+"cs1ram16 - 16MiB RAM mapped in A-bus CS1"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "FPS Display"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Famicom Disk System"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Fast-Forwarding"
+msgstr ""
+
+#: share/glade/paths.ui:1
+msgid "Filename Format String"
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Filters"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Font size for game list"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gb.ui:1 share/glade/gba.ui:1
+#: share/glade/gba.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ngp.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/sms.ui:1 share/glade/pcfx.ui:1
+#: share/glade/pcfx.ui:1 share/glade/vb.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/lynx.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/wswan.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/snes.ui:1 share/glade/snes.ui:1
+#: share/glade/gg.ui:1 share/glade/gg.ui:1
+msgid ""
+"For this setting to have any effect, the \"stretch\" setting must be set to "
+"\"0\""
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid "Force SuperGrafx emulation"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid "Force backbuffer clear before drawing"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Force interlaced video to be treated as progressive"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/snes.ui:1
+#: share/glade/gg.ui:1
+msgid "Force monophonic sound output"
+msgstr ""
+
+#: share/glade/fps.ui:1
+msgid "From top to bottom, the display format is: virtual, rendered, blitted."
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Fullscreen"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "GUI options"
+msgstr ""
+
+#: share/glade/gb.ui:1
+msgid "Game Boy (Color) Documentation"
+msgstr ""
+
+#: share/glade/gba.ui:1
+msgid "Game Boy Advance Documentation"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Game List"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Game List Navigation"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Game selected:"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "GameBoy (Color)"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "GameBoy Advance"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid "Games Express CD Card BIOS (Unlicensed)"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Games in list: 0"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "General"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/pcfx.ui:1 share/glade/snes_faust.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/nes.ui:1 share/glade/snes.ui:1
+msgid "Global"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Global Settings"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Goat Options"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Graphics"
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid "Hack that emulates the codec a buggy ADPCM encoder used for some games"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid ""
+"Hack to reduce input->output video latency by 1 frame.\n"
+"\n"
+"Enabling will increase CPU usage, and may cause video glitches (such as \"jerkiness\") in some oddball games, but most commercially-released games should be fine."
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid "Hack to suppress clicks caused by forced channel resets"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Help"
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Hide Ext"
+msgstr ""
+
+#: share/glade/Setup.ui:1
+msgid "Hide file extensions"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"Higher values correspond to better SNR and better preservation of higher "
+"frequencies (\"brightness\"), at the cost of increased computational "
+"complexity and a negligible (<0.5ms) increase in latency."
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"Higher values correspond to better SNR and better preservation of higher "
+"frequencies (\"brightness\"), at the cost of increased computational "
+"complexity and a negligible increase in latency."
+msgstr ""
+
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+msgid ""
+"Higher values correspond to better SNR and better preservation of higher frequencies (\"brightness\"), at the cost of increased computational complexity and a negligible increase in latency.\n"
+"\n"
+"Higher values will also slightly increase the probability of sample clipping (relevant if Mednafen's volume control settings are set too high), due to increased (time-domain) ringing."
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid ""
+"Higher values correspond to better SNR and better preservation of higher frequencies(\"brightness\"), at the cost of increased computational complexity and a negligible increase in latency.\n"
+"\n"
+"Higher values will also slightly increase the probability of sample clipping(relevant if Mednafen's volume control settings are set too high), due to increased (time-domain) ringing."
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"If \"Display latency reduction hack\" and this setting are enabled, then frame-skipping the drawing to the emulated framebuffer will be allowed.\n"
+"\n"
+"THIS WILL CAUSE GRAPHICAL GLITCHES, AND THEORETICALLY (but unlikely) GAME CRASHES, ESPECIALLY WITH DIRECT FRAMEBUFFER DRAWING GAMES"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid ""
+"If set, when RUN+SEL are pressed simultaneously, disable both buttons "
+"temporarily"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid ""
+"If you have only one CPU with one physical CPU core, select the single-threaded renderer for better performance.\n"
+"\n"
+"st - Single-threaded\n"
+"PPU rendering is performed in the main emulation thread.\n"
+"\n"
+"mt - Multi-threaded\n"
+"PPU rendering is performed in a dedicated thread."
+msgstr ""
+
+#: share/glade/osd.ui:1
+msgid ""
+"In milliseconds.\n"
+"\n"
+"Time lengths less than 100ms are recommended against unless you understand you may miss important non-fatal error messages, and that the input configuration process may become unusable."
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/MainWindow.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/lynx.ui:1 share/glade/wswan.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/nes.ui:1 share/glade/snes.ui:1
+#: share/glade/gg.ui:1
+msgid "Input"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid "Input latency reduction hack"
+msgstr ""
+
+#: share/glade/snes.ui:1
+msgid ""
+"Intended for use in combination with the \"goat\" OpenGL shader, or with "
+"bilinear interpolation or linear interpolation on the X axis enabled"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid ""
+"Intended for use in combination with the \"goat\" OpenGL shader, or with "
+"bilinear interpolation or linear interpolation on the X axis enabled. Has a "
+"more noticeable effect with the Saturn's higher horizontal resolution modes "
+"(640/704)."
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid ""
+"It is intended for changing the behavior (passwords vs save games) of some "
+"HuCard games"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid ""
+"It is intended for viewing CD games error screens that may be different from"
+" simple BRAM full and uninitialized BRAM error screens, though it can cause "
+"the game to crash outright."
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"It is intended for viewing games error screens that may be different from "
+"simple BRAM full and uninitialized BRAM error screens, though it can cause "
+"the game to crash outright."
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "Japan BIOS"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Key Assignments"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Launch"
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid "Layers"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid ""
+"Leaving this option enabled is recommended, unless you want to see special "
+"warning screens on ACD games, or you prefer the non-enhanced modes of ACD-"
+"enhanced SCD games. Additionally, you may want to disable it you you wish to"
+" use state rewinding with a SCD ACD-enhanced game on a slow CPU, as the "
+"extra 2MiB of RAM the Arcade Card offers is difficult to compress in real-"
+"time."
+msgstr ""
+
+#: share/glade/osd.ui:1
+msgid ""
+"Length of time, in milliseconds, to display the save state or the movie "
+"selector after selecting a state or movie."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Logs"
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"Lower values are faster, but will cause some degree of pixel distortion.\n"
+"\n"
+"    256 - 256 pixels\n"
+"    This value will cause heavy pixel distortion.\n"
+"\n"
+"    341 - 341 pixels\n"
+"    This value will cause moderate pixel distortion.\n"
+"\n"
+"    1024 - 1024 pixels\n"
+"    This value will cause no pixel distortion as long as interpolation is enabled on the video output device and the resolution is sufficiently high, but it will use a lot of CPU time."
+msgstr ""
+
+#: share/glade/pcfx.ui:1 share/glade/snes_faust.ui:1 share/glade/pce.ui:1
+msgid ""
+"Lower values correspond to better matching of the output rate of the "
+"resampler to the actual desired output rate, at the expense of increased RAM"
+" usage and poorer CPU cache utilization."
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"Lower values correspond to better matching of the output rate of the "
+"resampler to the actual desired output rate, at the expense of increased RAM"
+" usage and poorer CPU cache utilization. DO NOT INCREASE THIS VALUE, OR "
+"SOUND WILL LIKELY BE OFF-KEY AND THE WRONG TEMPO, AMONG OTHER PROBLEMS."
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "Lynx Boot ROM "
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/pcfx.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes.ui:1 share/glade/snes.ui:1
+msgid ""
+"Makes 3 more virtual ports available.\n"
+"\n"
+"NOTE: Enabling multitap in games that don't fully support it may cause deleterious effects."
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Manage Folders"
+msgstr ""
+
+#: share/glade/help.ui:1
+msgid "Mednafen Documentation"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Merge fields to partially work around !=60.1Hz refresh rates"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid ""
+"Mid-frame synchronization can reduce input latency, but it will increase CPU"
+" requirements."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Miscellaneous"
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid "Movies"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"NOTE: If your refresh rate isn't very close to 60.1Hz (+-0.1), you will need"
+" to enable the \"Merge fields ...\" setting to avoid excessive flickering."
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "NTSC"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Navigation"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Neo Geo Pocket (Color)"
+msgstr ""
+
+#: share/glade/ngp.ui:1
+msgid "Neo Geo Pocket (Color) Documentation"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Netplay"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Nintendo Entertainment System / Famicom"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Nintendo Entertainment System/Famicom Documentation"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "North America/US/Europe BIOS"
+msgstr ""
+
+#: share/glade/snes.ui:1
+msgid ""
+"Note that regardless of this setting's value, \"512\" and \"256\" width "
+"modes will be scaled to the same dimensions for display"
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid ""
+"Note that this will also cause Mednafen to forget about any analog buttons "
+"detected by previously pressing F3."
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Note: Additionally, if the environment variable \"__GL_SYNC_TO_VBLANK\" does"
+" not exist, then it will be created and set to the value specified for this "
+"setting. This has the effect of forcibly enabling or disabling vblank "
+"synchronization when running under Linux with NVidia's drivers."
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1 share/glade/pcfx.ui:1
+#: share/glade/vb.ui:1 share/glade/wswan.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/nes.ui:1
+msgid ""
+"Note: Setting the font size to larger than the default may cause text overlap in the debugger.\n"
+"\n"
+"    5x7 - 5x7\n"
+"\n"
+"    6x9 - 6x9\n"
+"\n"
+"    6x12 - 6x12\n"
+"\n"
+"    6x13 - 6x13. CJK support.\n"
+"\n"
+"    9x18 - 9x18; CJK support."
+msgstr ""
+
+#: share/glade/keys.ui:1 share/glade/keys.ui:1
+msgid "Note: Will not respond to RALT/AltGr even if remapped"
+msgstr ""
+
+#: share/glade/netplay.ui:1
+msgid ""
+"Number of local players for network play. This number is advisory to the "
+"server, and the server may assign fewer players if the number of players "
+"requested is higher than the number of controllers currently available."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "OSD"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"Obviously, this will only work with the OpenGL \"video.driver\" setting, and only on cards and OpenGL implementations that support shaders, otherwise you will get a black screen, or Mednafen may display an error message when starting up. When a shader is enabled, the \".videoip\" setting is ignored.\n"
+"\n"
+"none - None/Disabled\n"
+"\n"
+"autoip - Auto Interpolation\n"
+"Will automatically interpolate on each axis if the corresponding effective scaling factor is not an integer.\n"
+"\n"
+"autoipsharper - Sharper Auto Interpolation\n"
+"Same as \"autoip\", but when interpolation is done, it is done in a manner that will reduce blurriness if possible.\n"
+"\n"
+"scale2x - Scale2x\n"
+"\n"
+"sabr - SABR v3.0\n"
+"GPU-intensive.\n"
+"\n"
+"ipsharper - Sharper bilinear interpolation.\n"
+"\n"
+"ipxnoty - Linear interpolation on X axis only.\n"
+"\n"
+"ipynotx - Linear interpolation on Y axis only.\n"
+"\n"
+"ipxnotysharper - Sharper version of \"ipxnoty\".\n"
+"\n"
+"ipynotxsharper - Sharper version of \"ipynotx\".\n"
+"\n"
+"goat - Simple approximation of a color TV CRT look.\n"
+"Intended for fullscreen modes with a vertical resolution of around 1000 to 1500 pixels. Doesn't simulate halation and electron beam energy distribution nuances."
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid ""
+"Only has an effect when speculative-execution for video output is enabled. "
+"Will cause minor sound glitches in some games."
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"Opacity is specified in %; IE a value of \"100\" will give entirely black scanlines.\n"
+"\n"
+"Negative values are the same as positive values for non-interlaced video, but for interlaced video will cause the scanlines to be overlaid over the previous(if the video.deinterlacer setting is set to \"weave\", the default) field's lines."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Open Recent"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid "Output the full 12-bit ADPCM predictor"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "PC Engine (CD) / TurboGrafx 16 (CD) / SuperGrafx (pce)"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1 share/glade/Preferences.ui:1
+msgid "PC Engine (CD) / TurboGrafx 16 (CD) / SuperGrafx (pce_fast)"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid "PC Engine (CD) / TurboGrafx 16 (CD) / SuperGrafx Documentation (pce)"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1
+msgid ""
+"PC Engine (CD) / TurboGrafx 16 (CD) / SuperGrafx Documentation (pce_fast) "
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "PC-FX"
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid "PC-FX Documentation"
+msgstr ""
+
+#: share/glade/Setup.ui:1
+msgid "Path to game snapshots directory (A):"
+msgstr ""
+
+#: share/glade/Setup.ui:1
+msgid "Path to game snapshots directory (B):"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Paths"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Port 1"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Port 10"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Port 11"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Port 12"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1
+msgid "Port 2"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/md.ui:1 share/glade/pce.ui:1
+#: share/glade/nes.ui:1 share/glade/snes.ui:1
+msgid "Port 3"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/md.ui:1 share/glade/pce.ui:1
+#: share/glade/nes.ui:1 share/glade/snes.ui:1
+msgid "Port 4"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/md.ui:1 share/glade/pce.ui:1
+#: share/glade/snes.ui:1
+msgid "Port 5"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/md.ui:1 share/glade/snes.ui:1
+msgid "Port 6"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/md.ui:1 share/glade/snes.ui:1
+msgid "Port 7"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Port 9"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/md.ui:1 share/glade/snes.ui:1
+msgid "Port8"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Preferences"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid ""
+"Reads the entire CD image(s) into memory at startup (which will cause a "
+"small delay). Can help obviate emulation hiccups due to emulated CD access. "
+"May cause more harm than good on low memory systems, systems with swap "
+"enabled, and/or when the disc images in question are on a fast SSD."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Recording"
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Recursively"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"Reduces latency in games by displaying the framebuffer 20ms earlier. This "
+"hack has some potential of causing graphical glitches, so it is disabled by "
+"default."
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"Reduces latency in some games by 20ms by returning the current pad state, "
+"rather than latched state, on serial port data reads. This hack may cause "
+"some homebrew software to malfunction, but it should be relatively safe for "
+"commercial official games."
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid ""
+"Region of SNES to emulate.\n"
+"\n"
+"auto - Auto\n"
+"\n"
+"ntsc - NTSC(North America/Japan)\n"
+"\n"
+"pal - PAL(Europe)\n"
+"\n"
+"ntsc_lie_auto - NTSC, but PPU bit as if \"auto\".\n"
+"\n"
+"pal_lie_auto - PAL, but PPU bit as if \"auto\".\n"
+"\n"
+"ntsc_lie_pal - NTSC, but PPU bit as if PAL.\n"
+"\n"
+"pal_lie_ntsc - PAL, but PPU bit as if NTSC."
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pcfx.ui:1 share/glade/pce.ui:1
+msgid "Remove 16-sprites-per-scanline hardware limit"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Remove 8-sprites-per-scanline hardware limit"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid "Reverse left/right 3D views"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "SCPH-5500/v3.0J (Japan)"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "SCPH-5501/v3.0A (North America/US)"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "SCPH-5502/v3.0E (Europe)"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid ""
+"Sanity checks are only performed on discs detected (via heuristics) to be "
+"PS1 discs. The checks primarily consist of ensuring that Q subchannel data "
+"is as expected for a typical commercially-released PS1 disc."
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid "Save States"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Save window position"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Save window size"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Scaler/Filter"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "Scan filename for (U),(J),(E) strings to en/dis-able PAL emulation"
+msgstr ""
+
+#: share/glade/Setup.ui:1
+msgid "Scan this directory recursively (to show files from subdirectories)"
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Screen A"
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Screen B"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Sega Game Gear "
+msgstr ""
+
+#: share/glade/gg.ui:1
+msgid "Sega Game Gear Documentation"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Sega Genesis / MegaDrive"
+msgstr ""
+
+#: share/glade/md.ui:1
+msgid "Sega Genesis / MegaDrive Documentation"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Sega Master System"
+msgstr ""
+
+#: share/glade/sms.ui:1
+msgid "Sega Master System Documentation"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Sega Saturn"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Sega Saturn Documentation"
+msgstr ""
+
+#: share/glade/input.ui:1
+msgid ""
+"Selects the conditions for and extent of system keyboard and mouse grabbing when input grabbing is toggled on.\n"
+"\n"
+"Note that regardless of this setting, system keyboard grabbing is temporarily disabled while in the cheat interface, debugger, or netplay console text entry.\n"
+"\n"
+"auto\n"
+"Grab the system mouse only when an emulated mouse or other device that requires relative ball motion is active, and grab the system keyboard only when an emulated keyboard is active.\n"
+"\n"
+"full\n"
+"Grab the system mouse and keyboard regardless of whether or not an emulated keyboard or mouse/ball device is active.\n"
+"\n"
+"kb_auto\n"
+"Keyboard auto, mouse regardless of emulated devices.\n"
+"\n"
+"mouse_auto\n"
+"Mouse auto, keyboard regardless of emulated devices."
+msgstr ""
+
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid ""
+"Sets the position for the switch to the value specified upon startup and virtual input device change.\n"
+"\n"
+"    digital - Digital(+)\n"
+"\n"
+"    analog - Analog(○)\n"
+"    Analog mode is not compatible with all games. For some compatible games, analog mode reportedly must be enabled before the game boots up for the game to recognize it properly."
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"Setting the value higher than 2, the default, will decrease loading times in"
+" most games by some degree."
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"Setting this higher than the default will cause excessive white crush in at "
+"least one game. A value of 1.0 is close to ideal, other than causing the "
+"image to be rather dark."
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid "Setting this volume control too high may cause sample clipping"
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+#: share/glade/pce.ui:1
+msgid "Setting this volume control too high may cause sample clipping."
+msgstr ""
+
+#: share/glade/Manager.ui:1
+msgid "Setup"
+msgstr ""
+
+#: share/glade/Setup.ui:1
+msgid "Setup Folder"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Shader"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Show filters in header"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/ss.ui:1 share/glade/pce.ui:1
+msgid "Show horizontal overscan area"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Show in list"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Show tooltips"
+msgstr ""
+
+#: share/glade/ff.ui:1
+msgid "Silence sound output when fast-forwarding"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Slow-Forwarding"
+msgstr ""
+
+#: share/glade/keys.ui:1
+msgid ""
+"Snapshot is taken after all scaling and special filters/shaders are applied"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Sony PlayStation"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid "Sony PlayStation Documentation"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/MainWindow.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/lynx.ui:1 share/glade/wswan.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/nes.ui:1 share/glade/snes.ui:1
+#: share/glade/gg.ui:1
+msgid "Sound"
+msgstr ""
+
+#: share/glade/sound.ui:1
+msgid ""
+"Sound volume level, in percent.\n"
+"\n"
+"Setting this volume control higher than the default of \"100\" may severely distort the sound."
+msgstr ""
+
+#: share/glade/Setup.ui:1
+msgid "Space-separated filters (ie: *.zip *.cue):"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"Specified in percentage of accumulation buffer to mix with the current frame"
+msgstr ""
+
+#: share/glade/sound.ui:1
+msgid "Specifies the sound playback rate, in sound frames per second(\"Hz\")"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Specify -1 to use the display on which the center of the window lies in "
+"windowed mode"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "State Rewinding"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "Super CD-ROM2 System V3.00"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Super Nintendo Entertainment System / Super Famicom (snes)"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1 share/glade/Preferences.ui:1
+msgid "Super Nintendo Entertainment System / Super Famicom (snes_faust) "
+msgstr ""
+
+#: share/glade/snes.ui:1
+msgid ""
+"Super Nintendo Entertainment System / Super Famicom Documentation (snes)"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid ""
+"Super Nintendo Entertainment System / Super Famicom Documentation "
+"(snes_faust)"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid "Synchronize OpenGL page flips to vertical retrace period"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/md.ui:1 share/glade/pce.ui:1
+#: share/glade/nes.ui:1 share/glade/snes.ui:1
+msgid "System"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1 share/glade/Preferences.ui:1
+msgid "Systems"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"The cursor will still be forcibly hidden in relative mouse mode (used "
+"automatically when emulating a mouse input device in fullscreen mode or in "
+"windowed mode and input grabbing is toggled on), and forcibly shown in the "
+"debugger."
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"The destination rectangle is NOT altered by this setting, so if you have xscale and yscale set to \"2\", and try to use a 3x scaling filter like hq3x, the image is not going to look that great. The nearest-neighbor scalers are intended for use with bilinear interpolation enabled, at high resolutions(such as 1280x1024; nn2x(or nny2x) + bilinear interpolation + fullscreen stretching at this resolution looks quite nice).\n"
+"\n"
+"    none - None/Disabled\n"
+"\n"
+"    hq2x - hq2x\n"
+"\n"
+"    hq3x - hq3x\n"
+"\n"
+"    hq4x - hq4x\n"
+"\n"
+"    scale2x - scale2x\n"
+"\n"
+"    scale3x - scale3x\n"
+"\n"
+"    scale4x - scale4x\n"
+"\n"
+"    2xsai - 2xSaI\n"
+"\n"
+"    super2xsai - Super 2xSaI\n"
+"\n"
+"    supereagle - Super Eagle\n"
+"\n"
+"    nn2x - Nearest-neighbor 2x\n"
+"\n"
+"    nn3x - Nearest-neighbor 3x\n"
+"\n"
+"    nn4x - Nearest-neighbor 4x\n"
+"\n"
+"    nny2x - Nearest-neighbor 2x, y axis only\n"
+"\n"
+"    nny3x - Nearest-neighbor 3x, y axis only\n"
+"\n"
+"    nny4x - Nearest-neighbor 4x, y axis only"
+msgstr ""
+
+#: share/glade/sound.ui:1
+msgid ""
+"The following choices are possible, sorted by preference, high to low, when \"default\" driver is used, but dependent on being compiled in.\n"
+"\n"
+"default - Default\n"
+"Selects the default sound driver.\n"
+"\n"
+"alsa - ALSA\n"
+"The default for Linux (if available).\n"
+"\n"
+"openbsd - OpenBSD Audio\n"
+"The default for OpenBSD.\n"
+"\n"
+"oss - Open Sound System\n"
+"The default for non-Linux UN*X/POSIX/BSD (other than OpenBSD) systems, or anywhere ALSA is unavailable. If the ALSA driver gives you problems, you can try using this one instead.\n"
+"\n"
+"If you are using OSSv4 or newer, you should edit \"/usr/lib/oss/conf/osscore.conf\", uncomment the max_intrate= line, and change the value from 100 (default) to 1000 (or higher if you know what you're doing), and restart OSS. Otherwise, performance will be poor, and the sound buffer size in Mednafen will be orders of magnitude larger than specified.\n"
+"\n"
+"If the sound buffer size is still excessively larger than what is specified via the \"Buffer time\" setting, you can try setting \"Period time\" to 2666, and as a last resort, 5333, to work around a design flaw/limitation/choice in the OSS API and OSS implementation.\n"
+"\n"
+"sdl - Simple Directmedia Layer\n"
+"This driver is not recommended, but it serves as a backup driver if the others aren't available. Its performance is generally sub-par, requiring higher latency or faster CPUs/SMP for glitch-free playback, except where the OS provides a sound callback API itself, such as with Mac OS X and BeOS.\n"
+"\n"
+"jack - JACK\n"
+"The latency reported during startup is for the local sound buffer only and does not include server-side latency. Please note that video card drivers (in the kernel or X), and hardware-accelerated OpenGL, may interfere with jackd's ability to effectively run with realtime response."
+msgstr ""
+
+#: share/glade/input.ui:1
+msgid ""
+"The length of time, in milliseconds, that a button/key corresponding to a "
+"\"dangerous\" command like power, reset, exit, etc. must be pressed before "
+"the command is executed."
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Themes"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid ""
+"This entry can be used for some options that must be passed to Mednafen each time it is invoked:\n"
+"\n"
+"\"-force_module <system>\"    Force usage of specified emulation module.\n"
+"\"-which_medium <number>\"    Start with specified disk/CD (numbered from 0) inserted. For ejected, pass -1.\n"
+"\"-connect\"    Trigger to connect to remote host after the game is loaded.\n"
+"\"-soundrecord <filename>\"    Record sound output to the specified filename in the MS WAV format.\n"
+"\"-qtrecord <filename>\"    Record video and audio output to the specified filename in the QuickTime format."
+msgstr ""
+
+#: share/glade/pcfx.ui:1 share/glade/pce.ui:1
+msgid ""
+"This is an enhancement-related setting. Enabling it may cause graphical "
+"glitches with some games."
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"This setting refers to pixels before scaling is taken into consideration. "
+"For example, a value of \"100\" here will result in a separation of 300 "
+"screen pixels if \"Scaling factor for the X axis\" is set to \"3\"."
+msgstr ""
+
+#: share/glade/input.ui:1
+msgid ""
+"Threshold for detecting a digital-like \"button\" press on analog axis, in "
+"percent"
+msgstr ""
+
+#: share/glade/gb.ui:1
+msgid "Tilt"
+msgstr ""
+
+#: share/glade/ff.ui:1
+msgid "Treat the fast-forward button as a toggle"
+msgstr ""
+
+#: share/glade/sf.ui:1
+msgid "Treat the slow-forward button as a toggle"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Unknown"
+msgstr ""
+
+#: share/glade/input.ui:1
+msgid ""
+"Update physical joystick(s) internal state in Mednafen even when Mednafen "
+"lacks OS focus"
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid "Used if region autodetection fails or is disabled"
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid ""
+"Used if region autodetection fails or is disabled.\n"
+"\n"
+"    jp - Japan\n"
+"\n"
+"    na - North America\n"
+"\n"
+"    eu - Europe"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Using hicolor (RGB555/RGB565) formats may boost performance, but at the cost of color fidelity. Noticeability of color degradation depends on the emulated system and features, such as custom palettes or NTSC blitter, being used. When hicolor format support is not available for the emulation module or special scaler being used, Mednafen will automatically fall back to using a truecolor format. Examine Mednafen's startup output to see the actual OpenGL texture formats being used.\n"
+"\n"
+"    auto - Auto\n"
+"    Currently the same as \"truecolor\", but may automatically select deeper color formats in the future.\n"
+"\n"
+"    truecolor - Truecolor, 16M colors\n"
+"    RGB, 8 bits per color component.\n"
+"\n"
+"    hicolor - Hicolor, 32K/64K colors\n"
+"    RGB565 or RGB555, with priority given to RGB565.\n"
+"\n"
+"    rgb565 - RGB565, 64K colors\n"
+"\n"
+"    rgb555 - RGB555, 32K colors"
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid "VS Unisystem"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "Video"
+msgstr ""
+
+#: share/glade/video.ui:1
+msgid ""
+"Video output driver.\n"
+"\n"
+"default - Default\n"
+"Selects the default video driver. Currently, this is OpenGL for all platforms, but may change in the future if better platform-specific drivers are added.\n"
+"\n"
+"opengl - OpenGL\n"
+"All video-related Mednafen features are available with this video driver.\n"
+"\n"
+"softfb - Software Blitting to Framebuffer\n"
+"Slower with lower-quality scaling than OpenGL, but if you don't have hardware-accelerated OpenGL rendering, it will probably be faster than software OpenGL rendering. Bilinear interpolation not available. OpenGL shaders do not work with this output method, of course."
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Virtual Boy"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid "Virtual Boy Documentation"
+msgstr ""
+
+#: share/glade/lynx.ui:1
+msgid "Virtually rotate the D-pad when the screen is rotated"
+msgstr ""
+
+#: share/glade/paths.ui:1
+msgid "WARNING: %x and %p should always be included."
+msgstr ""
+
+#: share/glade/paths.ui:1
+msgid ""
+"WARNING: %x or %p should always be included, otherwise there will be a "
+"conflict between the numeric counter text file and the image data file."
+msgstr ""
+
+#: share/glade/paths.ui:1
+msgid ""
+"WARNING: %x should always be included, otherwise you run the risk of "
+"overwriting save data for games that create multiple save data files."
+msgstr ""
+
+#: share/glade/paths.ui:1
+msgid ""
+"WARNING: Do not set this path to a directory that contains Famicom Disk "
+"System disk images, or you will corrupt them when you load an FDS game and "
+"exit Mednafen."
+msgstr ""
+
+#: share/glade/pce_fast.ui:1 share/glade/pce.ui:1
+msgid ""
+"WARNING: Enabling this option may cause undesirable graphics glitching on "
+"some games."
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"WARNING: Enabling this option will cause graphical glitches in some games"
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid ""
+"WARNING: HES playback will always use the \"huc6280a\" revision if this setting is set to \"match\", since HES playback is always done with SuperGrafx emulation enabled.\n"
+"\n"
+"huc6280 - HuC6280\n"
+"HuC6280 as found in the original PC Engine.\n"
+"\n"
+"huc6280a - HuC6280A\n"
+"HuC6280A as found in the SuperGrafx and CoreGrafx I. Provides proper channel amplitude centering, but may cause clicking in a few games designed with the original HuC6280's sound characteristics in mind.\n"
+"\n"
+"match - Match emulation mode.\n"
+"Selects \"huc6280\" for non-SuperGrafx mode, and \"huc6280a\" for SuperGrafx (full) mode."
+msgstr ""
+
+#: share/glade/sr.ui:1
+msgid ""
+"WARNING: Setting this to a large value may cause excessive RAM usage in some"
+" circumstances, such as with games that stream large volumes of data off of "
+"CDs."
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"Warning: This option may break NES network play when enabled IF the players "
+"are using ROM images with different filenames."
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"When RUN+SEL are pressed simultaneously, disable both buttons temporarily"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"When disabled, the default, the \"video.deinterlacer\" setting is "
+"effectively ignored with respect to what appears on the screen. When "
+"enabled, it may be prudent to disable the scanlines effect controlled by the"
+" *.goat.slen setting, or else the scanline effect may look objectionable."
+msgstr ""
+
+#: share/glade/psx.ui:1
+msgid ""
+"When enabled, instead of the configured Analog mode toggle button for the "
+"emulated DualShock, use a combination of buttons held down for one emulated "
+"second to toggle it instead. The specific combination is controlled via the "
+"\"psx.input.analog_mode_ct.compare\" setting, which by default is Select, "
+"Start, and all four shoulder buttons."
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid ""
+"When this setting is enabled, the default, paths to files referenced from files like CUE sheets and PSF rips are checked for certain characters that can be used in directory traversal, and if found, loading is aborted.\n"
+"\n"
+"Disable it if you want to allow constructs like absolute paths in CUE sheets, but only if you understand the security implications of doing so (see \"Security Issues\" section in the documentation)."
+msgstr ""
+
+#: share/glade/sound.ui:1
+msgid ""
+"When using ALSA sound output under Linux, the \"sound.device\" setting "
+"\"default\" is Mednafen's default, IE \"hw:0\", not ALSA's \"default\". If "
+"you want to use ALSA's \"default\", use \"sexyal-literal-default\"."
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Window 7"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid "Windowed"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Windows 10"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "Windows 10 (Dark)"
+msgstr ""
+
+#: share/glade/Preferences.ui:1
+msgid "WonderSwan (Color)"
+msgstr ""
+
+#: share/glade/wswan.ui:1
+msgid "WonderSwan (Color) Documentation"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_Apply Additional Commands"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_Bios Check"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_Edit"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_File"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_Help"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_Manage Folders"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_Show Screenshots"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "_View"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"anaglyph - Anaglyph\n"
+"Used in conjunction with classic dual-lens-color glasses.\n"
+"\n"
+"cscope - CyberScope\n"
+"Intended for use with the CyberScope 3D device.\n"
+"\n"
+"sidebyside - Side-by-Side\n"
+"The left-eye image is displayed on the left, and the right-eye image is displayed on the right.\n"
+"\n"
+"vli - Vertical Line Interlaced\n"
+"Vertical lines alternate between left view and right view.\n"
+"\n"
+"hli - Horizontal Line Interlaced\n"
+"Horizontal lines alternate between left view and right view.\n"
+"\n"
+"left - Left View Only\n"
+"Show only the left view.\n"
+"\n"
+"right - Right View Only\n"
+"Show only the right view."
+msgstr ""
+
+#: share/glade/ss.ui:1
+msgid ""
+"auto - Automatic\n"
+"\n"
+"none - None\n"
+"\n"
+"backup - Backup Memory(512KiB)\n"
+"\n"
+"extram1 - 1MiB Extended RAM\n"
+"\n"
+"extram4 - 4MiB Extended RAM\n"
+"\n"
+"cs1ram16 - 16MiB RAM mapped in A-bus CS1"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"disabled - Disabled\n"
+"Forces usage of custom anaglyph colors.\n"
+"\n"
+"red_blue - Red/Blue\n"
+"Classic red/blue anaglyph.\n"
+"\n"
+"red_cyan - Red/Cyan\n"
+"Improved quality red/cyan anaglyph.\n"
+"\n"
+"red_electriccyan - Red/Electric Cyan\n"
+"Alternate version of red/cyan\n"
+"\n"
+"red_green - Red/Green\n"
+"\n"
+"green_magenta - Green/Magenta\n"
+"\n"
+"yellow_blue - Yellow/Blue"
+msgstr ""
+
+#: share/glade/vb.ui:1
+msgid ""
+"fast - Fast Mode\n"
+"Fast mode trades timing accuracy, cache emulation, and executing from hardware registers and RAM not intended for code use for performance.\n"
+"\n"
+"accurate - Accurate Mode\n"
+"Increased timing accuracy, though not perfect, along with cache emulation, at the cost of decreased performance. Additionally, even the pipeline isn't correctly and fully emulated in this mode."
+msgstr ""
+
+#: share/glade/pcfx.ui:1
+msgid ""
+"fast - Fast Mode\n"
+"Fast mode trades timing accuracy, cache emulation, and executing from hardware registers and RAM not intended for code use for performance.\n"
+"\n"
+"accurate - Accurate Mode\n"
+"Increased timing accuracy, though not perfect, along with cache emulation, at the cost of decreased performance. Additionally, even the pipeline isn't correctly and fully emulated in this mode.\n"
+"\n"
+"auto - Auto Mode\n"
+"Selects \"fast\" or \"accurate\" automatically based on an internal database. If the CD image is not recognized, defaults to \"fast\"."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "ff"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "fps"
+msgstr ""
+
+#: share/glade/md.ui:1
+msgid ""
+"game - Match game's header.\n"
+"Emulate the region that the game indicates it expects to run in via data in the header(or in an internal database for a few games that may have bad header data).\n"
+"\n"
+"overseas_ntsc - Overseas(non-Japan), NTSC\n"
+"Region used in North America.\n"
+"\n"
+"overseas_pal - Overseas(non-Japan), PAL\n"
+"Region used in Europe.\n"
+"\n"
+"domestic_ntsc - Domestic(Japan), NTSC\n"
+"Region used in Japan.\n"
+"\n"
+"domestic_pal - Domestic(Japan), PAL\n"
+"Probably an invalid region, but available for testing purposes anyway."
+msgstr ""
+
+#: share/glade/wswan.ui:1
+msgid ""
+"gamepad - Gamepad\n"
+"\n"
+"gamepadraa - Gamepad (Rotation Auto-Adjust)"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "gba"
+msgstr ""
+
+#: share/glade/gb.ui:1 share/glade/gba.ui:1 share/glade/psx.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ngp.ui:1
+#: share/glade/sms.ui:1 share/glade/pcfx.ui:1 share/glade/vb.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/lynx.ui:1 share/glade/wswan.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/gg.ui:1
+msgid ""
+"goatron - Goatron\n"
+"Brightest.\n"
+"\n"
+"borg - Borg\n"
+"Darkest.\n"
+"\n"
+"slenderman - Slenderman\n"
+"Spookiest?"
+msgstr ""
+
+#: share/glade/misc.ui:1
+msgid ""
+"gzip/deflate compression level for save states saved to files. \n"
+"\n"
+"-1 will disable gzip compression and wrapping entirely."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "help"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "input"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "keys"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "misc"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "netplay"
+msgstr ""
+
+#: share/glade/md.ui:1
+msgid ""
+"none - No multitap(s).\n"
+"\n"
+"tp1 - Team Player/Sega Tap on MD/Genesis port 1.\n"
+"\n"
+"tp2 - Team Player/Sega Tap on MD/Genesis port 2.\n"
+"\n"
+"tpd - Team Player/Sega Tap on both MD/Genesis ports.\n"
+"\n"
+"4way - EA 4-Way Play"
+msgstr ""
+
+#: share/glade/snes_faust.ui:1
+msgid ""
+"none - None\n"
+"\n"
+"512 - Force 512.\n"
+"Double width of line if it's 256.\n"
+"\n"
+"phr256blend - Pseudo-hires halve-blend.\n"
+"Blend line down to 256 pixels if it's pseudo-hires.\n"
+"\n"
+"phr256blend_auto512 - Pseudo-hires halve-blend and force 512 if necessary.\n"
+"Blend line down to 256 pixels if it's pseudo-hires. After, double width of line if any other lines use hires mode.\n"
+"\n"
+"phr256blend_512 - Pseudo-hires halve-blend and force 512.\n"
+"Blend line down to 256 pixels if it's pseudo-hires. After, double width of line if it's 256.\n"
+"\n"
+"512_blend - Force 512 and blend.\n"
+"Double width of line if it's 256. After, blend line."
+msgstr ""
+
+#: share/glade/nes.ui:1
+msgid ""
+"none - none\n"
+"\n"
+"arkanoid - Arkanoid Paddle\n"
+"\n"
+"shadow - Space Shadow Gun\n"
+"\n"
+"4player - 4-player Adapter\n"
+"\n"
+"fkb - Family Keyboard\n"
+"Emulated keyboard key state is not updated unless input grabbing(by default, mapped to CTRL+SHIFT+Menu) is toggled on; refer to the main documentation for details.\n"
+"\n"
+"hypershot - Hypershot Paddles\n"
+"\n"
+"mahjong - Mahjong Controller\n"
+"\n"
+"partytap - Party Tap\n"
+"\n"
+"ftrainera - Family Trainer Side A\n"
+"\n"
+"ftrainerb - Family Trainer Side B\n"
+"\n"
+"oekakids - Oeka Kids Tablet\n"
+"\n"
+"bworld - Barcode Battler II"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1
+msgid ""
+"none - none\n"
+"\n"
+"gamepad - Digital Gamepad\n"
+"PlayStation digital gamepad; SCPH-1080.\n"
+"\n"
+"dualshock - DualShock\n"
+"DualShock gamepad; SCPH-1200. Emulation in Mednafen includes the analog mode toggle button. Rumble is emulated, but currently only supported on Linux, and MS Windows via the XInput API and XInput-compatible gamepads/joysticks. If you're having trouble getting rumble to work on Linux, see if Mednafen is printing out error messages during startup regarding /dev/input/event*, and resolve the issue(s) as necessary.\n"
+"\n"
+"dualanalog - Dual Analog\n"
+"Dual Analog gamepad; SCPH-1180. It is the predecessor/prototype to the more advanced DualShock. Emulated in Mednafen as forced to analog mode, and without rumble.\n"
+"\n"
+"analogjoy - Analog Joystick\n"
+"Flight-game-oriented dual-joystick controller; SCPH-1110. Emulated in Mednafen as forced to analog mode.\n"
+"\n"
+"mouse - Mouse\n"
+"\n"
+"negcon - neGcon\n"
+"Namco's unconventional twisty racing-game-oriented gamepad; NPC-101.\n"
+"\n"
+"guncon - GunCon\n"
+"Namco's light gun; NPC-103.\n"
+"\n"
+"justifier - Konami Justifier\n"
+"Konami's light gun; SLUH-00017. Rumored to be wrought of the coagulated rage of all who tried to shoot The Dog. If the game you want to play supports the \"GunCon\", you should use that instead. NOTE: Currently does not work properly when on any of ports 1B-1D and 2B-2D.\n"
+"\n"
+"dancepad - Dance Pad\n"
+"Dingo Dingo Rodeo!"
+msgstr ""
+
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid ""
+"none - none\n"
+"\n"
+"gamepad - Digital Gamepad\n"
+"Standard Saturn digital gamepad.\n"
+"\n"
+"3dpad - 3D Control Pad\n"
+"3D Control Pad\n"
+"\n"
+"mouse - Mouse\n"
+"Mouse\n"
+"\n"
+"wheel - Steering Wheel\n"
+"Arcade Racer/Racing Controller\n"
+"\n"
+"mission - Mission Stick\n"
+"Mission Stick\n"
+"\n"
+"dmission - Dual Mission\n"
+"Dual Mission Sticks\n"
+"\n"
+"gun - Light Gun\n"
+"Virtua Gun/Stunner. Won't function properly if connected behind an emulated multitap.\n"
+"Emulation of the Saturn lightgun in Mednafen is not particularly accurate (in terms of low-level details), unless you happen to be in the habit of using your Saturn with a TV the size of a house and bright enough to start fires.\n"
+"\n"
+"keyboard - Keyboard (US)\n"
+"101-key US keyboard.\n"
+"Emulated keyboard key state is not updated unless input grabbing (by default, mapped to CTRL+SHIFT+Menu) is toggled on; refer to the main documentation for details.\n"
+"\n"
+"jpkeyboard - Keyboard (JP)\n"
+"89-key Japanese keyboard (e.g. HSS-0129).\n"
+"Emulated keyboard key state is not updated unless input grabbing (by default, mapped to CTRL+SHIFT+Menu) is toggled on; refer to the main documentation for details."
+msgstr ""
+
+#: share/glade/pce.ui:1
+msgid ""
+"none - none\n"
+"\n"
+"gamepad - Gamepad\n"
+"\n"
+"mouse - Mouse\n"
+"\n"
+"tsushinkb - Tsushin Keyboard\n"
+"Emulated keyboard key state is not updated unless input grabbing (by default, mapped to CTRL+SHIFT+Menu) is toggled on; refer to the main documentation for details."
+msgstr ""
+
+#: share/glade/nes.ui:1 share/glade/nes.ui:1
+msgid ""
+"none - none\n"
+"\n"
+"gamepad - Gamepad\n"
+"\n"
+"zapper - Zapper\n"
+"\n"
+"powerpada - Power Pad Side A\n"
+"\n"
+"powerpadb - Power Pad Side B\n"
+"\n"
+"arkanoid - Arkanoid Paddle"
+msgstr ""
+
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1
+msgid ""
+"none - none\n"
+"\n"
+"gamepad2 - 2-Button Gamepad\n"
+"\n"
+"gamepad - 3-Button Gamepad\n"
+"\n"
+"gamepad6 - 6-Button Gamepad\n"
+"\n"
+"megamouse - Sega Mega Mouse"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "osd"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "page 1"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "page 2"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "page 3"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "page 4"
+msgstr ""
+
+#: share/glade/Bios.ui:1
+msgid "page 5"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/pcfx.ui:1 share/glade/pcfx.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/wswan.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/pce.ui:1
+#: share/glade/pce.ui:1 share/glade/pce.ui:1 share/glade/pce.ui:1
+#: share/glade/pce.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/snes.ui:1 share/glade/snes.ui:1
+msgid "page0"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/pcfx.ui:1
+#: share/glade/pcfx.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/snes_faust.ui:1
+#: share/glade/snes_faust.ui:1 share/glade/wswan.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/pce.ui:1 share/glade/pce.ui:1
+#: share/glade/pce.ui:1 share/glade/pce.ui:1 share/glade/pce.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/snes.ui:1
+#: share/glade/snes.ui:1 share/glade/snes.ui:1
+msgid "page1"
+msgstr ""
+
+#: share/glade/nes.ui:1 share/glade/nes.ui:1 share/glade/nes.ui:1
+msgid "page2"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/nes.ui:1
+msgid "page3"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid "page4"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1
+#: share/glade/pce_fast.ui:1 share/glade/pce_fast.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/pcfx.ui:1
+#: share/glade/pcfx.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/md.ui:1 share/glade/md.ui:1 share/glade/md.ui:1
+#: share/glade/pce.ui:1 share/glade/pce.ui:1 share/glade/pce.ui:1
+#: share/glade/pce.ui:1 share/glade/pce.ui:1 share/glade/nes.ui:1
+#: share/glade/nes.ui:1 share/glade/snes.ui:1 share/glade/snes.ui:1
+msgid "page5"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid "page6"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid "page7"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid "page8"
+msgstr ""
+
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/psx.ui:1
+#: share/glade/psx.ui:1 share/glade/psx.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1 share/glade/ss.ui:1
+#: share/glade/ss.ui:1 share/glade/ss.ui:1
+msgid "page9"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "paths"
+msgstr ""
+
+#: share/glade/recording.ui:1
+msgid ""
+"raw - Raw\n"
+"A fast codec, computationally, but will cause enormous file size and may exceed your storage medium's sustained write rate.\n"
+"\n"
+"cscd - CamStudio Screen Codec\n"
+"A good balance between performance and compression ratio.\n"
+"\n"
+"png - PNG\n"
+"Has a better compression ratio than \"cscd\", but is much more CPU intensive. Use for compatibility with official QuickTime in cases where you have insufficient disk space for \"raw\"."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "recording"
+msgstr ""
+
+#: share/glade/md.ui:1
+msgid ""
+"same - Match the region emulated.\n"
+"\n"
+"game - Match game's header.\n"
+"This option, in conjunction with the \"md.region\" setting, can be used to run all games at NTSC speeds, or all games at PAL speeds.\n"
+"\n"
+"overseas_ntsc - Overseas(non-Japan), NTSC\n"
+"Region used in North America.\n"
+"\n"
+"overseas_pal - Overseas(non-Japan), PAL\n"
+"Region used in Europe.\n"
+"\n"
+"domestic_ntsc - Domestic(Japan), NTSC\n"
+"Region used in Japan.\n"
+"\n"
+"domestic_pal - Domestic(Japan), PAL\n"
+"Probably an invalid region, but available for testing purposes anyway."
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "sf"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "sound"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "sr"
+msgstr ""
+
+#: share/glade/MainWindow.ui:1
+msgid "video"
+msgstr ""

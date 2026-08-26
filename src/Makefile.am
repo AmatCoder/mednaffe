@@ -54,7 +54,7 @@ endif
 endif
 
 
-AM_CPPFLAGS        = @GTK_CFLAGS@
+AM_CPPFLAGS        = @GTK_CFLAGS@ -DGETTEXT_PACKAGE=\"mednaffe\" -DLOCALEDIR=\"$(localedir)\"
 LDADD           = @GTK_LIBS@
 CLEANFILES      = *~
 DISTCLEANFILES  = .deps/*.P
