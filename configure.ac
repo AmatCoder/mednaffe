@@ -10,6 +10,9 @@ AM_INIT_AUTOMAKE([subdir-objects])
 # Checks for programs.
 AC_PROG_CC
 AC_LANG([C])
+AC_PATH_PROG([MSGFMT], [msgfmt])
+AS_IF([test -z "$MSGFMT"],
+      [AC_MSG_ERROR([msgfmt is required to build translations])])
 
 # Check for host
 AC_CANONICAL_HOST
@@ -68,5 +71,5 @@ PKG_CHECK_MODULES([GTK],[gtk+-3.0 >= 3.22 glib-2.0 >= 2.48], AC_MSG_NOTICE([Chec
 
 AC_SUBST(DEFINES)
 
-AC_CONFIG_FILES([Makefile share/Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile share/Makefile src/Makefile po/Makefile])
 AC_OUTPUT
